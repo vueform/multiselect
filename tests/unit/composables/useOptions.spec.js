@@ -1,4 +1,4 @@
-import { createSelect } from 'unit-test-helpers'
+import { createSelect, getValue } from 'unit-test-helpers'
 import { nextTick } from 'composition-api'
 
 describe('useOptions', () => {
@@ -334,7 +334,7 @@ describe('useOptions', () => {
 
       await nextTick()
 
-      expect(select.vm.value).toBe(0)
+      expect(getValue(select)).toBe(0)
     })
 
     it('should update value on select when using single with object true', async () => {
@@ -348,7 +348,7 @@ describe('useOptions', () => {
 
       await nextTick()
 
-      expect(select.vm.value).toStrictEqual({ value: 0, label: 1 })
+      expect(getValue(select)).toStrictEqual({ value: 0, label: 1 })
     })
 
     it('should update value on select when using multiple with object false', async () => {
@@ -362,7 +362,7 @@ describe('useOptions', () => {
 
       await nextTick()
 
-      expect(select.vm.value).toStrictEqual([0])
+      expect(getValue(select)).toStrictEqual([0])
     })
 
     it('should update value on select when using multiple with object true', async () => {
@@ -377,7 +377,7 @@ describe('useOptions', () => {
 
       await nextTick()
 
-      expect(select.vm.value).toStrictEqual([{ value: 0, label: 1 }])
+      expect(getValue(select)).toStrictEqual([{ value: 0, label: 1 }])
     })
 
     it('should update value when providing a plain value', async () => {
@@ -390,7 +390,7 @@ describe('useOptions', () => {
 
       await nextTick()
 
-      expect(select.vm.value).toBe(1)
+      expect(getValue(select)).toBe(1)
     })
 
     it('should emit select with value when object false', async () => {
@@ -428,7 +428,7 @@ describe('useOptions', () => {
 
       await nextTick()
 
-      expect(select.vm.value).toStrictEqual(null)
+      expect(getValue(select)).toStrictEqual(null)
     })
 
     it('should remove value when deselect multiple and object false', async () => {
@@ -442,7 +442,7 @@ describe('useOptions', () => {
 
       await nextTick()
 
-      expect(select.vm.value).toStrictEqual([2])
+      expect(getValue(select)).toStrictEqual([2])
     })
 
     it('should remove value when deselect multiple and object true', async () => {
@@ -457,7 +457,7 @@ describe('useOptions', () => {
 
       await nextTick()
 
-      expect(select.vm.value).toStrictEqual([{ value: 2, label: 3 }])
+      expect(getValue(select)).toStrictEqual([{ value: 2, label: 3 }])
     })
 
     it('should remove value when deselect multiple by providing value', async () => {
@@ -471,7 +471,7 @@ describe('useOptions', () => {
 
       await nextTick()
 
-      expect(select.vm.value).toStrictEqual([2])
+      expect(getValue(select)).toStrictEqual([2])
     })
 
     it('should emit deselect with value when object false', async () => {
@@ -510,7 +510,7 @@ describe('useOptions', () => {
 
       await nextTick()
 
-      expect(select.vm.value).toStrictEqual([2])
+      expect(getValue(select)).toStrictEqual([2])
     })
   })
 
@@ -525,7 +525,7 @@ describe('useOptions', () => {
 
       await nextTick()
 
-      expect(select.vm.value).toStrictEqual(null)
+      expect(getValue(select)).toStrictEqual(null)
     })
 
     it('should set value to [] on clear when multiple', async () => {
@@ -539,7 +539,7 @@ describe('useOptions', () => {
 
       await nextTick()
 
-      expect(select.vm.value).toStrictEqual([])
+      expect(getValue(select)).toStrictEqual([])
     })
   })
 
@@ -607,7 +607,7 @@ describe('useOptions', () => {
 
       await nextTick()
 
-      expect(select.vm.value).toStrictEqual(1)
+      expect(getValue(select)).toStrictEqual(1)
     })
 
     it('should deselect option if selected when single', async () => {
@@ -622,7 +622,7 @@ describe('useOptions', () => {
 
       await nextTick()
 
-      expect(select.vm.value).toStrictEqual(null)
+      expect(getValue(select)).toStrictEqual(null)
     })
 
     /* MULTISELECT */
@@ -640,7 +640,7 @@ describe('useOptions', () => {
 
       await nextTick()
 
-      expect(select.vm.value).toStrictEqual([0])
+      expect(getValue(select)).toStrictEqual([0])
     })
 
     it('should not clear search on deselect when multiple', async () => {
@@ -658,7 +658,7 @@ describe('useOptions', () => {
       await nextTick()
 
       expect(select.vm.search).toBe('value')
-      expect(select.vm.value).toStrictEqual([0])
+      expect(getValue(select)).toStrictEqual([0])
     })
 
     it('should add option to value if not selected when multiple', async () => {
@@ -674,7 +674,7 @@ describe('useOptions', () => {
 
       await nextTick()
 
-      expect(select.vm.value).toStrictEqual([0,1])
+      expect(getValue(select)).toStrictEqual([0,1])
     })
 
     it('should clear search after select when multiple', async () => {
@@ -691,7 +691,7 @@ describe('useOptions', () => {
 
       await nextTick()
 
-      expect(select.vm.value).toStrictEqual([0,1])
+      expect(getValue(select)).toStrictEqual([0,1])
       expect(select.vm.search).toBe(null)
     })
 
@@ -710,7 +710,7 @@ describe('useOptions', () => {
 
       await nextTick()
 
-      expect(select.vm.value).toStrictEqual([0])
+      expect(getValue(select)).toStrictEqual([0])
     })
 
     it('should not clear search on deselect when tags', async () => {
@@ -728,7 +728,7 @@ describe('useOptions', () => {
       await nextTick()
 
       expect(select.vm.search).toBe('value')
-      expect(select.vm.value).toStrictEqual([0])
+      expect(getValue(select)).toStrictEqual([0])
     })
 
     it('should add option to value if not selected when tags', async () => {
@@ -744,7 +744,7 @@ describe('useOptions', () => {
 
       await nextTick()
 
-      expect(select.vm.value).toStrictEqual([0,1])
+      expect(getValue(select)).toStrictEqual([0,1])
     })
 
     it('should not clear search after select when tags', async () => {
@@ -761,7 +761,7 @@ describe('useOptions', () => {
 
       await nextTick()
 
-      expect(select.vm.value).toStrictEqual([0,1])
+      expect(getValue(select)).toStrictEqual([0,1])
       expect(select.vm.search).toBe('value')
     })
 

@@ -4,10 +4,11 @@ import isObject from './../utils/isObject'
 
 export default function useOptions (props, context, dependencies)
 {
-  const { value, options, mode, trackBy, limit, hideSelectedTag, createTag, label, appendNewTag, multipleLabel, object } = toRefs(props)
+  const { options, mode, trackBy, limit, hideSelectedTag, createTag, label, appendNewTag, multipleLabel, object } = toRefs(props)
 
   // ============ DEPENDENCIES ============
 
+  const value = dependencies.value
   const search = dependencies.search
   const blurSearch = dependencies.blurSearch
   const clearSearch = dependencies.clearSearch

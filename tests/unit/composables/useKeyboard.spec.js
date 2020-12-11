@@ -1,4 +1,4 @@
-import { createSelect } from 'unit-test-helpers'
+import { createSelect, getValue } from 'unit-test-helpers'
 import { nextTick } from 'composition-api'
 
 describe('useKeyboard', () => {
@@ -14,7 +14,7 @@ describe('useKeyboard', () => {
 
       await nextTick()
 
-      expect(select.vm.value).toStrictEqual([0])
+      expect(getValue(select)).toStrictEqual([0])
     })
   })
 

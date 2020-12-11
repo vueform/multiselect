@@ -1,4 +1,4 @@
-import { createSelect, destroy, keyup, keydown, findAll } from 'unit-test-helpers'
+import { createSelect, destroy, keyup, keydown, findAll, getValue } from 'unit-test-helpers'
 import { toBeVisible } from '@testing-library/jest-dom/matchers'
 import { nextTick } from 'vue'
 import testSearch from './helpers/testSearch'
@@ -83,7 +83,7 @@ describe('Multiselect', () => {
 
         await nextTick()
 
-        expect(select.vm.value).toStrictEqual(1)
+        expect(getValue(select)).toStrictEqual(1)
         expect(blurMock).toHaveBeenCalled()
 
         destroy(select)
@@ -138,7 +138,7 @@ describe('Multiselect', () => {
 
       await nextTick()
 
-      expect(select.vm.value).toStrictEqual([0])
+      expect(getValue(select)).toStrictEqual([0])
     })
 
     it('should set pointer on up&down and select with enter', async () => {
@@ -158,7 +158,7 @@ describe('Multiselect', () => {
 
       await nextTick()
 
-      expect(select.vm.value).toStrictEqual(1)
+      expect(getValue(select)).toStrictEqual(1)
 
       destroy(select)
     })
@@ -438,7 +438,7 @@ describe('Multiselect', () => {
 
         await nextTick()
 
-        expect(select.vm.value).toStrictEqual([])
+        expect(getValue(select)).toStrictEqual([])
       })
     })
 
@@ -459,7 +459,7 @@ describe('Multiselect', () => {
 
         await nextTick()
 
-        expect(select.vm.value).toStrictEqual([0])
+        expect(getValue(select)).toStrictEqual([0])
       })
 
       it('should have search width according to search length', async () => {

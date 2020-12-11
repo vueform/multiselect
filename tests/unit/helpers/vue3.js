@@ -24,9 +24,8 @@ export const createSelect = (props = {}, options = {}) => {
     template: `
       <div>
         <Multiselect
+          v-model="value"
           v-bind="props"
-          :value="value"
-          @input="value = $event"
         />
       </div>
     `,
@@ -59,4 +58,8 @@ export const findAll = (parent, query) => {
     at: (i) => { return res[i] },
     length: res.length,
   }
+}
+
+export const getValue = (select) => {
+  return select.vm.modelValue
 }

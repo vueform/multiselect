@@ -77,3 +77,7 @@ export const findAll = (parent, query) => {
     length: res.length,
   }
 }
+
+export const getValue = (select) => {
+  return select.vm.value
+}

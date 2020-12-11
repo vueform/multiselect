@@ -1,4 +1,4 @@
-import { createSelect, destroy, keyup, keydown } from 'unit-test-helpers'
+import { createSelect, destroy, keyup, keydown, getValue } from 'unit-test-helpers'
 import { nextTick } from 'vue'
 
 export default function (mode = 'single') {
@@ -97,7 +97,7 @@ export default function (mode = 'single') {
 
       await nextTick()
 
-      expect(select.vm.value).toStrictEqual(mode == 'single' ? 1 : [1])
+      expect(getValue(select)).toStrictEqual(mode == 'single' ? 1 : [1])
 
       destroy(select)
     })
@@ -117,7 +117,7 @@ export default function (mode = 'single') {
 
         await nextTick()
 
-        expect(select.vm.value).toStrictEqual([0,1])
+        expect(getValue(select)).toStrictEqual([0,1])
       })
     }
   })

@@ -152,6 +152,7 @@
 <script>
   import normalize from './utils/normalize'
   import useData from './composables/useData'
+  import useValue from './composables/useValue'
   import useSearch from './composables/useSearch'
   import useOptions from './composables/useOptions'
   import usePointer from './composables/usePointer'
@@ -163,11 +164,14 @@
     name: 'Multiselect',
     emits: [
       'open', 'close', 'select', 'deselect', 
-      'input', 'search-change', 'tag'
+      'input', 'search-change', 'tag', 'update',
     ],
     props: {
       value: {
-        required: true,
+        required: false,
+      },
+      modelValue: {
+        required: false,
       },
       options: {
         type: [Array, Object],
@@ -182,11 +186,6 @@
         type: [String, Number],
         required: false,
         default: 'multiselect',
-      },
-      name: {
-        type: [String, Number],
-        required: false,
-        default: '',
       },
       disabled: {
         type: Boolean,
@@ -253,11 +252,6 @@
         required: false,
         default: false,
       },
-      disabled: {
-        type: Boolean,
-        required: false,
-        default: false,
-      },
       noOptionsText: {
         type: String,
         required: false,
@@ -281,11 +275,15 @@
     setup(props, context)
     { 
       const data = useData(props, context)
-      const search = useSearch(props, context)
+      const value = useValue(props, context)
+      const search = useSearch(props, context, {
+        value: value.value,
+      })
       const dropdown = useDropdown(props, context)
       const multiselect = useMultiselect(props, context)
 
       const options = useOptions(props, context, {
+        value: value.value,
         search: search.search,
         blurSearch: search.blurSearch,
         clearSearch: search.clearSearch,
@@ -300,6 +298,7 @@
       })
 
       const keyboard = useKeyboard(props, context, {
+        value: value.value,
         update: data.update,
         close: dropdown.close,
         clearPointer: pointer.clearPointer,

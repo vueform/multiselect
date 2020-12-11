@@ -1,11 +1,9 @@
-import { toRefs } from 'composition-api'
 
 export default function useKeyboard (props, context, dependencies)
 {
-  const { value } = toRefs(props)
-
   // ============ DEPENDENCIES ============
 
+  const value = dependencies.value
   const update = dependencies.update
   const close = dependencies.close
   const clearPointer = dependencies.clearPointer

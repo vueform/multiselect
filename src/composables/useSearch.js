@@ -1,8 +1,12 @@
 import { ref, toRefs, computed, watch } from 'composition-api'
 
-export default function useSearch (props, context)
+export default function useSearch (props, context, dependencies)
 {
-  const { searchable, value, mode } = toRefs(props)
+  const { searchable, mode } = toRefs(props)
+
+  // ============ DEPENDENCIES ============
+
+  const value = dependencies.value
 
   // ================ DATA ================
 

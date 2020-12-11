@@ -1,4 +1,4 @@
-import { createSelect, destroy } from 'unit-test-helpers'
+import { createSelect, destroy, getValue } from 'unit-test-helpers'
 import { nextTick } from 'composition-api'
 
 describe('usePointer', () => {
@@ -83,14 +83,14 @@ describe('usePointer', () => {
 
       await nextTick()
 
-      expect(select.vm.value).toStrictEqual(null)
+      expect(getValue(select)).toStrictEqual(null)
 
       select.vm.pointer = select.vm.getOption(1)
       select.vm.selectPointer()
 
       await nextTick()
 
-      expect(select.vm.value).toStrictEqual(1)
+      expect(getValue(select)).toStrictEqual(1)
       expect(select.vm.pointer).toStrictEqual(null)
 
       destroy(select)
