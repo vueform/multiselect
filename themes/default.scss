@@ -186,6 +186,8 @@
   box-sizing: border-box;
   color: #222;
   text-decoration: none;
+  align-items: center;
+  justify-content: flex-start;
 }
 
 .multiselect-option.is-pointed {
