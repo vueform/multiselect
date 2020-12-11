@@ -1,8 +1,8 @@
 # Vue 3 multiselect by @vueform 
 
-<img align="center" src="assets/screenshot.jpg" style="margin: 0 auto">
-
-Vue 3 multiselect component with single select, multiselect and tagging options.
+<p align="center">
+  <img align="center" src="assets/screenshot.jpg">
+</p>
 
 ## Features
 
@@ -65,10 +65,6 @@ When using with Vue 2 make sure to install [@vue/composition-api](https://github
 ``` js
 import Multiselect from '@vueform/multiselect/dist/multiselect.vue2.js'
 ```
-
-## Demo
-
-Check out demo [here]().
 
 ## Examples
 
