@@ -1,8 +1,7 @@
-# Vue 3 multiselect by @vueform 
-
-<p align="center">
+<div align="center">
+  <h1>Vue 3 multiselect by @vueform</h1>
   <img align="center" src="assets/screenshot.jpg">
-</p>
+</div>
 
 ## Features
 
