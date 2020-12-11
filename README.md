@@ -1,6 +1,6 @@
 <div align="center">
   <h1>Vue 3 multiselect by @vueform</h1>
-  <img align="center" src="assets/screenshot.jpg">
+  <img align="center" src="https://github.com/vueform/multiselect/raw/main/assets/screenshot.jpg">
 </div>
 
 ## Features
