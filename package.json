@@ -10,9 +10,9 @@
     "build:vue2": "rollup --config build/vue2.rollup.config.js",
     "build:vue3": "rollup --config build/vue3.rollup.config.js",
     "build:themes": "rollup --config build/themes.rollup.config.js",
-    "test": "npm run test:vue2; npm run test:vue3",
-    "test:vue2": "VUE=2 jest --watchAll --verbose --config=jest/jest.config.vue2.js",
-    "test:vue3": "VUE=3 jest --watchAll --verbose --config=jest/jest.config.vue3.js"
+    "test": "jest --config=jest/jest.config.vue2.js; jest --config=jest/jest.config.vue3.js;",
+    "test:vue2": "jest --watchAll --verbose --config=jest/jest.config.vue2.js",
+    "test:vue3": "jest --watchAll --verbose --config=jest/jest.config.vue3.js"
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",
