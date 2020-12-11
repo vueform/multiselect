@@ -6,6 +6,9 @@
 ## Features
 
 * Vue 2 & 3 support
+* No dependencies
+* 100% coverage
+* ESM support
 * Single select options
 * Multiple select options
 * Tags
@@ -14,13 +17,12 @@
 * Custom slots
 * Events
 * Fully configurable
-* No dependencies
-* 100% coverage
-* ESM support
 
 ## Installation
 
-`npm install @vueform/multiselect`
+```
+npm install @vueform/multiselect
+```
 
 ## Usage with Vue 3
 

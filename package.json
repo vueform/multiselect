@@ -1,10 +1,19 @@
 {
   "name": "@vueform/multiselect",
-  "version": "1.0.0",
-  "description": "VueForm Multiselect",
+  "version": "1.0.1",
+  "private": false,
+  "description": "Vue 3 multiselect component with single select, multiselect and tagging options.",
   "license": "MIT",
   "author": "Adam Berecz <adam@vueform.com>",
+  "main": "./dist/multiselect.vue3.js",
   "module": "./dist/multiselect.vue3.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vueform/multiselect.git"
+  },
+  "bugs": {
+    "url": "https://github.com/vueform/multiselect/issues"
+  },
   "scripts": {
     "build": "npm run build:vue2; npm run build:vue3; npm run build:themes",
     "build:vue2": "rollup --config build/vue2.rollup.config.js",
