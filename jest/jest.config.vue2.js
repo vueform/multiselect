@@ -27,6 +27,7 @@ module.exports = {
   "coverageReporters": [
       "html",
       "text-summary",
-      "clover"
+      "clover",
+      "json"
   ]
 }
