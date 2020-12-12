@@ -12,6 +12,6 @@ export default function useValue (props, context)
   })
 
   return {
-    value: externalValue,
+    externalValue,
   }
 }
