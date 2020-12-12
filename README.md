@@ -1,7 +1,13 @@
 <div align="center">
-  <h1>Vue 3 multiselect by @vueform</h1>
+
+  <h1>Vue 3 multiselect by @vueform<br><a href="https://codecov.io/gh/vueform/multiselect">
+    <img src="https://img.shields.io/codecov/c/github/vueform/multiselect"/>
+  </a></h1>
+    
   <img align="center" src="https://github.com/vueform/multiselect/raw/main/assets/screenshot.jpg">
 </div>
+
+<br>
 
 ## Features
 
