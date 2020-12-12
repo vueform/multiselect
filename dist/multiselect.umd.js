@@ -24,22 +24,22 @@
     var n = Object.keys(e);
 
     if (Object.getOwnPropertySymbols) {
-      var r = Object.getOwnPropertySymbols(e);
-      t && (r = r.filter(function (t) {
+      var l = Object.getOwnPropertySymbols(e);
+      t && (l = l.filter(function (t) {
         return Object.getOwnPropertyDescriptor(e, t).enumerable;
-      })), n.push.apply(n, r);
+      })), n.push.apply(n, l);
     }
 
     return n;
   }
 
   function t(t) {
-    for (var r = 1; r < arguments.length; r++) {
-      var l = null != arguments[r] ? arguments[r] : {};
-      r % 2 ? e(Object(l), !0).forEach(function (e) {
-        n(t, e, l[e]);
-      }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(t, Object.getOwnPropertyDescriptors(l)) : e(Object(l)).forEach(function (e) {
-        Object.defineProperty(t, e, Object.getOwnPropertyDescriptor(l, e));
+    for (var l = 1; l < arguments.length; l++) {
+      var r = null != arguments[l] ? arguments[l] : {};
+      l % 2 ? e(Object(r), !0).forEach(function (e) {
+        n(t, e, r[e]);
+      }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(t, Object.getOwnPropertyDescriptors(r)) : e(Object(r)).forEach(function (e) {
+        Object.defineProperty(t, e, Object.getOwnPropertyDescriptor(r, e));
       });
     }
 
@@ -55,11 +55,11 @@
     }) : e[t] = n, e;
   }
 
-  function k(e) {
+  function j(e) {
     return String(e).toLowerCase().trim();
   }
 
-  function j(e) {
+  function k(e) {
     return function (e) {
       if (Array.isArray(e)) return x(e);
     }(e) || function (e) {
@@ -79,11 +79,11 @@
   function x(e, t) {
     (null == t || t > e.length) && (t = e.length);
 
-    for (var n = 0, r = new Array(t); n < t; n++) {
-      r[n] = e[n];
+    for (var n = 0, l = new Array(t); n < t; n++) {
+      l[n] = e[n];
     }
 
-    return r;
+    return l;
   }
 
   function T(e) {
@@ -127,10 +127,10 @@
           t = void 0 === o || void 0 === o.value ? [] : o.value;
       return e = t, "[object Object]" === Object.prototype.toString.call(e) && (t = Object.keys(t).map(function (e) {
         var n,
-            r = t[e];
+            l = t[e];
         return q(n = {
           value: e
-        }, c.value, r), q(n, d.value, r), n;
+        }, c.value, l), q(n, d.value, l), n;
       })), t = t.map(function (e, t) {
         var n;
         return "object" === T(e) ? e : (q(n = {
@@ -141,24 +141,24 @@
         B = (0, _compositionApi.computed)(function () {
       var e = x.value;
       return M.value.length && (e = M.value.concat(e)), y.value && (e = e.filter(function (e) {
-        return -1 !== k(e[c.value]).indexOf(k(y.value));
+        return -1 !== j(e[c.value]).indexOf(j(y.value));
       })), p.value && (e = e.filter(function (e) {
         return !_(e);
       })), s.value > 0 && (e = e.slice(0, s.value)), e;
     }),
         A = (0, _compositionApi.computed)(function () {
-      return H.value || 0 === h.value.length || b.value ? h.value : "single" == i.value ? D(h.value) : h.value.map(function (e) {
+      return $.value || 0 === h.value.length || b.value ? h.value : "single" == i.value ? D(h.value) : h.value.map(function (e) {
         return D(e);
       });
     }),
         E = (0, _compositionApi.computed)(function () {
       switch (i.value) {
         case "single":
-          return !H.value;
+          return !$.value;
 
         case "multiple":
         case "tags":
-          return !H.value && h.value.length > 0;
+          return !$.value && h.value.length > 0;
       }
     }),
         I = (0, _compositionApi.computed)(function () {
@@ -174,7 +174,7 @@
       var e;
       return !1 !== f.value && y.value ? -1 !== U(y.value) ? [] : [(e = {}, q(e, d.value, y.value), q(e, c.value, y.value), q(e, "value", y.value), e)] : [];
     }),
-        $ = (0, _compositionApi.computed)(function () {
+        V = (0, _compositionApi.computed)(function () {
       switch (i.value) {
         case "single":
           return null;
@@ -184,26 +184,26 @@
           return [];
       }
     }),
-        H = (0, _compositionApi.computed)(function () {
-      return -1 !== [null, void 0].indexOf(h.value);
+        $ = (0, _compositionApi.computed)(function () {
+      return -1 !== [null, void 0, !1].indexOf(h.value);
     }),
-        K = function K(e) {
+        H = function H(e) {
       switch ("object" !== T(e) && (e = D(e)), i.value) {
         case "single":
-          S(F(e));
+          S(N(e));
           break;
 
         case "multiple":
         case "tags":
-          S(j(h.value || []).concat(F(e)));
+          S(k(h.value || []).concat(N(e)));
       }
 
-      t.emit("select", F(e));
+      t.emit("select", N(e));
     },
-        N = function N(e) {
+        K = function K(e) {
       switch ("object" !== T(e) && (e = D(e)), i.value) {
         case "single":
-          R();
+          F();
           break;
 
         case "tags":
@@ -213,22 +213,22 @@
           }));
       }
 
-      t.emit("deselect", F(e));
+      t.emit("deselect", N(e));
     },
-        F = function F(e) {
+        N = function N(e) {
       return b.value ? e : e.value;
     },
-        R = function R(e) {
-      S($.value);
+        F = function F(e) {
+      S(V.value);
     },
-        V = function V(e) {
+        R = function R(e) {
       switch (i.value) {
         case "single":
-          return !H.value && A.value.value == e.value;
+          return !$.value && A.value.value == e.value;
 
         case "tags":
         case "multiple":
-          return !H.value && -1 !== A.value.map(function (e) {
+          return !$.value && -1 !== A.value.map(function (e) {
             return e.value;
           }).indexOf(e.value);
       }
@@ -240,11 +240,11 @@
     },
         U = function U(e) {
       return x.value.map(function (e) {
-        return k(e[c.value]);
-      }).indexOf(k(e));
+        return j(e[c.value]);
+      }).indexOf(j(e));
     },
         _ = function _(e) {
-      return "tags" === i.value && p.value && V(e);
+      return "tags" === i.value && p.value && R(e);
     },
         W = function W(e) {
       P.value.push(e);
@@ -258,29 +258,29 @@
       noOptions: C,
       noResults: L,
       valueObject: A,
-      select: K,
-      deselect: N,
+      select: H,
+      deselect: K,
       remove: function remove(e) {
-        N(e);
+        K(e);
       },
-      clear: R,
-      isSelected: V,
+      clear: F,
+      isSelected: R,
       getOption: D,
       handleOptionClick: function handleOptionClick(e) {
         switch (i.value) {
           case "single":
-            if (V(e)) return void N(e);
-            R(), K(e), g(), w();
+            if (R(e)) return void K(e);
+            F(), H(e), g(), w();
             break;
 
           case "multiple":
-            if (V(e)) return void N(e);
-            K(e), O();
+            if (R(e)) return void K(e);
+            H(e), O();
             break;
 
           case "tags":
-            if (V(e)) return void N(e);
-            void 0 === D(e.value) && f.value && (t.emit("tag", e.value), v.value && W(e), O()), K(e);
+            if (R(e)) return void K(e);
+            void 0 === D(e.value) && f.value && (t.emit("tag", e.value), v.value && W(e), O()), H(e);
         }
       }
     };
@@ -306,16 +306,16 @@
   function E(e, t) {
     (null == t || t > e.length) && (t = e.length);
 
-    for (var n = 0, r = new Array(t); n < t; n++) {
-      r[n] = e[n];
+    for (var n = 0, l = new Array(t); n < t; n++) {
+      l[n] = e[n];
     }
 
-    return r;
+    return l;
   }
 
   var I = {
     name: "Multiselect",
-    emits: ["open", "close", "select", "deselect", "input", "search-change", "tag", "update"],
+    emits: ["open", "close", "select", "deselect", "input", "search-change", "tag", "update:modelValue"],
     props: {
       value: {
         required: !1
@@ -435,7 +435,7 @@
             u = n.value,
             a = n.modelValue;
         return {
-          value: (0, _compositionApi.computed)(function () {
+          externalValue: (0, _compositionApi.computed)(function () {
             return void 0 === u ? a.value : u.value;
           })
         };
@@ -467,7 +467,7 @@
           }
         };
       }(e, n, {
-        value: c.value
+        value: c.externalValue
       }),
           p = function (e, t, n) {
         var a = (0, _compositionApi.toRefs)(e),
@@ -503,7 +503,7 @@
         };
       }(e),
           d = B(e, n, {
-        value: c.value,
+        value: c.externalValue,
         search: s.search,
         blurSearch: s.blurSearch,
         clearSearch: s.clearSearch,
@@ -511,7 +511,7 @@
         blurInput: f.blurInput
       }),
           v = function (e, t, n) {
-        var l = (0, _compositionApi.toRefs)(e).id,
+        var r = (0, _compositionApi.toRefs)(e).id,
             i = n.filteredOptions,
             c = n.handleOptionClick,
             s = n.search,
@@ -526,7 +526,7 @@
           p.value = null;
         },
             m = function m() {
-          var e = document.getElementById(l.value).querySelector(".is-pointed");
+          var e = document.getElementById(r.value).querySelector(".is-pointed");
 
           if (e) {
             var t = e.parentElement;
@@ -576,26 +576,26 @@
         search: s.search
       }),
           m = function (e, t, n) {
-        var r = n.value,
-            l = n.update,
+        var l = n.value,
+            r = n.update,
             u = n.close,
             a = n.clearPointer;
         return {
           handleBackspace: function handleBackspace(e) {
-            l(A(r.value).slice(0, -1));
+            r(A(l.value).slice(0, -1));
           },
           handleEsc: function handleEsc(e) {
             u(), a(), e.target.blur();
           }
         };
       }(0, 0, {
-        value: c.value,
+        value: c.externalValue,
         update: i.update,
         close: p.close,
         clearPointer: v.clearPointer
       });
 
-      return t(t(t(t(t(t(t({}, i), s), p), f), d), v), m);
+      return t(t(t(t(t(t(t(t({}, i), s), p), f), d), v), m), c);
     }
   },
       C = {
@@ -608,23 +608,23 @@
     key: 2,
     class: "multiselect-tags"
   },
-      $ = {
+      V = {
     class: "multiselect-tag"
   },
-      H = {
+      $ = {
     key: 3,
     class: "multiselect-search"
   },
-      K = {
+      H = {
     class: "multiselect-spinner"
   },
-      N = {
+      K = {
     class: "multiselect-no-options"
   },
-      F = {
+      N = {
     class: "multiselect-no-results"
   };
-  I.render = function (e, t, n, r, l, u) {
+  I.render = function (e, t, n, l, r, u) {
     return (0, _vue.openBlock)(), (0, _vue.createBlock)("div", {
       class: ["multiselect", ["is-".concat(n.mode), {
         "is-open": e.isOpen,
@@ -656,7 +656,7 @@
       }, ["prevent"]), ["up"])), t[24] || (t[24] = (0, _vue.withKeys)((0, _vue.withModifiers)(function () {
         return e.forwardPointer && e.forwardPointer.apply(e, arguments);
       }, ["prevent"]), ["down"]))]
-    }, ["single" == n.mode && e.hasSelected && !e.search ? (0, _vue.renderSlot)(e.$slots, "singleLabel", {
+    }, ["single" == n.mode && e.hasSelected && !e.search && e.valueObject ? (0, _vue.renderSlot)(e.$slots, "singleLabel", {
       key: 0,
       value: e.valueObject
     }, function () {
@@ -666,19 +666,19 @@
       values: e.valueObject
     }, function () {
       return [(0, _vue.createVNode)("div", L, (0, _vue.toDisplayString)(e.multipleLabelText), 1)];
-    }) : (0, _vue.createCommentVNode)("v-if", !0), "tags" == n.mode ? ((0, _vue.openBlock)(), (0, _vue.createBlock)("div", M, [((0, _vue.openBlock)(!0), (0, _vue.createBlock)(_vue.Fragment, null, (0, _vue.renderList)(e.valueObject, function (r, l, u) {
+    }) : (0, _vue.createCommentVNode)("v-if", !0), "tags" == n.mode ? ((0, _vue.openBlock)(), (0, _vue.createBlock)("div", M, [((0, _vue.openBlock)(!0), (0, _vue.createBlock)(_vue.Fragment, null, (0, _vue.renderList)(e.valueObject, function (l, r, u) {
       return (0, _vue.openBlock)(), (0, _vue.createBlock)("span", {
         key: u
       }, [(0, _vue.renderSlot)(e.$slots, "tag", {
-        option: r,
+        option: l,
         remove: e.remove,
         disabled: n.disabled
       }, function () {
-        return [(0, _vue.createVNode)("div", $, [(0, _vue.createTextVNode)((0, _vue.toDisplayString)(r[n.label]) + " ", 1), n.disabled ? (0, _vue.createCommentVNode)("v-if", !0) : ((0, _vue.openBlock)(), (0, _vue.createBlock)("i", {
+        return [(0, _vue.createVNode)("div", V, [(0, _vue.createTextVNode)((0, _vue.toDisplayString)(l[n.label]) + " ", 1), n.disabled ? (0, _vue.createCommentVNode)("v-if", !0) : ((0, _vue.openBlock)(), (0, _vue.createBlock)("i", {
           key: 0,
           onClick: t[1] || (t[1] = (0, _vue.withModifiers)(function () {}, ["prevent"])),
           onMousedown: (0, _vue.withModifiers)(function (t) {
-            return e.remove(r);
+            return e.remove(l);
           }, ["prevent"])
         }, null, 40, ["onMousedown"]))])];
       })]);
@@ -714,7 +714,7 @@
         width: e.tagsSearchWidth
       },
       ref: "input"
-    }, null, 36), [[_vue.vModelText, e.search]])], 4)) : (0, _vue.createCommentVNode)("v-if", !0)])) : (0, _vue.createCommentVNode)("v-if", !0), "tags" !== n.mode && n.searchable && !n.disabled ? ((0, _vue.openBlock)(), (0, _vue.createBlock)("div", H, [(0, _vue.withDirectives)((0, _vue.createVNode)("input", {
+    }, null, 36), [[_vue.vModelText, e.search]])], 4)) : (0, _vue.createCommentVNode)("v-if", !0)])) : (0, _vue.createCommentVNode)("v-if", !0), "tags" !== n.mode && n.searchable && !n.disabled ? ((0, _vue.openBlock)(), (0, _vue.createBlock)("div", $, [(0, _vue.withDirectives)((0, _vue.createVNode)("input", {
       "onUpdate:modelValue": t[10] || (t[10] = function (t) {
         return e.search = t;
       }),
@@ -741,7 +741,7 @@
       name: "multiselect-loading"
     }, {
       default: (0, _vue.withCtx)(function () {
-        return [(0, _vue.withDirectives)((0, _vue.createVNode)("div", K, null, 512), [[_vue.vShow, n.loading]])];
+        return [(0, _vue.withDirectives)((0, _vue.createVNode)("div", H, null, 512), [[_vue.vShow, n.loading]])];
       }),
       _: 1
     })], 40, ["tabindex"]), (0, _vue.createVNode)(_vue.Transition, {
@@ -754,31 +754,31 @@
           style: {
             maxHeight: e.contentMaxHeight
           }
-        }, [(0, _vue.renderSlot)(e.$slots, "beforeList"), ((0, _vue.openBlock)(!0), (0, _vue.createBlock)(_vue.Fragment, null, (0, _vue.renderList)(e.filteredOptions, function (r, l, u) {
+        }, [(0, _vue.renderSlot)(e.$slots, "beforeList"), ((0, _vue.openBlock)(!0), (0, _vue.createBlock)(_vue.Fragment, null, (0, _vue.renderList)(e.filteredOptions, function (l, r, u) {
           return (0, _vue.openBlock)(), (0, _vue.createBlock)("a", {
             href: "",
             class: ["multiselect-option", {
-              "is-pointed": e.isPointed(r),
-              "is-selected": e.isSelected(r)
+              "is-pointed": e.isPointed(l),
+              "is-selected": e.isSelected(l)
             }],
             key: u,
             onMousedown: t[25] || (t[25] = (0, _vue.withModifiers)(function () {}, ["prevent"])),
             onMouseenter: function onMouseenter(t) {
-              return e.setPointer(r);
+              return e.setPointer(l);
             },
             onClick: (0, _vue.withModifiers)(function (t) {
-              return e.handleOptionClick(r);
+              return e.handleOptionClick(l);
             }, ["stop", "prevent"])
           }, [(0, _vue.renderSlot)(e.$slots, "option", {
-            option: r,
+            option: l,
             search: e.search
           }, function () {
-            return [(0, _vue.createVNode)("span", null, (0, _vue.toDisplayString)(r[n.label]), 1)];
+            return [(0, _vue.createVNode)("span", null, (0, _vue.toDisplayString)(l[n.label]), 1)];
           })], 42, ["onMouseenter", "onClick"]);
         }), 128)), (0, _vue.withDirectives)((0, _vue.createVNode)("span", null, [(0, _vue.renderSlot)(e.$slots, "noOptions", {}, function () {
-          return [(0, _vue.createVNode)("div", N, (0, _vue.toDisplayString)(n.noOptionsText), 1)];
+          return [(0, _vue.createVNode)("div", K, (0, _vue.toDisplayString)(n.noOptionsText), 1)];
         })], 512), [[_vue.vShow, e.noOptions]]), (0, _vue.withDirectives)((0, _vue.createVNode)("span", null, [(0, _vue.renderSlot)(e.$slots, "noResults", {}, function () {
-          return [(0, _vue.createVNode)("div", F, (0, _vue.toDisplayString)(n.noResultsText), 1)];
+          return [(0, _vue.createVNode)("div", N, (0, _vue.toDisplayString)(n.noResultsText), 1)];
         })], 512), [[_vue.vShow, e.noResults]]), (0, _vue.renderSlot)(e.$slots, "afterList")], 4), [[_vue.vShow, e.isOpen]])];
       }),
       _: 3
