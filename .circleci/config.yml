@@ -6,5 +6,4 @@ workflows:
   test:
     jobs:
       - node/test
-      - codecov/upload:
-        file: './coverage/clover.xml'
+      - codecov/upload
