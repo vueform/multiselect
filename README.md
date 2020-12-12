@@ -33,7 +33,6 @@
 * Multiple select options
 * Tags
 * Search & filtering
-* Async options
 * Custom slots
 * Events
 * Fully configurable
@@ -376,62 +375,6 @@ import Multiselect from '@vueform/multiselect/dist/multiselect.vue2.js'
       return {
         value: [],
         options: ['Batman', 'Robin', 'Joker']
-      }
-    }
-  }
-</script>
-
-<style src="@vueform/multiselect/themes/default.css"></style>
-```
-
-### Tags with **async** options and loader
-
-``` html
-<template>
-  <div>
-    <Multiselect
-      v-model="value"
-      mode="tags"
-      placeholder="Select your character"
-      :options="options"
-      :searchable="true"
-      :object="true"
-      :loading="loading"
-      @search-change="refreshOptions"
-    />
-  </div>
-</template>
-
-<script>
-  import Multiselect from '@vueform/multiselect'
-
-  export default {
-    components: { Multiselect },
-    data() {
-      return {
-        value: [],
-        options: [],
-        loading: false,
-        lastQuery: null,
-      }
-    },
-    methods: {
-      async refreshOptions(query) {
-        this.lastQuery = query
-        this.loading = true
-
-        let response = await new Promise((resolve, reject) => {
-          setTimeout(() => {
-            resolve(['Robin', 'Batman', 'Joker'])
-          }, 500);
-        })
-
-        if (this.lastQuery != query) {
-          return
-        }
-
-        this.options = response
-        this.loading = false
       }
     }
   }
