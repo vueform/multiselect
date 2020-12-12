@@ -48,7 +48,7 @@ export default [
         babelHelpers: 'runtime',
         skipPreflightCheck: true
       }),
-      terser()
+      // terser()
     ]),
     external: ['vue', 'composition-api'],
   }

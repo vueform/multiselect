@@ -6,7 +6,9 @@
 
   <img alt="npm bundle size (scoped version)" src="https://img.shields.io/bundlephobia/minzip/@vueform/multiselect/1.0.1?color=53ca2f">
 
-  <img alt="GitHub" src="https://img.shields.io/github/license/vueform/multiselect?color=53ca2f">
+  <a href="https://github.com/vueform/multiselect/blob/main/LICENSE.md" target="_blank">
+    <img alt="GitHub" src="https://img.shields.io/github/license/vueform/multiselect?color=53ca2f">
+  </a>
 
   <a href="https://discord.com/channels/787237947635793940" target="_blank">
     <img alt="Discord" src="https://img.shields.io/discord/787237947635793940">
