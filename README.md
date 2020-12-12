@@ -81,17 +81,17 @@ import Multiselect from '@vueform/multiselect/dist/multiselect.vue2.js'
 | limit | `number` | `-1` | The maximum number of options that should be displayed. If `-1` it won't be limited. |
 | loading | `boolean` | `false` | Whether a loading spinner should be shown. |
 | maxHeight | `number` | `160` | The maximum height of options list. |
-| mode | `string` | `single` | Possible values: `single|multiple|tags`. |
-| modelValue | `string|number|array` | `null` | The variable that should store the select value when using **Vue 3**. If `v-model` is used it does not need to be set. |
+| mode | `string` | `single` | Possible values: `single&#124;multiple&#124;tags`. |
+| modelValue | `string&#124;number&#124;array` | `null` | The variable that should store the select value when using **Vue 3**. If `v-model` is used it does not need to be set. |
 | multipleLabel | `function` |  | A function that should return how the label should be displayed when using `multiple` mode. It receives `value` as an argument. By default it renders `1 option selected` and `[n] options selected` based on `value` length. |
 | noOptionsText | `string` | `'The list is empty'` | The text that should be displayed when options list is empty. |
 | noResultsText | `string` | `No results found` | The text that should be when there are no search results. |
 | object | `boolean` | `false` | Whether the value should be stored as an object. If set to `false` while using an array of objects as `:options` the `value` property will be used as value. If set to `true` without using an array of objects as `:options` an object that contains `value` property along with `:trackBy`'s and `:label`'s value will be set as value. |
-| options | `array|object` | `[]` | List of options. Can be:<br>- an array (eg. `[1,2,3]`)<br>- an object (eg. `{a:1,b:2,c:3}`)<br>- an array of objects `[{value:1,label:'v1'},{value:2,label:'v2'},{value:3,label:'v3'}]`.<br>When an array of objects is provided it **must** have a `value` property as well as properties that equal to `:trackBy`'s and `:label`'s value (both configurable and default to `label`). |
+| options | `array&#124;object` | `[]` | List of options. Can be:<br>- an array (eg. `[1,2,3]`)<br>- an object (eg. `{a:1,b:2,c:3}`)<br>- an array of objects `[{value:1,label:'v1'},{value:2,label:'v2'},{value:3,label:'v3'}]`.<br>When an array of objects is provided it **must** have a `value` property as well as properties that equal to `:trackBy`'s and `:label`'s value (both configurable and default to `label`). |
 | placeholder | `string` | `null` | The text that should be displayed before an options are selected. |
 | searchable | `boolean` | `false` | Whether the options should be searchable. |
 | trackBy | `string` | `label` | The name of the property that should be searched when `searchable` is `true` and an array of objects are provided as `:options`. |
-| value | `string|number|array` | `null` | The variable that should store the select value when using **Vue 2**. If `v-model` is used it does not need to be set. |
+| value | `string&#124;number&#124;array` | `null` | The variable that should store the select value when using **Vue 2**. If `v-model` is used it does not need to be set. |
 
 ## Events
 
