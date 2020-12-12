@@ -1,11 +1,24 @@
 <div align="center">
-  <a href="https://codecov.io/gh/vueform/multiselect">
+  <img alt="CircleCI" src="https://img.shields.io/circleci/build/github/vueform/multiselect">
+  <a href="https://codecov.io/gh/vueform/multiselect" target="_blank">
     <img src="https://img.shields.io/codecov/c/github/vueform/multiselect"/>
   </a>
 
+  <img alt="npm bundle size (scoped version)" src="https://img.shields.io/bundlephobia/minzip/@vueform/multiselect/1.0.1?color=53ca2f">
+
+  <img alt="GitHub" src="https://img.shields.io/github/license/vueform/multiselect?color=53ca2f">
+
+  <a href="https://discord.com/channels/787237947635793940" target="_blank">
+    <img alt="Discord" src="https://img.shields.io/discord/787237947635793940">
+  </a>
+
+  <img alt="npm" src="https://img.shields.io/npm/v/@vueform/multiselect">
+
   <h1>Vue 3 multiselect by @vueform</h1>
   
-  <img align="center" src="https://github.com/vueform/multiselect/raw/main/assets/screenshot.jpg">
+  <a href="https://www.npmjs.com/package/@vueform/multiselect" target="_blank">
+    <img align="center" src="https://github.com/vueform/multiselect/raw/main/assets/screenshot.jpg">
+  </a>
 
 </div>
 
@@ -13,6 +26,7 @@
 
 * Vue 2 & 3 support
 * No dependencies
+* Lightweight (~4.5 kB gzipped)
 * 100% coverage
 * ESM support
 * Single select options
