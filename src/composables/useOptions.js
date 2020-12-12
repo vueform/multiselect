@@ -133,7 +133,7 @@ export default function useOptions (props, context, dependencies)
 
   // no export
   const isValueNull = computed(() => {
-    return [null, undefined].indexOf(value.value) !== -1
+    return [null, undefined, false].indexOf(value.value) !== -1
   })
 
   // =============== METHODS ==============

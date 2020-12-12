@@ -23,7 +23,7 @@
       @keydown.prevent.down="forwardPointer"
     >
 
-      <template v-if="mode == 'single' && hasSelected && !search">
+      <template v-if="mode == 'single' && hasSelected && !search && valueObject">
         <slot name="singleLabel" :value="valueObject">
           <div class="multiselect-single-label">
             {{ valueObject[label] }}
@@ -164,7 +164,7 @@
     name: 'Multiselect',
     emits: [
       'open', 'close', 'select', 'deselect', 
-      'input', 'search-change', 'tag', 'update',
+      'input', 'search-change', 'tag', 'update:modelValue',
     ],
     props: {
       value: {
@@ -277,13 +277,13 @@
       const data = useData(props, context)
       const value = useValue(props, context)
       const search = useSearch(props, context, {
-        value: value.value,
+        value: value.externalValue,
       })
       const dropdown = useDropdown(props, context)
       const multiselect = useMultiselect(props, context)
 
       const options = useOptions(props, context, {
-        value: value.value,
+        value: value.externalValue,
         search: search.search,
         blurSearch: search.blurSearch,
         clearSearch: search.clearSearch,
@@ -298,7 +298,7 @@
       })
 
       const keyboard = useKeyboard(props, context, {
-        value: value.value,
+        value: value.externalValue,
         update: data.update,
         close: dropdown.close,
         clearPointer: pointer.clearPointer,
@@ -312,6 +312,7 @@
         ...options,
         ...pointer,
         ...keyboard,
+        ...value,
       }
     }
   }
