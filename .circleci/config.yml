@@ -24,15 +24,15 @@ jobs:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-
-      - run: npm test:vue2
-
-      - codecov/upload:
-          file: './coverage/clover.xml'
-          flags: 'vue2'
           
-      - run: npm test:vue3
+      - run: npm run test:vue3
 
       - codecov/upload:
           file: './coverage/clover.xml'
           flags: 'vue3'
+
+      - run: npm run test:vue2
+
+      - codecov/upload:
+          file: './coverage/clover.xml'
+          flags: 'vue2'
