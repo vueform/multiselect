@@ -19,7 +19,7 @@
   <h1>Vue 3 multiselect by <a href="https://vueform.com?r=github" target="_blank">Vueform</a></h1>
   
   <a href="https://vueform.com" target="_blank">
-    <img align="center" src="https://github.com/vueform/multiselect/raw/main//assets/logo.svg" width="120">
+    <img align="center" src="https://github.com/vueform/multiselect/raw/main//assets/logo.svg" width="110" style="margin: 20px 0">
   </a>
   <br>
   <br>
