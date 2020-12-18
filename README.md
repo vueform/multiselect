@@ -1,10 +1,13 @@
 <div align="center">
   <img alt="CircleCI" src="https://img.shields.io/circleci/build/github/vueform/multiselect">
+
   <a href="https://codecov.io/gh/vueform/multiselect" target="_blank">
     <img src="https://img.shields.io/codecov/c/github/vueform/multiselect"/>
   </a>
 
-  <img alt="npm bundle size (scoped version)" src="https://img.shields.io/bundlephobia/minzip/@vueform/multiselect/1.0.1?color=53ca2f">
+  <a href="https://www.npmjs.com/package/@vueform/multiselect" target="_blank">
+    <img alt="npm bundle size (scoped version)" src="https://img.shields.io/bundlephobia/minzip/@vueform/multiselect/1.1.0?color=53ca2f">
+  </a>
 
   <a href="https://github.com/vueform/multiselect/blob/main/LICENSE.md" target="_blank">
     <img alt="GitHub" src="https://img.shields.io/github/license/vueform/multiselect?color=53ca2f">
@@ -14,7 +17,9 @@
     <img alt="Discord" src="https://img.shields.io/discord/787237947635793940">
   </a>
 
-  <img alt="npm" src="https://img.shields.io/npm/v/@vueform/multiselect">
+  <a href="https://www.npmjs.com/package/@vueform/multiselect" target="_blank">
+    <img alt="npm" src="https://img.shields.io/npm/v/@vueform/multiselect">
+  </a>
 
   <h1>Vue 3 multiselect by <a href="https://vueform.com?r=github" target="_blank">Vueform</a></h1>
   
@@ -23,8 +28,10 @@
     <img align="center" src="https://github.com/vueform/multiselect/raw/main//assets/logo.svg" width="110">
     <br>
   </a>
+  
   <br>
   <br>
+
   <a href="https://www.npmjs.com/package/@vueform/multiselect" target="_blank">
     <img align="center" src="https://github.com/vueform/multiselect/raw/main//assets/screenshot.png">
   </a>
