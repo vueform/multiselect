@@ -1,14 +1,17 @@
-import { ref, toRefs, computed } from 'composition-api'
+import { ref, toRefs, computed, watch } from 'composition-api'
 import normalize from './../utils/normalize'
 import isObject from './../utils/isObject'
 
 export default function useOptions (props, context, dependencies)
 {
-  const { options, mode, trackBy, limit, hideSelectedTag, createTag, label, appendNewTag, multipleLabel, object } = toRefs(props)
+  const { options, mode, trackBy, limit, hideSelectedTag, createTag, label,
+          appendNewTag, multipleLabel, object, loading, delay, resolveOnLoad,
+          minChars, filterResults, clearOnSearch, clearOnSelect } = toRefs(props)
 
   // ============ DEPENDENCIES ============
 
-  const value = dependencies.value
+  const internalValue = dependencies.internalValue
+  const externalValue = dependencies.externalValue
   const search = dependencies.search
   const blurSearch = dependencies.blurSearch
   const clearSearch = dependencies.clearSearch
@@ -20,11 +23,17 @@ export default function useOptions (props, context, dependencies)
   // no export
   const appendedOptions = ref([])
 
+  // no export
+  const resolvedOptions = ref([])
+
+  // no export
+  const resolving = ref(false)
+
   // ============== COMPUTED ==============
 
   // no export
   const extendedOptions = computed(() => {
-    let extendedOptions = options === undefined || options.value === undefined  ? [] : options.value
+    let extendedOptions = resolvedOptions.value || []
 
     // Transforming an object to an array of objects
     if (isObject(extendedOptions)) {
@@ -54,7 +63,7 @@ export default function useOptions (props, context, dependencies)
       filteredOptions = createdTag.value.concat(filteredOptions)
     }
 
-    if (search.value) {
+    if (search.value && filterResults.value) {
       filteredOptions = filteredOptions.filter((option) => {
         return normalize(option[trackBy.value]).indexOf(normalize(search.value)) !== -1
       })
@@ -71,16 +80,6 @@ export default function useOptions (props, context, dependencies)
     return filteredOptions
   })
 
-  const valueObject = computed(() => {
-    if (isValueNull.value || value.value.length === 0 || object.value) {
-      return value.value
-    }
-
-    return mode.value == 'single'
-      ? getOption(value.value)
-      : value.value.map((val) => getOption(val))
-  })
-
   const hasSelected = computed(() => {
     switch (mode.value) {
       case 'single':
@@ -88,14 +87,14 @@ export default function useOptions (props, context, dependencies)
 
       case 'multiple':
       case 'tags':
-        return !isValueNull.value && value.value.length > 0
+        return !isValueNull.value && internalValue.value.length > 0
     }
   })
 
   const multipleLabelText = computed(() => {
     return multipleLabel !== undefined && multipleLabel.value !== undefined
-      ? multipleLabel.value(value.value)
-      : (value.value && value.value.length > 1 ? `${value.value.length} options selected` : `1 option selected`)
+      ? multipleLabel.value(internalValue.value)
+      : (internalValue.value && internalValue.value.length > 1 ? `${internalValue.value.length} options selected` : `1 option selected`)
   })
 
   const noOptions = computed(() => {
@@ -133,7 +132,11 @@ export default function useOptions (props, context, dependencies)
 
   // no export
   const isValueNull = computed(() => {
-    return [null, undefined, false].indexOf(value.value) !== -1
+    return [null, undefined, false].indexOf(internalValue.value) !== -1
+  })
+
+  const busy = computed(() => {
+    return loading.value || resolving.value
   })
 
   // =============== METHODS ==============
@@ -145,12 +148,12 @@ export default function useOptions (props, context, dependencies)
 
     switch (mode.value) {
       case 'single':
-        update(finalValue(option))
+        update(option)
         break
 
       case 'multiple':
       case 'tags':
-        update([...(value.value || [])].concat(finalValue(option)))
+        update((internalValue.value || []).concat(option))
         break
     }
 
@@ -169,7 +172,7 @@ export default function useOptions (props, context, dependencies)
 
       case 'tags':
       case 'multiple':
-        update(value.value.filter((val) => (object.value && val.value != option.value) || (!object.value && val != option.value)))
+        update(internalValue.value.filter((val) => val.value != option.value))
         break
     }
 
@@ -192,11 +195,11 @@ export default function useOptions (props, context, dependencies)
   const isSelected = (option) => {
     switch (mode.value) {
       case 'single':
-        return !isValueNull.value && valueObject.value.value == option.value
+        return !isValueNull.value && internalValue.value.value == option.value
 
       case 'tags':
       case 'multiple':
-        return !isValueNull.value && valueObject.value.map(o => o.value).indexOf(option.value) !== -1
+        return !isValueNull.value && internalValue.value.map(o => o.value).indexOf(option.value) !== -1
     }
   }
 
@@ -221,7 +224,10 @@ export default function useOptions (props, context, dependencies)
         }
 
         select(option)
-        clearSearch()
+
+        if (clearOnSelect.value) {
+          clearSearch()
+        }
         break
 
       case 'tags':
@@ -237,6 +243,10 @@ export default function useOptions (props, context, dependencies)
             appendOption(option)
           }
 
+          clearSearch()
+        }
+
+        if (clearOnSelect.value) {
           clearSearch()
         }
 
@@ -264,6 +274,73 @@ export default function useOptions (props, context, dependencies)
     appendedOptions.value.push(option)
   }
 
+  // no export
+  const resolveOptions = async () => {
+    resolving.value = true
+    resolvedOptions.value = await options.value(search.value)
+    resolving.value = false
+  }
+
+  // no export
+  const makeInternal = (val) => {
+    if (object.value) {
+      return val
+    }
+
+    // If external should be plain transform
+    // value object to plain values
+    return !Array.isArray(val) ? getOption(val) : val.map(v => getOption(v))
+  }
+
+  // ================ HOOKS ===============
+
+  if (mode.value !== 'single' && [null, undefined, false].indexOf(externalValue.value) === -1 && !Array.isArray(externalValue.value)) {
+    throw new Error(`v-model must be an array when using "${mode.value}" mode`)
+  }
+
+  if (options && typeof options.value == 'function') {
+    if (resolveOnLoad.value) {
+      resolveOptions()
+    }
+  }
+  else {
+    resolvedOptions.value = options && options.value ? options.value : []
+  }
+
+  if ([null, false, undefined].indexOf(externalValue.value) === -1) {
+    internalValue.value = makeInternal(externalValue.value)
+  } 
+  
+  // ============== WATCHERS ==============
+
+  if (delay.value > -1) {
+    watch(search, (query) => {
+      if (query.length < minChars.value) {
+        return
+      }
+
+      if (clearOnSearch.value) {
+        resolvedOptions.value = []
+      }
+      setTimeout(async () => {
+        if (query != search.value) {
+          return
+        }
+
+        resolving.value = true
+
+        let newOptions = await options.value(search.value)
+
+        if (query == search.value) {
+          resolvedOptions.value = newOptions
+        }
+
+        resolving.value = false
+      }, delay.value)
+
+    }, { flush: 'sync' })
+  }
+
   return {
     filteredOptions,
     hasSelected,
@@ -271,7 +348,7 @@ export default function useOptions (props, context, dependencies)
     extendedOptions,
     noOptions,
     noResults,
-    valueObject,
+    busy,
     select,
     deselect,
     remove,

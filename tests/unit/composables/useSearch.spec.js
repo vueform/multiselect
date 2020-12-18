@@ -61,7 +61,7 @@ describe('useSearch', () => {
 
       select.vm.clearSearch()
 
-      expect(select.vm.search).toBe(null)
+      expect(select.vm.search).toBe('')
     })
   })
 
@@ -99,34 +99,33 @@ describe('useSearch', () => {
     })
   })
 
-  describe('handleTagsSearchBackspace', () => {
-    it('should set search null if empty & stop propagation', () => {
+  describe('handleSearchBackspace', () => {
+    it('should stop propagation if search is not empty', () => {
       let stopPropagationMock = jest.fn()
 
       let select = createSelect()
 
       select.vm.search = ''
 
-      select.vm.handleTagsSearchBackspace({
-        stopPropagation: stopPropagationMock
-      })
-
-      expect(select.vm.search).toBe(null)
-      expect(stopPropagationMock).toHaveBeenCalled()
-    })
-
-    it('should not stop propagation if search is null', () => {
-      let stopPropagationMock = jest.fn()
-
-      let select = createSelect()
-
-      select.vm.search = null
-
-      select.vm.handleTagsSearchBackspace({
+      select.vm.handleSearchBackspace({
         stopPropagation: stopPropagationMock
       })
 
       expect(stopPropagationMock).not.toHaveBeenCalled()
+    })
+
+    it('should stop propagation if search is empty', () => {
+      let stopPropagationMock = jest.fn()
+
+      let select = createSelect()
+
+      select.vm.search = 'value'
+
+      select.vm.handleSearchBackspace({
+        stopPropagation: stopPropagationMock
+      })
+
+      expect(stopPropagationMock).toHaveBeenCalled()
     })
   })
 

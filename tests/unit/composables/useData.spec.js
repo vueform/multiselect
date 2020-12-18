@@ -6,7 +6,7 @@ describe('useData', () => {
       options: [1,2,3],
     })
 
-    select.vm.update(1)
+    select.vm.update({value: 1})
 
     expect(select.emitted('input')[0][0]).toEqual(1)
   })

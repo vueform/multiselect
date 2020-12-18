@@ -3,7 +3,7 @@ export default function useKeyboard (props, context, dependencies)
 {
   // ============ DEPENDENCIES ============
 
-  const value = dependencies.value
+  const internalValue = dependencies.internalValue
   const update = dependencies.update
   const close = dependencies.close
   const clearPointer = dependencies.clearPointer
@@ -11,7 +11,7 @@ export default function useKeyboard (props, context, dependencies)
   // =============== METHODS ==============
 
   const handleBackspace = (e) => {
-    update([...value.value].slice(0,-1))
+    update([...internalValue.value].slice(0,-1))
   }
 
   const handleEsc = (e) => {

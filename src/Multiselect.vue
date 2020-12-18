@@ -22,27 +22,46 @@
       @keydown.prevent.up="backwardPointer"
       @keydown.prevent.down="forwardPointer"
     >
-
-      <template v-if="mode == 'single' && hasSelected && !search && valueObject">
-        <slot name="singleLabel" :value="valueObject">
+      <!-- Single label -->
+      <template v-if="mode == 'single' && hasSelected && !search && internalValue">
+        <slot name="singleLabel" :value="internalValue">
           <div class="multiselect-single-label">
-            {{ valueObject[label] }}
+            {{ internalValue[label] }}
           </div>
         </slot>
       </template>
 
+      <!-- Multiple label -->
       <template v-if="mode == 'multiple' && hasSelected && !search">
-        <slot name="multipleLabel" :values="valueObject">
+        <slot name="multipleLabel" :values="internalValue">
           <div class="multiselect-multiple-label">
             {{ multipleLabelText }}
           </div>
         </slot>
       </template>
+    
+      <!-- Search -->
+      <template v-if="mode !== 'tags' && searchable && !disabled">
+        <div class="multiselect-search">
+          <input    
+            v-model="search"
+            @focus.stop="open"
+            @blur.stop="close"
+            @keyup.stop.esc="handleEsc"
+            @keyup.stop.enter="selectPointer"
+            @keydown.delete="handleSearchBackspace"
+            @keydown.stop.up="backwardPointer"
+            @keydown.stop.down="forwardPointer"
+            ref="input"
+          />
+        </div>
+      </template>
 
+      <!-- Tags (with search) -->
       <template v-if="mode == 'tags'">
         <div class="multiselect-tags">
 
-          <span v-for="(option, i, key) in valueObject" :key="key">
+          <span v-for="(option, i, key) in internalValue" :key="key">
             <slot name="tag" :option="option" :remove="remove" :disabled="disabled">
               <div class="multiselect-tag">
                 {{ option[label] }}
@@ -66,7 +85,7 @@
               @blur.stop="close"
               @keyup.stop.esc="handleEsc"
               @keyup.stop.enter="selectPointer"
-              @keydown.delete="handleTagsSearchBackspace"
+              @keydown.delete="handleSearchBackspace"
               @keydown.stop.up="backwardPointer"
               @keydown.stop.down="forwardPointer"
               :style="{ width: tagsSearchWidth }"
@@ -75,23 +94,8 @@
           </div>
         </div>
       </template>
-    
-      <template v-if="mode !== 'tags' && searchable && !disabled">
-        <div class="multiselect-search">
-          <input    
-            v-model="search"
-            @focus.stop="open"
-            @blur.stop="close"
-            @keyup.stop.esc="handleEsc"
-            @keyup.stop.enter="selectPointer"
-            @keydown.stop.delete
-            @keydown.stop.up="backwardPointer"
-            @keydown.stop.down="forwardPointer"
-            ref="input"
-          />
-        </div>
-      </template>
 
+      <!-- Placeholder -->
       <div
         v-show="placeholder && !hasSelected && !search"
         class="multiselect-placeholder"
@@ -100,11 +104,12 @@
       </div>
 
       <transition name="multiselect-loading">
-        <div v-show="loading" class="multiselect-spinner" />
+        <div v-show="busy" class="multiselect-spinner" />
       </transition>
 
     </div>
 
+    <!-- Options -->
     <transition name="multiselect" @after-leave="clearSearch">
       <div
         v-show="isOpen"
@@ -174,7 +179,7 @@
         required: false,
       },
       options: {
-        type: [Array, Object],
+        type: [Array, Object, Function],
         required: false,
       },
       id: {
@@ -271,19 +276,52 @@
         required: false,
         default: false,
       },
+      delay: {
+        type: Number,
+        required: false,
+        default: -1,
+      },
+      minChars: {
+        type: Number,
+        required: false,
+        default: 0,
+      },
+      resolveOnLoad: {
+        type: Boolean,
+        required: false,
+        default: true,
+      },
+      filterResults: {
+        type: Boolean,
+        required: false,
+        default: true,
+      },
+      clearOnSearch: {
+        type: Boolean,
+        required: false,
+        default: false,
+      },
+      clearOnSelect: {
+        type: Boolean,
+        required: false,
+        default: true,
+      },
     },
     setup(props, context)
     { 
-      const data = useData(props, context)
       const value = useValue(props, context)
+      const data = useData(props, context, {
+        internalValue: value.internalValue,
+      })
       const search = useSearch(props, context, {
-        value: value.externalValue,
+        internalValue: value.internalValue,
       })
       const dropdown = useDropdown(props, context)
       const multiselect = useMultiselect(props, context)
 
       const options = useOptions(props, context, {
-        value: value.externalValue,
+        externalValue: value.externalValue,
+        internalValue: value.internalValue,
         search: search.search,
         blurSearch: search.blurSearch,
         clearSearch: search.clearSearch,
@@ -298,13 +336,14 @@
       })
 
       const keyboard = useKeyboard(props, context, {
-        value: value.externalValue,
+        internalValue: value.internalValue,
         update: data.update,
         close: dropdown.close,
         clearPointer: pointer.clearPointer,
       })
 
       return {
+        ...value,
         ...data,
         ...search,
         ...dropdown,
@@ -312,7 +351,6 @@
         ...options,
         ...pointer,
         ...keyboard,
-        ...value,
       }
     }
   }

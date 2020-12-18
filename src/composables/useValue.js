@@ -1,17 +1,22 @@
-import { computed, toRefs } from 'composition-api'
+import { computed, toRefs, ref } from 'composition-api'
 
 export default function useValue (props, context)
 {
-  const { value, modelValue } = toRefs(props)
+  const { value, modelValue, mode } = toRefs(props)
+
+  // ================ DATA ================
+
+  const internalValue = ref(mode.value !== 'single' ? [] : null)
 
   // ============== COMPUTED ==============
 
   /* istanbul ignore next */
   const externalValue = computed(() => {
-    return value === undefined ? modelValue.value : value.value
+    return context.expose !== undefined ? modelValue.value : value.value
   })
 
   return {
+    internalValue,
     externalValue,
   }
 }

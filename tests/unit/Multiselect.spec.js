@@ -445,7 +445,7 @@ describe('Multiselect', () => {
     testSearch('tags')
 
     describe('search', () => {
-      it('should remove last element on backspace if search is null', async () => {
+      it('should remove last element on backspace if search is empty', async () => {
         let select = createSelect({
           mode: 'tags',
           options: [1,2,3],
@@ -453,13 +453,30 @@ describe('Multiselect', () => {
           searchable: true,
         })
 
-        select.vm.search = null
+        select.vm.search = ''
 
         keydown(select.find('input'), 'backspace')
 
         await nextTick()
 
         expect(getValue(select)).toStrictEqual([0])
+      })
+
+      it('should not remove last element on backspace if search is not empty', async () => {
+        let select = createSelect({
+          mode: 'tags',
+          options: [1,2,3],
+          value: [0,1],
+          searchable: true,
+        })
+
+        select.vm.search = 'a'
+
+        keydown(select.find('input'), 'backspace')
+
+        await nextTick()
+
+        expect(getValue(select)).toStrictEqual([0,1])
       })
 
       it('should have search width according to search length', async () => {

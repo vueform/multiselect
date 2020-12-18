@@ -1,10 +1,27 @@
-import { createSelect, getValue } from 'unit-test-helpers'
+import { createSelect, getValue, destroy } from 'unit-test-helpers'
 import { nextTick } from 'composition-api'
+import flushPromises from 'flush-promises'
+
+jest.useFakeTimers()
 
 describe('useOptions', () => {
   describe('filteredOptions', () => {
     it('should be an empty array of options not defined', () => {
       let select = createSelect()
+
+      expect(select.vm.filteredOptions).toStrictEqual([])
+    })
+
+    it('should be and empty array if resolved options has no value', async () => {
+      let select = createSelect({
+        options: async () => {
+          return new Promise((resolve, reject) => {
+            resolve(false)
+          })
+        }
+      })
+
+      await flushPromises()
 
       expect(select.vm.filteredOptions).toStrictEqual([])
     })
@@ -114,60 +131,6 @@ describe('useOptions', () => {
       expect(select.vm.filteredOptions[0].label).toBe(1)
       expect(select.vm.filteredOptions[1].label).toBe(2)
       expect(select.vm.filteredOptions[2].label).toBe(3)
-    })
-  })
-
-  describe('valueObject', () => {
-    it('should be equal to value if null, undefined, has no length or object is true', () => {
-      let select = createSelect({
-        value: null
-      })
-
-      expect(select.vm.valueObject).toStrictEqual(null)
-
-      select = createSelect({
-        value: undefined
-      })
-      expect(select.vm.valueObject).toStrictEqual(undefined)
-
-      select = createSelect({
-        mode: 'multiselect',
-        value: [],
-      })
-      expect(select.vm.valueObject).toStrictEqual([])
-
-      select = createSelect({
-        value: { value: 0, label: 1 },
-        object: true
-      })
-      expect(select.vm.valueObject).toStrictEqual({ value: 0, label: 1 })
-
-      select = createSelect({
-        mode: 'multiple',
-        value: [{ value: 0, label: 1 }, { value: 1, label: 2 }],
-        object: true
-      })
-      expect(select.vm.valueObject).toStrictEqual([{ value: 0, label: 1 }, { value: 1, label: 2 }])
-    })
-
-    it('should be equal to value object if mode is single has value and object is false', () => {
-      let select = createSelect({
-        value: 0,
-        options: [1,2,3]
-      })
-      expect(select.vm.valueObject).toStrictEqual({ value: 0, label: 1 })
-    })
-
-    it('should be equal to value objects if mode is not single has value and object is false', () => {
-      let select = createSelect({
-        mode: 'multiple',
-        value: [1,2],
-        options: [1,2,3]
-      })
-      expect(select.vm.valueObject).toStrictEqual([
-        { value: 1, label: 2 },
-        { value: 2, label: 3 },
-      ])
     })
   })
 
@@ -378,6 +341,22 @@ describe('useOptions', () => {
       await nextTick()
 
       expect(getValue(select)).toStrictEqual([{ value: 0, label: 1 }])
+    })
+
+    it('should update value on select when using multiple with when value is null', async () => {
+      let select = createSelect({
+        mode: 'multiple',
+        options: [1,2,3],
+        value: null,
+      })
+
+      select.vm.update(null)
+
+      select.vm.select({ value: 0, label: 1 })
+
+      await nextTick()
+
+      expect(getValue(select)).toStrictEqual([0])
     })
 
     it('should update value when providing a plain value', async () => {
@@ -608,6 +587,8 @@ describe('useOptions', () => {
       await nextTick()
 
       expect(getValue(select)).toStrictEqual(1)
+
+      destroy(select)
     })
 
     it('should deselect option if selected when single', async () => {
@@ -623,6 +604,8 @@ describe('useOptions', () => {
       await nextTick()
 
       expect(getValue(select)).toStrictEqual(null)
+
+      destroy(select)
     })
 
     /* MULTISELECT */
@@ -632,8 +615,6 @@ describe('useOptions', () => {
         mode: 'multiple',
         value: [0,1],
         options: [1,2,3],
-      }, {
-        attach: true,
       })
 
       select.vm.handleOptionClick({ value: 1, label: 2 })
@@ -648,8 +629,6 @@ describe('useOptions', () => {
         mode: 'multiple',
         value: [0,1],
         options: [1,2,3],
-      }, {
-        attach: true,
       })
 
       select.vm.search = 'value'
@@ -666,8 +645,6 @@ describe('useOptions', () => {
         mode: 'multiple',
         value: [0],
         options: [1,2,3],
-      }, {
-        attach: true,
       })
 
       select.vm.handleOptionClick({ value: 1, label: 2 })
@@ -682,8 +659,6 @@ describe('useOptions', () => {
         mode: 'multiple',
         value: [0],
         options: [1,2,3],
-      }, {
-        attach: true,
       })
 
       select.vm.search = 'value'
@@ -692,7 +667,24 @@ describe('useOptions', () => {
       await nextTick()
 
       expect(getValue(select)).toStrictEqual([0,1])
-      expect(select.vm.search).toBe(null)
+      expect(select.vm.search).toBe('')
+    })
+
+    it('should not clear search after select when multiple and clearOnSelect is false', async () => {
+      let select = createSelect({
+        mode: 'multiple',
+        value: [0],
+        options: [1,2,3],
+        clearOnSelect: false,
+      })
+
+      select.vm.search = 'value'
+      select.vm.handleOptionClick({ value: 1, label: 2 })
+
+      await nextTick()
+
+      expect(getValue(select)).toStrictEqual([0,1])
+      expect(select.vm.search).toBe('value')
     })
 
     /* TAGS */
@@ -702,8 +694,6 @@ describe('useOptions', () => {
         mode: 'tags',
         value: [0,1],
         options: [1,2,3],
-      }, {
-        attach: true,
       })
 
       select.vm.handleOptionClick({ value: 1, label: 2 })
@@ -718,8 +708,6 @@ describe('useOptions', () => {
         mode: 'tags',
         value: [0,1],
         options: [1,2,3],
-      }, {
-        attach: true,
       })
 
       select.vm.search = 'value'
@@ -736,8 +724,6 @@ describe('useOptions', () => {
         mode: 'tags',
         value: [0],
         options: [1,2,3],
-      }, {
-        attach: true,
       })
 
       select.vm.handleOptionClick({ value: 1, label: 2 })
@@ -747,13 +733,12 @@ describe('useOptions', () => {
       expect(getValue(select)).toStrictEqual([0,1])
     })
 
-    it('should not clear search after select when tags', async () => {
+    it('should not clear search after select when tags if clearOnSelect is false', async () => {
       let select = createSelect({
         mode: 'tags',
         value: [0],
         options: [1,2,3],
-      }, {
-        attach: true,
+        clearOnSelect: false,
       })
 
       select.vm.search = 'value'
@@ -765,6 +750,23 @@ describe('useOptions', () => {
       expect(select.vm.search).toBe('value')
     })
 
+    it('should clear search after select when tags if clearOnSelect is true', async () => {
+      let select = createSelect({
+        mode: 'tags',
+        value: [0],
+        options: [1,2,3],
+        clearOnSelect: true,
+      })
+
+      select.vm.search = 'value'
+      select.vm.handleOptionClick({ value: 1, label: 2 })
+
+      await nextTick()
+
+      expect(getValue(select)).toStrictEqual([0,1])
+      expect(select.vm.search).toBe('')
+    })
+
     it('should emit tag and clear search and not append tag on select if createTag true and option does not exist', async () => {
       let select = createSelect({
         mode: 'tags',
@@ -773,8 +775,6 @@ describe('useOptions', () => {
         createTag: true,
         appendNewTag: false,
         object: true,
-      }, {
-        attach: true,
       })
 
       select.vm.search = 'value'
@@ -783,7 +783,7 @@ describe('useOptions', () => {
       await nextTick()
 
       expect(select.emitted('tag')[0][0]).toStrictEqual('value')
-      expect(select.vm.search).toBe(null)
+      expect(select.vm.search).toBe('')
       expect(select.vm.filteredOptions.length).toBe(3)
     })
 
@@ -795,8 +795,6 @@ describe('useOptions', () => {
         createTag: true,
         appendNewTag: true,
         hideSelectedTag: false,
-      }, {
-        attach: true,
       })
 
       select.vm.handleOptionClick({ value: 'value', label: 'value' })
@@ -820,8 +818,6 @@ describe('useOptions', () => {
         createTag: true,
         appendNewTag: true,
         hideSelectedTag: false,
-      }, {
-        attach: true,
       })
 
       select.vm.handleOptionClick({ value: 'value', label: 'value' })
@@ -849,8 +845,6 @@ describe('useOptions', () => {
         appendNewTag: false,
         hideSelectedTag: false,
         object: true,
-      }, {
-        attach: true,
       })
 
       select.vm.handleOptionClick({ value: 'value', label: 'value' })
@@ -872,6 +866,323 @@ describe('useOptions', () => {
       })
 
       expect(select.vm.getOption(2)).toStrictEqual({ value: 2, label: 3 })
+    })
+  })
+
+  describe('onCreated', () => {
+    it('should throw error if initial value is not empty or an array when multiple', () => {
+      const originalConsoleError = console.error
+      const originalConsoleWarn = console.warn
+      console.error = () => {}
+      console.warn = () => {}
+
+      expect(() => {
+        createSelect({
+          mode: 'multiple',
+          options: [1,2,3],
+          value: 1,
+        })
+      }).toThrowError()
+
+      console.error = originalConsoleError
+      console.warn = originalConsoleWarn
+    })
+
+    it('should resolve async options', async () => {
+      let select = createSelect({
+        options: async () => {
+          return await new Promise((resolve, reject) => {
+            resolve([1,2,3])
+          })
+        },
+      })
+  
+      await flushPromises()
+
+      expect(select.vm.filteredOptions).toStrictEqual([
+        { value: 0, label: 1 },
+        { value: 1, label: 2 },
+        { value: 2, label: 3 },
+      ])
+    })
+
+    it('should not resolve async options if resolveOnLoad is value', async () => {
+      let select = createSelect({
+        options: async () => {
+          return await new Promise((resolve, reject) => {
+            resolve([1,2,3])
+          })
+        },
+        resolveOnLoad: false
+      })
+  
+      await flushPromises()
+
+      expect(select.vm.filteredOptions).toStrictEqual([])
+    })
+
+    it('should be busy when resolving async options', async () => {
+      let select = createSelect({
+        options: async () => {
+          return await new Promise((resolve, reject) => {
+            resolve([1,2,3])
+          })
+        },
+      })
+
+      expect(select.vm.busy).toBe(true)
+
+      await flushPromises()
+
+      expect(select.vm.busy).toBe(false)
+    })
+
+    it('should not update async option list when search changes if delay is -1', async () => {
+      let asyncOptionsMock = jest.fn()
+
+      let select = createSelect({
+        options: async () => {
+          return await new Promise((resolve, reject) => {
+            asyncOptionsMock()
+            resolve([1,2,3])
+          })
+        },
+        delay: -1
+      })
+
+      await flushPromises()
+
+      expect(asyncOptionsMock).toHaveBeenCalledTimes(1)
+
+      select.vm.search = 'value'
+
+      await flushPromises()
+
+      expect(asyncOptionsMock).toHaveBeenCalledTimes(1)
+    })
+
+
+    it('should update async option list', async () => {
+      let select = createSelect({
+        options: async () => {
+          return await new Promise((resolve, reject) => {
+            resolve([1,2,3])
+          })
+        },
+        delay: 10,
+        filterResults: false,
+      })
+
+      await flushPromises()
+
+      select.vm.$parent.props.options = async () => {
+        return await new Promise((resolve, reject) => {
+          resolve([4,5,6])
+        })
+      }
+
+      await nextTick()
+
+      select.vm.search = 'val'
+
+      jest.runAllTimers()
+
+      await flushPromises()
+      
+      expect(select.vm.filteredOptions).toStrictEqual([
+        { value: 0, label: 4 },
+        { value: 1, label: 5 },
+        { value: 2, label: 6 },
+      ])
+    })
+
+    it('should not resolve async options when search changes if query is not equal to search value when delay has passed', async () => {
+      let select = createSelect({
+        options: async () => {
+          return await new Promise((resolve, reject) => {
+            resolve([1,2,3])
+          })
+        },
+        delay: 10,
+        filterResults: false,
+      })
+
+      await flushPromises()
+
+      select.vm.$parent.props.options = async () => {
+        return await new Promise((resolve, reject) => {
+          resolve([4,5,6])
+        })
+      }
+
+      await nextTick()
+
+      select.vm.search = 'val'
+
+      jest.advanceTimersByTime(5)
+
+      select.vm.search = 'val2'
+
+      jest.advanceTimersByTime(5)
+
+      await flushPromises()
+      
+      expect(select.vm.filteredOptions).toStrictEqual([
+        { value: 0, label: 1 },
+        { value: 1, label: 2 },
+        { value: 2, label: 3 },
+      ])
+    })
+
+    it('should not update async option list when search changes during async request', async () => {
+      let select = createSelect({
+        options: async () => {
+          return await new Promise((resolve, reject) => {
+            resolve([1,2,3])
+          })
+        },
+        delay: 10,
+        filterResults: false,
+      })
+
+      await flushPromises()
+
+      select.vm.$parent.props.options = async () => {
+        return await new Promise((resolve, reject) => {
+          resolve([4,5,6])
+        })
+      }
+
+      await nextTick()
+
+      select.vm.search = 'val'
+
+      jest.runAllTimers()
+
+      select.vm.search = 'val2'
+
+      await flushPromises()
+      
+      expect(select.vm.filteredOptions).toStrictEqual([
+        { value: 0, label: 1 },
+        { value: 1, label: 2 },
+        { value: 2, label: 3 },
+      ])
+    })
+
+    it('should not update async option list when search changes to less chars than minChars', async () => {
+      let asyncOptionsMock = jest.fn()
+
+      let select = createSelect({
+        options: async () => {
+          return await new Promise((resolve, reject) => {
+            asyncOptionsMock()
+            resolve([1,2,3])
+          })
+        },
+        delay: 0,
+        minChars: 3
+      })
+
+      await flushPromises()
+
+      expect(asyncOptionsMock).toHaveBeenCalledTimes(1)
+
+      select.vm.search = 'va'
+
+      jest.runAllTimers()
+
+      await flushPromises()
+
+      expect(asyncOptionsMock).toHaveBeenCalledTimes(1)
+    })
+
+    it('should not update async option list when search changes to >= chars than minChars', async () => {
+      let asyncOptionsMock = jest.fn()
+
+      let select = createSelect({
+        options: async () => {
+          return await new Promise((resolve, reject) => {
+            asyncOptionsMock()
+            resolve([1,2,3])
+          })
+        },
+        delay: 0,
+        minChars: 3
+      })
+
+      await flushPromises()
+
+      expect(asyncOptionsMock).toHaveBeenCalledTimes(1)
+
+      select.vm.search = 'val'
+
+      jest.runAllTimers()
+
+      await flushPromises()
+
+      expect(asyncOptionsMock).toHaveBeenCalledTimes(2)
+    })
+
+    it('should clear options before updating async options if clearOnSearch is true', async () => {
+      let select = createSelect({
+        options: async () => {
+          return await new Promise((resolve, reject) => {
+            resolve([1,2,3])
+          })
+        },
+        delay: 0,
+        clearOnSearch: true,
+        filterResults: false,
+      })
+
+      await flushPromises()
+
+      select.vm.search = 'val'
+
+      expect(select.vm.filteredOptions.length).toBe(0)
+    })
+
+    it('should not clear options before updating async options if clearOnSearch is false', async () => {
+      let select = createSelect({
+        options: async () => {
+          return await new Promise((resolve, reject) => {
+            resolve([1,2,3])
+          })
+        },
+        delay: 0,
+        clearOnSearch: false,
+        filterResults: false,
+      })
+
+      await flushPromises()
+
+      select.vm.search = 'val'
+
+      expect(select.vm.filteredOptions.length).toBe(3)
+    })
+
+    it('should be busy when resolve new async options', async () => {
+      let select = createSelect({
+        options: async () => {
+          return await new Promise((resolve, reject) => {
+            resolve([1,2,3])
+          })
+        },
+        delay: 1,
+      })
+
+      await flushPromises()
+
+      select.vm.search = 'val'
+
+      jest.runAllTimers()
+
+      expect(select.vm.busy).toBe(true)
+
+      await flushPromises()
+
+      expect(select.vm.busy).toBe(false)
     })
   })
 })

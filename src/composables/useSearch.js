@@ -6,7 +6,7 @@ export default function useSearch (props, context, dependencies)
 
   // ============ DEPENDENCIES ============
 
-  const value = dependencies.value
+  const internalValue = dependencies.internalValue
 
   // ================ DATA ================
 
@@ -21,7 +21,7 @@ export default function useSearch (props, context, dependencies)
       return `${search.value.length}ch`
     }
 
-    if (mode.value !== 'tags' || [null, undefined].indexOf(value.value) !== -1 || !value.value.length) {
+    if (mode.value !== 'tags' || [null, undefined].indexOf(internalValue.value) !== -1 || !internalValue.value.length) {
       return '100%'
     }
 
@@ -32,7 +32,7 @@ export default function useSearch (props, context, dependencies)
   // =============== METHODS ==============
 
   const clearSearch = () => {
-    search.value = null
+    search.value = ''
   }
 
   const blurSearch = () => {
@@ -43,13 +43,9 @@ export default function useSearch (props, context, dependencies)
     input.value.blur()
   }
 
-  const handleTagsSearchBackspace = (e) => {
-    if (search.value !== null) {
+  const handleSearchBackspace = (e) => {
+    if (search.value !== '') {
       e.stopPropagation()
-    }
-
-    if (search.value === '') {
-      search.value = null
     }
   }
 
@@ -65,6 +61,6 @@ export default function useSearch (props, context, dependencies)
     tagsSearchWidth,
     clearSearch,
     blurSearch,
-    handleTagsSearchBackspace,
+    handleSearchBackspace,
   }
 }
