@@ -116,63 +116,63 @@ import Multiselect from '@vueform/multiselect/dist/multiselect.vue2.js'
 
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
-| mode | `string` | `single` | Possible values: `single\|multiple\|tags`. |
-| options | `array\|object\|function` | `[]` | List of options. Can be:<br>- an array (eg. `[1,2,3]`)<br>- an object (eg. `{a:1,b:2,c:3}`)<br>- an array of objects `[{value:1,label:'v1'},{value:2,label:'v2'},{value:3,label:'v3'}]`<br>- a function returning a Promise (async function) with `query` input param. The promise should return options as an **object** or as an **array of objects**.<br>When an array of objects is provided it **must** have a `value` property as well as properties that equal to `:trackBy`'s and `:label`'s value (both configurable with default value of `'label'`). |
-| value<br>*(for Vue 2)* | `string\|number\|array` | `null` | The variable that should store the select value when using **Vue 2**. If `v-model` is used it does not need to be set. |
-| modelValue<br>*(for Vue 3)* | `string\|number\|array` | `null` | The variable that should store the select value when using **Vue 3**. If `v-model` is used it does not need to be set. |
-| searchable | `boolean` | `false` | Whether the options should be searchable. |
-| trackBy | `string` | `label` | The name of the property that should be searched when `searchable` is `true` and an array of objects are provided as `:options`. |
-| placeholder | `string` | `null` | The text that should be displayed before an options are selected. |
-| label | `string` | `'label'` | If you provide an [array of objects](#single-select-with-object-options) as options this property of those objects will be displayed for options and selected label. |
-| multipleLabel | `function` |  | A function that should return how the label should be displayed when using `multiple` mode. It receives `value` as an argument. By default it renders `1 option selected` and `[n] options selected` based on `value` length. |
-| disabled | `boolean` | `false` | Whether the input should be disabled. |
-| limit | `number` | `-1` | The maximum number of options that should be displayed. If `-1` it won't be limited. |
-| loading | `boolean` | `false` | Whether a loading spinner should be shown. |
-| id | `string` | `'multiselect'` | The `id` of the multiselect container DOM. |
-| caret | `boolean` | `true` | Whether should display a caret (small triangle on the right). |
-| maxHeight | `number` | `160` | The maximum height of options list. |
-| noOptionsText | `string` | `'The list is empty'` | The text that should be displayed when options list is empty. |
-| noResultsText | `string` | `No results found` | The text that should be when there are no search results. |
+| **mode** | `string` | `single` | Possible values: `single\|multiple\|tags`. |
+| **options** | `array\|object\|function` | `[]` | List of options. Can be:<br>- an array (eg. `[1,2,3]`)<br>- an object (eg. `{a:1,b:2,c:3}`)<br>- an array of objects `[{value:1,label:'v1'},{value:2,label:'v2'},{value:3,label:'v3'}]`<br>- a function returning a Promise (async function) with `query` input param. The promise should return options as an **object** or as an **array of objects**.<br>When an array of objects is provided it **must** have a `value` property as well as properties that equal to `:trackBy`'s and `:label`'s value (both configurable with default value of `'label'`). |
+| **value**<br>*(for Vue 2)* | `string\|number\|array` | `null` | The variable that should store the select value when using **Vue 2**. If `v-model` is used it does not need to be set. |
+| **modelValue**<br>*(for Vue 3)* | `string\|number\|array` | `null` | The variable that should store the select value when using **Vue 3**. If `v-model` is used it does not need to be set. |
+| **searchable** | `boolean` | `false` | Whether the options should be searchable. |
+| **trackBy** | `string` | `label` | The name of the property that should be searched when `searchable` is `true` and an array of objects are provided as `:options`. |
+| **placeholder** | `string` | `null` | The text that should be displayed before an options are selected. |
+| **label** | `string` | `'label'` | If you provide an [array of objects](#single-select-with-object-options) as options this property of those objects will be displayed for options and selected label. |
+| **multipleLabel** | `function` |  | A function that should return how the label should be displayed when using `multiple` mode. It receives `value` as an argument. By default it renders `1 option selected` and `[n] options selected` based on `value` length. |
+| **disabled** | `boolean` | `false` | Whether the input should be disabled. |
+| **limit** | `number` | `-1` | The maximum number of options that should be displayed. If `-1` it won't be limited. |
+| **loading** | `boolean` | `false` | Whether a loading spinner should be shown. |
+| **id** | `string` | `'multiselect'` | The `id` of the multiselect container DOM. |
+| **caret** | `boolean` | `true` | Whether should display a caret (small triangle on the right). |
+| **maxHeight** | `number` | `160` | The maximum height of options list. |
+| **noOptionsText** | `string` | `'The list is empty'` | The text that should be displayed when options list is empty. |
+| **noResultsText** | `string` | `No results found` | The text that should be when there are no search results. |
 
 ### Advanced Props
 
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
-| clearOnSearch<br>*(async options)* | `boolean` | `false` | Whether the option list should be cleared when a new character is typed before loading new options list using async options. |
-| clearOnSelect<br>*(async options)* | `boolean` | `true` | Whether the option list should be cleared upon selecting an option when using async options. |
-| delay<br>*(async options)* | `number` | `-1` | The delay in milliseconds that should occur between the last typed character and refreshing an async option list. If `-1` the option list will not refresh when the search query changes. If `0` it will refresh without delay. |
-| filterResults<br>*(async options)* | `boolean` | `true` | Whether option list should be filtered by search query. This may be set to `false` if you are handling filtering when returning async options. |
-| minChars<br>*(async options)* | `number` | `0` | The minimum number of characters that should be typed to refresh async option list. If `0` it will refresh even when the search field becomes empty. |
-| resolveOnLoad<br>(async options) | `boolean` | `true` | Whether async options should be loaded initially (with an empty query). This should be `true` if you are planning to load non-object value(s) initially while using async options (to fetch matching objects for values). |
-| appendNewTag<br>*(tags)* | `boolean` | `true` | Whether should append new tag automatically to option list when using `tags` mode with `createTag`. If set to `false` you need to take care of appending a new tag to the provided `:options` list upon `@tag` event. |
-| createTag<br>*(tags)* | `boolean` | `false` | Whether should allow creating new tag based on search query when using `tags` mode. |
-| hideSelected<br>*(multiple, tags)* | `boolean` | `true` | Whether selected options should be excluded from the option list when using `multiple` or `tags` mode. |
-| object | `boolean` | `false` | Whether the value should be stored as an object.<br>If **false**:<br>`value: ['js','jsx','ts']`<br>If **true**:<br> `value: [`<br>&nbsp;&nbsp;`{value:'js',label:'Javascript'},`<br>&nbsp;&nbsp;`{value:'jsx',label:'JSX'},`<br>&nbsp;&nbsp;`{value:'ts',label:'Typescript'}`<br>`]` |
+| **clearOnSearch**<br>*(async options)* | `boolean` | `false` | Whether the option list should be cleared when a new character is typed before loading new options list using async options. |
+| **clearOnSelect**<br>*(async options)* | `boolean` | `true` | Whether the option list should be cleared upon selecting an option when using async options. |
+| **delay**<br>*(async options)* | `number` | `-1` | The delay in milliseconds that should occur between the last typed character and refreshing an async option list. If `-1` the option list will not refresh when the search query changes. If `0` it will refresh without delay. |
+| **filterResults**<br>*(async options)* | `boolean` | `true` | Whether option list should be filtered by search query. This may be set to `false` if you are handling filtering when returning async options. |
+| **minChars**<br>*(async options)* | `number` | `0` | The minimum number of characters that should be typed to refresh async option list. If `0` it will refresh even when the search field becomes empty. |
+| **resolveOnLoad**<br>(async options) | `boolean` | `true` | Whether async options should be loaded initially (with an empty query). This should be `true` if you are planning to load non-object value(s) initially while using async options (to fetch matching objects for values). |
+| **appendNewTag**<br>*(tags)* | `boolean` | `true` | Whether should append new tag automatically to option list when using `tags` mode with `createTag`. If set to `false` you need to take care of appending a new tag to the provided `:options` list upon `@tag` event. |
+| **createTag**<br>*(tags)* | `boolean` | `false` | Whether should allow creating new tag based on search query when using `tags` mode. |
+| **hideSelected**<br>*(multiple, tags)* | `boolean` | `true` | Whether selected options should be excluded from the option list when using `multiple` or `tags` mode. |
+| **object** | `boolean` | `false` | Whether the value should be stored as an object.<br>If **false**:<br>`value: ['js','jsx','ts']`<br>If **true**:<br> `value: [`<br>&nbsp;&nbsp;`{value:'js',label:'Javascript'},`<br>&nbsp;&nbsp;`{value:'jsx',label:'JSX'},`<br>&nbsp;&nbsp;`{value:'ts',label:'Typescript'}`<br>`]` |
 
 ## Events
 
 | Event | Attributes | Description |
 | --- | --- | --- |
-| @change | `value` | Emitted after the value is changed. |
-| @close |  | Emitted after closing the option list. |
-| @deselect | `option` | Emitted after an option is deselected or a tag is removed. |
-| @open | | Emitted after opening the option list. |
-| @search-change | `query` | Emitted after a character is typed. |
-| @select | `option` | Emitted after an option or tag is selected. |
-| @tag | `query` | Emitted after enter is hit when a new tag is being created. |
+| **@change** | `value` | Emitted after the value is changed. |
+| **@close** |  | Emitted after closing the option list. |
+| **@deselect** | `option` | Emitted after an option is deselected or a tag is removed. |
+| **@open** | | Emitted after opening the option list. |
+| **@search-change** | `query` | Emitted after a character is typed. |
+| **@select** | `option` | Emitted after an option or tag is selected. |
+| **@tag** | `query` | Emitted after enter is hit when a new tag is being created. |
 
 ## Slots
 
 | Slot | Attributes | Description |
 | --- | --- | --- |
-| afterlist | | Rendered after the options list. |
-| beforelist | | Rendered before the options list. |
-| multiplelabel | `values` | Rendered when using `multiple` mode and options are selected. By default it renders the return value of `multipleLabel` function. |
-| nooptions |  | Rendered when the options list is empty. By default renders `noOptionsText`. |
-| noresults |  | Rendered when there are no search results. By default renders `noResultsText`. |
-| option | `option, search` | Renders an option in options list. |
-| singlelabel | `value` | Rendered when using `single` mode and an option is selected. By default it renders the `:label` if the selected option. |
-| tag | `option, remove, disabled` | Renders a tag when using `tags` mode. When `disabled` the remove icon should not be displayed. The `remove` prop should be used to trigger the removal of the tag. |
+| **afterlist** | | Rendered after the options list. |
+| **beforelist** | | Rendered before the options list. |
+| **multiplelabel** | `values` | Rendered when using `multiple` mode and options are selected. By default it renders the return value of `multipleLabel` function. |
+| **nooptions** |  | Rendered when the options list is empty. By default renders `noOptionsText`. |
+| **noresults** |  | Rendered when there are no search results. By default renders `noResultsText`. |
+| **option** | `option, search` | Renders an option in options list. |
+| **singlelabel** | `value` | Rendered when using `single` mode and an option is selected. By default it renders the `:label` if the selected option. |
+| **tag** | `option, remove, disabled` | Renders a tag when using `tags` mode. When `disabled` the remove icon should not be displayed. The `remove` prop should be used to trigger the removal of the tag. |
 
 > Note: the reason we don't use camelCase is because they are [normalized back to lowercase](https://github.com/vuejs/vue/issues/9449#issuecomment-461170017) when written in DOM.
 
@@ -190,7 +190,7 @@ import Multiselect from '@vueform/multiselect/dist/multiselect.vue2.js'
 
 ### Single select
 
-``` html
+``` vue
 <Multiselect
   v-model="value"
   :options="['Batman', 'Robin', 'Joker']"
@@ -201,7 +201,7 @@ import Multiselect from '@vueform/multiselect/dist/multiselect.vue2.js'
 
 ### Multiselect with object options
 
-``` html
+``` vue
 <Multiselect
   v-model="value"
   mode="multiple"
@@ -217,7 +217,7 @@ import Multiselect from '@vueform/multiselect/dist/multiselect.vue2.js'
 
 ### Tags with search and array of objects options
 
-``` html
+``` vue
 <Multiselect
   v-model="value"
   mode="tags"
@@ -234,7 +234,7 @@ import Multiselect from '@vueform/multiselect/dist/multiselect.vue2.js'
 
 ### Tags with create
 
-``` html
+``` vue
 <Multiselect
   v-model="value"
   mode="tags"
@@ -252,7 +252,7 @@ import Multiselect from '@vueform/multiselect/dist/multiselect.vue2.js'
 
 ### Autocomplete with async options
 
-``` html
+``` vue
 <Multiselect
   v-model="value"
   placeholder="Choose a programming language"
@@ -271,7 +271,7 @@ import Multiselect from '@vueform/multiselect/dist/multiselect.vue2.js'
 
 ### Tags with async options
 
-``` html
+``` vue
 <Multiselect
   v-model="value"
   mode="tags"
@@ -291,7 +291,7 @@ import Multiselect from '@vueform/multiselect/dist/multiselect.vue2.js'
 
 ### Select with custom options slot
 
-``` html
+``` vue
 <Multiselect
   v-model="value"
   placeholder="Select your character"
@@ -319,7 +319,7 @@ import Multiselect from '@vueform/multiselect/dist/multiselect.vue2.js'
 
 ### Multiselect with custom label slot
 
-``` html
+``` vue
 <Multiselect
   v-model="value"
   mode="multiple"
@@ -343,7 +343,7 @@ import Multiselect from '@vueform/multiselect/dist/multiselect.vue2.js'
 
 ### Tags with custom tags slot
 
-``` html
+``` vue
 <template>
   <Multiselect
     v-model="value"
