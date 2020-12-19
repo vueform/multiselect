@@ -24,7 +24,7 @@
     >
       <!-- Single label -->
       <template v-if="mode == 'single' && hasSelected && !search && internalValue">
-        <slot name="singleLabel" :value="internalValue">
+        <slot name="singlelabel" :value="internalValue">
           <div class="multiselect-single-label">
             {{ internalValue[label] }}
           </div>
@@ -33,7 +33,7 @@
 
       <!-- Multiple label -->
       <template v-if="mode == 'multiple' && hasSelected && !search">
-        <slot name="multipleLabel" :values="internalValue">
+        <slot name="multiplelabel" :values="internalValue">
           <div class="multiselect-multiple-label">
             {{ multipleLabelText }}
           </div>
@@ -116,7 +116,7 @@
         class="multiselect-options"
         :style="{ maxHeight: contentMaxHeight }"
       >
-        <slot name="beforeList"></slot>
+        <slot name="beforelist"></slot>
 
         <a
           v-for="(option, i, key) in filteredOptions"
@@ -137,18 +137,18 @@
         </a>
 
         <span v-show="noOptions">
-          <slot name="noOptions">
+          <slot name="nooptions">
             <div class="multiselect-no-options">{{ noOptionsText }}</div>
           </slot>
         </span>
 
         <span v-show="noResults">
-          <slot name="noResults">
+          <slot name="noresults">
             <div class="multiselect-no-results">{{ noResultsText }}</div>
           </slot>
         </span>
 
-        <slot name="afterList"></slot>
+        <slot name="afterlist"></slot>
       </div>
     </transition>
   </div>
@@ -232,7 +232,7 @@
         required: false,
         default: 160,
       },
-      hideSelectedTag: {
+      hideSelected: {
         type: Boolean,
         required: false,
         default: true,
