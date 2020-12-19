@@ -1,9 +1,21 @@
+## v1.1.3
+
+> `2020-12-18`
+
+### 🐞 Bug Fixes
+  - **Breaking**: Renamed slots to lowercase instead of camel case because of [DOM issue](https://github.com/vuejs/vue/issues/9449#issuecomment-461170017)
+
+### 🎉 Feature
+  - Added `change` event
+  - **Breaking**: renamed `hideSelectedTag` to `hideSelected` 
+
 ## v1.1.2
 
 > `2020-12-18`
 
 ### 🎉 Feature
   - Async/await eliminated from code thus reducing bundle size without runtimeRegenerator
+  - UMD bundle replaced with global
 
 ## v1.1.1
 
