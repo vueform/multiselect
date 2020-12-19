@@ -275,10 +275,13 @@ export default function useOptions (props, context, dependencies)
   }
 
   // no export
-  const resolveOptions = async () => {
+  const resolveOptions = () => {
     resolving.value = true
-    resolvedOptions.value = await options.value(search.value)
-    resolving.value = false
+
+    options.value(search.value).then((response) => {
+      resolvedOptions.value = response
+      resolving.value = false
+    })
   }
 
   // no export
@@ -322,20 +325,20 @@ export default function useOptions (props, context, dependencies)
       if (clearOnSearch.value) {
         resolvedOptions.value = []
       }
-      setTimeout(async () => {
+      setTimeout(() => {
         if (query != search.value) {
           return
         }
 
         resolving.value = true
 
-        let newOptions = await options.value(search.value)
+        options.value(search.value).then((response) => {
+          if (query == search.value) {
+            resolvedOptions.value = response
+          }
 
-        if (query == search.value) {
-          resolvedOptions.value = newOptions
-        }
-
-        resolving.value = false
+          resolving.value = false
+        })
       }, delay.value)
 
     }, { flush: 'sync' })
