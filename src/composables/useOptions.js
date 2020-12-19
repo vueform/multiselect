@@ -4,7 +4,7 @@ import isObject from './../utils/isObject'
 
 export default function useOptions (props, context, dependencies)
 {
-  const { options, mode, trackBy, limit, hideSelectedTag, createTag, label,
+  const { options, mode, trackBy, limit, hideSelected, createTag, label,
           appendNewTag, multipleLabel, object, loading, delay, resolveOnLoad,
           minChars, filterResults, clearOnSearch, clearOnSelect } = toRefs(props)
 
@@ -69,7 +69,7 @@ export default function useOptions (props, context, dependencies)
       })
     }
 
-    if (hideSelectedTag.value) {
+    if (hideSelected.value) {
       filteredOptions = filteredOptions.filter((option) => !shouldHideOption(option))
     }
 
@@ -266,7 +266,7 @@ export default function useOptions (props, context, dependencies)
 
   // no export
   const shouldHideOption = (option) => {
-    return mode.value === 'tags' && hideSelectedTag.value && isSelected(option)
+    return mode.value === 'tags' && hideSelected.value && isSelected(option)
   }
 
   // no export

@@ -104,10 +104,10 @@ describe('useOptions', () => {
       expect(select.vm.filteredOptions[0].name).toBe('Value1')
     })
 
-    it('should hide selected tags when hideSelectedTag is true', async () => {
+    it('should hide selected tags when hideSelected is true', async () => {
       const select = createSelect({
         mode: 'tags',
-        hideSelectedTag: true,
+        hideSelected: true,
         options: [1,2,3],
       })
 
@@ -794,7 +794,7 @@ describe('useOptions', () => {
         options: [1,2,3],
         createTag: true,
         appendNewTag: true,
-        hideSelectedTag: false,
+        hideSelected: false,
       })
 
       select.vm.handleOptionClick({ value: 'value', label: 'value' })
@@ -817,7 +817,7 @@ describe('useOptions', () => {
         options: [1,2,3],
         createTag: true,
         appendNewTag: true,
-        hideSelectedTag: false,
+        hideSelected: false,
       })
 
       select.vm.handleOptionClick({ value: 'value', label: 'value' })
@@ -843,7 +843,7 @@ describe('useOptions', () => {
         options: [1,2,3],
         createTag: true,
         appendNewTag: false,
-        hideSelectedTag: false,
+        hideSelected: false,
         object: true,
       })
 
