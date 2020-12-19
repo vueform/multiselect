@@ -16,8 +16,11 @@ export default function useData (props, context, dependencies)
 
     // Setting object(s) or plain value as external 
     // value based on `option` setting
-    context.emit('input', makeExternal(val))
-    context.emit('update:modelValue', makeExternal(val))
+    const externalVal = makeExternal(val)
+
+    context.emit('change', externalVal)
+    context.emit('input', externalVal)
+    context.emit('update:modelValue', externalVal)
   } 
 
   // no export
