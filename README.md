@@ -6,7 +6,7 @@
   </a>
 
   <a href="https://www.npmjs.com/package/@vueform/multiselect" target="_blank">
-    <img alt="npm bundle size (scoped version)" src="https://img.shields.io/bundlephobia/minzip/@vueform/multiselect/1.1.0?color=53ca2f">
+    <img alt="npm bundle size (scoped version)" src="https://img.shields.io/bundlephobia/minzip/@vueform/multiselect?color=53ca2f">
   </a>
 
   <a href="https://github.com/vueform/multiselect/blob/main/LICENSE.md" target="_blank">
@@ -28,7 +28,7 @@
     <img align="center" src="https://github.com/vueform/multiselect/raw/main//assets/logo.svg" width="110">
     <br>
   </a>
-  
+
   <br>
   <br>
 
@@ -46,7 +46,7 @@
 
 * Vue 2 & 3 support
 * No dependencies
-* Lightweight (~4.5 kB gzipped)
+* Lightweight (~5 kB gzipped)
 * 100% coverage
 * ESM support
 * Single select options
