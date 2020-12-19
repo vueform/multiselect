@@ -1,55 +1,48 @@
 import vue from 'vue-prev-rollup-plugin-vue'
 import alias from '@rollup/plugin-alias'
-import base from './base.rollup.config'
-import babel, { getBabelOutputPlugin } from '@rollup/plugin-babel'
+import babel from '@rollup/plugin-babel'
 import { terser } from 'rollup-plugin-terser'
 
 export default [
-  Object.assign({}, base, {
+  {
+    input: 'src/Multiselect.vue',
     output: {
       file: 'dist/multiselect.vue2.js',
       format: 'esm',
     },
-    plugins: base.plugins.concat([
+    plugins: [
       vue(),
+      babel({
+        babelHelpers: 'runtime',
+        skipPreflightCheck: true,
+      }),
       alias({
         entries: [
           { find: 'composition-api', replacement: '@vue/composition-api' },
         ]
       }),
-    ]),
-    external: '@vue/composition-api',
-  }),
+      terser(),
+    ],
+    external: ['@vue/composition-api'],
+  },
   {
     input: 'src/Multiselect.vue',
     output: {
-      file: 'dist/multiselect.vue2.umd.js',
-      format: 'esm',
+      file: 'dist/multiselect.vue2.global.js',
+      format: 'iife',
+      name: 'VueformMultiselect',
+      globals: {
+        'composition-api': 'VueCompositionAPI',
+        'vue': 'Vue',
+      }
     },
-    plugins: base.plugins.concat([
+    plugins: [
       vue(),
-      getBabelOutputPlugin({
-        presets: [
-          ['@babel/preset-env', {
-            modules: false,
-          }]
-        ],
-        plugins: [
-          ['@babel/plugin-transform-modules-umd', {
-            'globals': {
-              'composition-api': 'VueCompositionAPI',
-              'vue': 'Vue',
-            }
-          }]
-        ],
-        moduleId: 'VueFormMultiselect',
-      }),
       babel({
-        babelHelpers: 'runtime',
-        skipPreflightCheck: true
+        babelHelpers: 'bundled',
       }),
       terser()
-    ]),
-    external: ['vue', 'composition-api'],
+    ],
+    external: ['composition-api', 'vue'],
   }
 ]
