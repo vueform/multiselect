@@ -1,3 +1,10 @@
+## v1.1.1
+
+> `2020-12-19`
+
+### 🐞 Bug Fixes
+  - RuntimeRegenerator added to esm builds
+
 ## v1.1.0
 
 > `2020-12-18`
