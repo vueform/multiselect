@@ -1,3 +1,10 @@
+## v1.1.2
+
+> `2020-12-18`
+
+### 🎉 Feature
+  - Async/await eliminated from code thus reducing bundle size without runtimeRegenerator
+
 ## v1.1.1
 
 > `2020-12-19`
