@@ -23,9 +23,9 @@
 
   <h1>Vue 3 multiselect by <a href="https://vueform.com?r=github" target="_blank">Vueform</a></h1>
   
-  <a href="https://vueform.com" target="_blank">
+  <a href="https://vueform.com?ref=github" target="_blank">
     <br>
-    <img align="center" src="https://github.com/vueform/multiselect/raw/main//assets/logo.svg" width="110">
+    <img align="center" src="https://github.com/vueform/multiselect/raw/main/assets/logo.svg" width="110">
     <br>
   </a>
 
@@ -33,17 +33,23 @@
   <br>
 
   <a href="https://www.npmjs.com/package/@vueform/multiselect" target="_blank">
-    <img align="center" src="https://github.com/vueform/multiselect/raw/main//assets/screenshot.png">
+    <img align="center" src="https://github.com/vueform/multiselect/raw/main/assets/screenshot.png">
   </a>
   <br>
 
 </div>
 
-## About Vueform
+## Sponsors
 
-[Vueform](https://vueform.com) is form library for Vue 2 & 3 with 30+ elements, file uploads, element nesting, 50+ validators, conditions, form steps and many more including reactive configuration, API access and ESM modules. Check out our [live demos](https://vueform.com#demo) or see [all the features](https://vueform.com#features) and [sign up for beta](https://vueform.com#beta) to get early access.
+<div align="center">
+  <a href="https://vueform.com?ref=github"><img src="https://github.com/vueform/multiselect/raw/main/assets/logo-horizontal.svg" width="200"></a>
+</div>
 
-## Multiselect features
+## Demo
+
+Check out our [demo](https://jsfiddle.net/5sm71yt8/6/).
+
+## Features
 
 * Vue 2 & 3 support
 * No dependencies
@@ -108,18 +114,14 @@ When using with Vue 2 make sure to install [@vue/composition-api](https://github
 import Multiselect from '@vueform/multiselect/dist/multiselect.vue2.js'
 ```
 
-## Demo
-
-[Demo](https://jsfiddle.net/5sm71yt8/6/)
-
 ## Basic props
 
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
 | **mode** | `string` | `single` | Possible values: `single\|multiple\|tags`. |
 | **options** | `array\|object\|function` | `[]` | List of options. Can be:<br>- an array (eg. `[1,2,3]`)<br>- an object (eg. `{a:1,b:2,c:3}`)<br>- an array of objects `[{value:1,label:'v1'},{value:2,label:'v2'},{value:3,label:'v3'}]`<br>- a function returning a Promise (async function) with `query` input param. The promise should return options as an **object** or as an **array of objects**.<br>When an array of objects is provided it **must** have a `value` property as well as properties that equal to `:trackBy`'s and `:label`'s value (both configurable with default value of `'label'`). |
-| **value**<br>*(for Vue 2)* | `string\|number\|array` | `null` | The variable that should store the select value when using **Vue 2**. If `v-model` is used it does not need to be set. |
-| **modelValue**<br>*(for Vue 3)* | `string\|number\|array` | `null` | The variable that should store the select value when using **Vue 3**. If `v-model` is used it does not need to be set. |
+| **value** | `string\|number\|array` | `null` | The variable that should store the select value when using **Vue 2**. If `v-model` is used it does not need to be set. |
+| **modelValue** | `string\|number\|array` | `null` | The variable that should store the select value when using **Vue 3**. If `v-model` is used it does not need to be set. |
 | **searchable** | `boolean` | `false` | Whether the options should be searchable. |
 | **trackBy** | `string` | `label` | The name of the property that should be searched when `searchable` is `true` and an array of objects are provided as `:options`. |
 | **placeholder** | `string` | `null` | The text that should be displayed before an options are selected. |
@@ -138,15 +140,15 @@ import Multiselect from '@vueform/multiselect/dist/multiselect.vue2.js'
 
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
-| **clearOnSearch**<br>*(async options)* | `boolean` | `false` | Whether the option list should be cleared when a new character is typed before loading new options list using async options. |
-| **clearOnSelect**<br>*(async options)* | `boolean` | `true` | Whether the option list should be cleared upon selecting an option when using async options. |
-| **delay**<br>*(async options)* | `number` | `-1` | The delay in milliseconds that should occur between the last typed character and refreshing an async option list. If `-1` the option list will not refresh when the search query changes. If `0` it will refresh without delay. |
-| **filterResults**<br>*(async options)* | `boolean` | `true` | Whether option list should be filtered by search query. This may be set to `false` if you are handling filtering when returning async options. |
-| **minChars**<br>*(async options)* | `number` | `0` | The minimum number of characters that should be typed to refresh async option list. If `0` it will refresh even when the search field becomes empty. |
-| **resolveOnLoad**<br>(async options) | `boolean` | `true` | Whether async options should be loaded initially (with an empty query). This should be `true` if you are planning to load non-object value(s) initially while using async options (to fetch matching objects for values). |
-| **appendNewTag**<br>*(tags)* | `boolean` | `true` | Whether should append new tag automatically to option list when using `tags` mode with `createTag`. If set to `false` you need to take care of appending a new tag to the provided `:options` list upon `@tag` event. |
-| **createTag**<br>*(tags)* | `boolean` | `false` | Whether should allow creating new tag based on search query when using `tags` mode. |
-| **hideSelected**<br>*(multiple, tags)* | `boolean` | `true` | Whether selected options should be excluded from the option list when using `multiple` or `tags` mode. |
+| **clearOnSearch** | `boolean` | `false` | Whether the option list should be cleared when a new character is typed before loading new options list using async options. |
+| **clearOnSelect** | `boolean` | `true` | Whether the option list should be cleared upon selecting an option when using async options. |
+| **delay** | `number` | `-1` | The delay in milliseconds that should occur between the last typed character and refreshing an async option list. If `-1` the option list will not refresh when the search query changes. If `0` it will refresh without delay. |
+| **filterResults** | `boolean` | `true` | Whether option list should be filtered by search query. This may be set to `false` if you are handling filtering when returning async options. |
+| **minChars** | `number` | `0` | The minimum number of characters that should be typed to refresh async option list. If `0` it will refresh even when the search field becomes empty. |
+| **resolveOnLoad** | `boolean` | `true` | Whether async options should be loaded initially (with an empty query). This should be `true` if you are planning to load non-object value(s) initially while using async options (to fetch matching objects for values). |
+| **appendNewTag** | `boolean` | `true` | Whether should append new tag automatically to option list when using `tags` mode with `createTag`. If set to `false` you need to take care of appending a new tag to the provided `:options` list upon `@tag` event. |
+| **createTag** | `boolean` | `false` | Whether should allow creating new tag based on search query when using `tags` mode. |
+| **hideSelected** | `boolean` | `true` | Whether selected options should be excluded from the option list when using `multiple` or `tags` mode. |
 | **object** | `boolean` | `false` | Whether the value should be stored as an object.<br>If **false**:<br>`value: ['js','jsx','ts']`<br>If **true**:<br> `value: [`<br>&nbsp;&nbsp;`{value:'js',label:'Javascript'},`<br>&nbsp;&nbsp;`{value:'jsx',label:'JSX'},`<br>&nbsp;&nbsp;`{value:'ts',label:'Typescript'}`<br>`]` |
 
 ## Events
@@ -173,8 +175,6 @@ import Multiselect from '@vueform/multiselect/dist/multiselect.vue2.js'
 | **option** | `option, search` | Renders an option in options list. |
 | **singlelabel** | `value` | Rendered when using `single` mode and an option is selected. By default it renders the `:label` if the selected option. |
 | **tag** | `option, remove, disabled` | Renders a tag when using `tags` mode. When `disabled` the remove icon should not be displayed. The `remove` prop should be used to trigger the removal of the tag. |
-
-> Note: the reason we don't use camelCase is because they are [normalized back to lowercase](https://github.com/vuejs/vue/issues/9449#issuecomment-461170017) when written in DOM.
 
 ## Examples
 
@@ -262,7 +262,7 @@ import Multiselect from '@vueform/multiselect/dist/multiselect.vue2.js'
   :delay="0"
   :searchable="true"
   :options="async function(query) {
-    return await fetchLanguages(query) // check JS block for implementation
+    return await fetchLanguages(query) // check JS block in JSFiddle for implementation
   }"
 />
 ```
@@ -282,7 +282,7 @@ import Multiselect from '@vueform/multiselect/dist/multiselect.vue2.js'
   :delay="0"
   :searchable="true"
   :options="async function(query) {
-    return await fetchLanguages(query) // check JS block for implementation
+    return await fetchLanguages(query) // check JS block in JSFiddle for implementation
   }"
 />
 ```
@@ -403,6 +403,10 @@ import Multiselect from '@vueform/multiselect/dist/multiselect.vue2.js'
 ```
 
 [JSFiddle - Example #9](https://jsfiddle.net/5sm71yt8/6/)
+
+## About Vueform
+
+[Vueform](https://vueform.com?ref=github) is a complete solution for form management in Vue 2 & 3. It comes with 30+ elements, file uploads, element nesting, 50+ validators, conditions, form steps, i18n including reactive configuration, API access, ESM modules and many more. Check out our [live demos](https://vueform.com?ref=github#demo) or see [all the features](https://vueform.com?ref=github#features) and [sign up for beta](https://vueform.com?ref=github#beta) to get early access.
 
 ## License
 
