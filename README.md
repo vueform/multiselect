@@ -114,6 +114,10 @@ When using with Vue 2 make sure to install [@vue/composition-api](https://github
 import Multiselect from '@vueform/multiselect/dist/multiselect.vue2.js'
 ```
 
+## Support
+
+Join our [Discord channel](https://discord.gg/vYAyYmqJ) or [open an issue](https://github.com/vueform/multiselect/issues).
+
 ## Basic props
 
 | Name | Type | Default | Description |
