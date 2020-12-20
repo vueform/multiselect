@@ -33,7 +33,7 @@
   <br>
 
   <a href="https://www.npmjs.com/package/@vueform/multiselect" target="_blank">
-    <img align="center" src="https://github.com/vueform/multiselect/raw/main/assets/screenshot.png">
+    <img align="center" src="https://github.com/vueform/multiselect/raw/main/assets/screenshot-1.png">
   </a>
   <br>
 
@@ -41,7 +41,7 @@
 
 ## Sponsors
 
-<div align="center">
+<div align="center"><br>
   <a href="https://vueform.com?ref=github"><img src="https://github.com/vueform/multiselect/raw/main/assets/logo-horizontal.svg" width="200"></a>
 </div>
 
