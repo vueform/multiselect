@@ -2,7 +2,7 @@ import { ref, toRefs, watch, nextTick, computed } from 'composition-api'
 
 export default function usePointer (props, context, dependencies)
 {
-  const { id } = toRefs(props)
+  const { id, valueProp } = toRefs(props)
 
   // ============ DEPENDENCIES ============
 
@@ -24,7 +24,7 @@ export default function usePointer (props, context, dependencies)
   // =============== METHODS ==============
 
   const isPointed = (option) => {
-    return !!pointer.value && pointer.value.value == option.value
+    return !!pointer.value && pointer.value[valueProp.value] == option[valueProp.value]
   }
 
   const setPointer = (option) => {
@@ -55,7 +55,7 @@ export default function usePointer (props, context, dependencies)
       setPointer(options.value[0] || null)
     }
     else {
-      let next = options.value.map(o => o.value).indexOf(pointer.value.value) + 1
+      let next = options.value.map(o => o[valueProp.value]).indexOf(pointer.value[valueProp.value]) + 1
 
       if (options.value.length <= next) {
         next = 0
@@ -74,7 +74,7 @@ export default function usePointer (props, context, dependencies)
       setPointer(options.value[options.value.length - 1] || null)
     }
     else {
-      let prevIndex = options.value.map(o => o.value).indexOf(pointer.value.value) - 1
+      let prevIndex = options.value.map(o => o[valueProp.value]).indexOf(pointer.value[valueProp.value]) - 1
 
       if (prevIndex < 0) {
         prevIndex = options.value.length - 1

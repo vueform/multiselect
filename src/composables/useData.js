@@ -2,7 +2,7 @@ import { toRefs } from 'composition-api'
 
 export default function useData (props, context, dependencies)
 {
-  const { object } = toRefs(props)
+  const { object, valueProp } = toRefs(props)
 
   // ============ DEPENDENCIES ============
 
@@ -38,7 +38,7 @@ export default function useData (props, context, dependencies)
 
     // If external should be plain transform
     // value object to plain values
-    return !Array.isArray(val) ? val.value : val.map(v => v.value)
+    return !Array.isArray(val) ? val[valueProp.value] : val.map(v => v[valueProp.value])
   }
 
   return {

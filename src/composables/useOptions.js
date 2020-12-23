@@ -6,7 +6,7 @@ export default function useOptions (props, context, dependencies)
 {
   const { options, mode, trackBy, limit, hideSelected, createTag, label,
           appendNewTag, multipleLabel, object, loading, delay, resolveOnLoad,
-          minChars, filterResults, clearOnSearch, clearOnSelect } = toRefs(props)
+          minChars, filterResults, clearOnSearch, clearOnSelect, valueProp } = toRefs(props)
 
   // ============ DEPENDENCIES ============
 
@@ -40,13 +40,13 @@ export default function useOptions (props, context, dependencies)
       extendedOptions = Object.keys(extendedOptions).map((key) => {
         let val = extendedOptions[key]
 
-        return { value: key, [trackBy.value]: val, [label.value]: val}
+        return { [valueProp.value]: key, [trackBy.value]: val, [label.value]: val}
       })
     }
 
     // Transforming an plain arrays to an array of objects
     extendedOptions = extendedOptions.map((val, key) => {
-      return typeof val === 'object' ? val : { value: key, [trackBy.value]: val, [label.value]: val}
+      return typeof val === 'object' ? val : { [valueProp.value]: key, [trackBy.value]: val, [label.value]: val}
     })
 
     if (appendedOptions.value.length) {
@@ -112,9 +112,9 @@ export default function useOptions (props, context, dependencies)
     }
 
     return getOptionByTrackBy(search.value) !== -1 ? [] : [{
+      [valueProp.value]: search.value,
       [label.value]: search.value,
       [trackBy.value]: search.value,
-      value: search.value,
     }]
   })
 
@@ -172,7 +172,7 @@ export default function useOptions (props, context, dependencies)
 
       case 'tags':
       case 'multiple':
-        update(internalValue.value.filter((val) => val.value != option.value))
+        update(internalValue.value.filter((val) => val[valueProp.value] != option[valueProp.value]))
         break
     }
 
@@ -181,25 +181,25 @@ export default function useOptions (props, context, dependencies)
 
   // no export
   const finalValue = (option) => {
-    return object.value ? option : option.value
+    return object.value ? option : option[valueProp.value]
   }
 
   const remove = (option) => {
     deselect(option)
   }
 
-  const clear = (option) => {
+  const clear = () => {
     update(nullValue.value)
   }
 
   const isSelected = (option) => {
     switch (mode.value) {
       case 'single':
-        return !isValueNull.value && internalValue.value.value == option.value
+        return !isValueNull.value && internalValue.value[valueProp.value] == option[valueProp.value]
 
       case 'tags':
       case 'multiple':
-        return !isValueNull.value && internalValue.value.map(o => o.value).indexOf(option.value) !== -1
+        return !isValueNull.value && internalValue.value.map(o => o[valueProp.value]).indexOf(option[valueProp.value]) !== -1
     }
   }
 
@@ -244,8 +244,8 @@ export default function useOptions (props, context, dependencies)
           return
         }
 
-        if (getOption(option.value) === undefined && createTag.value) {
-          context.emit('tag', option.value)
+        if (getOption(option[valueProp.value]) === undefined && createTag.value) {
+          context.emit('tag', option[valueProp.value])
 
           if (appendNewTag.value) {
             appendOption(option)
@@ -264,7 +264,7 @@ export default function useOptions (props, context, dependencies)
   }
 
   const getOption = (val) => {
-    return extendedOptions.value[extendedOptions.value.map(o => o.value).indexOf(val)]
+    return extendedOptions.value[extendedOptions.value.map(o => o[valueProp.value]).indexOf(val)]
   }
 
   // no export

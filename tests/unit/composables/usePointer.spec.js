@@ -13,7 +13,8 @@ describe('usePointer', () => {
   describe('isPointed', () => {
     it('should be true if option is pointer', () => {
       let select = createSelect({
-        options: [1,2,3]
+        options: [1,2,3],
+        valueProp: 'v',
       })
 
       expect(select.vm.isPointed(select.vm.getOption(1))).toBe(false)
@@ -196,11 +197,12 @@ describe('usePointer', () => {
     it('should set next enabled option if current is not last', async () => {
       let select = createSelect({
         options: [
-          { value: 0, label: 0, disabled: false },
-          { value: 1, label: 1, disabled: false },
-          { value: 2, label: 2, disabled: true },
-          { value: 3, label: 3, disabled: false },
-        ]
+          { v: 0, label: 0, disabled: false },
+          { v: 1, label: 1, disabled: false },
+          { v: 2, label: 2, disabled: true },
+          { v: 3, label: 3, disabled: false },
+        ],
+        valueProp: 'v',
       }, {
         attach: true,
       })
@@ -218,10 +220,11 @@ describe('usePointer', () => {
     it('should set first enabled option if current is last', async () => {
       let select = createSelect({
         options: [
-          { value: 0, label: 0, disabled: true },
-          { value: 1, label: 1, disabled: false },
-          { value: 2, label: 2, disabled: false },
-        ]
+          { v: 0, label: 0, disabled: true },
+          { v: 1, label: 1, disabled: false },
+          { v: 2, label: 2, disabled: false },
+        ],
+        valueProp: 'v',
       }, {
         attach: true,
       })
@@ -303,11 +306,12 @@ describe('usePointer', () => {
     it('should set previous enabled option if current is not first', async () => {
       let select = createSelect({
         options: [
-          { value: 0, label: 0, disabled: false },
-          { value: 1, label: 1, disabled: true },
-          { value: 2, label: 2, disabled: false },
-          { value: 3, label: 3, disabled: false },
-        ]
+          { v: 0, label: 0, disabled: false },
+          { v: 1, label: 1, disabled: true },
+          { v: 2, label: 2, disabled: false },
+          { v: 3, label: 3, disabled: false },
+        ],
+        valueProp: 'v',
       }, {
         attach: true,
       })
@@ -325,10 +329,11 @@ describe('usePointer', () => {
     it('should set last enabled option if current is first', async () => {
       let select = createSelect({
         options: [
-          { value: 0, label: 0, disabled: false },
-          { value: 1, label: 1, disabled: false },
-          { value: 2, label: 2, disabled: true },
-        ]
+          { v: 0, label: 0, disabled: false },
+          { v: 1, label: 1, disabled: false },
+          { v: 2, label: 2, disabled: true },
+        ],
+        valueProp: 'v',
       }, {
         attach: true,
       })

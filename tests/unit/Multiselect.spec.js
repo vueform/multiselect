@@ -13,7 +13,8 @@ describe('Multiselect', () => {
 
     it('should render options if open', async () => {
         let select = createSelect({
-          options: ['value1', 'value2', 'value3']
+          options: ['value1', 'value2', 'value3'],
+          valueProp: 'v',
         })
 
         let options = findAll(select, '.multiselect-option')
@@ -30,9 +31,11 @@ describe('Multiselect', () => {
 
         expect(select.find('.multiselect-options').element).toBeVisible()
     })
+
     it('should render filtered options', async () => {
         let select = createSelect({
-          options: ['value1', 'value2', '3']
+          options: ['value1', 'value2', '3'],
+          valueProp: 'v',
         })
 
         select.vm.search = 'value'
@@ -73,6 +76,7 @@ describe('Multiselect', () => {
         let select = createSelect({
           value: null,
           options: [1,2,3],
+          valueProp: 'v',
         }, {
           attach: true,
         })

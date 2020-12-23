@@ -209,6 +209,11 @@
         required: false,
         default: 'label',
       },
+      valueProp: {
+        type: String,
+        required: false,
+        default: 'value',
+      },
       placeholder: {
         type: String,
         required: false,
