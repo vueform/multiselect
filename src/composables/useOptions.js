@@ -1,6 +1,8 @@
 import { ref, toRefs, computed, watch } from 'composition-api'
 import normalize from './../utils/normalize'
 import isObject from './../utils/isObject'
+import isNullish from './../utils/isNullish'
+import arraysEqual from './../utils/arraysEqual'
 
 export default function useOptions (props, context, dependencies)
 {
@@ -83,11 +85,11 @@ export default function useOptions (props, context, dependencies)
   const hasSelected = computed(() => {
     switch (mode.value) {
       case 'single':
-        return !isValueNull.value
+        return !isNullish(internalValue.value.value)
 
       case 'multiple':
       case 'tags':
-        return !isValueNull.value && internalValue.value.length > 0
+        return !isNullish(internalValue.value) && internalValue.value.length > 0
     }
   })
 
@@ -130,11 +132,6 @@ export default function useOptions (props, context, dependencies)
     }
   })
 
-  // no export
-  const isValueNull = computed(() => {
-    return [null, undefined, false].indexOf(internalValue.value) !== -1
-  })
-
   const busy = computed(() => {
     return loading.value || resolving.value
   })
@@ -153,7 +150,7 @@ export default function useOptions (props, context, dependencies)
 
       case 'multiple':
       case 'tags':
-        update((internalValue.value || []).concat(option))
+        update((internalValue.value).concat(option))
         break
     }
 
@@ -195,11 +192,11 @@ export default function useOptions (props, context, dependencies)
   const isSelected = (option) => {
     switch (mode.value) {
       case 'single':
-        return !isValueNull.value && internalValue.value[valueProp.value] == option[valueProp.value]
+        return !isNullish(internalValue.value) && internalValue.value[valueProp.value] == option[valueProp.value]
 
       case 'tags':
       case 'multiple':
-        return !isValueNull.value && internalValue.value.map(o => o[valueProp.value]).indexOf(option[valueProp.value]) !== -1
+        return !isNullish(internalValue.value) && internalValue.value.map(o => o[valueProp.value]).indexOf(option[valueProp.value]) !== -1
     }
   }
 
@@ -289,23 +286,31 @@ export default function useOptions (props, context, dependencies)
     options.value(search.value).then((response) => {
       resolvedOptions.value = response
       resolving.value = false
+
+      if (!isNullish(externalValue.value)) {
+        internalValue.value = makeInternal(externalValue.value)
+      }
     })
   }
 
   // no export
   const makeInternal = (val) => {
+    if (isNullish(val)) {
+      return mode.value === 'single' ? {} : []
+    }
+
     if (object.value) {
       return val
     }
 
     // If external should be plain transform
     // value object to plain values
-    return !Array.isArray(val) ? getOption(val) : val.map(v => getOption(v))
+    return mode.value === 'single' ? getOption(val) || {} : val.filter(v => !! getOption(v)).map(v => getOption(v))
   }
 
   // ================ HOOKS ===============
 
-  if (mode.value !== 'single' && [null, undefined, false].indexOf(externalValue.value) === -1 && !Array.isArray(externalValue.value)) {
+  if (mode.value !== 'single' && !isNullish(externalValue.value) && !Array.isArray(externalValue.value)) {
     throw new Error(`v-model must be an array when using "${mode.value}" mode`)
   }
 
@@ -316,11 +321,11 @@ export default function useOptions (props, context, dependencies)
   }
   else {
     resolvedOptions.value = options && options.value ? options.value : []
-  }
 
-  if ([null, false, undefined].indexOf(externalValue.value) === -1) {
-    internalValue.value = makeInternal(externalValue.value)
-  } 
+    if (!isNullish(externalValue.value)) {
+      internalValue.value = makeInternal(externalValue.value)
+    }
+  }
   
   // ============== WATCHERS ==============
 
@@ -351,6 +356,28 @@ export default function useOptions (props, context, dependencies)
 
     }, { flush: 'sync' })
   }
+
+  watch(externalValue, (newValue) => {
+    if (isNullish(newValue)) {
+      internalValue.value = makeInternal(newValue)
+      return
+    }
+
+    switch (mode.value) {
+      case 'single':
+        if (object.value ? newValue[valueProp.value] != internalValue.value[valueProp.value] : newValue != internalValue.value[valueProp.value]) {
+          internalValue.value = makeInternal(newValue)
+        }
+        break
+
+      case 'multiple':
+      case 'tags':
+        if (!arraysEqual(object.value ? newValue.map(o => o[valueProp.value]) : newValue, internalValue.value.map(o => o[valueProp.value]))) {
+          internalValue.value = makeInternal(newValue)
+        }
+        break
+    }
+  })
 
   return {
     filteredOptions,

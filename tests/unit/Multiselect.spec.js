@@ -172,6 +172,7 @@ describe('Multiselect', () => {
     describe('placeholder', () => {
       it('should render placeholder', () => {
         let select = createSelect({
+          options: [1,2,3],
           placeholder: 'Select option'
         })
 
@@ -181,6 +182,7 @@ describe('Multiselect', () => {
 
       it('should render placeholder even if it has search', () => {
         let select = createSelect({
+          options: [1,2,3],
           placeholder: 'Select option',
           searchable: true,
         })
@@ -190,6 +192,7 @@ describe('Multiselect', () => {
 
       it('should not render placeholder if search has value', async () => {
         let select = createSelect({
+          options: [1,2,3],
           placeholder: 'Select option',
           searchable: true,
         })

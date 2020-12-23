@@ -1025,6 +1025,28 @@ describe('useOptions', () => {
       expect(select.vm.busy).toBe(false)
     })
 
+    it('should set internalValue value async options are resolved', async () => {
+      let select = createSelect({
+        value: 1,
+        options: async () => {
+          return await new Promise((resolve, reject) => {
+            resolve([1,2,3])
+          })
+        }
+      })
+
+      expect(select.vm.internalValue).toStrictEqual({})
+
+      await flushPromises()
+
+      expect(select.vm.internalValue).toStrictEqual({
+        value: 1,
+        label: 2,
+      })
+    })
+  })
+
+  describe('watchers', () => {
     it('should not update async option list when search changes if delay is -1', async () => {
       let asyncOptionsMock = jest.fn()
 
@@ -1048,7 +1070,6 @@ describe('useOptions', () => {
 
       expect(asyncOptionsMock).toHaveBeenCalledTimes(1)
     })
-
 
     it('should update async option list', async () => {
       let select = createSelect({
@@ -1271,6 +1292,148 @@ describe('useOptions', () => {
       await flushPromises()
 
       expect(select.vm.busy).toBe(false)
+    })
+
+    it('should update internalValue when v-model changes when mode=single, object=false', async () => {
+      let select = createSelect({
+        value: null,
+        options: [1,2,3],
+      })
+
+      select.vm.$parent.value = 1
+      await nextTick()
+      expect(select.vm.internalValue).toStrictEqual(select.vm.getOption(1))
+
+      select.vm.$parent.value = 2
+      await nextTick()
+      expect(select.vm.internalValue).toStrictEqual(select.vm.getOption(2))
+
+      select.vm.$parent.value = null
+      await nextTick()
+      expect(select.vm.internalValue).toStrictEqual({})
+
+      select.vm.$parent.value = undefined
+      await nextTick()
+      expect(select.vm.internalValue).toStrictEqual({})
+
+      select.vm.$parent.value = false
+      await nextTick()
+      expect(select.vm.internalValue).toStrictEqual({})
+
+      select.vm.$parent.value = 4
+      await nextTick()
+      expect(select.vm.internalValue).toStrictEqual({})
+    })
+
+    it('should update internalValue when v-model changes when mode=single, object=true', async () => {
+      let select = createSelect({
+        value: null,
+        options: [1,2,3],
+        object: true,
+      })
+
+      select.vm.$parent.value = { value: 1, label: 2 }
+      await nextTick()
+      expect(select.vm.internalValue).toStrictEqual(select.vm.getOption(1))
+
+      select.vm.$parent.value = { value: 2, label: 3 }
+      await nextTick()
+      expect(select.vm.internalValue).toStrictEqual(select.vm.getOption(2))
+
+      select.vm.$parent.value = null
+      await nextTick()
+      expect(select.vm.internalValue).toStrictEqual({})
+
+      select.vm.$parent.value = undefined
+      await nextTick()
+      expect(select.vm.internalValue).toStrictEqual({})
+
+      select.vm.$parent.value = false
+      await nextTick()
+      expect(select.vm.internalValue).toStrictEqual({})
+
+      select.vm.$parent.value = { value: 4, label: 5 }
+      await nextTick()
+      expect(select.vm.internalValue).toStrictEqual({ value: 4, label: 5 })
+    })
+
+    it('should update internalValue when v-model changes when mode=multiple, object=false', async () => {
+      let select = createSelect({
+        mode: 'multiple',
+        value: null,
+        options: [1,2,3],
+      })
+
+      select.vm.$parent.value = [1]
+      await nextTick()
+      expect(select.vm.internalValue).toStrictEqual([select.vm.getOption(1)])
+
+      select.vm.$parent.value = [2, 1]
+      await nextTick()
+      expect(select.vm.internalValue).toStrictEqual([
+        select.vm.getOption(2),
+        select.vm.getOption(1),
+      ])
+
+      select.vm.$parent.value = null
+      await nextTick()
+      expect(select.vm.internalValue).toStrictEqual([])
+
+      select.vm.$parent.value = undefined
+      await nextTick()
+      expect(select.vm.internalValue).toStrictEqual([])
+
+      select.vm.$parent.value = false
+      await nextTick()
+      expect(select.vm.internalValue).toStrictEqual([])
+
+      select.vm.$parent.value = []
+      await nextTick()
+      expect(select.vm.internalValue).toStrictEqual([])
+
+      select.vm.$parent.value = [4]
+      await nextTick()
+      expect(select.vm.internalValue).toStrictEqual([])
+    })
+
+    it('should update internalValue when v-model changes when mode=multiple, object=true', async () => {
+      let select = createSelect({
+        mode: 'multiple',
+        value: null,
+        options: [1,2,3],
+        object: true,
+      })
+
+      select.vm.$parent.value = [{ value: 1, label: 2 }]
+      await nextTick()
+      expect(select.vm.internalValue).toStrictEqual([select.vm.getOption(1)])
+
+      select.vm.$parent.value = [{ value: 2, label: 3 }, { value: 1, label: 2 }]
+      await nextTick()
+      expect(select.vm.internalValue).toStrictEqual([
+        select.vm.getOption(2),
+        select.vm.getOption(1),
+      ])
+
+      select.vm.$parent.value = null
+      await nextTick()
+      expect(select.vm.internalValue).toStrictEqual([])
+
+      select.vm.$parent.value = undefined
+      await nextTick()
+      expect(select.vm.internalValue).toStrictEqual([])
+
+      select.vm.$parent.value = false
+      await nextTick()
+      expect(select.vm.internalValue).toStrictEqual([])
+
+      select.vm.$parent.value = []
+      await nextTick()
+      expect(select.vm.internalValue).toStrictEqual([])
+
+      select.vm.$parent.value = [{ value: 4, label: 5 }]
+      await nextTick()
+      expect(select.vm.internalValue).toStrictEqual([{ value: 4, label: 5 }])
     })
   })
 })

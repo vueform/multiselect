@@ -1,8 +1,9 @@
 import { toRefs } from 'composition-api'
+import isNullish from './../utils/isNullish'
 
 export default function useData (props, context, dependencies)
 {
-  const { object, valueProp } = toRefs(props)
+  const { object, valueProp, mode } = toRefs(props)
 
   // ============ DEPENDENCIES ============
 
@@ -12,7 +13,7 @@ export default function useData (props, context, dependencies)
 
   const update = (val) => {
     // Setting object(s) as internal value
-    internalValue.value = val
+    internalValue.value = makeInternal(val)
 
     // Setting object(s) or plain value as external 
     // value based on `option` setting
@@ -32,13 +33,22 @@ export default function useData (props, context, dependencies)
     }
 
     // No need to transform if empty value
-    if ([null, false, undefined].indexOf(val) !== -1) {
+    if (isNullish(val)) {
       return val
     }
 
     // If external should be plain transform
     // value object to plain values
     return !Array.isArray(val) ? val[valueProp.value] : val.map(v => v[valueProp.value])
+  }
+
+  // no export
+  const makeInternal = (val) => {
+    if (isNullish(val)) {
+      return mode.value === 'single' ? {} : []
+    }
+
+    return val
   }
 
   return {

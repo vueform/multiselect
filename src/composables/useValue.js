@@ -6,7 +6,7 @@ export default function useValue (props, context)
 
   // ================ DATA ================
 
-  const internalValue = ref(mode.value !== 'single' ? [] : null)
+  const internalValue = ref(mode.value !== 'single' ? [] : {})
 
   // ============== COMPUTED ==============
 
