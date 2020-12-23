@@ -1,3 +1,10 @@
+## v1.2.1
+
+> `2020-12-23`
+
+### 🎉 Bug Fixes
+  - Changes in `v-model` will sync with multiselect value
+
 ## v1.2.0
 
 > `2020-12-23`
