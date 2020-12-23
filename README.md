@@ -139,7 +139,7 @@ Join our [Discord channel](https://discord.gg/vYAyYmqJ) or [open an issue](https
 | **caret** | `boolean` | `true` | Whether should display the caret symbol on the right. |
 | **maxHeight** | `number` | `160` | The maximum height of options list (px). |
 | **noOptionsText** | `string` | `'The list is empty'` | The text that should be displayed when options list is empty. |
-| **noResultsText** | `string` | `No results found` | The text that should be displayed when there are no search results. |
+| **noResultsText** | `string` | `'No results found'` | The text that should be displayed when there are no search results. |
 
 ### Advanced Props
 
