@@ -1,3 +1,11 @@
+## v1.2.0
+
+> `2020-12-23`
+
+### 🎉 Feature
+  - Options now can be disabled using an array of objects as value, with `disabled` property being set to `true`
+  - The `value` property of an object option now can be customized with `:valueProp`
+
 ## v1.1.3
 
 > `2020-12-18`
