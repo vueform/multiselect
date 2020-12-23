@@ -203,7 +203,15 @@ export default function useOptions (props, context, dependencies)
     }
   }
 
+  const isDisabled = (option) => {
+    return option.disabled === true
+  }
+
   const handleOptionClick = (option) => {
+    if (isDisabled(option)) {
+      return
+    }
+
     switch (mode.value) {
       case 'single':
         if (isSelected(option)) {
@@ -357,6 +365,7 @@ export default function useOptions (props, context, dependencies)
     remove,
     clear,
     isSelected,
+    isDisabled,
     getOption,
     handleOptionClick,
   }

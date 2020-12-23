@@ -191,7 +191,13 @@
 }
 
 .multiselect-option.is-pointed {
-  background: #f1f1f1;
+  background: #e6e6e6;
+}
+
+.multiselect-option.is-disabled {
+  background: #f9f9f9;
+  color: #a6a6a6;
+  cursor: not-allowed;
 }
 
 .multiselect-option.is-selected {

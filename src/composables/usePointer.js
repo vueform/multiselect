@@ -1,4 +1,4 @@
-import { ref, toRefs, watch, nextTick } from 'composition-api'
+import { ref, toRefs, watch, nextTick, computed } from 'composition-api'
 
 export default function usePointer (props, context, dependencies)
 {
@@ -14,6 +14,13 @@ export default function usePointer (props, context, dependencies)
 
   const pointer = ref(null)
 
+  // ============== COMPUTED ==============
+
+  // no export
+  const options = computed(() => {
+    return filteredOptions.value.filter(o => o.disabled !== true)
+  })
+
   // =============== METHODS ==============
 
   const isPointed = (option) => {
@@ -25,7 +32,7 @@ export default function usePointer (props, context, dependencies)
   }
 
   const setPointerFirst = () => {
-    pointer.value = filteredOptions.value[0] || null
+    pointer.value = options.value[0] || null
   }
 
   const clearPointer = () => {
@@ -33,7 +40,8 @@ export default function usePointer (props, context, dependencies)
   }
 
   const selectPointer = () => {
-    if (!pointer.value) {
+    if (!pointer.value || pointer.value.disabled === true) {
+      clearPointer()
       return
     }
 
@@ -42,18 +50,18 @@ export default function usePointer (props, context, dependencies)
     clearPointer()
   }
 
-  const forwardPointer = (option) => {
+  const forwardPointer = () => {
     if (pointer.value === null) {
-      setPointer(filteredOptions.value[0])
+      setPointer(options.value[0] || null)
     }
     else {
-      let next = filteredOptions.value.map(o => o.value).indexOf(pointer.value.value) + 1
+      let next = options.value.map(o => o.value).indexOf(pointer.value.value) + 1
 
-      if (filteredOptions.value.length <= next) {
+      if (options.value.length <= next) {
         next = 0
       }
 
-      setPointer(filteredOptions.value[next])
+      setPointer(options.value[next] || null)
     }
 
     nextTick(() => {
@@ -63,16 +71,16 @@ export default function usePointer (props, context, dependencies)
 
   const backwardPointer = () => {
     if (pointer.value === null) {
-      setPointer(filteredOptions.value[filteredOptions.value.length - 1])
+      setPointer(options.value[options.value.length - 1] || null)
     }
     else {
-      let prevIndex = filteredOptions.value.map(o => o.value).indexOf(pointer.value.value) - 1
+      let prevIndex = options.value.map(o => o.value).indexOf(pointer.value.value) - 1
 
       if (prevIndex < 0) {
-        prevIndex = filteredOptions.value.length - 1
+        prevIndex = options.value.length - 1
       }
 
-      setPointer(filteredOptions.value[prevIndex])
+      setPointer(options.value[prevIndex] || null)
     }
 
     nextTick(() => {

@@ -571,7 +571,78 @@ describe('useOptions', () => {
     })
   })
 
+  describe('isDisabled', () => {
+    it('should be false if the option has no disabled property', () => {
+      let select = createSelect({
+        options: [1,2,3],
+        value: 1,
+      })
+
+      expect(select.vm.isDisabled({ value: 1, label: 2 })).toBe(false)
+    })
+
+    it('should be false if the option has false disabled property', () => {
+      let select = createSelect({
+        options: [1,2,3],
+        value: 1,
+      })
+
+      expect(select.vm.isDisabled({ value: 1, label: 2, disabled: false })).toBe(false)
+    })
+
+    it('should be true if the option has true disabled property', () => {
+      let select = createSelect({
+        options: [1,2,3],
+        value: 1,
+      })
+
+      expect(select.vm.isDisabled({ value: 1, label: 2, disabled: true })).toBe(true)
+    })
+  })
+
   describe('handleOptionClick', () => {
+    it('should not select option if disabled', async () => {
+      let select = createSelect({
+        value: 0,
+        options: [
+          { value: 0, label: 0, disabled: false },
+          { value: 1, label: 1, disabled: false },
+          { value: 2, label: 2, disabled: true },
+        ],
+      }, {
+        attach: true,
+      })
+
+      select.vm.handleOptionClick(select.vm.getOption(2))
+
+      await nextTick()
+
+      expect(select.vm.externalValue).toBe(0)
+
+      destroy(select)
+    })
+
+    it('should select option if not disabled', async () => {
+      let select = createSelect({
+        value: 0,
+        options: [
+          { value: 0, label: 0, disabled: false },
+          { value: 1, label: 1, disabled: false },
+          { value: 2, label: 2, disabled: true },
+        ],
+      }, {
+        attach: true,
+      })
+
+      select.vm.handleOptionClick(select.vm.getOption(1))
+
+      await nextTick()
+
+      expect(select.vm.externalValue).toBe(1)
+
+      destroy(select)
+    })
+
     /* SINGLE */
 
     it('should select option as value if not selected when single', async () => {

@@ -125,6 +125,7 @@
           :class="{
             'is-pointed': isPointed(option),
             'is-selected': isSelected(option),
+            'is-disabled': isDisabled(option),
           }"
           :key="key"
           @mousedown.prevent
@@ -170,6 +171,7 @@
     emits: [
       'open', 'close', 'select', 'deselect', 
       'input', 'search-change', 'tag', 'update:modelValue',
+      'change',
     ],
     props: {
       value: {
