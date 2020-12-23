@@ -181,13 +181,14 @@
 
 .multiselect-option {
   display: flex;
-  height: 40px;
+  min-height: 40px;
   padding: 9px 12px;
   box-sizing: border-box;
   color: #222;
   text-decoration: none;
   align-items: center;
   justify-content: flex-start;
+  text-align: left;
 }
 
 .multiselect-option.is-pointed {
