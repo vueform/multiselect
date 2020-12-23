@@ -3,12 +3,12 @@
 > `2020-12-23`
 
 ### 🎉 Feature
-  - Options now can be disabled using an array of objects as value, with `disabled` property being set to `true`
+  - Options now can be disabled using an array of objects as options, with `disabled` property being set to `true`
   - The `value` property of an object option now can be customized with `:valueProp`
 
 ## v1.1.3
 
-> `2020-12-18`
+> `2020-12-19`
 
 ### 🐞 Bug Fixes
   - **Breaking**: Renamed slots to lowercase instead of camel case because of [DOM issue](https://github.com/vuejs/vue/issues/9449#issuecomment-461170017)
@@ -19,7 +19,7 @@
 
 ## v1.1.2
 
-> `2020-12-18`
+> `2020-12-19`
 
 ### 🎉 Feature
   - Async/await eliminated from code thus reducing bundle size without runtimeRegenerator
