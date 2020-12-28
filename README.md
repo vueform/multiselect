@@ -13,7 +13,7 @@
     <img alt="GitHub" src="https://img.shields.io/github/license/vueform/multiselect?color=53ca2f">
   </a>
 
-  <a href="https://discord.gg/vYAyYmqJ" target="_blank">
+  <a href="https://discord.gg/WhX2nG6GTQ" target="_blank">
     <img alt="Discord" src="https://img.shields.io/discord/787237947635793940">
   </a>
 
@@ -116,7 +116,7 @@ import Multiselect from '@vueform/multiselect/dist/multiselect.vue2.js'
 
 ## Support
 
-Join our [Discord channel](https://discord.gg/vYAyYmqJ) or [open an issue](https://github.com/vueform/multiselect/issues).
+Join our [Discord channel](https://discord.gg/WhX2nG6GTQ) or [open an issue](https://github.com/vueform/multiselect/issues).
 
 ## Basic props
 
