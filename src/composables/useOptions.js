@@ -289,15 +289,14 @@ export default function useOptions (props, context, dependencies)
     }
   }
 
-  // no export
-  const resolveOptions = () => {
+  const resolveOptions = (callback) => {
     resolving.value = true
 
     options.value(search.value).then((response) => {
       resolvedOptions.value = response
       resolving.value = false
 
-      initInternalValue()
+      callback()
     })
   }
 
@@ -324,7 +323,7 @@ export default function useOptions (props, context, dependencies)
 
   if (options && typeof options.value == 'function') {
     if (resolveOnLoad.value) {
-      resolveOptions()
+      resolveOptions(initInternalValue)
     } else if (object.value == true) {
       initInternalValue()
     }
@@ -403,5 +402,6 @@ export default function useOptions (props, context, dependencies)
     isDisabled,
     getOption,
     handleOptionClick,
+    resolveOptions,
   }
 }
