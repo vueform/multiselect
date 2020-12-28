@@ -63,7 +63,7 @@
 
 ## Demo
 
-Check out our [demo](https://jsfiddle.net/z35wmd6u/).
+Check out our [demo](https://jsfiddle.net/wLxfv2p5/).
 
 ## Installation
 
@@ -145,6 +145,7 @@ Join our [Discord channel](https://discord.gg/vYAyYmqJ) or [open an issue](https
 
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
+| **canDeselect** | `boolean` | `true` | Whether a selected option can be deselected when using `single` mode. |
 | **clearOnSearch** | `boolean` | `false` | Whether the option list should be cleared when a new character is typed before loading new options list, when using async options. |
 | **clearOnSelect** | `boolean` | `true` | Whether the option list should be cleared upon selecting an option when using async options. |
 | **delay** | `number` | `-1` | The delay in milliseconds that should occur between the last typed character and refreshing an async option list. If `-1` the option list will not refresh when the search query changes. If `0` it will refresh without delay. |
@@ -181,6 +182,8 @@ Join our [Discord channel](https://discord.gg/vYAyYmqJ) or [open an issue](https
 | **singlelabel** | `value` | Rendered when using `single` mode and an option is selected. By default it renders the `:label` if the selected option. |
 | **tag** | `option, remove, disabled` | Renders a tag when using `tags` mode. When `disabled` the remove icon should not be displayed. The `remove` prop should be used to trigger the removal of the tag. |
 
+> Note: we don't use camelCase because they are [normalized back to lowercase](https://github.com/vuejs/vue/issues/9449#issuecomment-461170017) when written in DOM.
+
 ## Examples
 
 * [Single select](#single-select)
@@ -202,7 +205,7 @@ Join our [Discord channel](https://discord.gg/vYAyYmqJ) or [open an issue](https
 />
 ```
 
-[JSFiddle - Example #1](https://jsfiddle.net/z35wmd6u/)
+[JSFiddle - Example #1](https://jsfiddle.net/wLxfv2p5/)
 
 ### Multiselect with object options
 
@@ -218,7 +221,7 @@ Join our [Discord channel](https://discord.gg/vYAyYmqJ) or [open an issue](https
 />
 ```
 
-[JSFiddle - Example #2](https://jsfiddle.net/z35wmd6u/)
+[JSFiddle - Example #2](https://jsfiddle.net/wLxfv2p5/)
 
 ### Multiselect with disabled options
 
@@ -234,7 +237,7 @@ Join our [Discord channel](https://discord.gg/vYAyYmqJ) or [open an issue](https
 />
 ```
 
-[JSFiddle - Example #3](https://jsfiddle.net/z35wmd6u/)
+[JSFiddle - Example #3](https://jsfiddle.net/wLxfv2p5/)
 
 ### Tags with search, create and array of objects options
 
@@ -252,7 +255,7 @@ Join our [Discord channel](https://discord.gg/vYAyYmqJ) or [open an issue](https
 />
 ```
 
-[JSFiddle - Example #4](https://jsfiddle.net/z35wmd6u/)
+[JSFiddle - Example #4](https://jsfiddle.net/wLxfv2p5/)
 
 ### Autocomplete with async options
 
@@ -271,7 +274,7 @@ Join our [Discord channel](https://discord.gg/vYAyYmqJ) or [open an issue](https
 />
 ```
 
-[JSFiddle - Example #5](https://jsfiddle.net/z35wmd6u/)
+[JSFiddle - Example #5](https://jsfiddle.net/wLxfv2p5/)
 
 ### Tags with async options
 
@@ -291,7 +294,7 @@ Join our [Discord channel](https://discord.gg/vYAyYmqJ) or [open an issue](https
 />
 ```
 
-[JSFiddle - Example #6](https://jsfiddle.net/z35wmd6u/)
+[JSFiddle - Example #6](https://jsfiddle.net/wLxfv2p5/)
 
 ### Select with custom options slot
 
@@ -319,7 +322,7 @@ Join our [Discord channel](https://discord.gg/vYAyYmqJ) or [open an issue](https
 
 ```
 
-[JSFiddle - Example #7](https://jsfiddle.net/z35wmd6u/)
+[JSFiddle - Example #7](https://jsfiddle.net/wLxfv2p5/)
 
 ### Multiselect with custom label slot
 
@@ -343,7 +346,7 @@ Join our [Discord channel](https://discord.gg/vYAyYmqJ) or [open an issue](https
 
 ```
 
-[JSFiddle - Example #8](https://jsfiddle.net/z35wmd6u/)
+[JSFiddle - Example #8](https://jsfiddle.net/wLxfv2p5/)
 
 ### Tags with custom tags slot
 
@@ -406,7 +409,7 @@ Join our [Discord channel](https://discord.gg/vYAyYmqJ) or [open an issue](https
 </style>
 ```
 
-[JSFiddle - Example #9](https://jsfiddle.net/z35wmd6u/)
+[JSFiddle - Example #9](https://jsfiddle.net/wLxfv2p5/)
 
 ## About Vueform
 
