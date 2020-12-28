@@ -280,6 +280,13 @@ export default function useOptions (props, context, dependencies)
   }
 
   // no export
+  const initInternalValue = () => {
+    if (!isNullish(externalValue.value)) {
+      internalValue.value = makeInternal(externalValue.value)
+    }
+  }
+
+  // no export
   const resolveOptions = () => {
     resolving.value = true
 
@@ -287,9 +294,7 @@ export default function useOptions (props, context, dependencies)
       resolvedOptions.value = response
       resolving.value = false
 
-      if (!isNullish(externalValue.value)) {
-        internalValue.value = makeInternal(externalValue.value)
-      }
+      initInternalValue()
     })
   }
 
@@ -317,14 +322,14 @@ export default function useOptions (props, context, dependencies)
   if (options && typeof options.value == 'function') {
     if (resolveOnLoad.value) {
       resolveOptions()
+    } else if (object.value == true) {
+      initInternalValue()
     }
   }
   else {
     resolvedOptions.value = options && options.value ? options.value : []
 
-    if (!isNullish(externalValue.value)) {
-      internalValue.value = makeInternal(externalValue.value)
-    }
+    initInternalValue()
   }
   
   // ============== WATCHERS ==============

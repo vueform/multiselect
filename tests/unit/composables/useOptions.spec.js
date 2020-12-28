@@ -994,7 +994,7 @@ describe('useOptions', () => {
       ])
     })
 
-    it('should not resolve async options if resolveOnLoad is value', async () => {
+    it('should not resolve async options if resolveOnLoad is false', async () => {
       let select = createSelect({
         options: async () => {
           return await new Promise((resolve, reject) => {
@@ -1025,14 +1025,42 @@ describe('useOptions', () => {
       expect(select.vm.busy).toBe(false)
     })
 
-    it('should set internalValue value async options are resolved', async () => {
+    it('should set internalValue if not async options and object=false', async () => {
+      let select = createSelect({
+        value: 1,
+        options: [1,2,3],
+        object: false,
+      })
+
+      expect(select.vm.internalValue).toStrictEqual({
+        value: 1,
+        label: 2,
+      })
+    })
+
+    it('should set internalValue if not async options and object=true', async () => {
+      let select = createSelect({
+        value: { value: 1, label: 2 },
+        options: [1,2,3],
+        object: true,
+      })
+
+      expect(select.vm.internalValue).toStrictEqual({
+        value: 1,
+        label: 2,
+      })
+    })
+
+    it('should set internalValue when async options are resolved when resolveOnLoad=true objec=false', async () => {
       let select = createSelect({
         value: 1,
         options: async () => {
           return await new Promise((resolve, reject) => {
             resolve([1,2,3])
           })
-        }
+        },
+        resolveOnLoad: true,
+        object: false
       })
 
       expect(select.vm.internalValue).toStrictEqual({})
@@ -1042,6 +1070,65 @@ describe('useOptions', () => {
       expect(select.vm.internalValue).toStrictEqual({
         value: 1,
         label: 2,
+      })
+    })
+
+    it('should set internalValue when async options are resolved when resolveOnLoad=true objec=true', async () => {
+      let select = createSelect({
+        value: { value: 1, label: 2 },
+        options: async () => {
+          return await new Promise((resolve, reject) => {
+            resolve([1,2,3])
+          })
+        },
+        resolveOnLoad: true,
+        object: true
+      })
+
+      expect(select.vm.internalValue).toStrictEqual({})
+
+      await flushPromises()
+
+      expect(select.vm.internalValue).toStrictEqual({
+        value: 1,
+        label: 2,
+      })
+    })
+
+    it('should not set internalValue value with async options when resolveOnLoad=false object=false', async () => {
+      let select = createSelect({
+        value: 1,
+        options: async () => {
+          return await new Promise((resolve, reject) => {
+            resolve([1,2,3])
+          })
+        },
+        resolveOnLoad: false,
+        object: false,
+      })
+
+      expect(select.vm.internalValue).toStrictEqual({})
+
+      await flushPromises()
+
+      expect(select.vm.internalValue).toStrictEqual({})
+    })
+
+    it('should set internalValue value with async options when resolveOnLoad=false object=true', async () => {
+      let select = createSelect({
+        value: { value: 1, label: 2 },
+        options: async () => {
+          return await new Promise((resolve, reject) => {
+            resolve([1,2,3])
+          })
+        },
+        resolveOnLoad: false,
+        object: true
+      })
+
+      expect(select.vm.internalValue).toStrictEqual({
+        value: 1,
+        label: 2
       })
     })
   })
