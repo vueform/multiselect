@@ -1,8 +1,18 @@
+## v1.2.2
+
+> `2020-12-28`
+
+### 🎉 Feature
+  - Added `canDeselect` option
+
+### 🐞 Bug Fixes
+  - Set internalValue on init when using async options with `:object` `true` and `resolveOnLoad` `false`
+
 ## v1.2.1
 
 > `2020-12-23`
 
-### 🎉 Bug Fixes
+### 🐞 Bug Fixes
   - Changes in `v-model` will sync with multiselect value
 
 ## v1.2.0
