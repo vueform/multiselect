@@ -8,7 +8,8 @@ export default function useOptions (props, context, dependencies)
 {
   const { options, mode, trackBy, limit, hideSelected, createTag, label,
           appendNewTag, multipleLabel, object, loading, delay, resolveOnLoad,
-          minChars, filterResults, clearOnSearch, clearOnSelect, valueProp } = toRefs(props)
+          minChars, filterResults, clearOnSearch, clearOnSelect, valueProp,
+          canDeselect } = toRefs(props)
 
   // ============ DEPENDENCIES ============
 
@@ -212,7 +213,9 @@ export default function useOptions (props, context, dependencies)
     switch (mode.value) {
       case 'single':
         if (isSelected(option)) {
-          deselect(option)
+          if (canDeselect.value) {
+            deselect(option)
+          }
           return
         }
 

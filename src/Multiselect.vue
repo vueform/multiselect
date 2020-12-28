@@ -313,6 +313,11 @@
         required: false,
         default: true,
       },
+      canDeselect: {
+        type: Boolean,
+        required: false,
+        default: true,
+      },
     },
     setup(props, context)
     { 

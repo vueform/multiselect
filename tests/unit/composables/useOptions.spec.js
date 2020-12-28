@@ -691,6 +691,24 @@ describe('useOptions', () => {
       destroy(select)
     })
 
+    it('should not deselect option if selected when single and canDeselect=false', async () => {
+      let select = createSelect({
+        value: 1,
+        options: [1,2,3],
+        canDeselect: false,
+      }, {
+        attach: true,
+      })
+
+      select.vm.handleOptionClick({ value: 1, label: 2 })
+
+      await nextTick()
+
+      expect(getValue(select)).toStrictEqual(1)
+
+      destroy(select)
+    })
+
     /* MULTISELECT */
 
     it('should remove option from value if selected when multiple', async () => {
