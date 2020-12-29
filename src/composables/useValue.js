@@ -11,9 +11,7 @@ export default function useValue (props, context)
   // ============== COMPUTED ==============
 
   /* istanbul ignore next */
-  const externalValue = computed(() => {
-    return context.expose !== undefined ? modelValue.value : value.value
-  })
+  const externalValue = context.expose !== undefined ? modelValue : value
 
   return {
     internalValue,

@@ -384,7 +384,7 @@ export default function useOptions (props, context, dependencies)
         }
         break
     }
-  })
+  }, { deep: true })
 
   return {
     filteredOptions,
