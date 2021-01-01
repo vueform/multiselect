@@ -43,12 +43,6 @@ export default function useSearch (props, context, dependencies)
     input.value.blur()
   }
 
-  const handleSearchBackspace = (e) => {
-    if (search.value !== '') {
-      e.stopPropagation()
-    }
-  }
-
   // ============== WATCHERS ==============
 
   watch(search, (val) => {
@@ -61,6 +55,5 @@ export default function useSearch (props, context, dependencies)
     tagsSearchWidth,
     clearSearch,
     blurSearch,
-    handleSearchBackspace,
   }
 }

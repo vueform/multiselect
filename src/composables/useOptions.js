@@ -219,7 +219,6 @@ export default function useOptions (props, context, dependencies)
           return
         }
 
-        clear()
         select(option)
         blurSearch()
         blurInput()
@@ -264,7 +263,7 @@ export default function useOptions (props, context, dependencies)
   }
 
   const getOption = (val) => {
-    return extendedOptions.value[extendedOptions.value.map(o => o[valueProp.value]).indexOf(val)]
+    return extendedOptions.value[extendedOptions.value.map(o => String(o[valueProp.value])).indexOf(String(val))]
   }
 
   // no export
@@ -296,7 +295,9 @@ export default function useOptions (props, context, dependencies)
       resolvedOptions.value = response
       resolving.value = false
 
-      callback()
+      if (typeof callback == 'function') {
+        callback(response)
+      }
     })
   }
 

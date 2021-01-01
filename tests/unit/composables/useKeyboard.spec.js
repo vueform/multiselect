@@ -16,6 +16,20 @@ describe('useKeyboard', () => {
 
       expect(getValue(select)).toStrictEqual([0])
     })
+
+    it('should return when single', async () => {
+      let select = createSelect({
+        mode: 'single',
+        options: [1,2,3],
+        value: 1
+      })
+
+      select.vm.handleBackspace()
+
+      await nextTick()
+
+      expect(getValue(select)).toStrictEqual(1)
+    })
   })
 
   describe('handleEsc', () => {
@@ -34,6 +48,36 @@ describe('useKeyboard', () => {
       expect(select.vm.isOpen).toBe(false)
       expect(select.vm.pointer).toBe(null)
       expect(blurMock).toHaveBeenCalled()
+    })
+  })
+
+  describe('handleSearchBackspace', () => {
+    it('should stop propagation if search is not empty', () => {
+      let stopPropagationMock = jest.fn()
+
+      let select = createSelect()
+
+      select.vm.search = ''
+
+      select.vm.handleSearchBackspace({
+        stopPropagation: stopPropagationMock
+      })
+
+      expect(stopPropagationMock).not.toHaveBeenCalled()
+    })
+
+    it('should stop propagation if search is empty', () => {
+      let stopPropagationMock = jest.fn()
+
+      let select = createSelect()
+
+      select.vm.search = 'value'
+
+      select.vm.handleSearchBackspace({
+        stopPropagation: stopPropagationMock
+      })
+
+      expect(stopPropagationMock).toHaveBeenCalled()
     })
   })
 })

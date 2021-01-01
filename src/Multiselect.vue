@@ -352,6 +352,7 @@
         update: data.update,
         close: dropdown.close,
         clearPointer: pointer.clearPointer,
+        search: search.search,
       })
 
       return {

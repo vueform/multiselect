@@ -1,16 +1,24 @@
+import { toRefs } from 'composition-api'
 
 export default function useKeyboard (props, context, dependencies)
 {
+  const { mode } = toRefs(props)
+
   // ============ DEPENDENCIES ============
 
   const internalValue = dependencies.internalValue
   const update = dependencies.update
   const close = dependencies.close
   const clearPointer = dependencies.clearPointer
+  const search = dependencies.search
 
   // =============== METHODS ==============
 
   const handleBackspace = (e) => {
+    if (mode.value === 'single') {
+      return
+    }
+
     update([...internalValue.value].slice(0,-1))
   }
 
@@ -20,8 +28,15 @@ export default function useKeyboard (props, context, dependencies)
     e.target.blur()
   }
 
+  const handleSearchBackspace = (e) => {
+    if (search.value !== '') {
+      e.stopPropagation()
+    }
+  }
+
   return {
     handleBackspace,
     handleEsc,
+    handleSearchBackspace,
   }
 }
