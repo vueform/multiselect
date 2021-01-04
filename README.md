@@ -21,7 +21,7 @@
     <img alt="npm" src="https://img.shields.io/npm/v/@vueform/multiselect">
   </a>
 
-  <h1>Vue 3 multiselect by <a href="https://vueform.com?ref=github" target="_blank">Vueform</a></h1>
+  <h1>Vue 3 Multiselect</h1>
   
   <a href="https://vueform.com?ref=github" target="_blank">
     <br>
