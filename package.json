@@ -8,6 +8,8 @@
   "main": "./dist/multiselect.js",
   "module": "./dist/multiselect.js",
   "unpkg": "./dist/multiselect.global.js",
+  "browser": "./dist/multiselect.global.js",
+  "style": "./themes/default.css",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/vueform/multiselect.git"
