@@ -1,3 +1,14 @@
+## v1.2.4
+
+> `2021-01-12`
+
+### 🎉 Feature
+  - Added `:max` property
+
+### 🐞 Bug Fixes
+  - Backspace issue fix #9
+  - Custom label issue fix #13
+
 ## v1.2.3
 
 > `2020-12-29`
