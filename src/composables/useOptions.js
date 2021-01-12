@@ -86,7 +86,7 @@ export default function useOptions (props, context, dependencies)
   const hasSelected = computed(() => {
     switch (mode.value) {
       case 'single':
-        return !isNullish(internalValue.value.value)
+        return !isNullish(internalValue.value[valueProp.value])
 
       case 'multiple':
       case 'tags':
