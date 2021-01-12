@@ -3,13 +3,14 @@ import normalize from './../utils/normalize'
 import isObject from './../utils/isObject'
 import isNullish from './../utils/isNullish'
 import arraysEqual from './../utils/arraysEqual'
+import { isNamedExportBindings } from 'typescript'
 
 export default function useOptions (props, context, dependencies)
 {
   const { options, mode, trackBy, limit, hideSelected, createTag, label,
           appendNewTag, multipleLabel, object, loading, delay, resolveOnLoad,
           minChars, filterResults, clearOnSearch, clearOnSelect, valueProp,
-          canDeselect } = toRefs(props)
+          canDeselect, max } = toRefs(props)
 
   // ============ DEPENDENCIES ============
 
@@ -205,6 +206,14 @@ export default function useOptions (props, context, dependencies)
     return option.disabled === true
   }
 
+  const isMax = () => {
+    if (max === undefined || max.value === -1 || (!hasSelected.value && max.value > 0)) {
+      return false
+    }
+    
+    return internalValue.value.length >= max.value
+  }
+
   const handleOptionClick = (option) => {
     if (isDisabled(option)) {
       return
@@ -230,6 +239,10 @@ export default function useOptions (props, context, dependencies)
           return
         }
 
+        if (isMax()) {
+          return
+        }
+
         select(option)
 
         if (clearOnSelect.value) {
@@ -240,6 +253,10 @@ export default function useOptions (props, context, dependencies)
       case 'tags':
         if (isSelected(option)) {
           deselect(option)
+          return
+        }
+
+        if (isMax()) {
           return
         }
 
@@ -401,6 +418,7 @@ export default function useOptions (props, context, dependencies)
     clear,
     isSelected,
     isDisabled,
+    isMax,
     getOption,
     handleOptionClick,
     resolveOptions,

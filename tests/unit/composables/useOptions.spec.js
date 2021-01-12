@@ -612,6 +612,95 @@ describe('useOptions', () => {
     })
   })
 
+  describe('isMax', () => {
+    it('should be false if max is -1', () => {
+      let select = createSelect({
+        mode: 'multiple',
+        options: [1,2,3],
+        max: -1
+      })
+
+      expect(select.vm.isMax()).toBe(false)
+    })
+    
+    it('should be false if max is 1 && null', () => {
+      let select = createSelect({
+        mode: 'multiple',
+        options: [1,2,3],
+        value: null,
+        max: 1
+      })
+
+      expect(select.vm.isMax()).toBe(false)
+    })
+    
+    it('should be false if max is 1 && empty', () => {
+      let select = createSelect({
+        mode: 'multiple',
+        options: [1,2,3],
+        value: [],
+        max: 1
+      })
+
+      expect(select.vm.isMax()).toBe(false)
+    })
+    
+    it('should be true if max is 0 && null', () => {
+      let select = createSelect({
+        mode: 'multiple',
+        options: [1,2,3],
+        value: null,
+        max: 0
+      })
+
+      expect(select.vm.isMax()).toBe(true)
+    })
+    
+    it('should be true if max is 0 && empty', () => {
+      let select = createSelect({
+        mode: 'multiple',
+        options: [1,2,3],
+        value: [],
+        max: 0
+      })
+
+      expect(select.vm.isMax()).toBe(true)
+    })
+    
+    it('should be true if max is 2 && has 2 values', () => {
+      let select = createSelect({
+        mode: 'multiple',
+        options: [1,2,3],
+        value: [0,1],
+        max: 2
+      })
+
+      expect(select.vm.isMax()).toBe(true)
+    })
+    
+    it('should be true if max is 2 && has 3 values', () => {
+      let select = createSelect({
+        mode: 'multiple',
+        options: [1,2,3],
+        value: [0,1,2],
+        max: 2
+      })
+
+      expect(select.vm.isMax()).toBe(true)
+    })
+    
+    it('should be false if max is 2 && has 1 value', () => {
+      let select = createSelect({
+        mode: 'multiple',
+        options: [1,2,3],
+        value: [0],
+        max: 2
+      })
+
+      expect(select.vm.isMax()).toBe(false)
+    })
+  })
+
   describe('handleOptionClick', () => {
     it('should not select option if disabled', async () => {
       let select = createSelect({
@@ -755,6 +844,21 @@ describe('useOptions', () => {
       expect(getValue(select)).toStrictEqual([0,1])
     })
 
+    it('should not add option to value if reached max', async () => {
+      let select = createSelect({
+        mode: 'multiple',
+        value: [0],
+        options: [1,2,3],
+        max: 1
+      })
+
+      select.vm.handleOptionClick({ value: 1, label: 2 })
+
+      await nextTick()
+
+      expect(getValue(select)).toStrictEqual([0])
+    })
+
     it('should clear search after select when multiple', async () => {
       let select = createSelect({
         mode: 'multiple',
@@ -832,6 +936,21 @@ describe('useOptions', () => {
       await nextTick()
 
       expect(getValue(select)).toStrictEqual([0,1])
+    })
+
+    it('should not add option to value if reached max when tags', async () => {
+      let select = createSelect({
+        mode: 'tags',
+        value: [0],
+        options: [1,2,3],
+        max: 1
+      })
+
+      select.vm.handleOptionClick({ value: 1, label: 2 })
+
+      await nextTick()
+
+      expect(getValue(select)).toStrictEqual([0])
     })
 
     it('should not clear search after select when tags if clearOnSelect is false', async () => {

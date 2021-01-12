@@ -318,6 +318,11 @@
         required: false,
         default: true,
       },
+      max: {
+        type: Number,
+        required: false,
+        default: -1,
+      },
     },
     setup(props, context)
     { 
