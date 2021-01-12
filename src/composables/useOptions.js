@@ -3,7 +3,6 @@ import normalize from './../utils/normalize'
 import isObject from './../utils/isObject'
 import isNullish from './../utils/isNullish'
 import arraysEqual from './../utils/arraysEqual'
-import { isNamedExportBindings } from 'typescript'
 
 export default function useOptions (props, context, dependencies)
 {
