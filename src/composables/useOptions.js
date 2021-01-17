@@ -403,6 +403,12 @@ export default function useOptions (props, context, dependencies)
     }
   }, { deep: true })
 
+  watch(() => props.options, (n) => {
+    if (typeof props.options !== 'function') {
+      resolvedOptions.value = props.options
+    }
+  })
+
   return {
     filteredOptions,
     hasSelected,

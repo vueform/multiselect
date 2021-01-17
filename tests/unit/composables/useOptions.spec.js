@@ -1,4 +1,4 @@
-import { createSelect, getValue, destroy } from 'unit-test-helpers'
+import { createSelect, getValue, destroy, $set } from 'unit-test-helpers'
 import { nextTick } from 'composition-api'
 import flushPromises from 'flush-promises'
 
@@ -1685,6 +1685,53 @@ describe('useOptions', () => {
       select.vm.$parent.value = [{ value: 4, label: 5 }]
       await nextTick()
       expect(select.vm.internalValue).toStrictEqual([{ value: 4, label: 5 }])
+    })
+
+    it('should update resolvedOptions when :options property get assigned', async () => {
+      let select = createSelect()
+
+      $set(select.vm, select.vm.$parent.props, 'options', [1,2,3])
+
+      await nextTick()
+
+      expect(select.vm.filteredOptions).toStrictEqual([
+        { value: 0, label: 1, },
+        { value: 1, label: 2, },
+        { value: 2, label: 3, },
+      ])
+    })
+
+    it('should update resolvedOptions when :options property changes when options are not async', async () => {
+      let select = createSelect({
+        options: [1,2,3],
+      })
+
+      select.vm.$parent.props.options = [4,5,6]
+
+      await nextTick()
+
+      expect(select.vm.filteredOptions).toStrictEqual([
+        { value: 0, label: 4, },
+        { value: 1, label: 5, },
+        { value: 2, label: 6, },
+      ])
+    })
+
+    it('should update resolvedOptions when :options children changes', async () => {
+      let select = createSelect({
+        options: [1,2,3],
+      })
+
+      select.vm.$parent.props.options.push(4)
+
+      await nextTick()
+
+      expect(select.vm.filteredOptions).toStrictEqual([
+        { value: 0, label: 1, },
+        { value: 1, label: 2, },
+        { value: 2, label: 3, },
+        { value: 3, label: 4, },
+      ])
     })
   })
 })

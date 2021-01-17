@@ -81,3 +81,7 @@ export const findAll = (parent, query) => {
 export const getValue = (select) => {
   return select.vm.value
 }
+
+export const $set = (component, object, name, value) => {
+  return component.$set(object, name, value)
+}
