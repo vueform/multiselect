@@ -14,6 +14,7 @@
     <div
       class="multiselect-input"
       :tabindex="tabindex"
+      @mousedown="handleInputMousedown"
       @focus="open"
       @blur="close"
       @keyup.esc="handleEsc"
@@ -68,7 +69,7 @@
                 <i
                   v-if="!disabled"
                   @click.prevent
-                  @mousedown.prevent="remove(option)"
+                  @mousedown.prevent.stop="remove(option)"
                 ></i>
               </div>
             </slot>
@@ -328,9 +329,12 @@
     setup(props, context)
     { 
       const value = useValue(props, context)
-      const dropdown = useDropdown(props, context)
       const multiselect = useMultiselect(props, context)
       const pointer = usePointer(props, context)
+
+      const dropdown = useDropdown(props, context, {
+        multiselect: multiselect.multiselect,
+      })
 
       const data = useData(props, context, {
         internalValue: value.internalValue,

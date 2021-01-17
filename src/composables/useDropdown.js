@@ -2,7 +2,11 @@ import { ref, toRefs, computed } from 'composition-api'
 
 export default function useDropdown (props, context, dependencies)
 {
-  const { maxHeight, disabled } = toRefs(props)
+  const { maxHeight, disabled, searchable } = toRefs(props)
+
+  // ============ DEPENDENCIES ============
+
+  const multiselect = dependencies.multiselect
 
   // ================ DATA ================
 
@@ -16,7 +20,7 @@ export default function useDropdown (props, context, dependencies)
 
   // =============== METHODS ==============
 
-  const open = () => {
+  const open = (e) => {
     if (disabled.value) {
       return
     }
@@ -30,10 +34,19 @@ export default function useDropdown (props, context, dependencies)
     context.emit('close')
   }
 
+  const handleInputMousedown = (e) => {
+    if (isOpen.value && !searchable.value) {
+      multiselect.value.querySelector('.multiselect-input').dispatchEvent(new Event('blur'))
+      multiselect.value.querySelector('.multiselect-input').blur()
+      e.preventDefault()
+    }
+  }
+
   return {
     isOpen,
     contentMaxHeight,
     open,
     close,
+    handleInputMousedown,
   }
 }

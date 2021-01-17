@@ -68,7 +68,7 @@
 
 ## Demo
 
-Check out our [demo](https://jsfiddle.net/wLxfv2p5/).
+Check out our <a href="https://jsfiddle.net/5qsugfxt/" target="_blank">demo</a>.
 
 ## Installation
 
@@ -209,7 +209,7 @@ Join our [Discord channel](https://discord.gg/WhX2nG6GTQ) or [open an issue](htt
 />
 ```
 
-[JSFiddle - Example #1](https://jsfiddle.net/wLxfv2p5/)
+<a href="https://jsfiddle.net/5qsugfxt/" target="_blank">JSFiddle - Example #1</a>
 
 ### Multiselect with object options
 
@@ -225,7 +225,7 @@ Join our [Discord channel](https://discord.gg/WhX2nG6GTQ) or [open an issue](htt
 />
 ```
 
-[JSFiddle - Example #2](https://jsfiddle.net/wLxfv2p5/)
+<a href="https://jsfiddle.net/5qsugfxt/" target="_blank">JSFiddle - Example #2</a>
 
 ### Multiselect with disabled options
 
@@ -241,7 +241,7 @@ Join our [Discord channel](https://discord.gg/WhX2nG6GTQ) or [open an issue](htt
 />
 ```
 
-[JSFiddle - Example #3](https://jsfiddle.net/wLxfv2p5/)
+<a href="https://jsfiddle.net/5qsugfxt/" target="_blank">JSFiddle - Example #3</a>
 
 ### Tags with search, create and array of objects options
 
@@ -259,7 +259,7 @@ Join our [Discord channel](https://discord.gg/WhX2nG6GTQ) or [open an issue](htt
 />
 ```
 
-[JSFiddle - Example #4](https://jsfiddle.net/wLxfv2p5/)
+<a href="https://jsfiddle.net/5qsugfxt/" target="_blank">JSFiddle - Example #4</a>
 
 ### Autocomplete with async options
 
@@ -278,7 +278,7 @@ Join our [Discord channel](https://discord.gg/WhX2nG6GTQ) or [open an issue](htt
 />
 ```
 
-[JSFiddle - Example #5](https://jsfiddle.net/wLxfv2p5/)
+<a href="https://jsfiddle.net/5qsugfxt/" target="_blank">JSFiddle - Example #5</a>
 
 ### Tags with async options
 
@@ -298,7 +298,7 @@ Join our [Discord channel](https://discord.gg/WhX2nG6GTQ) or [open an issue](htt
 />
 ```
 
-[JSFiddle - Example #6](https://jsfiddle.net/wLxfv2p5/)
+<a href="https://jsfiddle.net/5qsugfxt/" target="_blank">JSFiddle - Example #6</a>
 
 ### Select with custom options slot
 
@@ -326,7 +326,7 @@ Join our [Discord channel](https://discord.gg/WhX2nG6GTQ) or [open an issue](htt
 
 ```
 
-[JSFiddle - Example #7](https://jsfiddle.net/wLxfv2p5/)
+<a href="https://jsfiddle.net/5qsugfxt/" target="_blank">JSFiddle - Example #7</a>
 
 ### Multiselect with custom label slot
 
@@ -350,7 +350,7 @@ Join our [Discord channel](https://discord.gg/WhX2nG6GTQ) or [open an issue](htt
 
 ```
 
-[JSFiddle - Example #8](https://jsfiddle.net/wLxfv2p5/)
+<a href="https://jsfiddle.net/5qsugfxt/" target="_blank">JSFiddle - Example #8</a>
 
 ### Tags with custom tags slot
 
@@ -377,7 +377,7 @@ Join our [Discord channel](https://discord.gg/WhX2nG6GTQ) or [open an issue](htt
           <i
             v-if="!disabled"
             @click.prevent
-            @mousedown.prevent="remove(option)"
+            @mousedown.prevent.stop="remove(option)"
           />
         </div>
       </template>
@@ -413,7 +413,7 @@ Join our [Discord channel](https://discord.gg/WhX2nG6GTQ) or [open an issue](htt
 </style>
 ```
 
-[JSFiddle - Example #9](https://jsfiddle.net/wLxfv2p5/)
+<a href="https://jsfiddle.net/5qsugfxt/" target="_blank">JSFiddle - Example #9</a>
 
 ## About Vueform
 
