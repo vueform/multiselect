@@ -1,3 +1,12 @@
+## v1.2.5
+
+> `2021-01-17`
+
+### 🐞 Bug Fixes
+  - Close open dropdown on input click
+  - Select first option after async search fix #18
+  - Update options when `:options` property changes #16 #17
+
 ## v1.2.4
 
 > `2021-01-12`
