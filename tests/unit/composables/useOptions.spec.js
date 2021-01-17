@@ -1322,7 +1322,7 @@ describe('useOptions', () => {
       expect(asyncOptionsMock).toHaveBeenCalledTimes(1)
     })
 
-    it('should update async option list', async () => {
+    it('should update async option list when search changes', async () => {
       let select = createSelect({
         options: async () => {
           return await new Promise((resolve, reject) => {
@@ -1354,6 +1354,73 @@ describe('useOptions', () => {
         { value: 1, label: 5 },
         { value: 2, label: 6 },
       ])
+    })
+
+    it('should set pointer to first when search changes using async option list', async () => {
+      let select = createSelect({
+        options: async () => {
+          return await new Promise((resolve, reject) => {
+            resolve(['php', 'java', 'javascript'])
+          })
+        },
+        delay: 10,
+      })
+
+      await flushPromises()
+
+      select.vm.search = 'jav'
+
+      jest.runAllTimers()
+
+      await flushPromises()
+      
+      expect(select.vm.pointer).toStrictEqual({ value: 1, label: 'java' })
+    })
+
+    it('should set pointer to first non-disabled when search changes using async option list', async () => {
+      let select = createSelect({
+        options: async () => {
+          return await new Promise((resolve, reject) => {
+            resolve([
+              { value: 0, label: 'php' },
+              { value: 1, label: 'javascript', disabled: true },
+              { value: 2, label: 'java' },
+            ])
+          })
+        },
+        delay: 10,
+      })
+
+      await flushPromises()
+
+      select.vm.search = 'jav'
+
+      jest.runAllTimers()
+
+      await flushPromises()
+      
+      expect(select.vm.pointer).toStrictEqual({ value: 2, label: 'java' })
+    })
+
+    it('should not set pointer to first when search changes using async option list with no result', async () => {
+      let select = createSelect({
+        options: async () => {
+          return await new Promise((resolve, reject) => {
+            resolve(['php', 'java', 'javascript'])
+          })
+        },
+        delay: 10,
+      })
+
+      await flushPromises()
+
+      select.vm.search = 'perl'
+
+      jest.runAllTimers()
+
+      await flushPromises()
+      
+      expect(select.vm.pointer).toStrictEqual(null)
     })
 
     it('should not resolve async options when search changes if query is not equal to search value when delay has passed', async () => {

@@ -20,6 +20,7 @@ export default function useOptions (props, context, dependencies)
   const clearSearch = dependencies.clearSearch
   const update = dependencies.update
   const blurInput = dependencies.blurInput
+  const pointer = dependencies.pointer
 
   // ================ DATA ================
 
@@ -372,6 +373,7 @@ export default function useOptions (props, context, dependencies)
         options.value(search.value).then((response) => {
           if (query == search.value) {
             resolvedOptions.value = response
+            pointer.value = filteredOptions.value.filter(o => o.disabled !== true)[0] || null
           }
 
           resolving.value = false

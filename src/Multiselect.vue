@@ -160,8 +160,9 @@
   import useData from './composables/useData'
   import useValue from './composables/useValue'
   import useSearch from './composables/useSearch'
-  import useOptions from './composables/useOptions'
   import usePointer from './composables/usePointer'
+  import useOptions from './composables/useOptions'
+  import usePointerAction from './composables/usePointerAction'
   import useDropdown from './composables/useDropdown'
   import useMultiselect from './composables/useMultiselect'
   import useKeyboard from './composables/useKeyboard' 
@@ -327,14 +328,17 @@
     setup(props, context)
     { 
       const value = useValue(props, context)
+      const dropdown = useDropdown(props, context)
+      const multiselect = useMultiselect(props, context)
+      const pointer = usePointer(props, context)
+
       const data = useData(props, context, {
         internalValue: value.internalValue,
       })
+
       const search = useSearch(props, context, {
         internalValue: value.internalValue,
       })
-      const dropdown = useDropdown(props, context)
-      const multiselect = useMultiselect(props, context)
 
       const options = useOptions(props, context, {
         externalValue: value.externalValue,
@@ -344,30 +348,33 @@
         clearSearch: search.clearSearch,
         update: data.update,
         blurInput: multiselect.blurInput,
+        pointer: pointer.pointer,
       })
 
-      const pointer = usePointer(props, context, {
+      const pointerAction = usePointerAction(props, context, {
         filteredOptions: options.filteredOptions,
         handleOptionClick: options.handleOptionClick,
         search: search.search,
+        pointer: pointer.pointer,
       })
 
       const keyboard = useKeyboard(props, context, {
         internalValue: value.internalValue,
         update: data.update,
         close: dropdown.close,
-        clearPointer: pointer.clearPointer,
+        clearPointer: pointerAction.clearPointer,
         search: search.search,
       })
 
       return {
         ...value,
-        ...data,
-        ...search,
         ...dropdown,
         ...multiselect,
-        ...options,
         ...pointer,
+        ...data,
+        ...search,
+        ...options,
+        ...pointerAction,
         ...keyboard,
       }
     }
