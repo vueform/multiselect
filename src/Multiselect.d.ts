@@ -2,6 +2,7 @@ import Vue,{ VNode } from 'vue';
 
 declare class Multiselect extends Vue {
     modelValue?: any;
+    mode: 'single'|'multiple'|'tags';
     options?: any[];
     searchable?: boolean;
     valueProp?: string;
