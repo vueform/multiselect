@@ -2,6 +2,7 @@ import Vue,{ VNode } from 'vue';
 
 declare class Multiselect extends Vue {
     modelValue?: any;
+    value?: any;
     mode: 'single'|'multiple'|'tags';
     options?: any[];
     searchable?: boolean;
@@ -38,7 +39,9 @@ declare class Multiselect extends Vue {
     $emit(eventName: 'tag', e: {originalEvent: Event, query: string}): this;
     $emit(eventName: 'open'): this;
     $emit(eventName: 'close'): this;
+
     $slots: {
+      placeholder: VNode[];
       afterlist: VNode[];
       beforelist: VNode[];
       list: VNode[];
