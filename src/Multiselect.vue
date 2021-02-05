@@ -15,8 +15,8 @@
       class="multiselect-input"
       :tabindex="tabindex"
       @mousedown="handleInputMousedown"
-      @focus="open"
-      @blur="close"
+      @focus="openDropdown"
+      @blur="closeDropdown"
       @keyup.esc="handleEsc"
       @keyup.enter="selectPointer"
       @keydown.prevent.delete="handleBackspace"
@@ -46,8 +46,8 @@
         <div class="multiselect-search">
           <input    
             v-model="search"
-            @focus.stop="open"
-            @blur.stop="close"
+            @focus.stop="openDropdown"
+            @blur.stop="closeDropdown"
             @keyup.stop.esc="handleEsc"
             @keyup.stop.enter="selectPointer"
             @keydown.delete="handleSearchBackspace"
@@ -82,8 +82,8 @@
           >
             <input    
               v-model="search"
-              @focus.stop="open"
-              @blur.stop="close"
+              @focus.stop="openDropdown"
+              @blur.stop="closeDropdown"
               @keyup.stop.esc="handleEsc"
               @keyup.stop.enter="selectPointer"
               @keydown.delete="handleSearchBackspace"
@@ -110,7 +110,7 @@
       </transition>
 
       <a
-        v-if="mode !== 'single' && hasSelected"
+        v-if="mode !== 'single' && hasSelected && !disabled"
         class="multiselect-clear"
         @click.prevent="clear"
       ></a>
@@ -164,7 +164,6 @@
 </template>
 
 <script>
-  import normalize from './utils/normalize'
   import useData from './composables/useData'
   import useValue from './composables/useValue'
   import useSearch from './composables/useSearch'
@@ -339,16 +338,20 @@
       const multiselect = useMultiselect(props, context)
       const pointer = usePointer(props, context)
 
-      const dropdown = useDropdown(props, context, {
-        multiselect: multiselect.multiselect,
-      })
-
       const data = useData(props, context, {
         internalValue: value.internalValue,
       })
 
       const search = useSearch(props, context, {
         internalValue: value.internalValue,
+      })
+
+      const dropdown = useDropdown(props, context, {
+        multiselect: multiselect.multiselect,
+        blurInput: multiselect.blurInput,
+        blurSearch: search.blurSearch,
+        focusInput: multiselect.focusInput,
+        focusSearch: search.focusSearch,
       })
 
       const options = useOptions(props, context, {
@@ -372,7 +375,7 @@
       const keyboard = useKeyboard(props, context, {
         internalValue: value.internalValue,
         update: data.update,
-        close: dropdown.close,
+        closeDropdown: dropdown.closeDropdown,
         clearPointer: pointerAction.clearPointer,
         search: search.search,
       })

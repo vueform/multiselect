@@ -7,6 +7,10 @@ export default function useDropdown (props, context, dependencies)
   // ============ DEPENDENCIES ============
 
   const multiselect = dependencies.multiselect
+  const blurInput = dependencies.blurInput
+  const blurSearch = dependencies.blurSearch
+  const focusInput = dependencies.focusInput
+  const focusSearch = dependencies.focusSearch
 
   // ================ DATA ================
 
@@ -20,7 +24,7 @@ export default function useDropdown (props, context, dependencies)
 
   // =============== METHODS ==============
 
-  const open = (e) => {
+  const openDropdown = () => {
     if (disabled.value) {
       return
     }
@@ -29,9 +33,25 @@ export default function useDropdown (props, context, dependencies)
     context.emit('open')
   }
 
-  const close = () => {
+  const closeDropdown = () => {
     isOpen.value = false
     context.emit('close')
+  }
+
+  const open = () => {
+    if (searchable && searchable.value) {
+      focusSearch()
+    } else {
+      focusInput()
+    }
+  }
+
+  const close = () => {
+    if (searchable && searchable.value) {
+      blurSearch()
+    } else {
+      blurInput()
+    }
   }
 
   const handleInputMousedown = (e) => {
@@ -45,6 +65,8 @@ export default function useDropdown (props, context, dependencies)
   return {
     isOpen,
     contentMaxHeight,
+    openDropdown,
+    closeDropdown,
     open,
     close,
     handleInputMousedown,

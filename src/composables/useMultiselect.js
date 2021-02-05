@@ -16,13 +16,18 @@ export default function useMultiselect (props, context, dependencies)
 
   // =============== METHODS ==============
 
+  const focusInput = () => {
+    multiselect.value.querySelector('.multiselect-input').focus()
+  }
+
   const blurInput = () => {
-    document.getElementById(id.value).querySelector('.multiselect-input').blur()
+    multiselect.value.querySelector('.multiselect-input').blur()
   }
 
   return {
     multiselect,
     tabindex,
+    focusInput,
     blurInput,
   }
 }

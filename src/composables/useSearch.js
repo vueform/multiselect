@@ -35,6 +35,10 @@ export default function useSearch (props, context, dependencies)
     search.value = ''
   }
 
+  const focusSearch = () => {
+    input.value.focus()
+  }
+
   const blurSearch = () => {
     if (!searchable.value) {
       return
@@ -54,6 +58,7 @@ export default function useSearch (props, context, dependencies)
     input,
     tagsSearchWidth,
     clearSearch,
+    focusSearch,
     blurSearch,
   }
 }

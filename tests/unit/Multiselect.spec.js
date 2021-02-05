@@ -12,24 +12,28 @@ describe('Multiselect', () => {
     })
 
     it('should render options if open', async () => {
-        let select = createSelect({
-          options: ['value1', 'value2', 'value3'],
-          valueProp: 'v',
-        })
+      let select = createSelect({
+        options: ['value1', 'value2', 'value3'],
+        valueProp: 'v',
+      }, {
+        attach: true,
+      })
 
-        let options = findAll(select, '.multiselect-option')
+      let options = findAll(select, '.multiselect-option')
 
-        expect(options.length).toBe(3)
-        expect(options.at(0).html()).toContain('value1')
-        expect(options.at(1).html()).toContain('value2')
-        expect(options.at(2).html()).toContain('value3')
-        expect(select.find('.multiselect-options').element).not.toBeVisible()
-        
-        select.vm.open()
+      expect(options.length).toBe(3)
+      expect(options.at(0).html()).toContain('value1')
+      expect(options.at(1).html()).toContain('value2')
+      expect(options.at(2).html()).toContain('value3')
+      expect(select.find('.multiselect-options').element).not.toBeVisible()
+      
+      select.vm.open()
 
-        await nextTick()
+      await nextTick()
 
-        expect(select.find('.multiselect-options').element).toBeVisible()
+      expect(select.find('.multiselect-options').element).toBeVisible()
+
+      destroy(select)
     })
 
     it('should render filtered options', async () => {
@@ -348,6 +352,17 @@ describe('Multiselect', () => {
         expect(select.find('.multiselect-clear').exists()).toBe(false)
       })
 
+      it('should not render clear if disabled', () => {
+        let select = createSelect({
+          mode: 'multiple',
+          value: [1],
+          disabled: true,
+          options: ['value1','value2','value3'],
+        })
+
+        expect(select.find('.multiselect-clear').exists()).toBe(false)
+      })
+
       it('should render clear has options', () => {
         let select = createSelect({
           mode: 'multiple',
@@ -512,6 +527,17 @@ describe('Multiselect', () => {
         expect(select.find('.multiselect-clear').exists()).toBe(false)
       })
 
+      it('should not render clear if disabled', () => {
+        let select = createSelect({
+          mode: 'tags',
+          value: [1],
+          disabled: true,
+          options: ['value1','value2','value3'],
+        })
+
+        expect(select.find('.multiselect-clear').exists()).toBe(false)
+      })
+
       it('should render clear has options', () => {
         let select = createSelect({
           mode: 'tags',
@@ -520,6 +546,17 @@ describe('Multiselect', () => {
         })
 
         expect(select.find('.multiselect-clear').exists()).toBe(true)
+      })
+
+      it('should not render clear if disabled', () => {
+        let select = createSelect({
+          mode: 'tags',
+          value: [1],
+          disabled: true,
+          options: ['value1','value2','value3'],
+        })
+
+        expect(select.find('.multiselect-clear').exists()).toBe(false)
       })
 
       it('should clear value on clicking clear', async () => {

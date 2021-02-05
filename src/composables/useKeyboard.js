@@ -8,7 +8,7 @@ export default function useKeyboard (props, context, dependencies)
 
   const internalValue = dependencies.internalValue
   const update = dependencies.update
-  const close = dependencies.close
+  const closeDropdown = dependencies.closeDropdown
   const clearPointer = dependencies.clearPointer
   const search = dependencies.search
 
@@ -23,7 +23,7 @@ export default function useKeyboard (props, context, dependencies)
   }
 
   const handleEsc = (e) => {
-    close()
+    closeDropdown()
     clearPointer()
     e.target.blur()
   }
