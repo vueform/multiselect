@@ -69,7 +69,7 @@
                 <i
                   v-if="!disabled"
                   @click.prevent
-                  @mousedown.prevent.stop="remove(option)"
+                  @mousedown.prevent.stop="handleTagRemove(option, $event)"
                 ></i>
               </div>
             </slot>

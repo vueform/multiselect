@@ -187,6 +187,15 @@ export default function useOptions (props, context, dependencies)
     deselect(option)
   }
 
+  const handleTagRemove = (option, e) => {
+    if (e.button !== 0) {
+      e.preventDefault()
+      return
+    }
+
+    remove(option)
+  }
+
   const clear = () => {
     update(nullValue.value)
   }
@@ -428,6 +437,7 @@ export default function useOptions (props, context, dependencies)
     isMax,
     getOption,
     handleOptionClick,
+    handleTagRemove,
     resolveOptions,
   }
 }

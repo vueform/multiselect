@@ -1,4 +1,4 @@
-import { createSelect, destroy, getValue } from 'unit-test-helpers'
+import { createSelect, destroy, getValue, findAll } from 'unit-test-helpers'
 import { nextTick } from 'composition-api'
 
 describe('useDropdown', () => {
@@ -165,14 +165,14 @@ describe('useDropdown', () => {
       })
 
       let inputDiv = select.vm.multiselect.querySelector('.multiselect-input')
-      let tagRemove = select.vm.multiselect.querySelector('.multiselect-tag i')
+      let tagRemove = findAll(select, '.multiselect-tag').at(0).find('i')
 
       inputDiv.dispatchEvent(new Event('mousedown'))
       inputDiv.dispatchEvent(new Event('focus'))
 
       await nextTick()
 
-      tagRemove.dispatchEvent(new Event('mousedown'))
+      tagRemove.trigger('mousedown', { button: 0 })
 
       await nextTick()
 

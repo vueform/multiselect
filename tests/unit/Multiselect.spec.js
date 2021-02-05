@@ -470,18 +470,34 @@ describe('Multiselect', () => {
         expect(findAll(select, '.multiselect-tag').at(0).find('i').exists()).toBe(false)
       })
 
-      it('should deselect value on tag remove', async () => {
+      // vue-test-utils does not have an options to replicate left/right click
+
+      it('should deselect value on tag remove if left button is clicked', async () => {
         let select = createSelect({
           mode: 'tags',
           value: [0],
           options: [1,2,3],
         })
 
-        findAll(select, '.multiselect-tag').at(0).find('i').trigger('mousedown')
+        findAll(select, '.multiselect-tag').at(0).find('i').trigger('mousedown', { button: 0 })
 
         await nextTick()
 
         expect(getValue(select)).toStrictEqual([])
+      })
+
+      it('should not deselect value on tag remove if not left button is clicked', async () => {
+        let select = createSelect({
+          mode: 'tags',
+          value: [0],
+          options: [1,2,3],
+        })
+
+        findAll(select, '.multiselect-tag').at(0).find('i').trigger('mousedown', { button: 2 })
+
+        await nextTick()
+
+        expect(getValue(select)).toStrictEqual([0])
       })
     })
 

@@ -501,6 +501,48 @@ describe('useOptions', () => {
     })
   })
 
+  describe('handleTagRemove', () => {
+    it('should not deselect option and preventDefault if event.button is not 0', async () => {
+      let select = createSelect({
+        mode: 'tags',
+        options: [1,2,3],
+        value: [1,2],
+      })
+
+      let preventDefaultMock = jest.fn()
+
+      select.vm.handleTagRemove(1, {
+        button: 2,
+        preventDefault: preventDefaultMock,
+      })
+
+      await nextTick()
+
+      expect(getValue(select)).toStrictEqual([1,2])
+      expect(preventDefaultMock).toHaveBeenCalled()
+    })
+
+    it('should deselect option and not preventDefault if event.button is 0', async () => {
+      let select = createSelect({
+        mode: 'tags',
+        options: [1,2,3],
+        value: [1,2],
+      })
+
+      let preventDefaultMock = jest.fn()
+
+      select.vm.handleTagRemove(1, {
+        button: 0,
+        preventDefault: preventDefaultMock,
+      })
+
+      await nextTick()
+
+      expect(getValue(select)).toStrictEqual([2])
+      expect(preventDefaultMock).not.toHaveBeenCalled()
+    })
+  })
+
   describe('clear', () => {
     it('should set value to null on clear when single', async () => {
       let select = createSelect({
