@@ -54,8 +54,9 @@
 
 * Vue 2 & 3 support
 * No dependencies
-* Lightweight (~5 kB gzipped)
+* Lightweight (<6 kB gzipped)
 * 100% coverage
+* TypeScript support
 * ESM support
 * Single select options
 * Multiple select options
@@ -68,7 +69,7 @@
 
 ## Demo
 
-Check out our <a href="https://jsfiddle.net/5qsugfxt/" target="_blank">demo</a>.
+Check out our <a href="https://jsfiddle.net/armbfy51/" target="_blank">demo</a>.
 
 ## Installation
 
@@ -136,7 +137,7 @@ Join our [Discord channel](https://discord.gg/WhX2nG6GTQ) or [open an issue](htt
 | **placeholder** | `string` | `null` | The text that should be displayed before any option is selected. |
 | **multipleLabel** | `function` |  | A function that returns the label to be displayed for selected options when using `multiple` mode. It receives `value` as an argument. By default it renders `1 option selected` and `[n] options selected` based on `value` length. |
 | **disabled** | `boolean` | `false` | Whether the input should be disabled for the user (API can still be used programmatically). |
-| **max** | `number` | `-1` | The maximum number of options that **can be be selected** when using `multiple` or `tags` mode. If `-1` the number of options won't be limited. |
+| **max** | `number` | `-1` | The maximum number of options that **can be selected** when using `multiple` or `tags` mode. If `-1` the number of options won't be limited. |
 | **limit** | `number` | `-1` | The maximum number of options that **should be displayed**. If `-1` the number of options won't be limited. |
 | **loading** | `boolean` | `false` | Whether a loading spinner should be shown. |
 | **id** | `string` | `'multiselect'` | The `id` of the multiselect container DOM. |
@@ -161,6 +162,36 @@ Join our [Discord channel](https://discord.gg/WhX2nG6GTQ) or [open an issue](htt
 | **hideSelected** | `boolean` | `true` | Whether selected options should be excluded from the option list when using `multiple` or `tags` mode. |
 | **object** | `boolean` | `false` | Whether the value should be stored as an object.<br>If **false**:<br>`value: ['js','jsx','ts']`<br>If **true**:<br> `value: [`<br>&nbsp;&nbsp;`{value:'js',label:'Javascript'},`<br>&nbsp;&nbsp;`{value:'jsx',label:'JSX'},`<br>&nbsp;&nbsp;`{value:'ts',label:'Typescript'}`<br>`]` |
 
+## API
+
+| Name | Params | Description |
+| --- | --- | --- | --- |
+| **open** |  | Opens the options list and focuses the multiselect. |
+| **close** |  | Closes the options list and blurs the multiselect. |
+| **select** | `value` | Selects an option based on its value. |
+| **deselect** | `value` | Deselects an option based on its value. |
+| **remove** | `value` | Alias for `deselect`. |
+| **clear** |  | Deselects all selected options. |
+| **refreshOptions** | `callback` | Refreshes async options list. |
+
+
+To access API use `ref` on `Multiselect` component:
+``` html
+<Multiselect
+  v-model="value"
+  :options="options"
+  ref="multiselect"
+/>
+```
+
+``` js
+// eg:
+mounted() {
+  this.$refs.multiselect.open()
+}
+```
+
+
 ## Events
 
 | Event | Attributes | Description |
@@ -177,6 +208,7 @@ Join our [Discord channel](https://discord.gg/WhX2nG6GTQ) or [open an issue](htt
 
 | Slot | Attributes | Description |
 | --- | --- | --- |
+| **placeholder** | | Rendered as placeholder when the multiselect does not have value and `placeholder` prop is defined. |
 | **afterlist** | | Rendered after the options list. |
 | **beforelist** | | Rendered before the options list. |
 | **multiplelabel** | `values` | Rendered when using `multiple` mode and options are selected. By default it renders the return value of `multipleLabel` function. |
@@ -209,7 +241,7 @@ Join our [Discord channel](https://discord.gg/WhX2nG6GTQ) or [open an issue](htt
 />
 ```
 
-<a href="https://jsfiddle.net/5qsugfxt/" target="_blank">JSFiddle - Example #1</a>
+<a href="https://jsfiddle.net/armbfy51/" target="_blank">JSFiddle - Example #1</a>
 
 ### Multiselect with object options
 
@@ -225,7 +257,7 @@ Join our [Discord channel](https://discord.gg/WhX2nG6GTQ) or [open an issue](htt
 />
 ```
 
-<a href="https://jsfiddle.net/5qsugfxt/" target="_blank">JSFiddle - Example #2</a>
+<a href="https://jsfiddle.net/armbfy51/" target="_blank">JSFiddle - Example #2</a>
 
 ### Multiselect with disabled options
 
@@ -241,7 +273,7 @@ Join our [Discord channel](https://discord.gg/WhX2nG6GTQ) or [open an issue](htt
 />
 ```
 
-<a href="https://jsfiddle.net/5qsugfxt/" target="_blank">JSFiddle - Example #3</a>
+<a href="https://jsfiddle.net/armbfy51/" target="_blank">JSFiddle - Example #3</a>
 
 ### Tags with search, create and array of objects options
 
@@ -259,7 +291,7 @@ Join our [Discord channel](https://discord.gg/WhX2nG6GTQ) or [open an issue](htt
 />
 ```
 
-<a href="https://jsfiddle.net/5qsugfxt/" target="_blank">JSFiddle - Example #4</a>
+<a href="https://jsfiddle.net/armbfy51/" target="_blank">JSFiddle - Example #4</a>
 
 ### Autocomplete with async options
 
@@ -278,7 +310,7 @@ Join our [Discord channel](https://discord.gg/WhX2nG6GTQ) or [open an issue](htt
 />
 ```
 
-<a href="https://jsfiddle.net/5qsugfxt/" target="_blank">JSFiddle - Example #5</a>
+<a href="https://jsfiddle.net/armbfy51/" target="_blank">JSFiddle - Example #5</a>
 
 ### Tags with async options
 
@@ -298,7 +330,7 @@ Join our [Discord channel](https://discord.gg/WhX2nG6GTQ) or [open an issue](htt
 />
 ```
 
-<a href="https://jsfiddle.net/5qsugfxt/" target="_blank">JSFiddle - Example #6</a>
+<a href="https://jsfiddle.net/armbfy51/" target="_blank">JSFiddle - Example #6</a>
 
 ### Select with custom options slot
 
@@ -326,7 +358,7 @@ Join our [Discord channel](https://discord.gg/WhX2nG6GTQ) or [open an issue](htt
 
 ```
 
-<a href="https://jsfiddle.net/5qsugfxt/" target="_blank">JSFiddle - Example #7</a>
+<a href="https://jsfiddle.net/armbfy51/" target="_blank">JSFiddle - Example #7</a>
 
 ### Multiselect with custom label slot
 
@@ -350,7 +382,7 @@ Join our [Discord channel](https://discord.gg/WhX2nG6GTQ) or [open an issue](htt
 
 ```
 
-<a href="https://jsfiddle.net/5qsugfxt/" target="_blank">JSFiddle - Example #8</a>
+<a href="https://jsfiddle.net/armbfy51/" target="_blank">JSFiddle - Example #8</a>
 
 ### Tags with custom tags slot
 
@@ -377,7 +409,7 @@ Join our [Discord channel](https://discord.gg/WhX2nG6GTQ) or [open an issue](htt
           <i
             v-if="!disabled"
             @click.prevent
-            @mousedown.prevent.stop="remove(option)"
+            @mousedown.prevent.stop="handleTagRemove(option, $event)"
           />
         </div>
       </template>
@@ -413,7 +445,7 @@ Join our [Discord channel](https://discord.gg/WhX2nG6GTQ) or [open an issue](htt
 </style>
 ```
 
-<a href="https://jsfiddle.net/5qsugfxt/" target="_blank">JSFiddle - Example #9</a>
+<a href="https://jsfiddle.net/armbfy51/" target="_blank">JSFiddle - Example #9</a>
 
 ## About Vueform
 

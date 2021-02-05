@@ -1,3 +1,21 @@
+## v1.3.0
+
+> `2021-02-05`
+
+### 🎉 Feature
+  - Added Typescript definitions based on [#20](https://github.com/vueform/multiselect/pull/20).
+  - Added Clear button for `multiple` and `tags` mode.
+  - Added `placeholder` slot.
+  - Added proper `open` and `close` methods.
+  - Hide options when resolving with `clearOnSearch` `true`.
+  - Added `refreshOptions` method to refresh async options.
+  - Added API docs.
+
+### 🐞 Bug Fixes
+  - Added fix for #26. The value now can be set the same time that `options` change.
+  - Added fix for #28. Right mouse click no longer removes tag.
+  - Added fix for #29. Focus is no longer trapped to option list when using search.
+
 ## v1.2.5
 
 > `2021-01-17`
