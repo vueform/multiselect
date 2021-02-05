@@ -63,7 +63,7 @@
         <div class="multiselect-tags">
 
           <span v-for="(option, i, key) in internalValue" :key="key">
-            <slot name="tag" :option="option" :remove="remove" :disabled="disabled">
+            <slot name="tag" :option="option" :handleTagRemove="handleTagRemove" :disabled="disabled">
               <div class="multiselect-tag">
                 {{ option[label] }}
                 <i
