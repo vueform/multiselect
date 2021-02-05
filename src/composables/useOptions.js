@@ -327,6 +327,10 @@ export default function useOptions (props, context, dependencies)
     })
   }
 
+  const refreshOptions = (callback) => {
+    resolveOptions(callback)
+  }
+
   // no export
   const makeInternal = (val) => {
     if (isNullish(val)) {
@@ -438,6 +442,7 @@ export default function useOptions (props, context, dependencies)
     getOption,
     handleOptionClick,
     handleTagRemove,
+    refreshOptions,
     resolveOptions,
   }
 }

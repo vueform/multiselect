@@ -1162,6 +1162,33 @@ describe('useOptions', () => {
       ])
     })
   })
+  
+  describe('refreshOptions', () => {
+    it('should resolve options', async () => {
+      let select = createSelect({
+        options: async () => {
+          return await new Promise((resolve, reject) => {
+            resolve([1,2,3])
+          })
+        },
+        resolveOnLoad: false,
+      })
+  
+      await flushPromises()
+
+      expect(select.vm.filteredOptions).toStrictEqual([])
+
+      select.vm.refreshOptions()
+
+      await flushPromises()
+
+      expect(select.vm.filteredOptions).toStrictEqual([
+        { value: 0, label: 1 },
+        { value: 1, label: 2 },
+        { value: 2, label: 3 },
+      ])
+    })
+  })
 
   describe('onCreated', () => {
     it('should throw error if initial value is not empty or an array when multiple', () => {
