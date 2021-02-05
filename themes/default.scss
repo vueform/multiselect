@@ -110,6 +110,39 @@
   font-family: inherit;
 }
 
+.multiselect-clear {
+  position: absolute;
+  right: 0;
+  top: 1px;
+  width: 36px;
+  height: 36px;
+  background: #fff;
+
+  &:before, &:after {
+    position: absolute;
+    top: 12px;
+    left: 16px;
+    content: " ";
+    height: 12px;
+    width: 2px;
+    background-color: #999;
+  }
+
+  &:before {
+    transform: rotate(45deg);
+  }
+
+  &:after {
+    transform: rotate(-45deg);
+  }
+
+  &:hover {
+    &:before, &:after {
+      background-color: #555;
+    }
+  }
+}
+
 .multiselect-tags {
   display: flex;
   height: 100%;

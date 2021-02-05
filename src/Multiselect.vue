@@ -108,6 +108,11 @@
         <div v-show="busy" class="multiselect-spinner" />
       </transition>
 
+      <a
+        v-if="mode !== 'single' && hasSelected"
+        class="multiselect-clear"
+        @click.prevent="clear"
+      ></a>
     </div>
 
     <!-- Options -->

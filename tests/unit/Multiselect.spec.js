@@ -336,6 +336,42 @@ describe('Multiselect', () => {
         expect(select.find('.multiselect-multiple-label').exists()).toBe(false)
       })
     })
+
+    describe('clear', () => {
+      it('should not render clear if no options selected', () => {
+        let select = createSelect({
+          mode: 'multiple',
+          value: [],
+          options: ['value1','value2','value3'],
+        })
+
+        expect(select.find('.multiselect-clear').exists()).toBe(false)
+      })
+
+      it('should render clear has options', () => {
+        let select = createSelect({
+          mode: 'multiple',
+          value: [1],
+          options: ['value1','value2','value3'],
+        })
+
+        expect(select.find('.multiselect-clear').exists()).toBe(true)
+      })
+
+      it('should clear value on clicking clear', async () => {
+        let select = createSelect({
+          mode: 'multiple',
+          value: [0,1,2],
+          options: ['value1','value2','value3'],
+        })
+
+        select.find('.multiselect-clear').trigger('click')
+
+        await nextTick()
+
+        expect(getValue(select)).toStrictEqual([])
+      })
+    })
     
     testSearch('multiple')
   })
@@ -442,6 +478,42 @@ describe('Multiselect', () => {
         })
 
         findAll(select, '.multiselect-tag').at(0).find('i').trigger('mousedown')
+
+        await nextTick()
+
+        expect(getValue(select)).toStrictEqual([])
+      })
+    })
+
+    describe('clear', () => {
+      it('should not render clear if no options selected', () => {
+        let select = createSelect({
+          mode: 'tags',
+          value: [],
+          options: ['value1','value2','value3'],
+        })
+
+        expect(select.find('.multiselect-clear').exists()).toBe(false)
+      })
+
+      it('should render clear has options', () => {
+        let select = createSelect({
+          mode: 'tags',
+          value: [1],
+          options: ['value1','value2','value3'],
+        })
+
+        expect(select.find('.multiselect-clear').exists()).toBe(true)
+      })
+
+      it('should clear value on clicking clear', async () => {
+        let select = createSelect({
+          mode: 'tags',
+          value: [0,1,2],
+          options: ['value1','value2','value3'],
+        })
+
+        select.find('.multiselect-clear').trigger('click')
 
         await nextTick()
 
