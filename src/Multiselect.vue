@@ -127,6 +127,7 @@
 
         <a
           v-for="(option, i, key) in filteredOptions"
+          :tabindex="-1"
           href=""
           class="multiselect-option"
           :class="{
