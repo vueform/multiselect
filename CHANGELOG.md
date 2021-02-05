@@ -1,3 +1,10 @@
+## v1.3.2
+
+> `2021-02-05`
+
+### 🐞 Bug Fixes
+  - Tags slots scope updated with `handleTagRemove` instead of `remove`.
+
 ## v1.3.1
 
 > `2021-02-05`

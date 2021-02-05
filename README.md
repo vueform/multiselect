@@ -69,7 +69,7 @@
 
 ## Demo
 
-Check out our <a href="https://jsfiddle.net/armbfy51/" target="_blank">demo</a>.
+Check out our <a href="https://jsfiddle.net/q6Lnpr7a/" target="_blank">demo</a>.
 
 ## Installation
 
@@ -241,7 +241,7 @@ mounted() {
 />
 ```
 
-<a href="https://jsfiddle.net/armbfy51/" target="_blank">JSFiddle - Example #1</a>
+<a href="https://jsfiddle.net/q6Lnpr7a/" target="_blank">JSFiddle - Example #1</a>
 
 ### Multiselect with object options
 
@@ -257,7 +257,7 @@ mounted() {
 />
 ```
 
-<a href="https://jsfiddle.net/armbfy51/" target="_blank">JSFiddle - Example #2</a>
+<a href="https://jsfiddle.net/q6Lnpr7a/" target="_blank">JSFiddle - Example #2</a>
 
 ### Multiselect with disabled options
 
@@ -273,7 +273,7 @@ mounted() {
 />
 ```
 
-<a href="https://jsfiddle.net/armbfy51/" target="_blank">JSFiddle - Example #3</a>
+<a href="https://jsfiddle.net/q6Lnpr7a/" target="_blank">JSFiddle - Example #3</a>
 
 ### Tags with search, create and array of objects options
 
@@ -291,7 +291,7 @@ mounted() {
 />
 ```
 
-<a href="https://jsfiddle.net/armbfy51/" target="_blank">JSFiddle - Example #4</a>
+<a href="https://jsfiddle.net/q6Lnpr7a/" target="_blank">JSFiddle - Example #4</a>
 
 ### Autocomplete with async options
 
@@ -310,7 +310,7 @@ mounted() {
 />
 ```
 
-<a href="https://jsfiddle.net/armbfy51/" target="_blank">JSFiddle - Example #5</a>
+<a href="https://jsfiddle.net/q6Lnpr7a/" target="_blank">JSFiddle - Example #5</a>
 
 ### Tags with async options
 
@@ -330,7 +330,7 @@ mounted() {
 />
 ```
 
-<a href="https://jsfiddle.net/armbfy51/" target="_blank">JSFiddle - Example #6</a>
+<a href="https://jsfiddle.net/q6Lnpr7a/" target="_blank">JSFiddle - Example #6</a>
 
 ### Select with custom options slot
 
@@ -358,7 +358,7 @@ mounted() {
 
 ```
 
-<a href="https://jsfiddle.net/armbfy51/" target="_blank">JSFiddle - Example #7</a>
+<a href="https://jsfiddle.net/q6Lnpr7a/" target="_blank">JSFiddle - Example #7</a>
 
 ### Multiselect with custom label slot
 
@@ -382,7 +382,7 @@ mounted() {
 
 ```
 
-<a href="https://jsfiddle.net/armbfy51/" target="_blank">JSFiddle - Example #8</a>
+<a href="https://jsfiddle.net/q6Lnpr7a/" target="_blank">JSFiddle - Example #8</a>
 
 ### Tags with custom tags slot
 
@@ -402,7 +402,7 @@ mounted() {
       { value: 'joe', name: 'Joe', image: 'https://randomuser.me/api/portraits/med/men/2.jpg' }
     ]"
   >
-      <template v-slot:tag="{ option, remove, disabled }">
+      <template v-slot:tag="{ option, handleTagRemove, disabled }">
         <div class="multiselect-tag is-user">
           <img :src="option.image">
           {{ option.name }}
@@ -445,7 +445,7 @@ mounted() {
 </style>
 ```
 
-<a href="https://jsfiddle.net/armbfy51/" target="_blank">JSFiddle - Example #9</a>
+<a href="https://jsfiddle.net/q6Lnpr7a/" target="_blank">JSFiddle - Example #9</a>
 
 ## About Vueform
 
