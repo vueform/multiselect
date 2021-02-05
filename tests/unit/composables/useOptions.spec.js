@@ -1800,5 +1800,46 @@ describe('useOptions', () => {
         { value: 3, label: 4, },
       ])
     })
+
+    it('should set value when changed upon changin options too when mode=single', async () => {
+      let select = createSelect({
+        options: [],
+      })
+
+      select.vm.$parent.props.options = [1,2,3]
+      select.vm.$parent.value = 1
+
+      await nextTick()
+
+      expect(getValue(select)).toBe(1)
+    })
+
+    it('should set value when changed upon changin options too when mode=multiple', async () => {
+      let select = createSelect({
+        mode: 'multiple',
+        options: [],
+      })
+
+      select.vm.$parent.props.options = [1,2,3]
+      select.vm.$parent.value = [1,2]
+
+      await nextTick()
+
+      expect(getValue(select)).toStrictEqual([1,2])
+    })
+
+    it('should set value when changed upon changin options too when mode=tags', async () => {
+      let select = createSelect({
+        mode: 'tags',
+        options: [],
+      })
+
+      select.vm.$parent.props.options = [1,2,3]
+      select.vm.$parent.value = [1,2]
+
+      await nextTick()
+
+      expect(getValue(select)).toStrictEqual([1,2])
+    })
   })
 })

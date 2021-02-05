@@ -409,7 +409,7 @@ export default function useOptions (props, context, dependencies)
     if (typeof props.options !== 'function') {
       resolvedOptions.value = props.options
     }
-  })
+  }, { flush: 'sync' })
 
   return {
     filteredOptions,
