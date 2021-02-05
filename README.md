@@ -165,7 +165,7 @@ Join our [Discord channel](https://discord.gg/WhX2nG6GTQ) or [open an issue](htt
 ## API
 
 | Name | Params | Description |
-| --- | --- | --- | --- |
+| --- | --- | --- |
 | **open** |  | Opens the options list and focuses the multiselect. |
 | **close** |  | Closes the options list and blurs the multiselect. |
 | **select** | `value` | Selects an option based on its value. |
