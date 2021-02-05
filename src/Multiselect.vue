@@ -117,7 +117,7 @@
     </div>
 
     <!-- Options -->
-    <transition name="multiselect" @after-leave="clearSearch">
+    <transition v-if="!resolving || !clearOnSearch" name="multiselect" @after-leave="clearSearch">
       <div
         v-show="isOpen"
         class="multiselect-options"

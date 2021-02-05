@@ -30,7 +30,6 @@ export default function useOptions (props, context, dependencies)
   // no export
   const resolvedOptions = ref([])
 
-  // no export
   const resolving = ref(false)
 
   // ============== COMPUTED ==============
@@ -102,7 +101,7 @@ export default function useOptions (props, context, dependencies)
   })
 
   const noOptions = computed(() => {
-    return !extendedOptions.value.length
+    return !extendedOptions.value.length && !resolving.value
   })
 
   const noResults = computed(() => {
@@ -319,11 +318,12 @@ export default function useOptions (props, context, dependencies)
 
     options.value(search.value).then((response) => {
       resolvedOptions.value = response
-      resolving.value = false
 
       if (typeof callback == 'function') {
         callback(response)
       }
+
+      resolving.value = false
     })
   }
 
@@ -369,6 +369,8 @@ export default function useOptions (props, context, dependencies)
         return
       }
 
+      resolving.value = true
+
       if (clearOnSearch.value) {
         resolvedOptions.value = []
       }
@@ -377,15 +379,12 @@ export default function useOptions (props, context, dependencies)
           return
         }
 
-        resolving.value = true
-
         options.value(search.value).then((response) => {
           if (query == search.value) {
             resolvedOptions.value = response
             pointer.value = filteredOptions.value.filter(o => o.disabled !== true)[0] || null
+            resolving.value = false
           }
-
-          resolving.value = false
         })
       }, delay.value)
 
@@ -427,6 +426,7 @@ export default function useOptions (props, context, dependencies)
     extendedOptions,
     noOptions,
     noResults,
+    resolving,
     busy,
     select,
     deselect,
