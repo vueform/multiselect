@@ -109,11 +109,15 @@
         <div v-show="busy" class="multiselect-spinner" />
       </transition>
 
+      <slot name="arrow"></slot>
+
       <a
         v-if="mode !== 'single' && hasSelected && !disabled"
         class="multiselect-clear"
         @click.prevent="clear"
-      ></a>
+      >
+        <slot name="clear"></slot>
+      </a>
     </div>
 
     <!-- Options -->
