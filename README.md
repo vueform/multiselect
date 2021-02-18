@@ -1,4 +1,9 @@
 <div align="center">
+
+  <a href="https://www.npmjs.com/package/@vueform/multiselect" target="_blank">
+    <img alt="npm" src="https://img.shields.io/npm/dm/@vueform/multiselect?color=%2353ca2f">
+  </a>
+  
   <img alt="CircleCI" src="https://img.shields.io/circleci/build/github/vueform/multiselect">
 
   <a href="https://codecov.io/gh/vueform/multiselect" target="_blank">
@@ -15,10 +20,6 @@
 
   <a href="https://discord.gg/WhX2nG6GTQ" target="_blank">
     <img alt="Discord" src="https://img.shields.io/discord/787237947635793940">
-  </a>
-
-  <a href="https://www.npmjs.com/package/@vueform/multiselect" target="_blank">
-    <img alt="npm" src="https://img.shields.io/npm/dm/@vueform/multiselect?color=%2353ca2f">
   </a>
 
   <a href="https://www.npmjs.com/package/@vueform/multiselect" target="_blank">
