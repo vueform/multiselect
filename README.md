@@ -18,6 +18,10 @@
   </a>
 
   <a href="https://www.npmjs.com/package/@vueform/multiselect" target="_blank">
+    <img alt="npm" src="https://img.shields.io/npm/dm/@vueform/multiselect?color=%2353ca2f">
+  </a>
+
+  <a href="https://www.npmjs.com/package/@vueform/multiselect" target="_blank">
     <img alt="npm" src="https://img.shields.io/npm/v/@vueform/multiselect">
   </a>
 
