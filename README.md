@@ -3,8 +3,6 @@
   <a href="https://www.npmjs.com/package/@vueform/multiselect" target="_blank">
     <img alt="npm" src="https://img.shields.io/npm/dm/@vueform/multiselect?color=%2353ca2f">
   </a>
-  
-  <img alt="CircleCI" src="https://img.shields.io/circleci/build/github/vueform/multiselect">
 
   <a href="https://codecov.io/gh/vueform/multiselect" target="_blank">
     <img src="https://img.shields.io/codecov/c/github/vueform/multiselect"/>
@@ -12,10 +10,6 @@
 
   <a href="https://www.npmjs.com/package/@vueform/multiselect" target="_blank">
     <img alt="npm bundle size (scoped version)" src="https://img.shields.io/bundlephobia/minzip/@vueform/multiselect?color=53ca2f">
-  </a>
-
-  <a href="https://github.com/vueform/multiselect/blob/main/LICENSE.md" target="_blank">
-    <img alt="GitHub" src="https://img.shields.io/github/license/vueform/multiselect?color=53ca2f">
   </a>
 
   <a href="https://discord.gg/WhX2nG6GTQ" target="_blank">
@@ -221,7 +215,7 @@ mounted() {
 | **noresults** |  | Rendered when there are no search results. By default renders `noResultsText`. |
 | **option** | `option, search` | Renders an option in options list. |
 | **singlelabel** | `value` | Rendered when using `single` mode and an option is selected. By default it renders the `:label` if the selected option. |
-| **tag** | `option, remove, disabled` | Renders a tag when using `tags` mode. When `disabled` the remove icon should not be displayed. The `remove` prop should be used to trigger the removal of the tag. |
+| **tag** | `option, handleTagRemove, disabled` | Renders a tag when using `tags` mode. When `disabled` the remove icon should not be displayed. The `handleTagRemove` prop should be used to trigger the removal of the tag. |
 
 > Note: we don't use camelCase because they are [normalized back to lowercase](https://github.com/vuejs/vue/issues/9449#issuecomment-461170017) when written in DOM.
 
