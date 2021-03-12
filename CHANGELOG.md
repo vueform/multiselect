@@ -1,3 +1,16 @@
+## v1.3.3
+
+> `2021-03-12`
+
+### 🐞 Bug Fixes
+  - Selected items' label update when options label change ([#39](https://github.com/vueform/multiselect/issues/39)).
+  - Horizontal scroll fix ([#31](https://github.com/vueform/multiselect/issues/31)).
+
+### 🎉 Feature
+  - Added `addTagOn` that can enable `enter` and/or `space` key to create a tag.
+  - Added `required` prop that renders a HTML5 required attribute on a fake input next to multiselect.
+  - Added `showOptions` prop that hide options list if somebody wants to have only a free-type tag list.
+
 ## v1.3.2
 
 > `2021-02-05`
