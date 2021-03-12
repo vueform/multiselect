@@ -33,6 +33,7 @@ declare class Multiselect extends Vue {
     hideSelected?: boolean;
     showOptions?: boolean;
     object: boolean;
+    required: boolean;
 
     $emit(eventName: 'change', e: {originalEvent: Event, value: any}): this;
     $emit(eventName: 'select', e: {originalEvent: Event, option: any}): this;

@@ -22,9 +22,14 @@ export default function useValue (props, context)
     return mode.value !== 'single' ? internalValue.value.map(v=>v[valueProp.value]) : internalValue.value[valueProp.value]
   })
 
+  const textValue = computed(() => {
+    return mode.value !== 'single' ? internalValue.value.map(v=>v[valueProp.value]).join(',') : internalValue.value[valueProp.value]
+  })
+
   return {
     internalValue,
     externalValue,
     currentValue,
+    textValue,
   }
 }

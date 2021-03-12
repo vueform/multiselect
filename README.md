@@ -129,6 +129,7 @@ Join our [Discord channel](https://discord.gg/WhX2nG6GTQ) or [open an issue](htt
 | --- | --- | --- | --- |
 | **mode** | `string` | `single` | Possible values: `single\|multiple\|tags`. |
 | **options** | `array\|object\|function` | `[]` | List of options. Can be:<br>- an array (eg. `[1,2,3]`)<br>- an object (eg. `{a:1,b:2,c:3}`)<br>- an array of objects `[{value:1,label:'v1'},{value:2,label:'v2'},{value:3,label:'v3',disabled:true}]`<br>- a function returning a Promise (async function) with `query` input param. The promise should return options as an **object** or as an **array of objects**.<br>When an array of objects is provided it **must** have properties that equal to `:valueProp`'s, `:trackBy`'s and `:label`'s value. |
+| **required** | `boolean` | `false` | Whether the HTML5 required attribute should be used for multiselect (using an invisible fake input). |
 | **searchable** | `boolean` | `false` | Whether the options should be searchable. |
 | **valueProp** | `string` | `'value'` | If you provide an array of objects as options this property should be used as the value of the option. |
 | **trackBy** | `string` | `'label'` | The name of the property that should be searched when `searchable` is `true` and an array of objects are provided as `:options`. |

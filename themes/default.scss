@@ -199,6 +199,21 @@
   padding: 1px 8px 1px 8px;
 }
 
+.multiselect-fake-input {
+  background: transparent;
+  width: 100%;
+  height: 1px;
+  border: 0;
+  padding: 0;
+  font-size: 0;
+  margin-top: -1px;
+  outline: none;
+
+  &:active, &:focus {
+    outline: none;
+  }
+}
+
 .multiselect-options {
   position: absolute;
   left: 0;

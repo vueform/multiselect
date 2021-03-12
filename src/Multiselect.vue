@@ -163,6 +163,9 @@
         <slot name="afterlist"></slot>
       </div>
     </transition>
+
+    <!-- Hacky input element to show HTML5 required warning -->
+    <input v-if="required" class="multiselect-fake-input" tabindex="-1" :value="textValue" required/>
   </div>
 </template>
 
@@ -343,6 +346,11 @@
         type: Array,
         required: false,
         default: () => (['enter']),
+      },
+      required: {
+        type: Boolean,
+        required: false,
+        default: false,
       },
     },
     setup(props, context)

@@ -11,6 +11,45 @@ describe('Multiselect', () => {
       expect(createSelect().exists()).toBe(true)
     })
 
+    it('should render fake input if required mode=single', () => {
+      let select = createSelect({
+        value: 1,
+        options: ['value1', 'value2', 'value3'],
+        required: true,
+      }, {
+        attach: true,
+      })
+      
+      expect(select.find('.multiselect-fake-input').element).toBeVisible()
+      expect(select.find('.multiselect-fake-input').element.value).toBe('1')
+    })
+
+    it('should render fake input if required mode=multiple', () => {
+      let select = createSelect({
+        mode: 'multiple',
+        value: [1,2],
+        options: ['value1', 'value2', 'value3'],
+        required: true,
+      }, {
+        attach: true,
+      })
+      
+      expect(select.find('.multiselect-fake-input').element).toBeVisible()
+      expect(select.find('.multiselect-fake-input').element.value).toBe('1,2')
+    })
+
+    it('should not render fake input if not required', () => {
+      let select = createSelect({
+        value: 1,
+        options: ['value1', 'value2', 'value3'],
+        required: false,
+      }, {
+        attach: true,
+      })
+      
+      expect(select.find('.multiselect-fake-input').exists()).toBe(false)
+    })
+
     it('should not render options if showOptions is false', async () => {
       let select = createSelect({
         options: ['value1', 'value2', 'value3'],
