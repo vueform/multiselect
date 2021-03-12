@@ -58,6 +58,9 @@ const keyEvent = (event, wrapper, key) => {
     case 'enter':
       wrapper.trigger(event, { keyCode: 13 })
       break
+    case 'space':
+      wrapper.trigger(event, { keyCode: 32 })
+      break
   }
 }
 

@@ -18,7 +18,8 @@
       @focus="openDropdown"
       @blur="closeDropdown"
       @keyup.esc="handleEsc"
-      @keyup.enter="selectPointer"
+      @keyup.enter="handleAddTag"
+      @keyup.space="handleAddTag"
       @keydown.prevent.delete="handleBackspace"
       @keydown.prevent.up="backwardPointer"
       @keydown.prevent.down="forwardPointer"
@@ -50,6 +51,7 @@
             @blur.stop="closeDropdown"
             @keyup.stop.esc="handleEsc"
             @keyup.stop.enter="selectPointer"
+            @keyup.stop.space="selectPointer"
             @keydown.delete="handleSearchBackspace"
             @keydown.stop.up="backwardPointer"
             @keydown.stop.down="forwardPointer"
@@ -85,7 +87,8 @@
               @focus.stop="openDropdown"
               @blur.stop="closeDropdown"
               @keyup.stop.esc="handleEsc"
-              @keyup.stop.enter="selectPointer"
+              @keyup.stop.enter="handleAddTag"
+              @keyup.stop.space="handleAddTag"
               @keydown.delete="handleSearchBackspace"
               @keydown.stop.up="backwardPointer"
               @keydown.stop.down="forwardPointer"
@@ -336,6 +339,11 @@
         required: false,
         default: true,
       },
+      addTagOn: {
+        type: Array,
+        required: false,
+        default: () => (['enter']),
+      },
     },
     setup(props, context)
     { 
@@ -383,6 +391,7 @@
         closeDropdown: dropdown.closeDropdown,
         clearPointer: pointerAction.clearPointer,
         search: search.search,
+        selectPointer: pointerAction.selectPointer,
       })
 
       return {

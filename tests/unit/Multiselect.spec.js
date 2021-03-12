@@ -184,6 +184,92 @@ describe('Multiselect', () => {
 
       destroy(select)
     })
+
+    it('should not select pointer with enter if not in addTagOn', async () => {
+      let select = createSelect({
+        options: [1,2,3],
+        value: null,
+        addTagOn: ['space'],
+      }, {
+        attach: true,
+      })
+
+      select.vm.open()
+      keydown(select.find('.multiselect-input'), 'down')
+      keyup(select.find('.multiselect-input'), 'enter')
+
+      await nextTick()
+
+      expect(getValue(select)).toStrictEqual(null)
+
+      destroy(select)
+    })
+
+    it('should select pointer with space if in addTagOn', async () => {
+      let select = createSelect({
+        options: [1,2,3],
+        value: null,
+        addTagOn: ['space'],
+      }, {
+        attach: true,
+      })
+
+      select.vm.open()
+      
+      keydown(select.find('.multiselect-input'), 'down')
+      keyup(select.find('.multiselect-input'), 'space')
+
+      await nextTick()
+
+      expect(getValue(select)).toStrictEqual(0)
+
+      destroy(select)
+    })
+
+    it('should select pointer with space if search is focused', async () => {
+      let select = createSelect({
+        options: [1,2,3],
+        value: null,
+        searchable: true,
+        addTagOn: ['space'],
+      }, {
+        attach: true,
+      })
+
+      select.find('.multiselect-search').element.focus()
+      
+      keydown(select.find('.multiselect-input'), 'down')
+      keyup(select.find('.multiselect-input'), 'space')
+
+      await nextTick()
+
+      expect(getValue(select)).toStrictEqual(0)
+
+      destroy(select)
+    })
+
+    it('should select pointer with space if tags search is focused', async () => {
+      let select = createSelect({
+        options: [1,2,3],
+        mode: 'tags',
+        value: null,
+        searchable: true,
+        addTagOn: ['space'],
+      }, {
+        attach: true,
+      })
+
+      select.find('.multiselect-search').element.focus()
+      
+      keydown(select.find('.multiselect-input'), 'down')
+      keyup(select.find('.multiselect-input'), 'space')
+
+      await nextTick()
+
+      expect(getValue(select)).toStrictEqual([0])
+
+      destroy(select)
+    })
   })
 
   describe('Single mode', () => {

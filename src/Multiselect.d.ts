@@ -29,6 +29,7 @@ declare class Multiselect extends Vue {
     resolveOnLoad?: boolean;
     appendNewTag?: boolean;
     createTag?: boolean;
+    addTagOn?: string[];
     hideSelected?: boolean;
     showOptions?: boolean;
     object: boolean;

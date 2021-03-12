@@ -1,8 +1,14 @@
 import { toRefs } from 'composition-api'
+import filterObjectKeys from './../utils/filterObjectKeys'
 
 export default function useKeyboard (props, context, dependencies)
 {
-  const { mode } = toRefs(props)
+  const { mode, addTagOn } = toRefs(props)
+
+  const KEYCODES = {
+    enter: 13,
+    space: 32,
+  }
 
   // ============ DEPENDENCIES ============
 
@@ -11,6 +17,7 @@ export default function useKeyboard (props, context, dependencies)
   const closeDropdown = dependencies.closeDropdown
   const clearPointer = dependencies.clearPointer
   const search = dependencies.search
+  const selectPointer = dependencies.selectPointer
 
   // =============== METHODS ==============
 
@@ -34,9 +41,16 @@ export default function useKeyboard (props, context, dependencies)
     }
   }
 
+  const handleAddTag = (e) => {
+    if (Object.values(filterObjectKeys(KEYCODES, addTagOn.value)).indexOf(e.keyCode) !== -1) {
+      selectPointer()
+    }
+  }
+
   return {
     handleBackspace,
     handleEsc,
     handleSearchBackspace,
+    handleAddTag,
   }
 }
