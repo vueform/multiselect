@@ -30,6 +30,7 @@ declare class Multiselect extends Vue {
     appendNewTag?: boolean;
     createTag?: boolean;
     hideSelected?: boolean;
+    showOptions?: boolean;
     object: boolean;
 
     $emit(eventName: 'change', e: {originalEvent: Event, value: any}): this;

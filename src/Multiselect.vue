@@ -119,7 +119,7 @@
     <!-- Options -->
     <transition v-if="!resolving || !clearOnSearch" name="multiselect" @after-leave="clearSearch">
       <div
-        v-show="isOpen"
+        v-show="isOpen && showOptions"
         class="multiselect-options"
         :style="{ maxHeight: contentMaxHeight }"
       >
@@ -330,6 +330,11 @@
         type: Number,
         required: false,
         default: -1,
+      },
+      showOptions: {
+        type: Boolean,
+        required: false,
+        default: true,
       },
     },
     setup(props, context)

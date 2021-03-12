@@ -11,6 +11,20 @@ describe('Multiselect', () => {
       expect(createSelect().exists()).toBe(true)
     })
 
+    it('should not render options if showOptions is false', async () => {
+      let select = createSelect({
+        options: ['value1', 'value2', 'value3'],
+        valueProp: 'v',
+        showOptions: false,
+      }, {
+        attach: true,
+      })
+
+      let options = findAll(select, '.multiselect-options').at(0)
+      
+      expect(options.element).not.toBeVisible()
+    })
+
     it('should render options if open', async () => {
       let select = createSelect({
         options: ['value1', 'value2', 'value3'],
