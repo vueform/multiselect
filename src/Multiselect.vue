@@ -128,10 +128,9 @@
       >
         <slot name="beforelist"></slot>
 
-        <a
+        <span
           v-for="(option, i, key) in filteredOptions"
           :tabindex="-1"
-          href=""
           class="multiselect-option"
           :class="{
             'is-pointed': isPointed(option),
@@ -146,7 +145,7 @@
           <slot name="option" :option="option" :search="search">
             <span>{{ option[label] }}</span>
           </slot>
-        </a>
+        </span>
 
         <span v-show="noOptions">
           <slot name="nooptions">
