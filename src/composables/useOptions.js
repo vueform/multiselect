@@ -15,6 +15,7 @@ export default function useOptions (props, context, dependencies)
 
   const internalValue = dependencies.internalValue
   const externalValue = dependencies.externalValue
+  const currentValue = dependencies.currentValue
   const search = dependencies.search
   const blurSearch = dependencies.blurSearch
   const clearSearch = dependencies.clearSearch
@@ -422,6 +423,33 @@ export default function useOptions (props, context, dependencies)
       resolvedOptions.value = props.options
     }
   }, { flush: 'sync' })
+
+  watch(extendedOptions, (n, o) => {
+    if (!extendedOptions.value.length || !currentValue.value || !currentValue.value.length) {
+      return
+    }
+
+    let newValue
+
+    if (mode.value === 'single') {
+      newValue = extendedOptions.value[extendedOptions.value.map(v=>v[valueProp.value]).indexOf(currentValue.value)]
+    } else {
+      newValue = []
+
+      currentValue.value.forEach((val) => {
+        newValue.push(extendedOptions.value[extendedOptions.value.map(v=>v[valueProp.value]).indexOf(val)])
+      })
+    }
+
+    // Update both internal and external value if user is using object values
+    if (object.value) {
+      update(newValue)
+
+    // Only update internal value if external is only valueProp
+    } else {
+      internalValue.value = newValue
+    }
+  }, { flush: 'sync', deep: true, immediate: false })
 
   return {
     filteredOptions,

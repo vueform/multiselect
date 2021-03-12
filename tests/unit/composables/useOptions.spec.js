@@ -1,6 +1,9 @@
-import { createSelect, getValue, destroy, $set } from 'unit-test-helpers'
+import { createSelect, getValue, destroy, $set, findAll } from 'unit-test-helpers'
+import { toBeVisible } from '@testing-library/jest-dom/matchers'
 import { nextTick } from 'composition-api'
 import flushPromises from 'flush-promises'
+
+expect.extend({toBeVisible})
 
 jest.useFakeTimers()
 
@@ -134,6 +137,74 @@ describe('useOptions', () => {
       expect(select.vm.filteredOptions[0].label).toBe(1)
       expect(select.vm.filteredOptions[1].label).toBe(2)
       expect(select.vm.filteredOptions[2].label).toBe(3)
+    })
+
+    it('should reactively changes label when options has been changed mode=single', async () => {
+      let select = createSelect({
+        value: 'ru',
+        label: 'name',
+        valueProp: 'code',
+        options: [{ code: 'au', name: 'Australia' }, { code: 'ru', name: 'Russia' }, { code: 'us', name: 'USA' }],
+      })
+
+      select.vm.$parent.props.options = [{ code: 'au', name: 'Австралия' }, { code: 'ru', name: 'Россия' }, { code: 'us', name: 'США' }]
+
+      await nextTick()
+
+      expect(select.find('.multiselect-single-label').element).toBeVisible()
+      expect(select.find('.multiselect-single-label').html()).toContain('Россия')
+    })
+
+    it('should reactively changes label when options has been changed mode=tags', async () => {
+      let select = createSelect({
+        mode: 'tags',
+        value: ['ru', 'au'],
+        label: 'name',
+        valueProp: 'code',
+        options: [{ code: 'au', name: 'Australia' }, { code: 'ru', name: 'Russia' }, { code: 'us', name: 'USA' }],
+      })
+
+      select.vm.$parent.props.options = [{ code: 'au', name: 'Австралия' }, { code: 'ru', name: 'Россия' }, { code: 'us', name: 'США' }]
+
+      await nextTick()
+
+      expect(findAll(select, '.multiselect-tag').at(0).element).toBeVisible()
+      expect(findAll(select, '.multiselect-tag').at(0).html()).toContain('Россия')
+      expect(findAll(select, '.multiselect-tag').at(1).element).toBeVisible()
+      expect(findAll(select, '.multiselect-tag').at(1).html()).toContain('Австралия')
+    })
+
+    it('should reactively changes external value when options has been changed mode=single, object=true', async () => {
+      let select = createSelect({
+        value: { code: 'ru', name: 'Russia' },
+        label: 'name',
+        valueProp: 'code',
+        options: [{ code: 'au', name: 'Australia' }, { code: 'ru', name: 'Russia' }, { code: 'us', name: 'USA' }],
+        object: true,
+      })
+
+      select.vm.$parent.props.options = [{ code: 'au', name: 'Австралия' }, { code: 'ru', name: 'Россия' }, { code: 'us', name: 'США' }]
+
+      await nextTick()
+
+      expect(select.vm.$parent.value).toStrictEqual({ code: 'ru', name: 'Россия' })
+    })
+
+    it('should reactively changes external value when options has been changed mode=single, object=true', async () => {
+      let select = createSelect({
+        mode: 'tags',
+        value: [{ code: 'ru', name: 'Russia' }, { code: 'au', name: 'Australia' }],
+        label: 'name',
+        valueProp: 'code',
+        options: [{ code: 'au', name: 'Australia' }, { code: 'ru', name: 'Russia' }, { code: 'us', name: 'USA' }],
+        object: true,
+      })
+
+      select.vm.$parent.props.options = [{ code: 'au', name: 'Австралия' }, { code: 'ru', name: 'Россия' }, { code: 'us', name: 'США' }]
+
+      await nextTick()
+
+      expect(select.vm.$parent.value).toStrictEqual([{ code: 'ru', name: 'Россия' }, { code: 'au', name: 'Австралия' }])
     })
   })
 
