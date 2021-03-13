@@ -139,7 +139,7 @@ describe('useOptions', () => {
       expect(select.vm.filteredOptions[2].label).toBe(3)
     })
 
-    it('should reactively changes label when options has been changed mode=single', async () => {
+    it('should reactively changes label when options has been changed mode=single, object=false', async () => {
       let select = createSelect({
         value: 'ru',
         label: 'name',
@@ -155,7 +155,23 @@ describe('useOptions', () => {
       expect(select.find('.multiselect-single-label').html()).toContain('Россия')
     })
 
-    it('should reactively changes label when options has been changed mode=tags', async () => {
+    it('should not update value when options changed but did not affect value mode=single, object=false', async () => {
+      let select = createSelect({
+        value: 'ru',
+        label: 'name',
+        valueProp: 'code',
+        options: [{ code: 'au', name: 'Australia' }, { code: 'ru', name: 'Russia' }, { code: 'us', name: 'USA' }],
+      })
+
+      select.vm.$parent.props.options = [{ code: 'au', name: 'Australia' }, { code: 'ru', name: 'Russia' }]
+
+      await nextTick()
+
+      expect(select.find('.multiselect-single-label').element).toBeVisible()
+      expect(select.find('.multiselect-single-label').html()).toContain('Russia')
+    })
+
+    it('should reactively changes label when options has been changed mode=tags, object=false', async () => {
       let select = createSelect({
         mode: 'tags',
         value: ['ru', 'au'],

@@ -3,13 +3,16 @@ import normalize from './../utils/normalize'
 import isObject from './../utils/isObject'
 import isNullish from './../utils/isNullish'
 import arraysEqual from './../utils/arraysEqual'
+import arrayObjectsEqual from './../utils/arrayObjectsEqual'
 
 export default function useOptions (props, context, dependencies)
 {
-  const { options, mode, trackBy, limit, hideSelected, createTag, label,
-          appendNewTag, multipleLabel, object, loading, delay, resolveOnLoad,
-          minChars, filterResults, clearOnSearch, clearOnSelect, valueProp,
-          canDeselect, max } = toRefs(props)
+  const { 
+    options, mode, trackBy, limit, hideSelected, createTag, label,
+    appendNewTag, multipleLabel, object, loading, delay, resolveOnLoad,
+    minChars, filterResults, clearOnSearch, clearOnSelect, valueProp,
+    canDeselect, max
+  } = toRefs(props)
 
   // ============ DEPENDENCIES ============
 
@@ -425,20 +428,32 @@ export default function useOptions (props, context, dependencies)
   }, { flush: 'sync' })
 
   watch(extendedOptions, (n, o) => {
-    if (!extendedOptions.value.length || !currentValue.value || !currentValue.value.length) {
+    if (!Object.keys(internalValue.value).length) {
+      initInternalValue()
+    }
+    
+    if (!n.length || !currentValue.value || !currentValue.value.length) {
       return
     }
 
     let newValue
 
     if (mode.value === 'single') {
-      newValue = extendedOptions.value[extendedOptions.value.map(v=>v[valueProp.value]).indexOf(currentValue.value)]
+      newValue = n[n.map(v=>v[valueProp.value]).indexOf(currentValue.value)]
+
+      if (JSON.stringify(newValue) === JSON.stringify(internalValue.value)) {
+        return
+      }
     } else {
       newValue = []
 
       currentValue.value.forEach((val) => {
-        newValue.push(extendedOptions.value[extendedOptions.value.map(v=>v[valueProp.value]).indexOf(val)])
+        newValue.push(n[n.map(v=>v[valueProp.value]).indexOf(val)])
       })
+
+      if (arrayObjectsEqual(newValue, internalValue.value)) {
+        return
+      }
     }
 
     // Update both internal and external value if user is using object values
