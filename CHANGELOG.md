@@ -1,4 +1,12 @@
-## v1.3.3
+## v1.3.4
+
+> `2021-03-13`
+
+### 🐞 Bug Fixes
+  - Recursion error when accessing `value` inside computed `options` ([#39](https://github.com/vueform/multiselect/issues/39)).
+  - Set initial value when options are loaded later ([#40](https://github.com/vueform/multiselect/issues/40)).
+
+  ## v1.3.3
 
 > `2021-03-12`
 
