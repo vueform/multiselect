@@ -159,7 +159,7 @@ Join our [Discord channel](https://discord.gg/WhX2nG6GTQ) or [open an issue](htt
 | **resolveOnLoad** | `boolean` | `true` | Whether async options should be loaded initially (with an empty query). This should be `true` if you are planning to load non-object value(s) initially while using async options (to fetch matching objects for values). |
 | **appendNewTag** | `boolean` | `true` | Whether it should append new tag automatically to option list when using `tags` mode with `createTag`. If set to `false` you need to take care of appending a new tag to the provided `:options` list upon `@tag` event. |
 | **createTag** | `boolean` | `false` | Whether it should allow creating new tag based on search query when using `tags` mode. |
-| **addTagOn** | `array` | `['enter']` | The list of keys that trigger tags to be created when using `createTag`. Possible values: `enter|space`. |
+| **addTagOn** | `array` | `['enter']` | The list of keys that creates a new tag while typing in the search field when having `createTag` enabled. Possible values: `enter\|space`. |
 | **hideSelected** | `boolean` | `true` | Whether selected options should be excluded from the option list when using `multiple` or `tags` mode. |
 | **showOptions** | `boolean` | `true` | Whether option list should be displayed. Can be used to create free-typed tags. |
 | **object** | `boolean` | `false` | Whether the value should be stored as an object.<br>If **false**:<br>`value: ['js','jsx','ts']`<br>If **true**:<br> `value: [`<br>&nbsp;&nbsp;`{value:'js',label:'Javascript'},`<br>&nbsp;&nbsp;`{value:'jsx',label:'JSX'},`<br>&nbsp;&nbsp;`{value:'ts',label:'Typescript'}`<br>`]` |

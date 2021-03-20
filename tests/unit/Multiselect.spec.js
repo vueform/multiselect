@@ -224,88 +224,207 @@ describe('Multiselect', () => {
       destroy(select)
     })
 
-    it('should not select pointer with enter if not in addTagOn', async () => {
+    it('should select first option on enter, createTag=false, addTagOn=enter,space', async () => {
       let select = createSelect({
-        options: [1,2,3],
-        value: null,
-        addTagOn: ['space'],
-      }, {
-        attach: true,
-      })
-
-      select.vm.open()
-      keydown(select.find('.multiselect-input'), 'down')
-      keyup(select.find('.multiselect-input'), 'enter')
-
-      await nextTick()
-
-      expect(getValue(select)).toStrictEqual(null)
-
-      destroy(select)
-    })
-
-    it('should select pointer with space if in addTagOn', async () => {
-      let select = createSelect({
-        options: [1,2,3],
-        value: null,
-        addTagOn: ['space'],
-      }, {
-        attach: true,
-      })
-
-      select.vm.open()
-      
-      keydown(select.find('.multiselect-input'), 'down')
-      keyup(select.find('.multiselect-input'), 'space')
-
-      await nextTick()
-
-      expect(getValue(select)).toStrictEqual(0)
-
-      destroy(select)
-    })
-
-    it('should select pointer with space if search is focused', async () => {
-      let select = createSelect({
-        options: [1,2,3],
-        value: null,
-        searchable: true,
-        addTagOn: ['space'],
-      }, {
-        attach: true,
-      })
-
-      select.find('.multiselect-search').element.focus()
-      
-      keydown(select.find('.multiselect-input'), 'down')
-      keyup(select.find('.multiselect-input'), 'space')
-
-      await nextTick()
-
-      expect(getValue(select)).toStrictEqual(0)
-
-      destroy(select)
-    })
-
-    it('should select pointer with space if tags search is focused', async () => {
-      let select = createSelect({
-        options: [1,2,3],
+        value: [],
         mode: 'tags',
-        value: null,
         searchable: true,
-        addTagOn: ['space'],
+        addTagOn: ['enter', 'space'],
+        options: {
+          java: 'Java',
+          javascript: 'Javascript',
+        },
       }, {
         attach: true,
       })
 
-      select.find('.multiselect-search').element.focus()
-      
-      keydown(select.find('.multiselect-input'), 'down')
-      keyup(select.find('.multiselect-input'), 'space')
+      select.vm.open()
+      select.vm.search = 'Javas'
 
       await nextTick()
 
-      expect(getValue(select)).toStrictEqual([0])
+      keyup(select.find('.multiselect-tags .multiselect-search input'), 'enter')
+
+      await nextTick()
+
+      expect(getValue(select)).toStrictEqual(['javascript'])
+
+      destroy(select)
+    })
+
+    it('should not select first option on space, createTag=false, addTagOn=enter,space', async () => {
+      let select = createSelect({
+        value: [],
+        mode: 'tags',
+        searchable: true,
+        addTagOn: ['enter', 'space'],
+        options: {
+          java: 'Java',
+          javascript: 'Javascript',
+        },
+      }, {
+        attach: true,
+      })
+
+      select.vm.open()
+      select.vm.search = 'Javas'
+
+      await nextTick()
+
+      keyup(select.find('.multiselect-tags .multiselect-search input'), 'space')
+
+      await nextTick()
+
+      expect(getValue(select)).toStrictEqual([])
+
+      destroy(select)
+    })
+
+    it('should create new tag on enter, createTag=true, addTagOn=enter,space', async () => {
+      let select = createSelect({
+        value: [],
+        mode: 'tags',
+        searchable: true,
+        addTagOn: ['enter', 'space'],
+        createTag: true,
+        options: {
+          java: 'Java',
+          javascript: 'Javascript',
+        },
+      }, {
+        attach: true,
+      })
+
+      select.vm.open()
+      select.vm.search = 'Javas'
+
+      await nextTick()
+
+      keyup(select.find('.multiselect-tags .multiselect-search input'), 'enter')
+
+      await nextTick()
+
+      expect(getValue(select)).toStrictEqual(['Javas'])
+
+      destroy(select)
+    })
+
+    it('should not create new tag on enter, createTag=true, addTagOn=space', async () => {
+      let select = createSelect({
+        value: [],
+        mode: 'tags',
+        searchable: true,
+        addTagOn: ['space'],
+        createTag: true,
+        options: {
+          java: 'Java',
+          javascript: 'Javascript',
+        },
+      }, {
+        attach: true,
+      })
+
+      select.vm.open()
+      select.vm.search = 'Javas'
+
+      await nextTick()
+
+      keyup(select.find('.multiselect-tags .multiselect-search input'), 'enter')
+
+      await nextTick()
+
+      expect(getValue(select)).toStrictEqual([])
+
+      destroy(select)
+    })
+
+    it('should not create new tag on space, createTag=true, addTagOn=enter', async () => {
+      let select = createSelect({
+        value: [],
+        mode: 'tags',
+        searchable: true,
+        addTagOn: ['enter'],
+        createTag: true,
+        options: {
+          java: 'Java',
+          javascript: 'Javascript',
+        },
+      }, {
+        attach: true,
+      })
+
+      select.vm.open()
+      select.vm.search = 'Javas'
+
+      await nextTick()
+
+      keyup(select.find('.multiselect-tags .multiselect-search input'), 'space')
+
+      await nextTick()
+
+      expect(getValue(select)).toStrictEqual([])
+
+      destroy(select)
+    })
+
+    it('should create new tag on enter, createTag=true, addTagOn=enter,space', async () => {
+      let select = createSelect({
+        value: [],
+        mode: 'tags',
+        searchable: true,
+        addTagOn: ['enter', 'space'],
+        createTag: true,
+        options: {
+          java: 'Java',
+          javascript: 'Javascript',
+        },
+      }, {
+        attach: true,
+      })
+
+      select.vm.open()
+      select.vm.search = 'Javas'
+
+      await nextTick()
+
+      keyup(select.find('.multiselect-tags .multiselect-search input'), 'enter')
+
+      await nextTick()
+
+      expect(getValue(select)).toStrictEqual([
+        'Javas'
+      ])
+
+      destroy(select)
+    })
+
+    it('should create new tag on enter, createTag=true, addTagOn=enter,space', async () => {
+      let select = createSelect({
+        value: [],
+        mode: 'tags',
+        searchable: true,
+        addTagOn: ['enter', 'space'],
+        createTag: true,
+        options: {
+          java: 'Java',
+          javascript: 'Javascript',
+        },
+      }, {
+        attach: true,
+      })
+
+      select.vm.open()
+      select.vm.search = 'Javas'
+
+      await nextTick()
+
+      keyup(select.find('.multiselect-tags .multiselect-search input'), 'space')
+
+      await nextTick()
+
+      expect(getValue(select)).toStrictEqual([
+        'Javas'
+      ])
 
       destroy(select)
     })

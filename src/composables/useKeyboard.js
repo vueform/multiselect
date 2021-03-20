@@ -1,14 +1,8 @@
 import { toRefs } from 'composition-api'
-import filterObjectKeys from './../utils/filterObjectKeys'
 
 export default function useKeyboard (props, context, dependencies)
 {
-  const { mode, addTagOn } = toRefs(props)
-
-  const KEYCODES = {
-    enter: 13,
-    space: 32,
-  }
+  const { mode, addTagOn, createTag } = toRefs(props)
 
   // ============ DEPENDENCIES ============
 
@@ -42,7 +36,11 @@ export default function useKeyboard (props, context, dependencies)
   }
 
   const handleAddTag = (e) => {
-    if (Object.values(filterObjectKeys(KEYCODES, addTagOn.value)).indexOf(e.keyCode) !== -1) {
+    if (e.keyCode === 13 && (addTagOn.value.indexOf('enter') !== -1 || !createTag.value)) {
+      selectPointer()
+    }
+
+    else if (e.keyCode === 32 && addTagOn.value.indexOf('space') !== -1 && createTag.value) {
       selectPointer()
     }
   }
