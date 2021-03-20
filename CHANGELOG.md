@@ -1,3 +1,10 @@
+## v1.3.5
+
+> `2021-03-20`
+
+### 🐞 Bug Fixes
+  - Fix for unintended side effect on space when using single mode ([#42](https://github.com/vueform/multiselect/issues/42)).
+
 ## v1.3.4
 
 > `2021-03-13`
