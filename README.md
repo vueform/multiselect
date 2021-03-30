@@ -113,7 +113,16 @@ npm install @vueform/multiselect
 
 ## Usage with Vue 2
 
-When using with Vue 2 make sure to install [@vue/composition-api](https://github.com/vuejs/composition-api#npm) first and change the imported module to:
+When using with Vue 2 install [@vue/composition-api](https://github.com/vuejs/composition-api#npm) first:
+
+``` js
+import Vue from 'vue'
+import VueCompositionAPI from '@vue/composition-api'
+
+Vue.use(VueCompositionAPI)
+```
+
+Then make sure to change the imported module to:
 
 ``` js
 import Multiselect from '@vueform/multiselect/dist/multiselect.vue2.js'
