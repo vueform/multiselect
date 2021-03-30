@@ -421,6 +421,7 @@ describe('Multiselect', () => {
       keyup(select.find('.multiselect-tags .multiselect-search input'), 'space')
 
       await nextTick()
+      await nextTick()
 
       expect(getValue(select)).toStrictEqual([
         'Javas'

@@ -1,4 +1,4 @@
-import { toRefs } from 'composition-api'
+import { toRefs, nextTick } from 'composition-api'
 
 export default function useKeyboard (props, context, dependencies)
 {
@@ -45,7 +45,11 @@ export default function useKeyboard (props, context, dependencies)
     }
 
     else if (e.keyCode === 32 && addTagOn.value.indexOf('space') !== -1 && createTag.value) {
-      selectPointer()
+      search.value = search.value.trim()
+
+      nextTick(() => {
+        selectPointer()
+      })
     }
   }
 
