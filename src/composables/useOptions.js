@@ -427,44 +427,46 @@ export default function useOptions (props, context, dependencies)
     }
   }, { flush: 'sync' })
 
-  watch(extendedOptions, (n, o) => {
-    if (!Object.keys(internalValue.value).length) {
-      initInternalValue()
-    }
-    
-    if (!n.length || !currentValue.value || !currentValue.value.length) {
-      return
-    }
-
-    let newValue
-
-    if (mode.value === 'single') {
-      newValue = n[n.map(v=>v[valueProp.value]).indexOf(currentValue.value)]
-
-      if (JSON.stringify(newValue) === JSON.stringify(internalValue.value)) {
+  if (typeof props.options !== 'function') {
+    watch(extendedOptions, (n, o) => {
+      if (!Object.keys(internalValue.value).length) {
+        initInternalValue()
+      }
+      
+      if (!n.length || !currentValue.value || !currentValue.value.length) {
         return
       }
-    } else {
-      newValue = []
 
-      currentValue.value.forEach((val) => {
-        newValue.push(n[n.map(v=>v[valueProp.value]).indexOf(val)])
-      })
+      let newValue
 
-      if (arrayObjectsEqual(newValue, internalValue.value)) {
-        return
+      if (mode.value === 'single') {
+        newValue = n[n.map(v=>v[valueProp.value]).indexOf(currentValue.value)]
+
+        if (JSON.stringify(newValue) === JSON.stringify(internalValue.value)) {
+          return
+        }
+      } else {
+        newValue = []
+
+        currentValue.value.forEach((val) => {
+          newValue.push(n[n.map(v=>v[valueProp.value]).indexOf(val)])
+        })
+
+        if (arrayObjectsEqual(newValue, internalValue.value)) {
+          return
+        }
       }
-    }
 
-    // Update both internal and external value if user is using object values
-    if (object.value) {
-      update(newValue)
+      // Update both internal and external value if user is using object values
+      if (object.value) {
+        update(newValue)
 
-    // Only update internal value if external is only valueProp
-    } else {
-      internalValue.value = newValue
-    }
-  }, { flush: 'sync', deep: true, immediate: false })
+      // Only update internal value if external is only valueProp
+      } else {
+        internalValue.value = newValue
+      }
+    }, { flush: 'sync', deep: true, immediate: false })
+  }
 
   return {
     filteredOptions,
