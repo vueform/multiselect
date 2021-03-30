@@ -54,8 +54,7 @@
             @keydown.delete="handleSearchBackspace"
             @keydown.stop.up="backwardPointer"
             @keydown.stop.down="forwardPointer"
-            @keyup="handleSearchInput"
-            @select="handleSearchInput"
+            @input="handleSearchInput"
             ref="input"
           />
         </div>
@@ -94,8 +93,7 @@
               @keydown.delete="handleSearchBackspace"
               @keydown.stop.up="backwardPointer"
               @keydown.stop.down="forwardPointer"
-              @keyup="handleSearchInput"
-              @select="handleSearchInput"
+              @input="handleSearchInput"
               :style="{ width: tagsSearchWidth }"
               ref="input"
             />
