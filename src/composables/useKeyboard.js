@@ -35,6 +35,10 @@ export default function useKeyboard (props, context, dependencies)
     }
   }
 
+  const handleSearchInput = (e) => {
+    search.value = e.target.value
+  }
+
   const handleAddTag = (e) => {
     if (e.keyCode === 13 && (addTagOn.value.indexOf('enter') !== -1 || !createTag.value)) {
       selectPointer()
@@ -49,6 +53,7 @@ export default function useKeyboard (props, context, dependencies)
     handleBackspace,
     handleEsc,
     handleSearchBackspace,
+    handleSearchInput,
     handleAddTag,
   }
 }

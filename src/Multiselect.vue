@@ -45,7 +45,8 @@
       <template v-if="mode !== 'tags' && searchable && !disabled">
         <div class="multiselect-search">
           <input    
-            v-model="search"
+            :modelValue="search"
+            :value="search"
             @focus.stop="openDropdown"
             @blur.stop="closeDropdown"
             @keyup.stop.esc="handleEsc"
@@ -53,6 +54,8 @@
             @keydown.delete="handleSearchBackspace"
             @keydown.stop.up="backwardPointer"
             @keydown.stop.down="forwardPointer"
+            @keyup="handleSearchInput"
+            @select="handleSearchInput"
             ref="input"
           />
         </div>
@@ -81,7 +84,8 @@
             :style="{ width: tagsSearchWidth }"
           >
             <input    
-              v-model="search"
+              :modelValue="search"
+              :value="search"
               @focus.stop="openDropdown"
               @blur.stop="closeDropdown"
               @keyup.stop.esc="handleEsc"
@@ -90,6 +94,8 @@
               @keydown.delete="handleSearchBackspace"
               @keydown.stop.up="backwardPointer"
               @keydown.stop.down="forwardPointer"
+              @keyup="handleSearchInput"
+              @select="handleSearchInput"
               :style="{ width: tagsSearchWidth }"
               ref="input"
             />
