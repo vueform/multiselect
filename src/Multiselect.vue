@@ -110,15 +110,19 @@
         </slot>
       </template>
 
+      <slot v-if="caret && !busy" name="caret">
+        <span class="multiselect-caret"></span>
+      </slot>
+
       <transition name="multiselect-loading">
-        <div v-show="busy" class="multiselect-spinner" />
+        <slot v-if="busy" name="spinner">
+          <span class="multiselect-spinner"></span>
+        </slot>
       </transition>
 
-      <a
-        v-if="mode !== 'single' && hasSelected && !disabled"
-        class="multiselect-clear"
-        @click.prevent="clear"
-      ></a>
+      <slot v-if="hasSelected && !disabled" name="clear" :clear="clear">
+        <a class="multiselect-clear" @click.prevent="clear"></a>
+      </slot>
     </div>
 
     <!-- Options -->
@@ -198,6 +202,7 @@
       options: {
         type: [Array, Object, Function],
         required: false,
+        default: () => ([])
       },
       id: {
         type: [String, Number],
