@@ -364,7 +364,7 @@ export default function useOptions (props, context, dependencies)
     }
   }
   else {
-    resolvedOptions.value = options && options.value ? options.value : []
+    resolvedOptions.value = options.value
 
     initInternalValue()
   }
@@ -421,13 +421,11 @@ export default function useOptions (props, context, dependencies)
     }
   }, { deep: true })
 
-  watch(() => props.options, (n) => {
-    if (typeof props.options !== 'function') {
-      resolvedOptions.value = props.options
-    }
-  }, { flush: 'sync' })
-
   if (typeof props.options !== 'function') {
+    watch(() => props.options, (n, o) => {
+      resolvedOptions.value = props.options
+    }, { flush: 'sync' })
+
     watch(extendedOptions, (n, o) => {
       if (!Object.keys(internalValue.value).length) {
         initInternalValue()

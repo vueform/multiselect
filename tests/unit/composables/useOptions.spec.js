@@ -150,6 +150,7 @@ describe('useOptions', () => {
       select.vm.$parent.props.options = [{ code: 'au', name: 'Австралия' }, { code: 'ru', name: 'Россия' }, { code: 'us', name: 'США' }]
 
       await nextTick()
+      await nextTick()
 
       expect(select.find('.multiselect-single-label').element).toBeVisible()
       expect(select.find('.multiselect-single-label').html()).toContain('Россия')
@@ -165,6 +166,7 @@ describe('useOptions', () => {
 
       select.vm.$parent.props.options = [{ code: 'au', name: 'Australia' }, { code: 'ru', name: 'Russia' }]
 
+      await nextTick()
       await nextTick()
 
       expect(select.find('.multiselect-single-label').element).toBeVisible()
@@ -182,6 +184,7 @@ describe('useOptions', () => {
 
       select.vm.$parent.props.options = [{ code: 'au', name: 'Австралия' }, { code: 'ru', name: 'Россия' }, { code: 'us', name: 'США' }]
 
+      await nextTick()
       await nextTick()
 
       expect(findAll(select, '.multiselect-tag').at(0).element).toBeVisible()
