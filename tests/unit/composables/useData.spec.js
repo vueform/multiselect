@@ -18,7 +18,7 @@ describe('useData', () => {
     expect(select.emitted('update:modelValue')[0][0]).toEqual(1)
   })
 
-  it('should update internalValue when single', () => {
+  it('should update iv when single', () => {
     const select = createSelect({
       options: [
         { value: 0, label: 0 },
@@ -28,19 +28,19 @@ describe('useData', () => {
     })
 
     select.vm.update(null)
-    expect(select.vm.internalValue).toStrictEqual({})
+    expect(select.vm.iv).toStrictEqual({})
 
     select.vm.update(undefined)
-    expect(select.vm.internalValue).toStrictEqual({})
+    expect(select.vm.iv).toStrictEqual({})
 
     select.vm.update(false)
-    expect(select.vm.internalValue).toStrictEqual({})
+    expect(select.vm.iv).toStrictEqual({})
 
     select.vm.update({ value: 1, label: 2 })
-    expect(select.vm.internalValue).toStrictEqual({ value: 1, label: 2 })
+    expect(select.vm.iv).toStrictEqual({ value: 1, label: 2 })
   })
 
-  it('should update internalValue when multiple', () => {
+  it('should update iv when multiple', () => {
     const select = createSelect({
       mode: 'multiple',
       options: [
@@ -51,15 +51,15 @@ describe('useData', () => {
     })
 
     select.vm.update(null)
-    expect(select.vm.internalValue).toStrictEqual([])
+    expect(select.vm.iv).toStrictEqual([])
 
     select.vm.update(undefined)
-    expect(select.vm.internalValue).toStrictEqual([])
+    expect(select.vm.iv).toStrictEqual([])
 
     select.vm.update(false)
-    expect(select.vm.internalValue).toStrictEqual([])
+    expect(select.vm.iv).toStrictEqual([])
 
     select.vm.update([{ value: 1, label: 2 }])
-    expect(select.vm.internalValue).toStrictEqual([{ value: 1, label: 2 }])
+    expect(select.vm.iv).toStrictEqual([{ value: 1, label: 2 }])
   })
 })

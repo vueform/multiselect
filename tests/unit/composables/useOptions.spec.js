@@ -8,11 +8,11 @@ expect.extend({toBeVisible})
 jest.useFakeTimers()
 
 describe('useOptions', () => {
-  describe('filteredOptions', () => {
+  describe('fo', () => {
     it('should be an empty array of options not defined', () => {
       let select = createSelect()
 
-      expect(select.vm.filteredOptions).toStrictEqual([])
+      expect(select.vm.fo).toStrictEqual([])
     })
 
     it('should be and empty array if resolved options has no value', async () => {
@@ -26,7 +26,7 @@ describe('useOptions', () => {
 
       await flushPromises()
 
-      expect(select.vm.filteredOptions).toStrictEqual([])
+      expect(select.vm.fo).toStrictEqual([])
     })
 
     it('should be an array of objects if items is a plain array', () => {
@@ -37,10 +37,10 @@ describe('useOptions', () => {
         valueProp: 'v'
       })
 
-      expect(select.vm.filteredOptions).toStrictEqual([
-        { v: 0, a: 1, b: 1 },
-        { v: 1, a: 2, b: 2 },
-        { v: 2, a: 3, b: 3 },
+      expect(select.vm.fo).toStrictEqual([
+        { v: 1, a: 1, b: 1 },
+        { v: 2, a: 2, b: 2 },
+        { v: 3, a: 3, b: 3 },
       ])
     })
 
@@ -56,14 +56,14 @@ describe('useOptions', () => {
         valueProp: 'v'
       })
 
-      expect(select.vm.filteredOptions).toStrictEqual([
+      expect(select.vm.fo).toStrictEqual([
         { v: '0', a: 1, b: 1 },
         { v: '1', a: 2, b: 2 },
         { v: '2', a: 3, b: 3 },
       ])
     })
 
-    it('should append createdTag to `filteredOptions` when createTag true', () => {
+    it('should append createdTag to `fo` when createTag true', () => {
       const select = createSelect({
         mode: 'tags',
         createTag: true,
@@ -73,10 +73,10 @@ describe('useOptions', () => {
 
       select.vm.search = 'new-tag'
 
-      expect(select.vm.filteredOptions[0].v).toStrictEqual('new-tag')
+      expect(select.vm.fo[0].v).toStrictEqual('new-tag')
     })
 
-    it('should not append createdTag to `filteredOptions` when if it already exists exists', () => {
+    it('should not append createdTag to `fo` when if it already exists exists', () => {
       const select = createSelect({
         mode: 'tags',
         createTag: true,
@@ -88,8 +88,8 @@ describe('useOptions', () => {
 
       select.vm.search = 'tag2'
 
-      expect(select.vm.filteredOptions).toStrictEqual([
-        { value: 1, label: 'tag2' }
+      expect(select.vm.fo).toStrictEqual([
+        { value: 'tag2', label: 'tag2' }
       ])
     })
 
@@ -106,8 +106,8 @@ describe('useOptions', () => {
 
       select.vm.search = 'VALUE1'
 
-      expect(select.vm.filteredOptions.length).toBe(1)
-      expect(select.vm.filteredOptions[0].name).toBe('Value1')
+      expect(select.vm.fo.length).toBe(1)
+      expect(select.vm.fo[0].name).toBe('Value1')
     })
 
     it('should hide selected tags when hideSelected is true', async () => {
@@ -121,9 +121,9 @@ describe('useOptions', () => {
 
       await nextTick()
 
-      expect(select.vm.filteredOptions).toStrictEqual([
-        { value: 0, label: 1 },
-        { value: 2, label: 3 },
+      expect(select.vm.fo).toStrictEqual([
+        { value: 2, label: 2 },
+        { value: 3, label: 3 },
       ])
     })
 
@@ -133,13 +133,44 @@ describe('useOptions', () => {
         limit: 3,
       })
 
-      expect(select.vm.filteredOptions.length).toBe(3)
-      expect(select.vm.filteredOptions[0].label).toBe(1)
-      expect(select.vm.filteredOptions[1].label).toBe(2)
-      expect(select.vm.filteredOptions[2].label).toBe(3)
+      expect(select.vm.fo.length).toBe(3)
+      expect(select.vm.fo[0].label).toBe(1)
+      expect(select.vm.fo[1].label).toBe(2)
+      expect(select.vm.fo[2].label).toBe(3)
     })
 
-    it('should reactively changes label when options has been changed mode=single, object=false', async () => {
+    it('should set iv when options are set later but value exists mode=single', async () => {
+      let select = createSelect({
+        options: [],
+        value: 1,
+      })
+
+      expect(select.vm.iv).toStrictEqual({})
+      
+      select.vm.$parent.props.options = [1,2,3]
+
+      await nextTick()
+
+      expect(select.vm.iv).toStrictEqual({value:1,label:1})
+    })
+
+    it('should set iv when options are set later but value exists mode=multiple', async () => {
+      let select = createSelect({
+        mode: 'multiple',
+        options: [],
+        value: [1,2],
+      })
+
+      expect(select.vm.iv).toStrictEqual([])
+      
+      select.vm.$parent.props.options = [1,2,3]
+
+      await nextTick()
+
+      expect(select.vm.iv).toStrictEqual([{value:1,label:1},{value:2,label:2}])
+    })
+
+    it('should reactively changes label when optipons has been changed mode=single, object=false', async () => {
       let select = createSelect({
         value: 'ru',
         label: 'name',
@@ -240,7 +271,7 @@ describe('useOptions', () => {
       expect(select.vm.hasSelected).toBe(false)
 
       select = createSelect({
-        value: 0,
+        value: 1,
         options: [1,2,3],
       })
       expect(select.vm.hasSelected).toBe(true)
@@ -270,7 +301,7 @@ describe('useOptions', () => {
 
       select = createSelect({
         mode: 'multiple',
-        value: [0],
+        value: [1],
         options: [1,2,3],
       })
       expect(select.vm.hasSelected).toBe(true)
@@ -301,7 +332,7 @@ describe('useOptions', () => {
 
       select = createSelect({
         mode: 'tags',
-        value: [0],
+        value: [1],
         options: [1,2,3],
       })
       expect(select.vm.hasSelected).toBe(true)
@@ -322,14 +353,14 @@ describe('useOptions', () => {
     it('should be default text with one or more options selected', () => {
       let select = createSelect({
         mode: 'multiple',
-        value: [0],
+        value: [1],
         options: [1,2,3]
       })
       expect(select.vm.multipleLabelText).toStrictEqual('1 option selected')
 
       select = createSelect({
         mode: 'multiple',
-        value: [0,2],
+        value: [1,2],
         options: [1,2,3]
       })
       expect(select.vm.multipleLabelText).toStrictEqual('2 options selected')
@@ -338,7 +369,7 @@ describe('useOptions', () => {
     it('should be custom text with one or more options selected', () => {
       let select = createSelect({
         mode: 'multiple',
-        value: [0],
+        value: [1],
         options: [1,2,3],
         multipleLabel: val => val.length + ' selected',
       })
@@ -346,7 +377,7 @@ describe('useOptions', () => {
 
       select = createSelect({
         mode: 'multiple',
-        value: [0,2],
+        value: [1,2],
         options: [1,2,3],
         multipleLabel: val => val.length + ' selected',
       })
@@ -386,11 +417,11 @@ describe('useOptions', () => {
         value: null
       })
 
-      select.vm.select({ value: 0, label: 1 })
+      select.vm.select({ value: 1, label: 1 })
 
       await nextTick()
 
-      expect(getValue(select)).toBe(0)
+      expect(getValue(select)).toBe(1)
     })
 
     it('should update value on select when using single with object true', async () => {
@@ -400,11 +431,11 @@ describe('useOptions', () => {
         object: true,
       })
 
-      select.vm.select({ value: 0, label: 1 })
+      select.vm.select({ value: 1, label: 1 })
 
       await nextTick()
 
-      expect(getValue(select)).toStrictEqual({ value: 0, label: 1 })
+      expect(getValue(select)).toStrictEqual({ value: 1, label: 1 })
     })
 
     it('should update value on select when using multiple with object false', async () => {
@@ -414,11 +445,11 @@ describe('useOptions', () => {
         value: null
       })
 
-      select.vm.select({ value: 0, label: 1 })
+      select.vm.select({ value: 1, label: 1 })
 
       await nextTick()
 
-      expect(getValue(select)).toStrictEqual([0])
+      expect(getValue(select)).toStrictEqual([1])
     })
 
     it('should update value on select when using multiple with object true', async () => {
@@ -429,11 +460,11 @@ describe('useOptions', () => {
         object: true
       })
 
-      select.vm.select({ value: 0, label: 1 })
+      select.vm.select({ value: 1, label: 1 })
 
       await nextTick()
 
-      expect(getValue(select)).toStrictEqual([{ value: 0, label: 1 }])
+      expect(getValue(select)).toStrictEqual([{ value: 1, label: 1 }])
     })
 
     it('should update value on select when using multiple with when value is null', async () => {
@@ -445,11 +476,11 @@ describe('useOptions', () => {
 
       select.vm.update(null)
 
-      select.vm.select({ value: 0, label: 1 })
+      select.vm.select({ value: 1, label: 1 })
 
       await nextTick()
 
-      expect(getValue(select)).toStrictEqual([0])
+      expect(getValue(select)).toStrictEqual([1])
     })
 
     it('should update value when providing a plain value', async () => {
@@ -468,24 +499,24 @@ describe('useOptions', () => {
     it('should emit select with value when object false', async () => {
       let select = createSelect({
         options: [1,2,3],
-        value: 1,
+        value: 2,
       })
 
-      select.vm.select({ value: 1, label: 2 })
+      select.vm.select({ value: 2, label: 2 })
 
-      expect(select.emitted('select')[0][0]).toStrictEqual(1)
+      expect(select.emitted('select')[0][0]).toStrictEqual(2)
     })
 
     it('should emit select with value when object true', async () => {
       let select = createSelect({
         options: [1,2,3],
-        value: 1,
+        value: 2,
         object: true,
       })
 
-      select.vm.select({ value: 1, label: 2 })
+      select.vm.select({ value: 2, label: 2 })
 
-      expect(select.emitted('select')[0][0]).toStrictEqual({ value: 1, label: 2 })
+      expect(select.emitted('select')[0][0]).toStrictEqual({ value: 2, label: 2 })
     })
   })
 
@@ -493,10 +524,10 @@ describe('useOptions', () => {
     it('should clear value when deselect single', async () => {
       let select = createSelect({
         options: [1,2,3],
-        value: 1
+        value: 2
       })
 
-      select.vm.deselect({ value: 1, label: 2 })
+      select.vm.deselect({ value: 2, label: 2 })
 
       await nextTick()
 
@@ -511,27 +542,27 @@ describe('useOptions', () => {
         valueProp: 'v'
       })
 
-      select.vm.deselect({ v: 1, label: 2 })
+      select.vm.deselect({ v: 2, label: 2 })
 
       await nextTick()
 
-      expect(getValue(select)).toStrictEqual([2])
+      expect(getValue(select)).toStrictEqual([1])
     })
 
     it('should remove value when deselect multiple and object true', async () => {
       let select = createSelect({
         mode: 'multiple',
         options: [1,2,3],
-        value: [{ v: 1, label: 2 }, { v: 2, label: 3 }],
+        value: [{ v: 2, label: 2 }, { v: 3, label: 3 }],
         object: true,
         valueProp: 'v'
       })
 
-      select.vm.deselect({ v: 1, label: 2 })
+      select.vm.deselect({ v: 2, label: 2 })
 
       await nextTick()
 
-      expect(getValue(select)).toStrictEqual([{ v: 2, label: 3 }])
+      expect(getValue(select)).toStrictEqual([{ v: 3, label: 3 }])
     })
 
     it('should remove value when deselect multiple by providing value', async () => {
@@ -552,26 +583,26 @@ describe('useOptions', () => {
     it('should emit deselect with value when object false', async () => {
       let select = createSelect({
         options: [1,2,3],
-        value: 1,
+        value: 2,
         valueProp: 'v'
       })
 
-      select.vm.deselect({ v: 1, label: 2 })
+      select.vm.deselect({ v: 2, label: 2 })
 
-      expect(select.emitted('deselect')[0][0]).toStrictEqual(1)
+      expect(select.emitted('deselect')[0][0]).toStrictEqual(2)
     })
 
     it('should emit deselect with value when object true', async () => {
       let select = createSelect({
         options: [1,2,3],
-        value: 1,
+        value: 2,
         object: true,
         valueProp: 'v'
       })
 
-      select.vm.deselect({ v: 1, label: 2 })
+      select.vm.deselect({ v: 2, label: 2 })
 
-      expect(select.emitted('deselect')[0][0]).toStrictEqual({ v: 1, label: 2 })
+      expect(select.emitted('deselect')[0][0]).toStrictEqual({ v: 2, label: 2 })
     })
   })
 
@@ -666,36 +697,36 @@ describe('useOptions', () => {
     it('should be true if value equals option value when object false and single', () => {
       let select = createSelect({
         options: [1,2,3],
-        value: 1,
+        value: 2,
         valueProp: 'v',
       })
 
-      expect(select.vm.isSelected({ v: 1, label: 2 })).toBe(true)
-      expect(select.vm.isSelected({ v: 2, label: 3 })).toBe(false)
+      expect(select.vm.isSelected({ v: 2, label: 2 })).toBe(true)
+      expect(select.vm.isSelected({ v: 3, label: 3 })).toBe(false)
     })
 
     it('should be true if value object equals option when object true and single', () => {
       let select = createSelect({
         options: [1,2,3],
-        value: { v: 1, label: 2 },
+        value: { v: 2, label: 2 },
         object: true,
         valueProp: 'v',
       })
 
-      expect(select.vm.isSelected({ v: 1, label: 2 })).toBe(true)
-      expect(select.vm.isSelected({ v: 2, label: 3 })).toBe(false)
+      expect(select.vm.isSelected({ v: 2, label: 2 })).toBe(true)
+      expect(select.vm.isSelected({ v: 3, label: 3 })).toBe(false)
     })
 
     it('should be true if option value is in value when object false and multiple', () => {
       let select = createSelect({
         mode: 'multiple',
         options: [1,2,3],
-        value: [0,1],
+        value: [1,2],
         valueProp: 'v',
       })
 
-      expect(select.vm.isSelected({ v: 1, label: 2 })).toBe(true)
-      expect(select.vm.isSelected({ v: 2, label: 3 })).toBe(false)
+      expect(select.vm.isSelected({ v: 2, label: 2 })).toBe(true)
+      expect(select.vm.isSelected({ v: 3, label: 3 })).toBe(false)
     })
 
     it('should be true if option is in value when object true and multiple', () => {
@@ -703,15 +734,15 @@ describe('useOptions', () => {
         mode: 'multiple',
         options: [1,2,3],
         value: [
-          { v: 0, label: 1 },
-          { v: 1, label: 2 },
+          { v: 1, label: 1 },
+          { v: 2, label: 2 },
         ],
         object: true,
         valueProp: 'v',
       })
 
-      expect(select.vm.isSelected({ v: 1, label: 2 })).toBe(true)
-      expect(select.vm.isSelected({ v: 2, label: 3 })).toBe(false)
+      expect(select.vm.isSelected({ v: 2, label: 2 })).toBe(true)
+      expect(select.vm.isSelected({ v: 3, label: 3 })).toBe(false)
     })
   })
 
@@ -719,28 +750,28 @@ describe('useOptions', () => {
     it('should be false if the option has no disabled property', () => {
       let select = createSelect({
         options: [1,2,3],
-        value: 1,
+        value: 2,
       })
 
-      expect(select.vm.isDisabled({ value: 1, label: 2 })).toBe(false)
+      expect(select.vm.isDisabled({ value: 2, label: 2 })).toBe(false)
     })
 
     it('should be false if the option has false disabled property', () => {
       let select = createSelect({
         options: [1,2,3],
-        value: 1,
+        value: 2,
       })
 
-      expect(select.vm.isDisabled({ value: 1, label: 2, disabled: false })).toBe(false)
+      expect(select.vm.isDisabled({ value: 2, label: 2, disabled: false })).toBe(false)
     })
 
     it('should be true if the option has true disabled property', () => {
       let select = createSelect({
         options: [1,2,3],
-        value: 1,
+        value: 2,
       })
 
-      expect(select.vm.isDisabled({ value: 1, label: 2, disabled: true })).toBe(true)
+      expect(select.vm.isDisabled({ value: 2, label: 2, disabled: true })).toBe(true)
     })
   })
 
@@ -803,7 +834,7 @@ describe('useOptions', () => {
       let select = createSelect({
         mode: 'multiple',
         options: [1,2,3],
-        value: [0,1],
+        value: [1,2],
         max: 2
       })
 
@@ -814,7 +845,7 @@ describe('useOptions', () => {
       let select = createSelect({
         mode: 'multiple',
         options: [1,2,3],
-        value: [0,1,2],
+        value: [1,2,3],
         max: 2
       })
 
@@ -825,7 +856,7 @@ describe('useOptions', () => {
       let select = createSelect({
         mode: 'multiple',
         options: [1,2,3],
-        value: [0],
+        value: [1],
         max: 2
       })
 
@@ -850,7 +881,7 @@ describe('useOptions', () => {
 
       await nextTick()
 
-      expect(select.vm.externalValue).toBe(0)
+      expect(select.vm.ev).toBe(0)
 
       destroy(select)
     })
@@ -871,7 +902,7 @@ describe('useOptions', () => {
 
       await nextTick()
 
-      expect(select.vm.externalValue).toBe(1)
+      expect(select.vm.ev).toBe(1)
 
       destroy(select)
     })
@@ -880,30 +911,30 @@ describe('useOptions', () => {
 
     it('should select option as value if not selected when single', async () => {
       let select = createSelect({
-        value: 0,
-        options: [1,2,3],
-      }, {
-        attach: true,
-      })
-
-      select.vm.handleOptionClick({ value: 1, label: 2 })
-
-      await nextTick()
-
-      expect(getValue(select)).toStrictEqual(1)
-
-      destroy(select)
-    })
-
-    it('should deselect option if selected when single', async () => {
-      let select = createSelect({
         value: 1,
         options: [1,2,3],
       }, {
         attach: true,
       })
 
-      select.vm.handleOptionClick({ value: 1, label: 2 })
+      select.vm.handleOptionClick({ value: 2, label: 2 })
+
+      await nextTick()
+
+      expect(getValue(select)).toStrictEqual(2)
+
+      destroy(select)
+    })
+
+    it('should deselect option if selected when single', async () => {
+      let select = createSelect({
+        value: 2,
+        options: [1,2,3],
+      }, {
+        attach: true,
+      })
+
+      select.vm.handleOptionClick({ value: 2, label: 2 })
 
       await nextTick()
 
@@ -914,18 +945,18 @@ describe('useOptions', () => {
 
     it('should not deselect option if selected when single and canDeselect=false', async () => {
       let select = createSelect({
-        value: 1,
+        value: 2,
         options: [1,2,3],
         canDeselect: false,
       }, {
         attach: true,
       })
 
-      select.vm.handleOptionClick({ value: 1, label: 2 })
+      select.vm.handleOptionClick({ value: 2, label: 2 })
 
       await nextTick()
 
-      expect(getValue(select)).toStrictEqual(1)
+      expect(getValue(select)).toStrictEqual(2)
 
       destroy(select)
     })
@@ -935,92 +966,92 @@ describe('useOptions', () => {
     it('should remove option from value if selected when multiple', async () => {
       let select = createSelect({
         mode: 'multiple',
-        value: [0,1],
+        value: [1,2],
         options: [1,2,3],
       })
 
-      select.vm.handleOptionClick({ value: 1, label: 2 })
+      select.vm.handleOptionClick({ value: 2, label: 2 })
 
       await nextTick()
 
-      expect(getValue(select)).toStrictEqual([0])
+      expect(getValue(select)).toStrictEqual([1])
     })
 
     it('should not clear search on deselect when multiple', async () => {
       let select = createSelect({
         mode: 'multiple',
-        value: [0,1],
+        value: [1,2],
         options: [1,2,3],
       })
 
       select.vm.search = 'value'
-      select.vm.handleOptionClick({ value: 1, label: 2 })
+      select.vm.handleOptionClick({ value: 2, label: 2 })
 
       await nextTick()
 
       expect(select.vm.search).toBe('value')
-      expect(getValue(select)).toStrictEqual([0])
+      expect(getValue(select)).toStrictEqual([1])
     })
 
     it('should add option to value if not selected when multiple', async () => {
       let select = createSelect({
         mode: 'multiple',
-        value: [0],
+        value: [1],
         options: [1,2,3],
       })
 
-      select.vm.handleOptionClick({ value: 1, label: 2 })
+      select.vm.handleOptionClick({ value: 2, label: 2 })
 
       await nextTick()
 
-      expect(getValue(select)).toStrictEqual([0,1])
+      expect(getValue(select)).toStrictEqual([1,2])
     })
 
     it('should not add option to value if reached max', async () => {
       let select = createSelect({
         mode: 'multiple',
-        value: [0],
+        value: [1],
         options: [1,2,3],
         max: 1
       })
 
-      select.vm.handleOptionClick({ value: 1, label: 2 })
+      select.vm.handleOptionClick({ value: 2, label: 2 })
 
       await nextTick()
 
-      expect(getValue(select)).toStrictEqual([0])
+      expect(getValue(select)).toStrictEqual([1])
     })
 
     it('should clear search after select when multiple', async () => {
       let select = createSelect({
         mode: 'multiple',
-        value: [0],
+        value: [1],
         options: [1,2,3],
       })
 
       select.vm.search = 'value'
-      select.vm.handleOptionClick({ value: 1, label: 2 })
+      select.vm.handleOptionClick({ value: 2, label: 2 })
 
       await nextTick()
 
-      expect(getValue(select)).toStrictEqual([0,1])
+      expect(getValue(select)).toStrictEqual([1,2])
       expect(select.vm.search).toBe('')
     })
 
     it('should not clear search after select when multiple and clearOnSelect is false', async () => {
       let select = createSelect({
         mode: 'multiple',
-        value: [0],
+        value: [1],
         options: [1,2,3],
         clearOnSelect: false,
       })
 
       select.vm.search = 'value'
-      select.vm.handleOptionClick({ value: 1, label: 2 })
+      select.vm.handleOptionClick({ value: 2, label: 2 })
 
       await nextTick()
 
-      expect(getValue(select)).toStrictEqual([0,1])
+      expect(getValue(select)).toStrictEqual([1,2])
       expect(select.vm.search).toBe('value')
     })
 
@@ -1029,93 +1060,93 @@ describe('useOptions', () => {
     it('should remove option from value if selected when tags', async () => {
       let select = createSelect({
         mode: 'tags',
-        value: [0,1],
+        value: [1,2],
         options: [1,2,3],
       })
 
-      select.vm.handleOptionClick({ value: 1, label: 2 })
+      select.vm.handleOptionClick({ value: 2, label: 2 })
 
       await nextTick()
 
-      expect(getValue(select)).toStrictEqual([0])
+      expect(getValue(select)).toStrictEqual([1])
     })
 
     it('should not clear search on deselect when tags', async () => {
       let select = createSelect({
         mode: 'tags',
-        value: [0,1],
+        value: [1,2],
         options: [1,2,3],
       })
 
       select.vm.search = 'value'
-      select.vm.handleOptionClick({ value: 1, label: 2 })
+      select.vm.handleOptionClick({ value: 2, label: 2 })
 
       await nextTick()
 
       expect(select.vm.search).toBe('value')
-      expect(getValue(select)).toStrictEqual([0])
+      expect(getValue(select)).toStrictEqual([1])
     })
 
     it('should add option to value if not selected when tags', async () => {
       let select = createSelect({
         mode: 'tags',
-        value: [0],
+        value: [1],
         options: [1,2,3],
       })
 
-      select.vm.handleOptionClick({ value: 1, label: 2 })
+      select.vm.handleOptionClick({ value: 2, label: 2 })
 
       await nextTick()
 
-      expect(getValue(select)).toStrictEqual([0,1])
+      expect(getValue(select)).toStrictEqual([1,2])
     })
 
     it('should not add option to value if reached max when tags', async () => {
       let select = createSelect({
         mode: 'tags',
-        value: [0],
+        value: [1],
         options: [1,2,3],
         max: 1
       })
 
-      select.vm.handleOptionClick({ value: 1, label: 2 })
+      select.vm.handleOptionClick({ value: 2, label: 2 })
 
       await nextTick()
 
-      expect(getValue(select)).toStrictEqual([0])
+      expect(getValue(select)).toStrictEqual([1])
     })
 
     it('should not clear search after select when tags if clearOnSelect is false', async () => {
       let select = createSelect({
         mode: 'tags',
-        value: [0],
+        value: [1],
         options: [1,2,3],
         clearOnSelect: false,
       })
 
       select.vm.search = 'value'
-      select.vm.handleOptionClick({ value: 1, label: 2 })
+      select.vm.handleOptionClick({ value: 2, label: 2 })
 
       await nextTick()
 
-      expect(getValue(select)).toStrictEqual([0,1])
+      expect(getValue(select)).toStrictEqual([1,2])
       expect(select.vm.search).toBe('value')
     })
 
     it('should clear search after select when tags if clearOnSelect is true', async () => {
       let select = createSelect({
         mode: 'tags',
-        value: [0],
+        value: [1],
         options: [1,2,3],
         clearOnSelect: true,
       })
 
       select.vm.search = 'value'
-      select.vm.handleOptionClick({ value: 1, label: 2 })
+      select.vm.handleOptionClick({ value: 2, label: 2 })
 
       await nextTick()
 
-      expect(getValue(select)).toStrictEqual([0,1])
+      expect(getValue(select)).toStrictEqual([1,2])
       expect(select.vm.search).toBe('')
     })
 
@@ -1137,7 +1168,7 @@ describe('useOptions', () => {
 
       expect(select.emitted('tag')[0][0]).toStrictEqual('value')
       expect(select.vm.search).toBe('')
-      expect(select.vm.filteredOptions.length).toBe(3)
+      expect(select.vm.fo.length).toBe(3)
     })
 
     it('should append option if createTag && appendNewTag true and option does not exist', async () => {
@@ -1156,10 +1187,10 @@ describe('useOptions', () => {
       await nextTick()
 
       expect(select.emitted('tag')[0][0]).toStrictEqual('value')
-      expect(select.vm.filteredOptions).toStrictEqual([
-        { v: 0, label: 1 },
-        { v: 1, label: 2 },
-        { v: 2, label: 3 },
+      expect(select.vm.fo).toStrictEqual([
+        { v: 1, label: 1 },
+        { v: 2, label: 2 },
+        { v: 3, label: 3 },
         { v: 'value', label: 'value' },
       ])
     })
@@ -1183,10 +1214,10 @@ describe('useOptions', () => {
 
       await nextTick()
       
-      expect(select.vm.filteredOptions).toStrictEqual([
-        { v: 0, label: 1 },
-        { v: 1, label: 2 },
-        { v: 2, label: 3 },
+      expect(select.vm.fo).toStrictEqual([
+        { v: 1, label: 1 },
+        { v: 2, label: 2 },
+        { v: 3, label: 3 },
         { v: 'value', label: 'value' },
       ])
     })
@@ -1207,10 +1238,10 @@ describe('useOptions', () => {
 
       await nextTick()
       
-      expect(select.vm.filteredOptions).toStrictEqual([
-        { v: 0, label: 1 },
-        { v: 1, label: 2 },
-        { v: 2, label: 3 },
+      expect(select.vm.fo).toStrictEqual([
+        { v: 1, label: 1 },
+        { v: 2, label: 2 },
+        { v: 3, label: 3 },
       ])
     })
   })
@@ -1222,7 +1253,7 @@ describe('useOptions', () => {
         valueProp: 'v',
       })
 
-      expect(select.vm.getOption(2)).toStrictEqual({ v: 2, label: 3 })
+      expect(select.vm.getOption(3)).toStrictEqual({ v: 3, label: 3 })
     })
   })
   
@@ -1239,16 +1270,16 @@ describe('useOptions', () => {
   
       await flushPromises()
 
-      expect(select.vm.filteredOptions).toStrictEqual([])
+      expect(select.vm.fo).toStrictEqual([])
 
       select.vm.resolveOptions()
 
       await flushPromises()
 
-      expect(select.vm.filteredOptions).toStrictEqual([
-        { value: 0, label: 1 },
-        { value: 1, label: 2 },
-        { value: 2, label: 3 },
+      expect(select.vm.fo).toStrictEqual([
+        { value: 1, label: 1 },
+        { value: 2, label: 2 },
+        { value: 3, label: 3 },
       ])
     })
   })
@@ -1266,16 +1297,16 @@ describe('useOptions', () => {
   
       await flushPromises()
 
-      expect(select.vm.filteredOptions).toStrictEqual([])
+      expect(select.vm.fo).toStrictEqual([])
 
       select.vm.refreshOptions()
 
       await flushPromises()
 
-      expect(select.vm.filteredOptions).toStrictEqual([
-        { value: 0, label: 1 },
-        { value: 1, label: 2 },
-        { value: 2, label: 3 },
+      expect(select.vm.fo).toStrictEqual([
+        { value: 1, label: 1 },
+        { value: 2, label: 2 },
+        { value: 3, label: 3 },
       ])
     })
   })
@@ -1310,10 +1341,10 @@ describe('useOptions', () => {
   
       await flushPromises()
 
-      expect(select.vm.filteredOptions).toStrictEqual([
-        { value: 0, label: 1 },
-        { value: 1, label: 2 },
-        { value: 2, label: 3 },
+      expect(select.vm.fo).toStrictEqual([
+        { value: 1, label: 1 },
+        { value: 2, label: 2 },
+        { value: 3, label: 3 },
       ])
     })
 
@@ -1329,7 +1360,7 @@ describe('useOptions', () => {
   
       await flushPromises()
 
-      expect(select.vm.filteredOptions).toStrictEqual([])
+      expect(select.vm.fo).toStrictEqual([])
     })
 
     it('should be busy when resolving async options', async () => {
@@ -1348,35 +1379,35 @@ describe('useOptions', () => {
       expect(select.vm.busy).toBe(false)
     })
 
-    it('should set internalValue if not async options and object=false', async () => {
+    it('should set iv if not async options and object=false', async () => {
       let select = createSelect({
-        value: 1,
+        value: 2,
         options: [1,2,3],
         object: false,
       })
 
-      expect(select.vm.internalValue).toStrictEqual({
-        value: 1,
+      expect(select.vm.iv).toStrictEqual({
+        value: 2,
         label: 2,
       })
     })
 
-    it('should set internalValue if not async options and object=true', async () => {
+    it('should set iv if not async options and object=true', async () => {
       let select = createSelect({
-        value: { value: 1, label: 2 },
+        value: { value: 2, label: 2 },
         options: [1,2,3],
         object: true,
       })
 
-      expect(select.vm.internalValue).toStrictEqual({
-        value: 1,
+      expect(select.vm.iv).toStrictEqual({
+        value: 2,
         label: 2,
       })
     })
 
-    it('should set internalValue when async options are resolved when resolveOnLoad=true objec=false', async () => {
+    it('should set iv when async options are resolved when resolveOnLoad=true objec=false', async () => {
       let select = createSelect({
-        value: 1,
+        value: 2,
         options: async () => {
           return await new Promise((resolve, reject) => {
             resolve([1,2,3])
@@ -1386,19 +1417,19 @@ describe('useOptions', () => {
         object: false
       })
 
-      expect(select.vm.internalValue).toStrictEqual({})
+      expect(select.vm.iv).toStrictEqual({})
 
       await flushPromises()
 
-      expect(select.vm.internalValue).toStrictEqual({
-        value: 1,
+      expect(select.vm.iv).toStrictEqual({
+        value: 2,
         label: 2,
       })
     })
 
-    it('should set internalValue when async options are resolved when resolveOnLoad=true objec=true', async () => {
+    it('should set iv when async options are resolved when resolveOnLoad=true objec=true', async () => {
       let select = createSelect({
-        value: { value: 1, label: 2 },
+        value: { value: 2, label: 2 },
         options: async () => {
           return await new Promise((resolve, reject) => {
             resolve([1,2,3])
@@ -1408,19 +1439,19 @@ describe('useOptions', () => {
         object: true
       })
 
-      expect(select.vm.internalValue).toStrictEqual({})
+      expect(select.vm.iv).toStrictEqual({})
 
       await flushPromises()
 
-      expect(select.vm.internalValue).toStrictEqual({
-        value: 1,
+      expect(select.vm.iv).toStrictEqual({
+        value: 2,
         label: 2,
       })
     })
 
-    it('should not set internalValue value with async options when resolveOnLoad=false object=false', async () => {
+    it('should not set iv value with async options when resolveOnLoad=false object=false', async () => {
       let select = createSelect({
-        value: 1,
+        value: 2,
         options: async () => {
           return await new Promise((resolve, reject) => {
             resolve([1,2,3])
@@ -1430,16 +1461,16 @@ describe('useOptions', () => {
         object: false,
       })
 
-      expect(select.vm.internalValue).toStrictEqual({})
+      expect(select.vm.iv).toStrictEqual({})
 
       await flushPromises()
 
-      expect(select.vm.internalValue).toStrictEqual({})
+      expect(select.vm.iv).toStrictEqual({})
     })
 
-    it('should set internalValue value with async options when resolveOnLoad=false object=true', async () => {
+    it('should set iv value with async options when resolveOnLoad=false object=true', async () => {
       let select = createSelect({
-        value: { value: 1, label: 2 },
+        value: { value: 2, label: 2 },
         options: async () => {
           return await new Promise((resolve, reject) => {
             resolve([1,2,3])
@@ -1449,8 +1480,8 @@ describe('useOptions', () => {
         object: true
       })
 
-      expect(select.vm.internalValue).toStrictEqual({
-        value: 1,
+      expect(select.vm.iv).toStrictEqual({
+        value: 2,
         label: 2
       })
     })
@@ -1508,10 +1539,10 @@ describe('useOptions', () => {
 
       await flushPromises()
       
-      expect(select.vm.filteredOptions).toStrictEqual([
-        { value: 0, label: 4 },
-        { value: 1, label: 5 },
-        { value: 2, label: 6 },
+      expect(select.vm.fo).toStrictEqual([
+        { value: 4, label: 4 },
+        { value: 5, label: 5 },
+        { value: 6, label: 6 },
       ])
     })
 
@@ -1533,7 +1564,7 @@ describe('useOptions', () => {
 
       await flushPromises()
       
-      expect(select.vm.pointer).toStrictEqual({ value: 1, label: 'java' })
+      expect(select.vm.pointer).toStrictEqual({ value: 'java', label: 'java' })
     })
 
     it('should set pointer to first non-disabled when search changes using async option list', async () => {
@@ -1613,10 +1644,10 @@ describe('useOptions', () => {
 
       await flushPromises()
       
-      expect(select.vm.filteredOptions).toStrictEqual([
-        { value: 0, label: 1 },
-        { value: 1, label: 2 },
-        { value: 2, label: 3 },
+      expect(select.vm.fo).toStrictEqual([
+        { value: 1, label: 1 },
+        { value: 2, label: 2 },
+        { value: 3, label: 3 },
       ])
     })
 
@@ -1649,10 +1680,10 @@ describe('useOptions', () => {
 
       await flushPromises()
       
-      expect(select.vm.filteredOptions).toStrictEqual([
-        { value: 0, label: 1 },
-        { value: 1, label: 2 },
-        { value: 2, label: 3 },
+      expect(select.vm.fo).toStrictEqual([
+        { value: 1, label: 1 },
+        { value: 2, label: 2 },
+        { value: 3, label: 3 },
       ])
     })
 
@@ -1726,7 +1757,7 @@ describe('useOptions', () => {
 
       select.vm.search = 'val'
 
-      expect(select.vm.filteredOptions.length).toBe(0)
+      expect(select.vm.fo.length).toBe(0)
     })
 
     it('should not clear options before updating async options if clearOnSearch is false', async () => {
@@ -1745,7 +1776,7 @@ describe('useOptions', () => {
 
       select.vm.search = 'val'
 
-      expect(select.vm.filteredOptions.length).toBe(3)
+      expect(select.vm.fo.length).toBe(3)
     })
 
     it('should be busy when resolve new async options', async () => {
@@ -1771,7 +1802,7 @@ describe('useOptions', () => {
       expect(select.vm.busy).toBe(false)
     })
 
-    it('should update internalValue when v-model changes when mode=single, object=false', async () => {
+    it('should update iv when v-model changes when mode=single, object=false', async () => {
       let select = createSelect({
         value: null,
         options: [1,2,3],
@@ -1779,62 +1810,62 @@ describe('useOptions', () => {
 
       select.vm.$parent.value = 1
       await nextTick()
-      expect(select.vm.internalValue).toStrictEqual(select.vm.getOption(1))
+      expect(select.vm.iv).toStrictEqual(select.vm.getOption(1))
 
       select.vm.$parent.value = 2
       await nextTick()
-      expect(select.vm.internalValue).toStrictEqual(select.vm.getOption(2))
+      expect(select.vm.iv).toStrictEqual(select.vm.getOption(2))
 
       select.vm.$parent.value = null
       await nextTick()
-      expect(select.vm.internalValue).toStrictEqual({})
+      expect(select.vm.iv).toStrictEqual({})
 
       select.vm.$parent.value = undefined
       await nextTick()
-      expect(select.vm.internalValue).toStrictEqual({})
+      expect(select.vm.iv).toStrictEqual({})
 
       select.vm.$parent.value = false
       await nextTick()
-      expect(select.vm.internalValue).toStrictEqual({})
+      expect(select.vm.iv).toStrictEqual({})
 
       select.vm.$parent.value = 4
       await nextTick()
-      expect(select.vm.internalValue).toStrictEqual({})
+      expect(select.vm.iv).toStrictEqual({})
     })
 
-    it('should update internalValue when v-model changes when mode=single, object=true', async () => {
+    it('should update iv when v-model changes when mode=single, object=true', async () => {
       let select = createSelect({
         value: null,
         options: [1,2,3],
         object: true,
       })
 
-      select.vm.$parent.value = { value: 1, label: 2 }
+      select.vm.$parent.value = { value: 2, label: 2 }
       await nextTick()
-      expect(select.vm.internalValue).toStrictEqual(select.vm.getOption(1))
+      expect(select.vm.iv).toStrictEqual(select.vm.getOption(2))
 
-      select.vm.$parent.value = { value: 2, label: 3 }
+      select.vm.$parent.value = { value: 3, label: 3 }
       await nextTick()
-      expect(select.vm.internalValue).toStrictEqual(select.vm.getOption(2))
+      expect(select.vm.iv).toStrictEqual(select.vm.getOption(3))
 
       select.vm.$parent.value = null
       await nextTick()
-      expect(select.vm.internalValue).toStrictEqual({})
+      expect(select.vm.iv).toStrictEqual({})
 
       select.vm.$parent.value = undefined
       await nextTick()
-      expect(select.vm.internalValue).toStrictEqual({})
+      expect(select.vm.iv).toStrictEqual({})
 
       select.vm.$parent.value = false
       await nextTick()
-      expect(select.vm.internalValue).toStrictEqual({})
+      expect(select.vm.iv).toStrictEqual({})
 
-      select.vm.$parent.value = { value: 4, label: 5 }
+      select.vm.$parent.value = { value: 5, label: 5 }
       await nextTick()
-      expect(select.vm.internalValue).toStrictEqual({ value: 4, label: 5 })
+      expect(select.vm.iv).toStrictEqual({ value: 5, label: 5 })
     })
 
-    it('should update internalValue when v-model changes when mode=multiple, object=false', async () => {
+    it('should update iv when v-model changes when mode=multiple, object=false', async () => {
       let select = createSelect({
         mode: 'multiple',
         value: null,
@@ -1843,37 +1874,37 @@ describe('useOptions', () => {
 
       select.vm.$parent.value = [1]
       await nextTick()
-      expect(select.vm.internalValue).toStrictEqual([select.vm.getOption(1)])
+      expect(select.vm.iv).toStrictEqual([select.vm.getOption(1)])
 
       select.vm.$parent.value = [2, 1]
       await nextTick()
-      expect(select.vm.internalValue).toStrictEqual([
+      expect(select.vm.iv).toStrictEqual([
         select.vm.getOption(2),
         select.vm.getOption(1),
       ])
 
       select.vm.$parent.value = null
       await nextTick()
-      expect(select.vm.internalValue).toStrictEqual([])
+      expect(select.vm.iv).toStrictEqual([])
 
       select.vm.$parent.value = undefined
       await nextTick()
-      expect(select.vm.internalValue).toStrictEqual([])
+      expect(select.vm.iv).toStrictEqual([])
 
       select.vm.$parent.value = false
       await nextTick()
-      expect(select.vm.internalValue).toStrictEqual([])
+      expect(select.vm.iv).toStrictEqual([])
 
       select.vm.$parent.value = []
       await nextTick()
-      expect(select.vm.internalValue).toStrictEqual([])
+      expect(select.vm.iv).toStrictEqual([])
 
       select.vm.$parent.value = [4]
       await nextTick()
-      expect(select.vm.internalValue).toStrictEqual([])
+      expect(select.vm.iv).toStrictEqual([])
     })
 
-    it('should update internalValue when v-model changes when mode=multiple, object=true', async () => {
+    it('should update iv when v-model changes when mode=multiple, object=true', async () => {
       let select = createSelect({
         mode: 'multiple',
         value: null,
@@ -1881,53 +1912,53 @@ describe('useOptions', () => {
         object: true,
       })
 
-      select.vm.$parent.value = [{ value: 1, label: 2 }]
+      select.vm.$parent.value = [{ value: 2, label: 2 }]
       await nextTick()
-      expect(select.vm.internalValue).toStrictEqual([select.vm.getOption(1)])
+      expect(select.vm.iv).toStrictEqual([select.vm.getOption(2)])
 
-      select.vm.$parent.value = [{ value: 2, label: 3 }, { value: 1, label: 2 }]
+      select.vm.$parent.value = [{ value: 3, label: 3 }, { value: 2, label: 2 }]
       await nextTick()
-      expect(select.vm.internalValue).toStrictEqual([
+      expect(select.vm.iv).toStrictEqual([
+        select.vm.getOption(3),
         select.vm.getOption(2),
-        select.vm.getOption(1),
       ])
 
       select.vm.$parent.value = null
       await nextTick()
-      expect(select.vm.internalValue).toStrictEqual([])
+      expect(select.vm.iv).toStrictEqual([])
 
       select.vm.$parent.value = undefined
       await nextTick()
-      expect(select.vm.internalValue).toStrictEqual([])
+      expect(select.vm.iv).toStrictEqual([])
 
       select.vm.$parent.value = false
       await nextTick()
-      expect(select.vm.internalValue).toStrictEqual([])
+      expect(select.vm.iv).toStrictEqual([])
 
       select.vm.$parent.value = []
       await nextTick()
-      expect(select.vm.internalValue).toStrictEqual([])
+      expect(select.vm.iv).toStrictEqual([])
 
-      select.vm.$parent.value = [{ value: 4, label: 5 }]
+      select.vm.$parent.value = [{ value: 5, label: 5 }]
       await nextTick()
-      expect(select.vm.internalValue).toStrictEqual([{ value: 4, label: 5 }])
+      expect(select.vm.iv).toStrictEqual([{ value: 5, label: 5 }])
     })
 
-    it('should update resolvedOptions when :options property get assigned', async () => {
+    it('should update ro when :options property get assigned', async () => {
       let select = createSelect()
 
       $set(select.vm, select.vm.$parent.props, 'options', [1,2,3])
 
       await nextTick()
 
-      expect(select.vm.filteredOptions).toStrictEqual([
-        { value: 0, label: 1, },
-        { value: 1, label: 2, },
-        { value: 2, label: 3, },
+      expect(select.vm.fo).toStrictEqual([
+        { value: 1, label: 1, },
+        { value: 2, label: 2, },
+        { value: 3, label: 3, },
       ])
     })
 
-    it('should update resolvedOptions when :options property changes when options are not async', async () => {
+    it('should update ro when :options property changes when options are not async', async () => {
       let select = createSelect({
         options: [1,2,3],
       })
@@ -1936,14 +1967,14 @@ describe('useOptions', () => {
 
       await nextTick()
 
-      expect(select.vm.filteredOptions).toStrictEqual([
-        { value: 0, label: 4, },
-        { value: 1, label: 5, },
-        { value: 2, label: 6, },
+      expect(select.vm.fo).toStrictEqual([
+        { value: 4, label: 4, },
+        { value: 5, label: 5, },
+        { value: 6, label: 6, },
       ])
     })
 
-    it('should update resolvedOptions when :options children changes', async () => {
+    it('should update ro when :options children changes', async () => {
       let select = createSelect({
         options: [1,2,3],
       })
@@ -1952,11 +1983,11 @@ describe('useOptions', () => {
 
       await nextTick()
 
-      expect(select.vm.filteredOptions).toStrictEqual([
-        { value: 0, label: 1, },
-        { value: 1, label: 2, },
-        { value: 2, label: 3, },
-        { value: 3, label: 4, },
+      expect(select.vm.fo).toStrictEqual([
+        { value: 1, label: 1, },
+        { value: 2, label: 2, },
+        { value: 3, label: 3, },
+        { value: 4, label: 4, },
       ])
     })
 

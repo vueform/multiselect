@@ -97,7 +97,7 @@ export default function (mode = 'single') {
 
       await nextTick()
 
-      expect(getValue(select)).toStrictEqual(mode == 'single' ? 1 : [1])
+      expect(getValue(select)).toStrictEqual(mode == 'single' ? 2 : [2])
 
       destroy(select)
     })

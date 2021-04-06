@@ -9,12 +9,12 @@ describe('usePointer Action', () => {
         valueProp: 'v',
       })
 
+      expect(select.vm.isPointed(select.vm.getOption(2))).toBe(false)
+
+      select.vm.pointer = select.vm.getOption(2)
+
       expect(select.vm.isPointed(select.vm.getOption(1))).toBe(false)
-
-      select.vm.pointer = select.vm.getOption(1)
-
-      expect(select.vm.isPointed(select.vm.getOption(0))).toBe(false)
-      expect(select.vm.isPointed(select.vm.getOption(1))).toBe(true)
+      expect(select.vm.isPointed(select.vm.getOption(2))).toBe(true)
     })
   })
 
@@ -24,9 +24,9 @@ describe('usePointer Action', () => {
         options: [1,2,3]
       })
 
-      select.vm.setPointer(select.vm.getOption(1))
+      select.vm.setPointer(select.vm.getOption(2))
 
-      expect(select.vm.pointer).toStrictEqual(select.vm.getOption(1))
+      expect(select.vm.pointer).toStrictEqual(select.vm.getOption(2))
     })
   })
 
@@ -38,7 +38,7 @@ describe('usePointer Action', () => {
 
       select.vm.setPointerFirst()
 
-      expect(select.vm.pointer).toStrictEqual(select.vm.getOption(0))
+      expect(select.vm.pointer).toStrictEqual(select.vm.getOption(1))
     })
 
     it('should set null as pointer if has no options', () => {
@@ -351,7 +351,7 @@ describe('usePointer Action', () => {
 
       await nextTick()
 
-      expect(select.vm.pointer).toStrictEqual(select.vm.getOption(0))
+      expect(select.vm.pointer).toStrictEqual(select.vm.getOption('v1'))
     })
   })
 })
