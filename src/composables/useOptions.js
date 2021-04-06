@@ -4,7 +4,7 @@ import isObject from './../utils/isObject'
 import isNullish from './../utils/isNullish'
 import arraysEqual from './../utils/arraysEqual'
 
-export default function useOptions (props, context, dependencies)
+export default function useOptions (props, context, dep)
 {
   const { 
     options, mode, trackBy, limit, hideSelected, createTag, label,
@@ -15,99 +15,103 @@ export default function useOptions (props, context, dependencies)
 
   // ============ DEPENDENCIES ============
 
-  const internalValue = dependencies.internalValue
-  const externalValue = dependencies.externalValue
-  const search = dependencies.search
-  const blurSearch = dependencies.blurSearch
-  const clearSearch = dependencies.clearSearch
-  const update = dependencies.update
-  const blurInput = dependencies.blurInput
-  const pointer = dependencies.pointer
+  const iv = dep.iv
+  const ev = dep.ev
+  const search = dep.search
+  const blurSearch = dep.blurSearch
+  const clearSearch = dep.clearSearch
+  const update = dep.update
+  const blurInput = dep.blurInput
+  const pointer = dep.pointer
 
   // ================ DATA ================
 
   // no export
-  const appendedOptions = ref([])
+  // appendedOptions
+  const ap = ref([])
 
   // no export
-  const resolvedOptions = ref([])
+  // resolvedOptions
+  const ro = ref([])
 
   const resolving = ref(false)
 
   // ============== COMPUTED ==============
 
   // no export
-  const extendedOptions = computed(() => {
-    let extendedOptions = resolvedOptions.value || []
+  // extendedOptions
+  const eo = computed(() => {
+    let eo = ro.value || []
 
     // Transforming an object to an array of objects
-    if (isObject(extendedOptions)) {
-      extendedOptions = Object.keys(extendedOptions).map((key) => {
-        let val = extendedOptions[key]
+    if (isObject(eo)) {
+      eo = Object.keys(eo).map((key) => {
+        let val = eo[key]
 
         return { [valueProp.value]: key, [trackBy.value]: val, [label.value]: val}
       })
     }
 
     // Transforming an plain arrays to an array of objects
-    extendedOptions = extendedOptions.map((val, key) => {
-      return typeof val === 'object' ? val : { [valueProp.value]: key, [trackBy.value]: val, [label.value]: val}
+    eo = eo.map((val, key) => {
+      return typeof val === 'object' ? val : { [valueProp.value]: val, [trackBy.value]: val, [label.value]: val}
     })
 
-    if (appendedOptions.value.length) {
-      extendedOptions = extendedOptions.concat(appendedOptions.value)
+    if (ap.value.length) {
+      eo = eo.concat(ap.value)
     }
 
-    return extendedOptions
+    return eo
   })
 
-  const filteredOptions = computed(() => {
-    let filteredOptions = extendedOptions.value
+  // filteredOptions
+  const fo = computed(() => {
+    let fo = eo.value
 
     if (createdTag.value.length) {
-      filteredOptions = createdTag.value.concat(filteredOptions)
+      fo = createdTag.value.concat(fo)
     }
 
     if (search.value && filterResults.value) {
-      filteredOptions = filteredOptions.filter((option) => {
+      fo = fo.filter((option) => {
         return normalize(option[trackBy.value]).indexOf(normalize(search.value)) !== -1
       })
     }
 
     if (hideSelected.value) {
-      filteredOptions = filteredOptions.filter((option) => !shouldHideOption(option))
+      fo = fo.filter((option) => !shouldHideOption(option))
     }
 
     if (limit.value > 0) {
-      filteredOptions = filteredOptions.slice(0, limit.value)
+      fo = fo.slice(0, limit.value)
     }
 
-    return filteredOptions
+    return fo
   })
 
   const hasSelected = computed(() => {
     switch (mode.value) {
       case 'single':
-        return !isNullish(internalValue.value[valueProp.value])
+        return !isNullish(iv.value[valueProp.value])
 
       case 'multiple':
       case 'tags':
-        return !isNullish(internalValue.value) && internalValue.value.length > 0
+        return !isNullish(iv.value) && iv.value.length > 0
     }
   })
 
   const multipleLabelText = computed(() => {
     return multipleLabel !== undefined && multipleLabel.value !== undefined
-      ? multipleLabel.value(internalValue.value)
-      : (internalValue.value && internalValue.value.length > 1 ? `${internalValue.value.length} options selected` : `1 option selected`)
+      ? multipleLabel.value(iv.value)
+      : (iv.value && iv.value.length > 1 ? `${iv.value.length} options selected` : `1 option selected`)
   })
 
   const noOptions = computed(() => {
-    return !extendedOptions.value.length && !resolving.value
+    return !eo.value.length && !resolving.value
   })
 
   const noResults = computed(() => {
-    return extendedOptions.value.length > 0 && filteredOptions.value.length == 0 
+    return eo.value.length > 0 && fo.value.length == 0 
   })
 
   // no export
@@ -153,7 +157,7 @@ export default function useOptions (props, context, dependencies)
 
       case 'multiple':
       case 'tags':
-        update((internalValue.value).concat(option))
+        update((iv.value).concat(option))
         break
     }
 
@@ -172,7 +176,7 @@ export default function useOptions (props, context, dependencies)
 
       case 'tags':
       case 'multiple':
-        update(internalValue.value.filter((val) => val[valueProp.value] != option[valueProp.value]))
+        update(iv.value.filter((val) => val[valueProp.value] != option[valueProp.value]))
         break
     }
 
@@ -204,11 +208,11 @@ export default function useOptions (props, context, dependencies)
   const isSelected = (option) => {
     switch (mode.value) {
       case 'single':
-        return !isNullish(internalValue.value) && internalValue.value[valueProp.value] == option[valueProp.value]
+        return !isNullish(iv.value) && iv.value[valueProp.value] == option[valueProp.value]
 
       case 'tags':
       case 'multiple':
-        return !isNullish(internalValue.value) && internalValue.value.map(o => o[valueProp.value]).indexOf(option[valueProp.value]) !== -1
+        return !isNullish(iv.value) && iv.value.map(o => o[valueProp.value]).indexOf(option[valueProp.value]) !== -1
     }
   }
 
@@ -221,7 +225,7 @@ export default function useOptions (props, context, dependencies)
       return false
     }
     
-    return internalValue.value.length >= max.value
+    return iv.value.length >= max.value
   }
 
   const handleOptionClick = (option) => {
@@ -290,12 +294,12 @@ export default function useOptions (props, context, dependencies)
   }
 
   const getOption = (val) => {
-    return extendedOptions.value[extendedOptions.value.map(o => String(o[valueProp.value])).indexOf(String(val))]
+    return eo.value[eo.value.map(o => String(o[valueProp.value])).indexOf(String(val))]
   }
 
   // no export
   const getOptionByTrackBy = (val) => {
-    return extendedOptions.value.map(o => normalize(o[trackBy.value])).indexOf(normalize(val))
+    return eo.value.map(o => normalize(o[trackBy.value])).indexOf(normalize(val))
   }
 
   // no export
@@ -305,13 +309,13 @@ export default function useOptions (props, context, dependencies)
 
   // no export
   const appendOption = (option) => {
-    appendedOptions.value.push(option)
+    ap.value.push(option)
   }
 
   // no export
   const initInternalValue = () => {
-    if (!isNullish(externalValue.value)) {
-      internalValue.value = makeInternal(externalValue.value)
+    if (!isNullish(ev.value)) {
+      iv.value = makeInternal(ev.value)
     }
   }
 
@@ -319,7 +323,7 @@ export default function useOptions (props, context, dependencies)
     resolving.value = true
 
     options.value(search.value).then((response) => {
-      resolvedOptions.value = response
+      ro.value = response
 
       if (typeof callback == 'function') {
         callback(response)
@@ -336,21 +340,21 @@ export default function useOptions (props, context, dependencies)
     }
 
     if (mode.value === 'single') {
-      let newLabel = getOption(internalValue.value[valueProp.value])[label.value]
+      let newLabel = getOption(iv.value[valueProp.value])[label.value]
 
-      internalValue.value[label.value] = newLabel
+      iv.value[label.value] = newLabel
 
       if (object.value) {
-        externalValue.value[label.value] = newLabel
+        ev.value[label.value] = newLabel
       }
     } else {
-      internalValue.value.forEach((val, i) => {
-        let newLabel = getOption(internalValue.value[i][valueProp.value])[label.value]
+      iv.value.forEach((val, i) => {
+        let newLabel = getOption(iv.value[i][valueProp.value])[label.value]
 
-        internalValue.value[i][label.value] = newLabel
+        iv.value[i][label.value] = newLabel
 
         if (object.value) {
-          externalValue.value[i][label.value] = newLabel
+          ev.value[i][label.value] = newLabel
         }
       })
     }
@@ -377,7 +381,7 @@ export default function useOptions (props, context, dependencies)
 
   // ================ HOOKS ===============
 
-  if (mode.value !== 'single' && !isNullish(externalValue.value) && !Array.isArray(externalValue.value)) {
+  if (mode.value !== 'single' && !isNullish(ev.value) && !Array.isArray(ev.value)) {
     throw new Error(`v-model must be an array when using "${mode.value}" mode`)
   }
 
@@ -389,7 +393,7 @@ export default function useOptions (props, context, dependencies)
     }
   }
   else {
-    resolvedOptions.value = options.value
+    ro.value = options.value
 
     initInternalValue()
   }
@@ -405,7 +409,7 @@ export default function useOptions (props, context, dependencies)
       resolving.value = true
 
       if (clearOnSearch.value) {
-        resolvedOptions.value = []
+        ro.value = []
       }
       setTimeout(() => {
         if (query != search.value) {
@@ -414,8 +418,8 @@ export default function useOptions (props, context, dependencies)
 
         options.value(search.value).then((response) => {
           if (query == search.value) {
-            resolvedOptions.value = response
-            pointer.value = filteredOptions.value.filter(o => o.disabled !== true)[0] || null
+            ro.value = response
+            pointer.value = fo.value.filter(o => o.disabled !== true)[0] || null
             resolving.value = false
           }
         })
@@ -424,23 +428,23 @@ export default function useOptions (props, context, dependencies)
     }, { flush: 'sync' })
   }
 
-  watch(externalValue, (newValue) => {
+  watch(ev, (newValue) => {
     if (isNullish(newValue)) {
-      internalValue.value = makeInternal(newValue)
+      iv.value = makeInternal(newValue)
       return
     }
 
     switch (mode.value) {
       case 'single':
-        if (object.value ? newValue[valueProp.value] != internalValue.value[valueProp.value] : newValue != internalValue.value[valueProp.value]) {
-          internalValue.value = makeInternal(newValue)
+        if (object.value ? newValue[valueProp.value] != iv.value[valueProp.value] : newValue != iv.value[valueProp.value]) {
+          iv.value = makeInternal(newValue)
         }
         break
 
       case 'multiple':
       case 'tags':
-        if (!arraysEqual(object.value ? newValue.map(o => o[valueProp.value]) : newValue, internalValue.value.map(o => o[valueProp.value]))) {
-          internalValue.value = makeInternal(newValue)
+        if (!arraysEqual(object.value ? newValue.map(o => o[valueProp.value]) : newValue, iv.value.map(o => o[valueProp.value]))) {
+          iv.value = makeInternal(newValue)
         }
         break
     }
@@ -448,17 +452,21 @@ export default function useOptions (props, context, dependencies)
 
   if (typeof props.options !== 'function') {
     watch(options, (n, o) => {
-      resolvedOptions.value = props.options
+      ro.value = props.options
+
+      if (!Object.keys(iv.value).length) {
+        initInternalValue()
+      }
 
       refreshLabels()
     })
   }
 
   return {
-    filteredOptions,
+    fo,
     hasSelected,
     multipleLabelText,
-    extendedOptions,
+    eo,
     noOptions,
     noResults,
     resolving,

@@ -1,21 +1,21 @@
 import { toRefs, watch, nextTick, computed } from 'composition-api'
 
-export default function usePointer (props, context, dependencies)
+export default function usePointer (props, context, dep)
 {
   const { id, valueProp } = toRefs(props)
 
   // ============ DEPENDENCIES ============
 
-  const filteredOptions = dependencies.filteredOptions
-  const handleOptionClick = dependencies.handleOptionClick
-  const search = dependencies.search
-  const pointer = dependencies.pointer
+  const fo = dep.fo
+  const handleOptionClick = dep.handleOptionClick
+  const search = dep.search
+  const pointer = dep.pointer
 
   // ============== COMPUTED ==============
 
   // no export
   const options = computed(() => {
-    return filteredOptions.value.filter(o => o.disabled !== true)
+    return fo.value.filter(o => o.disabled !== true)
   })
 
   // =============== METHODS ==============

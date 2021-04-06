@@ -1,16 +1,16 @@
 import { ref, toRefs, computed } from 'composition-api'
 
-export default function useDropdown (props, context, dependencies)
+export default function useDropdown (props, context, dep)
 {
   const { maxHeight, disabled, searchable } = toRefs(props)
 
   // ============ DEPENDENCIES ============
 
-  const multiselect = dependencies.multiselect
-  const blurInput = dependencies.blurInput
-  const blurSearch = dependencies.blurSearch
-  const focusInput = dependencies.focusInput
-  const focusSearch = dependencies.focusSearch
+  const multiselect = dep.multiselect
+  const blurInput = dep.blurInput
+  const blurSearch = dep.blurSearch
+  const focusInput = dep.focusInput
+  const focusSearch = dep.focusSearch
 
   // ================ DATA ================
 

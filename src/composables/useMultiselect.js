@@ -1,6 +1,6 @@
 import { ref, toRefs, computed } from 'composition-api'
 
-export default function useMultiselect (props, context, dependencies)
+export default function useMultiselect (props, context, dep)
 {
   const { searchable, id } = toRefs(props)
 

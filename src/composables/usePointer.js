@@ -1,6 +1,6 @@
 import { ref } from 'composition-api'
 
-export default function usePointer (props, context, dependencies)
+export default function usePointer (props, context, dep)
 {
   // ================ DATA ================
 

@@ -1,12 +1,12 @@
 import { ref, toRefs, computed, watch } from 'composition-api'
 
-export default function useSearch (props, context, dependencies)
+export default function useSearch (props, context, dep)
 {
   const { searchable, mode } = toRefs(props)
 
   // ============ DEPENDENCIES ============
 
-  const internalValue = dependencies.internalValue
+  const iv = dep.iv
 
   // ================ DATA ================
 
@@ -21,7 +21,7 @@ export default function useSearch (props, context, dependencies)
       return `${search.value.length}ch`
     }
 
-    if (mode.value !== 'tags' || [null, undefined].indexOf(internalValue.value) !== -1 || !internalValue.value.length) {
+    if (mode.value !== 'tags' || [null, undefined].indexOf(iv.value) !== -1 || !iv.value.length) {
       return '100%'
     }
 

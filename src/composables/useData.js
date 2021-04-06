@@ -1,19 +1,19 @@
 import { toRefs } from 'composition-api'
 import isNullish from './../utils/isNullish'
 
-export default function useData (props, context, dependencies)
+export default function useData (props, context, dep)
 {
   const { object, valueProp, mode } = toRefs(props)
 
   // ============ DEPENDENCIES ============
 
-  const internalValue = dependencies.internalValue
+  const iv = dep.iv
 
   // =============== METHODS ==============
 
   const update = (val) => {
     // Setting object(s) as internal value
-    internalValue.value = makeInternal(val)
+    iv.value = makeInternal(val)
 
     // Setting object(s) or plain value as external 
     // value based on `option` setting

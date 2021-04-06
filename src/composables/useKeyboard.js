@@ -1,17 +1,17 @@
 import { toRefs, nextTick } from 'composition-api'
 
-export default function useKeyboard (props, context, dependencies)
+export default function useKeyboard (props, context, dep)
 {
   const { mode, addTagOn, createTag } = toRefs(props)
 
   // ============ DEPENDENCIES ============
 
-  const internalValue = dependencies.internalValue
-  const update = dependencies.update
-  const closeDropdown = dependencies.closeDropdown
-  const clearPointer = dependencies.clearPointer
-  const search = dependencies.search
-  const selectPointer = dependencies.selectPointer
+  const iv = dep.iv
+  const update = dep.update
+  const closeDropdown = dep.closeDropdown
+  const clearPointer = dep.clearPointer
+  const search = dep.search
+  const selectPointer = dep.selectPointer
 
   // =============== METHODS ==============
 
@@ -20,7 +20,7 @@ export default function useKeyboard (props, context, dependencies)
       return
     }
 
-    update([...internalValue.value].slice(0,-1))
+    update([...iv.value].slice(0,-1))
   }
 
   const handleEsc = (e) => {

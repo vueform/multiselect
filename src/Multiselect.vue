@@ -24,17 +24,17 @@
       @keydown.prevent.down="forwardPointer"
     >
       <!-- Single label -->
-      <template v-if="mode == 'single' && hasSelected && !search && internalValue">
-        <slot name="singlelabel" :value="internalValue">
+      <template v-if="mode == 'single' && hasSelected && !search && iv">
+        <slot name="singlelabel" :value="iv">
           <div class="multiselect-single-label">
-            {{ internalValue[label] }}
+            {{ iv[label] }}
           </div>
         </slot>
       </template>
 
       <!-- Multiple label -->
       <template v-if="mode == 'multiple' && hasSelected && !search">
-        <slot name="multiplelabel" :values="internalValue">
+        <slot name="multiplelabel" :values="iv">
           <div class="multiselect-multiple-label">
             {{ multipleLabelText }}
           </div>
@@ -64,7 +64,7 @@
       <template v-if="mode == 'tags'">
         <div class="multiselect-tags">
 
-          <span v-for="(option, i, key) in internalValue" :key="key">
+          <span v-for="(option, i, key) in iv" :key="key">
             <slot name="tag" :option="option" :handleTagRemove="handleTagRemove" :disabled="disabled">
               <div class="multiselect-tag">
                 {{ option[label] }}
@@ -137,7 +137,7 @@
         <slot name="beforelist"></slot>
 
         <span
-          v-for="(option, i, key) in filteredOptions"
+          v-for="(option, i, key) in fo"
           :tabindex="-1"
           class="multiselect-option"
           :class="{
@@ -368,11 +368,11 @@
       const pointer = usePointer(props, context)
 
       const data = useData(props, context, {
-        internalValue: value.internalValue,
+        iv: value.iv,
       })
 
       const search = useSearch(props, context, {
-        internalValue: value.internalValue,
+        iv: value.iv,
       })
 
       const dropdown = useDropdown(props, context, {
@@ -384,8 +384,8 @@
       })
 
       const options = useOptions(props, context, {
-        externalValue: value.externalValue,
-        internalValue: value.internalValue,
+        ev: value.ev,
+        iv: value.iv,
         search: search.search,
         blurSearch: search.blurSearch,
         clearSearch: search.clearSearch,
@@ -395,14 +395,14 @@
       })
 
       const pointerAction = usePointerAction(props, context, {
-        filteredOptions: options.filteredOptions,
+        fo: options.fo,
         handleOptionClick: options.handleOptionClick,
         search: search.search,
         pointer: pointer.pointer,
       })
 
       const keyboard = useKeyboard(props, context, {
-        internalValue: value.internalValue,
+        iv: value.iv,
         update: data.update,
         closeDropdown: dropdown.closeDropdown,
         clearPointer: pointerAction.clearPointer,
