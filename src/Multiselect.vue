@@ -386,7 +386,6 @@
       const options = useOptions(props, context, {
         externalValue: value.externalValue,
         internalValue: value.internalValue,
-        currentValue: value.currentValue,
         search: search.search,
         blurSearch: search.blurSearch,
         clearSearch: search.clearSearch,

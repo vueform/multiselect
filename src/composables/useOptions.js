@@ -3,7 +3,6 @@ import normalize from './../utils/normalize'
 import isObject from './../utils/isObject'
 import isNullish from './../utils/isNullish'
 import arraysEqual from './../utils/arraysEqual'
-import arrayObjectsEqual from './../utils/arrayObjectsEqual'
 
 export default function useOptions (props, context, dependencies)
 {
@@ -18,7 +17,6 @@ export default function useOptions (props, context, dependencies)
 
   const internalValue = dependencies.internalValue
   const externalValue = dependencies.externalValue
-  const currentValue = dependencies.currentValue
   const search = dependencies.search
   const blurSearch = dependencies.blurSearch
   const clearSearch = dependencies.clearSearch
@@ -331,6 +329,33 @@ export default function useOptions (props, context, dependencies)
     })
   }
 
+  // no export
+  const refreshLabels = () => {
+    if (!hasSelected.value) {
+      return
+    }
+
+    if (mode.value === 'single') {
+      let newLabel = getOption(internalValue.value[valueProp.value])[label.value]
+
+      internalValue.value[label.value] = newLabel
+
+      if (object.value) {
+        externalValue.value[label.value] = newLabel
+      }
+    } else {
+      internalValue.value.forEach((val, i) => {
+        let newLabel = getOption(internalValue.value[i][valueProp.value])[label.value]
+
+        internalValue.value[i][label.value] = newLabel
+
+        if (object.value) {
+          externalValue.value[i][label.value] = newLabel
+        }
+      })
+    }
+  }
+
   const refreshOptions = (callback) => {
     resolveOptions(callback)
   }
@@ -422,48 +447,11 @@ export default function useOptions (props, context, dependencies)
   }, { deep: true })
 
   if (typeof props.options !== 'function') {
-    watch(() => props.options, (n, o) => {
+    watch(options, (n, o) => {
       resolvedOptions.value = props.options
+
+      refreshLabels()
     })
-
-    watch(extendedOptions, (n, o) => {
-      if (!Object.keys(internalValue.value).length) {
-        initInternalValue()
-      }
-      
-      if (!n.length || !currentValue.value || !currentValue.value.length) {
-        return
-      }
-
-      let newValue
-
-      if (mode.value === 'single') {
-        newValue = n[n.map(v=>v[valueProp.value]).indexOf(currentValue.value)]
-
-        if (JSON.stringify(newValue) === JSON.stringify(internalValue.value)) {
-          return
-        }
-      } else {
-        newValue = []
-
-        currentValue.value.forEach((val) => {
-          newValue.push(n[n.map(v=>v[valueProp.value]).indexOf(val)])
-        })
-
-        if (arrayObjectsEqual(newValue, internalValue.value)) {
-          return
-        }
-      }
-
-      // Update both internal and external value if user is using object values
-      if (object.value) {
-        update(newValue)
-
-      // Only update internal value if external is only valueProp
-      } else {
-        internalValue.value = newValue
-      }
-    }, { flush: 'sync', deep: true, immediate: false })
   }
 
   return {
