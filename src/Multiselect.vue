@@ -115,9 +115,11 @@
       </slot>
 
       <transition name="multiselect-loading">
-        <slot v-if="busy" name="spinner">
-          <span class="multiselect-spinner"></span>
-        </slot>
+        <span v-if="busy">
+          <slot name="spinner">
+            <span class="multiselect-spinner"></span>
+          </slot>
+        </span>
       </transition>
 
       <slot v-if="hasSelected && !disabled" name="clear" :clear="clear">
