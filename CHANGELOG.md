@@ -1,3 +1,13 @@
+## v1.3.7
+
+> `2021-04-06`
+
+### 🐞 Bug Fixes
+  - Async options fix for [#39](https://github.com/vueform/multiselect/issues/39). Refreshing non-async options now will only be reflected after a tick.
+
+### 🎉 Feature
+  - Added caret, remove and spinner slots.
+
 ## v1.3.6
 
 > `2021-03-30`
