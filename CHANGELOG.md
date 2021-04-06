@@ -1,3 +1,11 @@
+## v1.4.0
+
+> `2021-04-06`
+
+### 🎉 Feature
+  - **BREAKING**: array `options` are no longer treated as objects, but both option value and label will equal to array item value. Eg. `option: ['v1','v2']` used to be equal to `{0: 'v1', 1: 'v2'}`, now they're equal to `{v1: 'v1', v2: 'v2'}`.
+  - Optimized variable names for lower package size.
+
 ## v1.3.7
 
 > `2021-04-06`
