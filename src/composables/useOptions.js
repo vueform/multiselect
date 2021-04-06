@@ -424,7 +424,7 @@ export default function useOptions (props, context, dependencies)
   if (typeof props.options !== 'function') {
     watch(() => props.options, (n, o) => {
       resolvedOptions.value = props.options
-    }, { flush: 'sync' })
+    })
 
     watch(extendedOptions, (n, o) => {
       if (!Object.keys(internalValue.value).length) {
