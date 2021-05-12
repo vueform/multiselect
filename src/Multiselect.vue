@@ -122,7 +122,7 @@
         </span>
       </transition>
 
-      <slot v-if="hasSelected && !disabled" name="clear" :clear="clear">
+      <slot v-if="hasSelected && !disabled && canDeselect" name="clear" :clear="clear">
         <a class="multiselect-clear" @click.prevent="clear"></a>
       </slot>
     </div>
