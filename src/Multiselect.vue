@@ -192,7 +192,7 @@
     emits: [
       'open', 'close', 'select', 'deselect', 
       'input', 'search-change', 'tag', 'update:modelValue',
-      'change',
+      'change', 'clear'
     ],
     props: {
       value: {

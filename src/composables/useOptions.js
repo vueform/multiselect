@@ -161,7 +161,7 @@ export default function useOptions (props, context, dep)
         break
     }
 
-    context.emit('select', finalValue(option))
+    context.emit('select', finalValue(option), option)
   }
 
   const deselect = (option) => {
@@ -180,7 +180,7 @@ export default function useOptions (props, context, dep)
         break
     }
 
-    context.emit('deselect', finalValue(option))
+    context.emit('deselect', finalValue(option), option)
   }
 
   // no export

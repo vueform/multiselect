@@ -505,6 +505,7 @@ describe('useOptions', () => {
       select.vm.select({ value: 2, label: 2 })
 
       expect(select.emitted('select')[0][0]).toStrictEqual(2)
+      expect(select.emitted('select')[0][1]).toStrictEqual({ value: 2, label: 2 })
     })
 
     it('should emit select with value when object true', async () => {
@@ -517,6 +518,7 @@ describe('useOptions', () => {
       select.vm.select({ value: 2, label: 2 })
 
       expect(select.emitted('select')[0][0]).toStrictEqual({ value: 2, label: 2 })
+      expect(select.emitted('select')[0][1]).toStrictEqual({ value: 2, label: 2 })
     })
   })
 
@@ -590,6 +592,7 @@ describe('useOptions', () => {
       select.vm.deselect({ v: 2, label: 2 })
 
       expect(select.emitted('deselect')[0][0]).toStrictEqual(2)
+      expect(select.emitted('deselect')[0][1]).toStrictEqual({ v: 2, label: 2 })
     })
 
     it('should emit deselect with value when object true', async () => {
@@ -603,6 +606,7 @@ describe('useOptions', () => {
       select.vm.deselect({ v: 2, label: 2 })
 
       expect(select.emitted('deselect')[0][0]).toStrictEqual({ v: 2, label: 2 })
+      expect(select.emitted('deselect')[0][1]).toStrictEqual({ v: 2, label: 2 })
     })
   })
 
