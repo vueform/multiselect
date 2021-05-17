@@ -691,6 +691,19 @@ describe('useOptions', () => {
 
       expect(getValue(select)).toStrictEqual([])
     })
+
+    it('should emit clear event', async () => {
+      let select = createSelect({
+        options: [1,2,3],
+        value: 1,
+      })
+
+      select.vm.clear()
+
+      await nextTick()
+
+      expect(select.emitted('clear')).toBeTruthy()
+    })
   })
 
   describe('isSelected', () => {

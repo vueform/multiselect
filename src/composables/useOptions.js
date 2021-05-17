@@ -202,6 +202,7 @@ export default function useOptions (props, context, dep)
   }
 
   const clear = () => {
+    context.emit('clear')
     update(nullValue.value)
   }
 

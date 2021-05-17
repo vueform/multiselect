@@ -244,6 +244,7 @@ mounted() {
 | **@search-change** | `query` | Emitted after a character is typed. |
 | **@select** | `option` | Emitted after an option or tag is selected. |
 | **@tag** | `query` | Emitted after enter is hit when a new tag is being created. |
+| **@clear** |  | Emitted when the options are cleared. |
 
 ## Slots
 
