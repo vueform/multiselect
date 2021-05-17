@@ -114,7 +114,7 @@
         <span class="multiselect-caret"></span>
       </slot>
 
-      <slot v-if="hasSelected && !disabled && !busy" name="clear" :clear="clear">
+      <slot v-if="hasSelected && !disabled && !busy && canDeselect" name="clear" :clear="clear">
         <a class="multiselect-clear" @click.prevent="clear"></a>
       </slot>
 
