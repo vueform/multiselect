@@ -25,7 +25,9 @@ export default function useValue (props, context)
 
   return {
     iv,
+    internalValue: iv,
     ev,
+    externalValue: ev,
     textValue,
     plainValue,
   }

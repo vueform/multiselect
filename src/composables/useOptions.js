@@ -465,9 +465,11 @@ export default function useOptions (props, context, dep)
 
   return {
     fo,
+    filteredOptions: fo,
     hasSelected,
     multipleLabelText,
     eo,
+    extendedOptions: eo,
     noOptions,
     noResults,
     resolving,
