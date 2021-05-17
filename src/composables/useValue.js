@@ -15,6 +15,10 @@ export default function useValue (props, context)
   // externalValue
   const ev = context.expose !== undefined ? modelValue : value
 
+  const plainValue = computed(() => {
+    return mode.value === 'single' ? iv.value[valueProp.value] : iv.value.map(v=>v[valueProp.value])
+  })
+
   const textValue = computed(() => {
     return mode.value !== 'single' ? iv.value.map(v=>v[valueProp.value]).join(',') : iv.value[valueProp.value]
   })
@@ -23,5 +27,6 @@ export default function useValue (props, context)
     iv,
     ev,
     textValue,
+    plainValue,
   }
 }

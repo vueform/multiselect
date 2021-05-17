@@ -174,6 +174,13 @@
 
     <!-- Hacky input element to show HTML5 required warning -->
     <input v-if="required" class="multiselect-fake-input" tabindex="-1" :value="textValue" required/>
+    
+    <template v-if="nativeSupport">
+      <input v-if="mode == 'single'" type="hidden" :name="name" :value="plainValue !== undefined ? plainValue : ''" />
+      <template v-else>
+        <input v-for="(v, i) in plainValue" type="hidden" :name="`${name}[]`" :value="v" :key="i" />
+      </template>
+    </template>
   </div>
 </template>
 
@@ -365,6 +372,11 @@
         type: String,
         required: false,
         default: 'bottom',
+      },
+      nativeSupport: {
+        type: Boolean,
+        required: false,
+        default: false,
       },
     },
     setup(props, context)

@@ -34,6 +34,57 @@ describe('Multiselect', () => {
       expect(select.element.classList.contains('open-top')).toBe(true)
     })
 
+    it('should not render native inputs if nativeInput=false', () => {
+      let select = createSelect({
+        mode: 'single',
+        value: 'value1',
+        options: ['value1', 'value2', 'value3'],
+        nativeSupport: false
+      })
+      
+      expect(select.find('input[type="hidden"]').exists()).toBe(false)
+    })
+
+    it('should not render native inputs if nativeInput=false,mode=single', async () => {
+      let select = createSelect({
+        mode: 'single',
+        value: 'value1',
+        options: ['value1', 'value2', 'value3'],
+        nativeSupport: true,
+        name: 'select',
+      })
+      
+      expect(select.find('input[type="hidden"]').element.value).toBe('value1')
+      expect(select.find('input[type="hidden"]').element.name).toBe('select')
+
+      select.vm.clear()
+
+      await nextTick()
+
+      expect(select.find('input[type="hidden"]').element.value).toBe('')
+    })
+
+    it('should not render native inputs if nativeInput=false,mode=multiple', async () => {
+      let select = createSelect({
+        mode: 'multiple',
+        value: ['value1', 'value2'],
+        options: ['value1', 'value2', 'value3'],
+        nativeSupport: true,
+        name: 'select',
+      })
+      
+      expect(findAll(select, 'input[type="hidden"]').at(0).element.value).toBe('value1')
+      expect(findAll(select, 'input[type="hidden"]').at(0).element.name).toBe('select[]')
+      expect(findAll(select, 'input[type="hidden"]').at(1).element.value).toBe('value2')
+      expect(findAll(select, 'input[type="hidden"]').at(1).element.name).toBe('select[]')
+
+      select.vm.clear()
+
+      await nextTick()
+
+      expect(select.find('input[type="hidden"]').exists()).toBe(false)
+    })
+
     it('should render fake input if required mode=multiple', () => {
       let select = createSelect({
         mode: 'multiple',

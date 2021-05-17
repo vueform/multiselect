@@ -35,6 +35,7 @@ declare class Multiselect extends Vue {
     object?: boolean;
     required?: boolean;
     openDirection?: 'top'|'bottom';
+    nativeSupport?: boolean;
 
     $emit(eventName: 'change', e: {originalEvent: Event, value: any}): this;
     $emit(eventName: 'select', e: {originalEvent: Event, value: any, option: any}): this;
