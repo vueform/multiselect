@@ -6,6 +6,7 @@
       'is-searchable': searchable,
       'is-disabled': disabled,
       'no-caret': !caret,
+      'open-top': openDirection === 'top',
     }]"
     :id="id"
     @keydown.prevent.enter
@@ -20,8 +21,8 @@
       @keyup.esc="handleEsc"
       @keyup.enter="selectPointer"
       @keydown.prevent.delete="handleBackspace"
-      @keydown.prevent.up="backwardPointer"
-      @keydown.prevent.down="forwardPointer"
+      @keydown.prevent.up="openDirection === 'top' ? forwardPointer() : backwardPointer()"
+      @keydown.prevent.down="openDirection === 'top' ? backwardPointer() : forwardPointer()"
     >
       <!-- Single label -->
       <template v-if="mode == 'single' && hasSelected && !search && iv">
@@ -52,8 +53,8 @@
             @keyup.stop.esc="handleEsc"
             @keyup.stop.enter="selectPointer"
             @keydown.delete="handleSearchBackspace"
-            @keydown.stop.up="backwardPointer"
-            @keydown.stop.down="forwardPointer"
+            @keydown.stop.up="openDirection === 'top' ? forwardPointer() : backwardPointer()"
+            @keydown.stop.down="openDirection === 'top' ? backwardPointer() : forwardPointer()"
             @input="handleSearchInput"
             ref="input"
           />
@@ -91,8 +92,8 @@
               @keyup.stop.enter="handleAddTag"
               @keyup.stop.space="handleAddTag"
               @keydown.delete="handleSearchBackspace"
-              @keydown.stop.up="backwardPointer"
-              @keydown.stop.down="forwardPointer"
+              @keydown.stop.up="openDirection === 'top' ? forwardPointer() : backwardPointer()"
+              @keydown.stop.down="openDirection === 'top' ? backwardPointer() : forwardPointer()"
               @input="handleSearchInput"
               :style="{ width: tagsSearchWidth }"
               ref="input"
@@ -359,6 +360,11 @@
         type: Boolean,
         required: false,
         default: false,
+      },
+      openDirection: {
+        type: String,
+        required: false,
+        default: 'bottom',
       },
     },
     setup(props, context)

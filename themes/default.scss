@@ -221,6 +221,14 @@
   -webkit-overflow-scrolling: touch;
   z-index: 100;
   background: #ffffff;
+  display: flex;
+  flex-direction: column;
+}
+
+.open-top .multiselect-options {
+  transform: translateY(-100%);
+  top: 2px;
+  flex-direction: column-reverse;
 }
 
 .multiselect-option {

@@ -24,6 +24,16 @@ describe('Multiselect', () => {
       expect(select.find('.multiselect-fake-input').element.value).toBe('value1')
     })
 
+    it('should add "open-top" class if openDirection is "top"', () => {
+      let select = createSelect({
+        value: 'value1',
+        options: ['value1', 'value2', 'value3'],
+        openDirection: 'top'
+      })
+      
+      expect(select.element.classList.contains('open-top')).toBe(true)
+    })
+
     it('should render fake input if required mode=multiple', () => {
       let select = createSelect({
         mode: 'multiple',
@@ -215,6 +225,28 @@ describe('Multiselect', () => {
       keydown(select.find('.multiselect-input'), 'down')
       keydown(select.find('.multiselect-input'), 'down')
       keydown(select.find('.multiselect-input'), 'up')
+      keyup(select.find('.multiselect-input'), 'enter')
+
+      await nextTick()
+
+      expect(getValue(select)).toStrictEqual(2)
+
+      destroy(select)
+    })
+
+    it('should set pointer on up&down and select with enter when openDirection=top', async () => {
+      let select = createSelect({
+        options: [1,2,3],
+        value: null,
+      }, {
+        attach: true,
+      })
+
+      select.vm.open()
+      keydown(select.find('.multiselect-input'), 'up')
+      keydown(select.find('.multiselect-input'), 'up')
+      keydown(select.find('.multiselect-input'), 'up')
+      keydown(select.find('.multiselect-input'), 'down')
       keyup(select.find('.multiselect-input'), 'enter')
 
       await nextTick()

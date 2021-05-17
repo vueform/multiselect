@@ -184,6 +184,7 @@ Join our [Discord channel](https://discord.gg/WhX2nG6GTQ) or [open an issue](htt
 | **maxHeight** | `number` | `160` | The maximum height of options list (px). |
 | **noOptionsText** | `string` | `'The list is empty'` | The text that should be displayed when options list is empty. |
 | **noResultsText** | `string` | `'No results found'` | The text that should be displayed when there are no search results. |
+| **openDirection** | `string` | `bottom` | Whether the option list should be displayed above or below the multiselect. Possible values: `top\|bottom` |
 
 ### Advanced Props
 
