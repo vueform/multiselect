@@ -110,8 +110,12 @@
         </slot>
       </template>
 
-      <slot v-if="caret && !busy" name="caret">
+      <slot v-if="!hasSelected && caret && !busy" name="caret">
         <span class="multiselect-caret"></span>
+      </slot>
+
+      <slot v-if="hasSelected && !disabled && !busy" name="clear" :clear="clear">
+        <a class="multiselect-clear" @click.prevent="clear"></a>
       </slot>
 
       <transition name="multiselect-loading">
@@ -121,10 +125,6 @@
           </slot>
         </span>
       </transition>
-
-      <slot v-if="hasSelected && !disabled" name="clear" :clear="clear">
-        <a class="multiselect-clear" @click.prevent="clear"></a>
-      </slot>
     </div>
 
     <!-- Options -->
