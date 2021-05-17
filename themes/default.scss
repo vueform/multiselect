@@ -109,10 +109,11 @@
 .multiselect-clear {
   position: absolute;
   right: 0;
-  top: 1px;
+  top: 50%;
   width: 36px;
   height: 36px;
   background: #fff;
+  transform: translateY(-50%);
 
   &:before, &:after {
     position: absolute;
