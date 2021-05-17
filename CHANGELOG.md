@@ -1,3 +1,17 @@
+## v1.5.0
+
+> `2021-05-17`
+
+### 🎉 Feature
+  - Added native input support [#48](https://github.com/vueform/multiselect/issues/48).
+  - Added `openDirection` prop [#52](https://github.com/vueform/multiselect/issues/52).
+  - Added `option` as second param for `select` and `deselect` events.
+  - Added `@clear` event [#68](https://github.com/vueform/multiselect/issues/68).
+
+### 🐞 Bug Fixes
+  - Clear icon CSS fix.
+  - Fixed unintendeed clear button showing up when `canDeselect` is `false` [#61](https://github.com/vueform/multiselect/issues/61).
+
 ## v1.4.0
 
 > `2021-04-06`
