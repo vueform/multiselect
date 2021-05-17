@@ -614,9 +614,20 @@ describe('Multiselect', () => {
       it('should not render clear if disabled', () => {
         let select = createSelect({
           mode: 'multiple',
-          value: [1],
+          value: ['value1'],
           disabled: true,
           options: ['value1','value2','value3'],
+        })
+
+        expect(select.find('.multiselect-clear').exists()).toBe(false)
+      })
+
+      it('should not render clear if canDeselect is false', () => {
+        let select = createSelect({
+          mode: 'single',
+          value: ['value1'],
+          options: ['value1','value2','value3'],
+          canDeselect: false,
         })
 
         expect(select.find('.multiselect-clear').exists()).toBe(false)
