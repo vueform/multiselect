@@ -111,7 +111,7 @@
         </slot>
       </template>
 
-      <slot v-if="!hasSelected && caret && !busy" name="caret">
+      <slot v-if="(!hideCaretOnSelect || hideCaretOnSelect && !hasSelected) && caret && !busy" name="caret">
         <span class="multiselect-caret"></span>
       </slot>
 
@@ -288,6 +288,11 @@
         type: Boolean,
         required: false,
         default: true,
+      },
+      hideCaretOnSelect: {
+        type: Boolean,
+        required: false,
+        default: false,
       },
       loading: {
         type: Boolean,
