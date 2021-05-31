@@ -111,11 +111,11 @@
         </slot>
       </template>
 
-      <slot v-if="(!hideCaretOnSelect || hideCaretOnSelect && !hasSelected) && caret && !busy" name="caret">
+      <slot v-if="(!replaceCaretWithClear || replaceCaretWithClear && !hasSelected) && caret && !busy" name="caret">
         <span class="multiselect-caret"></span>
       </slot>
 
-      <slot v-if="hasSelected && !disabled && !busy && canDeselect" name="clear" :clear="clear">
+      <slot v-if="replaceCaretWithClear && hasSelected && !disabled && !busy && canDeselect" name="clear" :clear="clear">
         <a class="multiselect-clear" @click.prevent="clear"></a>
       </slot>
 
@@ -289,7 +289,7 @@
         required: false,
         default: true,
       },
-      hideCaretOnSelect: {
+      replaceCaretWithClear: {
         type: Boolean,
         required: false,
         default: false,
