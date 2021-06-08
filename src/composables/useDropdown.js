@@ -2,15 +2,7 @@ import { ref, toRefs, computed } from 'composition-api'
 
 export default function useDropdown (props, context, dep)
 {
-  const { maxHeight, disabled, searchable } = toRefs(props)
-
-  // ============ DEPENDENCIES ============
-
-  const multiselect = dep.multiselect
-  const blurInput = dep.blurInput
-  const blurSearch = dep.blurSearch
-  const focusInput = dep.focusInput
-  const focusSearch = dep.focusSearch
+  const { maxHeight } = toRefs(props)
 
   // ================ DATA ================
 
@@ -24,8 +16,8 @@ export default function useDropdown (props, context, dep)
 
   // =============== METHODS ==============
 
-  const openDropdown = () => {
-    if (disabled.value) {
+  const open = () => {
+    if (isOpen.value) {
       return
     }
 
@@ -33,42 +25,19 @@ export default function useDropdown (props, context, dep)
     context.emit('open')
   }
 
-  const closeDropdown = () => {
+  const close = () => {
+    if (!isOpen.value) {
+      return
+    }
+
     isOpen.value = false
     context.emit('close')
-  }
-
-  const open = () => {
-    if (searchable && searchable.value) {
-      focusSearch()
-    } else {
-      focusInput()
-    }
-  }
-
-  const close = () => {
-    if (searchable && searchable.value) {
-      blurSearch()
-    } else {
-      blurInput()
-    }
-  }
-
-  const handleInputMousedown = (e) => {
-    if (isOpen.value && !searchable.value) {
-      multiselect.value.querySelector('.multiselect-input').dispatchEvent(new Event('blur'))
-      multiselect.value.querySelector('.multiselect-input').blur()
-      e.preventDefault()
-    }
   }
 
   return {
     isOpen,
     contentMaxHeight,
-    openDropdown,
-    closeDropdown,
     open,
     close,
-    handleInputMousedown,
   }
 }

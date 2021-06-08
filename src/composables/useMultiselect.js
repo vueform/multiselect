@@ -4,6 +4,10 @@ export default function useMultiselect (props, context, dep)
 {
   const { searchable, id } = toRefs(props)
 
+  // ============ DEPENDENCIES ============
+
+  const input = dep.input
+
   // ================ DATA ================
 
   const multiselect = ref(null)
@@ -16,18 +20,17 @@ export default function useMultiselect (props, context, dep)
 
   // =============== METHODS ==============
 
-  const focusInput = () => {
-    multiselect.value.querySelector('.multiselect-input').focus()
-  }
+  const blur = () => {
+    if (searchable.value) {
+      input.value.blur()
+    }
 
-  const blurInput = () => {
-    multiselect.value.querySelector('.multiselect-input').blur()
+    multiselect.value.blur()
   }
 
   return {
     multiselect,
     tabindex,
-    focusInput,
-    blurInput,
+    blur,
   }
 }

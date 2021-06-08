@@ -18,11 +18,10 @@ export default function useOptions (props, context, dep)
   const iv = dep.iv
   const ev = dep.ev
   const search = dep.search
-  const blurSearch = dep.blurSearch
   const clearSearch = dep.clearSearch
   const update = dep.update
-  const blurInput = dep.blurInput
   const pointer = dep.pointer
+  const blur = dep.blur
 
   // ================ DATA ================
 
@@ -244,8 +243,7 @@ export default function useOptions (props, context, dep)
         }
 
         select(option)
-        blurSearch()
-        blurInput()
+        blur()
         break
 
       case 'multiple':

@@ -53,7 +53,6 @@
 
 * Vue 2 & 3 support
 * No dependencies
-* Lightweight (<6 kB gzipped)
 * 100% coverage
 * TypeScript support
 * ESM support

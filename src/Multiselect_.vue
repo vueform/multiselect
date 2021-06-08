@@ -1,60 +1,186 @@
 <template>
   <div
-    ref="multiselect"
-    :tabindex="tabindex"
-    :class="classList.container"
+    class="multiselect"
+    :class="[`is-${mode}`, {
+      'is-open': isOpen,
+      'is-searchable': searchable,
+      'is-disabled': disabled,
+      'no-caret': !caret,
+      'open-top': openDirection === 'top',
+    }]"
     :id="id"
-    @focusin="open"
-    @focusout="close"
-    @keydown.self="searchable ? false : handleKeydown($event)"
+    @keydown.prevent.enter
+    ref="multiselect"
   >
-    <!-- Single label -->
-    <template v-if="mode == 'single' && hasSelected && !search && iv">
-      <slot name="singlelabel" :value="iv">
-        <div class="multiselect-single-label">
-          {{ iv[label] }}
+    <div
+      class="multiselect-input"
+      :tabindex="tabindex"
+      @mousedown="handleInputMousedown"
+      @focus="openDropdown"
+      @blur="closeDropdown"
+      @keyup.esc="handleEsc"
+      @keyup.enter="selectPointer"
+      @keydown.prevent.delete="handleBackspace"
+      @keydown.prevent.up="openDirection === 'top' ? forwardPointer() : backwardPointer()"
+      @keydown.prevent.down="openDirection === 'top' ? backwardPointer() : forwardPointer()"
+    >
+      <!-- Single label -->
+      <template v-if="mode == 'single' && hasSelected && !search && iv">
+        <slot name="singlelabel" :value="iv">
+          <div class="multiselect-single-label">
+            {{ iv[label] }}
+          </div>
+        </slot>
+      </template>
+
+      <!-- Multiple label -->
+      <template v-if="mode == 'multiple' && hasSelected && !search">
+        <slot name="multiplelabel" :values="iv">
+          <div class="multiselect-multiple-label">
+            {{ multipleLabelText }}
+          </div>
+        </slot>
+      </template>
+    
+      <!-- Search -->
+      <template v-if="mode !== 'tags' && searchable && !disabled">
+        <div class="multiselect-search">
+          <input    
+            :modelValue="search"
+            :value="search"
+            @focus.stop="openDropdown"
+            @blur.stop="closeDropdown"
+            @keyup.stop.esc="handleEsc"
+            @keyup.stop.enter="selectPointer"
+            @keydown.delete="handleSearchBackspace"
+            @keydown.stop.up="openDirection === 'top' ? forwardPointer() : backwardPointer()"
+            @keydown.stop.down="openDirection === 'top' ? backwardPointer() : forwardPointer()"
+            @input="handleSearchInput"
+            ref="input"
+          />
         </div>
+      </template>
+
+      <!-- Tags (with search) -->
+      <template v-if="mode == 'tags'">
+        <div class="multiselect-tags">
+
+          <span v-for="(option, i, key) in iv" :key="key">
+            <slot name="tag" :option="option" :handleTagRemove="handleTagRemove" :disabled="disabled">
+              <div class="multiselect-tag">
+                {{ option[label] }}
+                <i
+                  v-if="!disabled"
+                  @click.prevent
+                  @mousedown.prevent.stop="handleTagRemove(option, $event)"
+                ></i>
+              </div>
+            </slot>
+          </span>
+      
+          <div
+            v-if="searchable && !disabled"
+            class="multiselect-search"
+            :style="{ width: tagsSearchWidth }"
+          >
+            <input    
+              :modelValue="search"
+              :value="search"
+              @focus.stop="openDropdown"
+              @blur.stop="closeDropdown"
+              @keyup.stop.esc="handleEsc"
+              @keyup.stop.enter="handleAddTag"
+              @keyup.stop.space="handleAddTag"
+              @keydown.delete="handleSearchBackspace"
+              @keydown.stop.up="openDirection === 'top' ? forwardPointer() : backwardPointer()"
+              @keydown.stop.down="openDirection === 'top' ? backwardPointer() : forwardPointer()"
+              @input="handleSearchInput"
+              :style="{ width: tagsSearchWidth }"
+              ref="input"
+            />
+          </div>
+        </div>
+      </template>
+
+      <!-- Placeholder -->
+      <template v-if="placeholder && !hasSelected && !search">
+        <slot name="placeholder">
+          <div class="multiselect-placeholder">
+            {{ placeholder }}
+          </div>
+        </slot>
+      </template>
+
+      <slot v-if="!hasSelected && caret && !busy" name="caret">
+        <span class="multiselect-caret"></span>
       </slot>
-    </template>
-  
-    <!-- Search -->
-    <template v-if="mode !== 'tags' && searchable && !disabled">
-      <div class="multiselect-search">
-        <input    
-          :modelValue="search"
-          :value="search"
-          @keydown.self="handleKeydown"
-          @input="handleSearchInput"
-          ref="input"
-        />
-      </div>
-    </template>
+
+      <slot v-if="hasSelected && !disabled && !busy && canDeselect" name="clear" :clear="clear">
+        <a class="multiselect-clear" @click.prevent="clear"></a>
+      </slot>
+
+      <transition name="multiselect-loading">
+        <span v-if="busy">
+          <slot name="spinner">
+            <span class="multiselect-spinner"></span>
+          </slot>
+        </span>
+      </transition>
+    </div>
 
     <!-- Options -->
     <transition v-if="!resolving || !clearOnSearch" name="multiselect" @after-leave="clearSearch">
-      <!-- @mousedown.prevent: do not close when before/afterlist is clicked -->
       <div
         v-show="isOpen && showOptions"
         class="multiselect-options"
         :style="{ maxHeight: contentMaxHeight }"
       >
         <slot name="beforelist"></slot>
-        <ul>
-          <li
-            v-for="(option, i, key) in fo"
-            :class="classList.option(option)"
-            :key="key"
-            @mouseenter="setPointer(option)"
-            @click="handleOptionClick(option)"
-          >
-            <slot name="option" :option="option" :search="search">
-              <span>{{ option[label] }}</span>
-            </slot>
-          </li>
-        </ul>
+
+        <span
+          v-for="(option, i, key) in fo"
+          :tabindex="-1"
+          class="multiselect-option"
+          :class="{
+            'is-pointed': isPointed(option),
+            'is-selected': isSelected(option),
+            'is-disabled': isDisabled(option),
+          }"
+          :key="key"
+          @mousedown.prevent
+          @mouseenter="setPointer(option)"
+          @click.stop.prevent="handleOptionClick(option)"
+        >
+          <slot name="option" :option="option" :search="search">
+            <span>{{ option[label] }}</span>
+          </slot>
+        </span>
+
+        <span v-show="noOptions">
+          <slot name="nooptions">
+            <div class="multiselect-no-options">{{ noOptionsText }}</div>
+          </slot>
+        </span>
+
+        <span v-show="noResults">
+          <slot name="noresults">
+            <div class="multiselect-no-results">{{ noResultsText }}</div>
+          </slot>
+        </span>
+
+        <slot name="afterlist"></slot>
       </div>
     </transition>
 
+    <!-- Hacky input element to show HTML5 required warning -->
+    <input v-if="required" class="multiselect-fake-input" tabindex="-1" :value="textValue" required/>
+    
+    <template v-if="nativeSupport">
+      <input v-if="mode == 'single'" type="hidden" :name="name" :value="plainValue !== undefined ? plainValue : ''" />
+      <template v-else>
+        <input v-for="(v, i) in plainValue" type="hidden" :name="`${name}[]`" :value="v" :key="i" />
+      </template>
+    </template>
   </div>
 </template>
 
@@ -68,7 +194,6 @@
   import useDropdown from './composables/useDropdown'
   import useMultiselect from './composables/useMultiselect'
   import useKeyboard from './composables/useKeyboard' 
-  import useClasses from './composables/useClasses' 
 
   export default {
     name: 'Multiselect',
@@ -92,6 +217,7 @@
       id: {
         type: [String, Number],
         required: false,
+        default: 'multiselect',
       },
       name: {
         type: [String, Number],
@@ -256,6 +382,7 @@
     setup(props, context)
     { 
       const value = useValue(props, context)
+      const multiselect = useMultiselect(props, context)
       const pointer = usePointer(props, context)
 
       const data = useData(props, context, {
@@ -264,10 +391,6 @@
 
       const search = useSearch(props, context, {
         iv: value.iv,
-      })
-
-      const multiselect = useMultiselect(props, context, {
-        input: search.input,
       })
 
       const dropdown = useDropdown(props, context, {
@@ -282,12 +405,11 @@
         ev: value.ev,
         iv: value.iv,
         search: search.search,
-        blur: multiselect.blur,
+        blurSearch: search.blurSearch,
         clearSearch: search.clearSearch,
         update: data.update,
         blurInput: multiselect.blurInput,
         pointer: pointer.pointer,
-        close: dropdown.close,
       })
 
       const pointerAction = usePointerAction(props, context, {
@@ -295,7 +417,6 @@
         handleOptionClick: options.handleOptionClick,
         search: search.search,
         pointer: pointer.pointer,
-        multiselect: multiselect.multiselect,
       })
 
       const keyboard = useKeyboard(props, context, {
@@ -305,16 +426,6 @@
         clearPointer: pointerAction.clearPointer,
         search: search.search,
         selectPointer: pointerAction.selectPointer,
-        forwardPointer: pointerAction.forwardPointer,
-        backwardPointer: pointerAction.backwardPointer,
-        blur: multiselect.blur,
-      })
-
-      const classes = useClasses(props, context, {
-        isOpen: dropdown.isOpen,
-        isPointed: pointerAction.isPointed,
-        isSelected: options.isSelected,
-        isDisabled: options.isDisabled,
       })
 
       return {
@@ -327,7 +438,6 @@
         ...options,
         ...pointerAction,
         ...keyboard,
-        ...classes,
       }
     }
   }

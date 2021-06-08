@@ -2,7 +2,7 @@ import { toRefs, watch, nextTick, computed } from 'composition-api'
 
 export default function usePointer (props, context, dep)
 {
-  const { id, valueProp } = toRefs(props)
+  const { id, valueProp, showOptions } = toRefs(props)
 
   // ============ DEPENDENCIES ============
 
@@ -10,6 +10,7 @@ export default function usePointer (props, context, dep)
   const handleOptionClick = dep.handleOptionClick
   const search = dep.search
   const pointer = dep.pointer
+  const multiselect = dep.multiselect
 
   // ============== COMPUTED ==============
 
@@ -25,15 +26,19 @@ export default function usePointer (props, context, dep)
   }
 
   const setPointer = (option) => {
+    if (!showOptions.value) {
+      return
+    }
+
     pointer.value = option
   }
 
   const setPointerFirst = () => {
-    pointer.value = options.value[0] || null
+    setPointer(options.value[0] || null)
   }
 
   const clearPointer = () => {
-    pointer.value = null
+    setPointer(null)
   }
 
   const selectPointer = () => {
@@ -88,7 +93,7 @@ export default function usePointer (props, context, dep)
   // no export
   /* istanbul ignore next */
   const adjustWrapperScrollToPointer = () => {
-    let pointedOption = document.getElementById(id.value).querySelector(`.is-pointed`)
+    let pointedOption = multiselect.value.querySelector(`.is-pointed`)
 
     if (!pointedOption) {
       return

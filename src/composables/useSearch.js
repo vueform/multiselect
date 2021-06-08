@@ -2,7 +2,7 @@ import { ref, toRefs, computed, watch } from 'composition-api'
 
 export default function useSearch (props, context, dep)
 {
-  const { searchable, mode } = toRefs(props)
+  const { mode } = toRefs(props)
 
   // ============ DEPENDENCIES ============
 
@@ -35,18 +35,6 @@ export default function useSearch (props, context, dep)
     search.value = ''
   }
 
-  const focusSearch = () => {
-    input.value.focus()
-  }
-
-  const blurSearch = () => {
-    if (!searchable.value) {
-      return
-    }
-
-    input.value.blur()
-  }
-
   // ============== WATCHERS ==============
 
   watch(search, (val) => {
@@ -58,7 +46,5 @@ export default function useSearch (props, context, dep)
     input,
     tagsSearchWidth,
     clearSearch,
-    focusSearch,
-    blurSearch,
   }
 }
