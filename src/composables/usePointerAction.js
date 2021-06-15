@@ -2,7 +2,7 @@ import { toRefs, watch, nextTick, computed } from 'composition-api'
 
 export default function usePointer (props, context, dep)
 {
-  const { id, valueProp, showOptions } = toRefs(props)
+  const { id, valueProp, showOptions, searchable } = toRefs(props)
 
   // ============ DEPENDENCIES ============
 
@@ -43,13 +43,10 @@ export default function usePointer (props, context, dep)
 
   const selectPointer = () => {
     if (!pointer.value || pointer.value.disabled === true) {
-      clearPointer()
       return
     }
 
     handleOptionClick(pointer.value)
-
-    clearPointer()
   }
 
   const forwardPointer = () => {
@@ -113,7 +110,13 @@ export default function usePointer (props, context, dep)
   // ============== WATCHERS ==============
 
   watch(search, (val) => {
-    setPointerFirst()
+    if (searchable.value) {
+      if (val.length) {
+        setPointerFirst()
+      } else {
+        clearPointer()
+      }
+    }
   })
 
   return {

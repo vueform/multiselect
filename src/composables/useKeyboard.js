@@ -24,6 +24,7 @@ export default function useKeyboard (props, context, dep)
       // enter
       case 13:
         selectPointer()
+        e.preventDefault()
         break
 
       // escape
@@ -33,7 +34,12 @@ export default function useKeyboard (props, context, dep)
 
       // space
       case 32:
-        !searchable.value ? selectPointer() : false
+        if (searchable.value) {
+          return
+        }
+
+        selectPointer()
+        e.preventDefault()
         break
 
       // up
