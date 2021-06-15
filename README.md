@@ -190,6 +190,7 @@ Join our [Discord channel](https://discord.gg/WhX2nG6GTQ) or [open an issue](htt
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
 | **canDeselect** | `boolean` | `true` | Whether a selected option can be deselected when using `single` mode. |
+| **canClear** | `boolean` | `true` | Whether option(s) can be cleared. |
 | **clearOnSearch** | `boolean` | `false` | Whether the option list should be cleared when a new character is typed before loading new options list, when using async options. |
 | **clearOnSelect** | `boolean` | `true` | Whether the option list should be cleared upon selecting an option when using async options. |
 | **delay** | `number` | `-1` | The delay in milliseconds that should occur between the last typed character and refreshing an async option list. If `-1` the option list will not refresh when the search query changes. If `0` it will refresh without delay. |

@@ -21,6 +21,7 @@ declare class Multiselect extends Vue {
     noOptionsText?: string;
     noResultsText?: string;
     canDeselect?: boolean;
+    canClear?: boolean;
     clearOnSearch?: boolean;
     clearOnSelect?: boolean;
     delay?: number;

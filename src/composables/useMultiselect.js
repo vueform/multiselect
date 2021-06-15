@@ -28,9 +28,16 @@ export default function useMultiselect (props, context, dep)
     multiselect.value.blur()
   }
 
+  const handleFocus = () => {
+    if (searchable.value) {
+      input.value.focus()
+    }
+  }
+
   return {
     multiselect,
     tabindex,
     blur,
+    handleFocus,
   }
 }

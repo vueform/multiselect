@@ -6,44 +6,77 @@
     :id="id"
     @focusin="open"
     @focusout="close"
-    @keydown.self="searchable ? false : handleKeydown($event)"
+    @keydown="handleKeydown"
+    @focus="handleFocus"
   >
+    <!-- Search -->
+    <template v-if="mode !== 'tags' && searchable && !disabled">
+      <input    
+        :modelValue="search"
+        :value="search"
+        :class="classList.search"
+        @input="handleSearchInput"
+        ref="input"
+      />
+    </template>
+
     <!-- Single label -->
     <template v-if="mode == 'single' && hasSelected && !search && iv">
       <slot name="singlelabel" :value="iv">
-        <div class="multiselect-single-label">
+        <div :class="classList.singleLabel">
           {{ iv[label] }}
         </div>
       </slot>
     </template>
-  
-    <!-- Search -->
-    <template v-if="mode !== 'tags' && searchable && !disabled">
-      <div class="multiselect-search">
-        <input    
-          :modelValue="search"
-          :value="search"
-          @keydown.self="handleKeydown"
-          @input="handleSearchInput"
-          ref="input"
-        />
-      </div>
+
+    <!-- Multiple label -->
+    <template v-if="mode == 'multiple' && hasSelected && !search">
+      <slot name="multiplelabel" :values="iv">
+        <div :class="classList.multipleLabel">
+          {{ multipleLabelText }}
+        </div>
+      </slot>
     </template>
+
+    <!-- Placeholder -->
+    <template v-if="placeholder && !hasSelected && !search">
+      <slot name="placeholder">
+        <div :class="classList.placeholder">
+          {{ placeholder }}
+        </div>
+      </slot>
+    </template>
+
+    <!-- Spinner -->
+    <slot v-if="busy" name="spinner">
+      <span :class="classList.spinner"></span>
+    </slot>
+
+    <!-- Clear -->
+    <slot v-if="hasSelected && !disabled && canClear && !busy" name="clear" :clear="clear">
+      <span :class="classList.clear" @mousedown="clear"></span>
+    </slot>
+
+    <!-- Caret -->
+    <slot v-if="caret" name="caret">
+      <span :class="classList.caret"></span>
+    </slot>
 
     <!-- Options -->
     <transition v-if="!resolving || !clearOnSearch" name="multiselect" @after-leave="clearSearch">
-      <!-- @mousedown.prevent: do not close when before/afterlist is clicked -->
       <div
         v-show="isOpen && showOptions"
-        class="multiselect-options"
+        :class="classList.dropdown"
         :style="{ maxHeight: contentMaxHeight }"
       >
-        <slot name="beforelist"></slot>
-        <ul>
+        <slot name="beforelist" :options="fo"></slot>
+
+        <ul :class="classList.options">
           <li
             v-for="(option, i, key) in fo"
             :class="classList.option(option)"
             :key="key"
+            :data-pointed="isPointed(option)"
             @mouseenter="setPointer(option)"
             @click="handleOptionClick(option)"
           >
@@ -52,8 +85,29 @@
             </slot>
           </li>
         </ul>
+
+        <slot v-if="noOptions" name="nooptions">
+          <div :class="classList.noOptions" v-html="noOptionsText"></div>
+        </slot>
+
+        <slot v-if="noResults" name="noresults">
+          <div :class="classList.noResults" v-html="noResultsText"></div>
+        </slot>
+
+        <slot name="afterlist" :options="fo"></slot>
       </div>
     </transition>
+
+    <!-- Hacky input element to show HTML5 required warning -->
+    <input v-if="required" :class="classList.fakeInput" tabindex="-1" :value="textValue" required/>
+    
+    <!-- Native input support -->
+    <template v-if="nativeSupport">
+      <input v-if="mode == 'single'" type="hidden" :name="name" :value="plainValue !== undefined ? plainValue : ''" />
+      <template v-else>
+        <input v-for="(v, i) in plainValue" type="hidden" :name="`${name}[]`" :value="v" :key="i" />
+      </template>
+    </template>
 
   </div>
 </template>
@@ -222,6 +276,11 @@
         required: false,
         default: true,
       },
+      canClear: {
+        type: Boolean,
+        required: false,
+        default: true,
+      },
       max: {
         type: Number,
         required: false,
@@ -252,6 +311,11 @@
         required: false,
         default: false,
       },
+      classes: {
+        type: Object,
+        required: false,
+        default: () => ({})
+      }
     },
     setup(props, context)
     { 

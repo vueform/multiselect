@@ -93,13 +93,13 @@ export default function usePointer (props, context, dep)
   // no export
   /* istanbul ignore next */
   const adjustWrapperScrollToPointer = () => {
-    let pointedOption = multiselect.value.querySelector(`.is-pointed`)
+    let pointedOption = multiselect.value.querySelector(`[data-pointed]`)
 
     if (!pointedOption) {
       return
     }
 
-    let wrapper = pointedOption.parentElement
+    let wrapper = pointedOption.parentElement.parentElement
 
     if (pointedOption.offsetTop + pointedOption.offsetHeight > wrapper.clientHeight + wrapper.scrollTop) {
       wrapper.scrollTop = pointedOption.offsetTop + pointedOption.offsetHeight - wrapper.clientHeight
