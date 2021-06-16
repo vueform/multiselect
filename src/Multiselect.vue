@@ -20,6 +20,42 @@
       />
     </template>
 
+    <!-- Tags (with search) -->
+    <template v-if="mode == 'tags'">
+      <div :class="classList.tags">
+
+        <slot
+          v-for="(option, i, key) in iv"
+          name="tag"
+          :option="option"
+          :handleTagRemove="handleTagRemove"
+          :disabled="disabled"
+        >
+          <div :class="classList.tag" :key="key">
+            {{ option[label] }}
+            <span
+              v-if="!disabled"
+              :class="classList.tagRemove"
+              @click.prevent
+              @mousedown.prevent.stop="handleTagRemove(option, $event)"
+            >
+              <span :class="classList.tagRemoveIcon"></span>
+            </span>
+          </div>
+        </slot>
+    
+        <input    
+          v-if="searchable && !disabled"
+          :modelValue="search"
+          :value="search"
+          :class="classList.tagsSearch"
+          :style="{ width: tagsSearchWidth }"
+          @input="handleSearchInput"
+          ref="input"
+        />
+      </div>
+    </template>
+
     <!-- Single label -->
     <template v-if="mode == 'single' && hasSelected && !search && iv">
       <slot name="singlelabel" :value="iv">
@@ -54,7 +90,7 @@
 
     <!-- Clear -->
     <slot v-if="hasSelected && !disabled && canClear && !busy" name="clear" :clear="clear">
-      <span :class="classList.clear" @mousedown="clear"></span>
+      <span :class="classList.clear" @mousedown="clear"><span :class="classList.clearIcon"></span></span>
     </slot>
 
     <!-- Caret -->
@@ -321,6 +357,7 @@
     { 
       const value = useValue(props, context)
       const pointer = usePointer(props, context)
+      const dropdown = useDropdown(props, context)
 
       const data = useData(props, context, {
         iv: value.iv,
@@ -334,24 +371,14 @@
         input: search.input,
       })
 
-      const dropdown = useDropdown(props, context, {
-        multiselect: multiselect.multiselect,
-        blurInput: multiselect.blurInput,
-        blurSearch: search.blurSearch,
-        focusInput: multiselect.focusInput,
-        focusSearch: search.focusSearch,
-      })
-
       const options = useOptions(props, context, {
         ev: value.ev,
         iv: value.iv,
         search: search.search,
-        blur: multiselect.blur,
         clearSearch: search.clearSearch,
         update: data.update,
-        blurInput: multiselect.blurInput,
         pointer: pointer.pointer,
-        close: dropdown.close,
+        blur: multiselect.blur,
       })
 
       const pointerAction = usePointerAction(props, context, {
@@ -365,12 +392,10 @@
       const keyboard = useKeyboard(props, context, {
         iv: value.iv,
         update: data.update,
-        closeDropdown: dropdown.closeDropdown,
-        clearPointer: pointerAction.clearPointer,
         search: search.search,
         selectPointer: pointerAction.selectPointer,
-        forwardPointer: pointerAction.forwardPointer,
         backwardPointer: pointerAction.backwardPointer,
+        forwardPointer: pointerAction.forwardPointer,
         blur: multiselect.blur,
       })
 

@@ -2,7 +2,7 @@ import { ref, toRefs, computed } from 'composition-api'
 
 export default function useMultiselect (props, context, dep)
 {
-  const { searchable, id } = toRefs(props)
+  const { searchable } = toRefs(props)
 
   // ============ DEPENDENCIES ============
 

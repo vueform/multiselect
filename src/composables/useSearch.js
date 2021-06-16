@@ -18,7 +18,7 @@ export default function useSearch (props, context, dep)
 
   const tagsSearchWidth = computed(() => {
     if (search.value) {
-      return `${search.value.length}ch`
+      return `${textWidth.value}px`
     }
 
     if (mode.value !== 'tags' || [null, undefined].indexOf(iv.value) !== -1 || !iv.value.length) {
@@ -26,6 +26,19 @@ export default function useSearch (props, context, dep)
     }
 
     return '1ch'
+  })
+
+  const textWidth = computed(() => {
+    const span = document.createElement('span')
+    span.innerHTML = search.value.replace(/ /g, '&nbsp;')
+    span.style.position = 'absolute'
+    span.style.left = '-9999px'
+    span.style.top = '-9999px'
+    document.body.append(span)
+    const width = span.offsetWidth
+    span.remove()
+
+    return width
   })
 
 

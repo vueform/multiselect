@@ -2,7 +2,7 @@ import { toRefs, watch, nextTick, computed } from 'composition-api'
 
 export default function usePointer (props, context, dep)
 {
-  const { id, valueProp, showOptions, searchable } = toRefs(props)
+  const { valueProp, showOptions, searchable } = toRefs(props)
 
   // ============ DEPENDENCIES ============
 

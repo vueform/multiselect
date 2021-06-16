@@ -3,7 +3,7 @@ import { computed, toRefs } from 'composition-api'
 export default function useStyle (props, context, dependencies)
 {
   const refs = toRefs(props)
-  const { mode, searchable, disabled, caret, openDirection } = refs
+  const { disabled, openDirection } = refs
 
   // ============ DEPENDENCIES ============
 
@@ -20,10 +20,16 @@ export default function useStyle (props, context, dependencies)
     singleLabel: 'multiselect-single-label',
     multipleLabel: 'multiselect-multiple-label',
     search: 'multiselect-search',
+    tags: 'multiselect-tags',
+    tag: 'multiselect-tag',
+    tagRemove: 'multiselect-tag-remove',
+    tagRemoveIcon: 'multiselect-tag-remove-icon',
+    tagsSearch: 'multiselect-tags-search',
     placeholder: 'multiselect-placeholder',
     caret: 'multiselect-caret',
     caretOpen: 'is-open',
     clear: 'multiselect-clear',
+    clearIcon: 'multiselect-clear-icon',
     spinner: 'multiselect-spinner',
     dropdown: 'multiselect-dropdown',
     dropdownTop: 'is-top',
@@ -52,10 +58,16 @@ export default function useStyle (props, context, dependencies)
       singleLabel: classes.singleLabel,
       multipleLabel: classes.multipleLabel,
       search: classes.search,
+      tags: classes.tags,
+      tag: classes.tag,
+      tagRemove: classes.tagRemove,
+      tagRemoveIcon: classes.tagRemoveIcon,
+      tagsSearch: classes.tagsSearch,
       placeholder: classes.placeholder,
       caret: [classes.caret]
         .concat(isOpen.value ? classes.caretOpen : []),
       clear: classes.clear,
+      clearIcon: classes.clearIcon,
       spinner: classes.spinner,
       dropdown: [classes.dropdown]
         .concat(openDirection.value === 'top' ? classes.dropdownTop : []),
