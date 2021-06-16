@@ -1,116 +1,488 @@
-import { createSelect, getValue } from 'unit-test-helpers'
+import { createSelect, getValue, keydown, destroy } from 'unit-test-helpers'
 import { nextTick } from 'composition-api'
 
 describe('useKeyboard', () => {
-  describe('handleBackspace', () => {
-    it('should remove last selected option when multiple on backspace', async () => {
-      let select = createSelect({
-        mode: 'multiple',
-        options: [1,2,3],
-        value: [1,2]
+  describe('handleKeydown', () => {
+    describe('backspace', () => {
+      it('should not do anything when single', async () => {
+        let select = createSelect({
+          value: 1,
+          options: [1,2,3],
+        })
+
+        keydown(select, 'backspace')
+
+        await nextTick()
+
+        expect(getValue(select)).toStrictEqual(1)
       })
+      
+      it('should not do anything if search is not empty and not single', async () => {
+        let select = createSelect({
+          mode: 'tags',
+          value: [1,2],
+          options: [1,2,3],
+          searchable: true,
+        })
 
-      select.vm.handleBackspace()
+        select.vm.search = 'a'
 
-      await nextTick()
+        keydown(select, 'backspace')
 
-      expect(getValue(select)).toStrictEqual([1])
+        await nextTick()
+
+        expect(getValue(select)).toStrictEqual([1,2])
+      })
+      
+      it('should not do anything if value is empty and not single', async () => {
+        let select = createSelect({
+          mode: 'tags',
+          value: [],
+          options: [1,2,3],
+          searchable: true,
+        })
+
+        keydown(select, 'backspace')
+
+        await nextTick()
+
+        expect(getValue(select)).toStrictEqual([])
+      })
+      
+      it('should remove last element if search is empty and not single', async () => {
+        let select = createSelect({
+          mode: 'tags',
+          value: [1,2],
+          options: [1,2,3],
+          searchable: true,
+        })
+
+        keydown(select, 'backspace')
+
+        await nextTick()
+
+        expect(getValue(select)).toStrictEqual([1])
+      })
     })
 
-    it('should return when single', async () => {
-      let select = createSelect({
-        mode: 'single',
-        options: [1,2,3],
-        value: 1
+    describe('enter', () => {
+      it('should prevent on enter', async () => {
+        let select = createSelect({
+          value: 1,
+          options: [1,2,3],
+        })
+
+        let preventMock = jest.fn()
+
+        select.vm.handleKeydown({
+          preventDefault: preventMock,
+          keyCode: 13,
+        })
+
+        expect(preventMock).toHaveBeenCalled()
       })
 
-      select.vm.handleBackspace()
+      it('should select pointer', async () => {
+        let select = createSelect({
+          value: 1,
+          options: [1,2,3],
+        })
 
-      await nextTick()
+        select.vm.setPointer(select.vm.getOption(2))
 
-      expect(getValue(select)).toStrictEqual(1)
-    })
-  })
+        keydown(select, 'enter')
 
-  describe('handleEsc', () => {
-    it('should clearPointer, close and blur target on escape', () => {
-      let blurMock = jest.fn()
+        await nextTick()
 
-      let select = createSelect({
-        options: [1,2,3],
+        expect(getValue(select)).toStrictEqual(2)
       })
 
-      select.vm.open()
-      select.vm.setPointer(select.vm.getOption(1))
+      it('should not select pointer when mode=tags and addTagOn does not contain enter', async () => {
+        let select = createSelect({
+          mode: 'tags',
+          value: [],
+          options: [1,2,3],
+          addTagOn: ['space']
+        })
 
-      select.vm.handleEsc({target:{blur:blurMock}})
+        select.vm.setPointer(select.vm.getOption(2))
 
-      expect(select.vm.isOpen).toBe(false)
-      expect(select.vm.pointer).toBe(null)
-      expect(blurMock).toHaveBeenCalled()
-    })
-  })
+        keydown(select, 'enter')
 
-  describe('handleSearchBackspace', () => {
-    it('should stop propagation if search is not empty', () => {
-      let stopPropagationMock = jest.fn()
+        await nextTick()
 
-      let select = createSelect()
-
-      select.vm.search = ''
-
-      select.vm.handleSearchBackspace({
-        stopPropagation: stopPropagationMock
+        expect(getValue(select)).toStrictEqual([])
       })
 
-      expect(stopPropagationMock).not.toHaveBeenCalled()
-    })
+      it('should select pointer when mode=tags and addTagOn does contain enter', async () => {
+        let select = createSelect({
+          mode: 'tags',
+          value: [],
+          options: [1,2,3],
+          addTagOn: ['space', 'enter']
+        })
 
-    it('should stop propagation if search is empty', () => {
-      let stopPropagationMock = jest.fn()
+        select.vm.setPointer(select.vm.getOption(2))
 
-      let select = createSelect()
+        keydown(select, 'enter')
 
-      select.vm.search = 'value'
+        await nextTick()
 
-      select.vm.handleSearchBackspace({
-        stopPropagation: stopPropagationMock
+        expect(getValue(select)).toStrictEqual([2])
       })
-
-      expect(stopPropagationMock).toHaveBeenCalled()
-    })
-  })
-
-  describe('handleSearchInput', () => {
-    it('should set search value on input', async () => {
-      let select = createSelect({
-        value: null,
-        searchable: true,
-        options: [1,2,3]
-      })
-
-      select.find('input').element.value = 'val'
-      select.find('input').trigger('input')
-
-      await nextTick()
-
-      expect(select.vm.search).toBe('val')
     })
 
-    it('should set search value on input mode="tags"', async () => {
-      let select = createSelect({
-        mode: 'tags',
-        value: [],
-        searchable: true,
-        options: [1,2,3]
+    describe('esc', () => {
+      it('should blur', async () => {
+        let select = createSelect({
+          value: 1,
+          options: [1,2,3],
+        }, {
+          attach: true,
+        })
+
+        select.element.focus()
+        expect(select.vm.isOpen).toBe(true)
+
+        await nextTick()
+
+        keydown(select, 'esc')
+        expect(select.vm.isOpen).toBe(false)
+
+        destroy(select)
+      })
+    })
+
+    describe('space', () => {
+      it('should select pointer if not searchable and single', async () => {
+        let select = createSelect({
+          value: 1,
+          options: [1,2,3],
+        })
+
+        select.vm.setPointer(select.vm.getOption(2))
+
+        keydown(select, 'space')
+
+        await nextTick()
+
+        expect(getValue(select)).toBe(2)
       })
 
-      select.find('input').element.value = 'val'
-      select.find('input').trigger('input')
+      it('should not select pointer if searchable and single', async () => {
+        let select = createSelect({
+          value: 1,
+          options: [1,2,3],
+          searchable: true,
+        })
 
-      await nextTick()
+        select.vm.setPointer(select.vm.getOption(2))
 
-      expect(select.vm.search).toBe('val')
+        keydown(select, 'space')
+
+        await nextTick()
+
+        expect(getValue(select)).toBe(1)
+      })
+
+      it('should select pointer if not searchable and multiple', async () => {
+        let select = createSelect({
+          mode: 'multiple',
+          value: [1],
+          options: [1,2,3],
+        })
+
+        select.vm.setPointer(select.vm.getOption(2))
+
+        keydown(select, 'space')
+
+        await nextTick()
+
+        expect(getValue(select)).toStrictEqual([1,2])
+      })
+
+      it('should not select pointer if searchable and multiple', async () => {
+        let select = createSelect({
+          mode: 'multiple',
+          value: [1],
+          options: [1,2,3],
+          searchable: true,
+        })
+
+        select.vm.setPointer(select.vm.getOption(2))
+
+        keydown(select, 'space')
+
+        await nextTick()
+
+        expect(getValue(select)).toStrictEqual([1])
+      })
+
+      it('should select pointer if not searchable and tags and addTagOn contains space', async () => {
+        let select = createSelect({
+          mode: 'tags',
+          value: [1],
+          options: [1,2,3],
+          addTagOn: ['space'],
+        })
+
+        select.vm.setPointer(select.vm.getOption(2))
+
+        keydown(select, 'space')
+
+        await nextTick()
+
+        expect(getValue(select)).toStrictEqual([1,2])
+      })
+
+      it('should select pointer if searchable and tags and addTagOn contains space', async () => {
+        let select = createSelect({
+          mode: 'tags',
+          value: [1],
+          options: [1,2,3],
+          searchable: true,
+          addTagOn: ['space'],
+        })
+
+        select.vm.setPointer(select.vm.getOption(2))
+
+        keydown(select, 'space')
+
+        await nextTick()
+
+        expect(getValue(select)).toStrictEqual([1, 2])
+      })
+
+      it('should not select pointer if not searchable and tags and addTagOn does not contain space', async () => {
+        let select = createSelect({
+          mode: 'tags',
+          value: [1],
+          options: [1,2,3],
+          addTagOn: ['enter'],
+        })
+
+        select.vm.setPointer(select.vm.getOption(2))
+
+        keydown(select, 'space')
+
+        await nextTick()
+
+        expect(getValue(select)).toStrictEqual([1])
+      })
+
+      it('should not select pointer if searchable and tags and addTagOn does not contain space', async () => {
+        let select = createSelect({
+          mode: 'tags',
+          value: [1],
+          options: [1,2,3],
+          searchable: true,
+          addTagOn: ['enter'],
+        })
+
+        select.vm.setPointer(select.vm.getOption(2))
+
+        keydown(select, 'space')
+
+        await nextTick()
+
+        expect(getValue(select)).toStrictEqual([1])
+      })
+    })
+
+    describe('up', () => {
+      it('should should move to previous pointer when openDirection=bottom', async () => {
+        let select = createSelect({
+          value: 1,
+          options: [1,2,3],
+        })
+
+        select.vm.setPointer(select.vm.getOption(3))
+
+        keydown(select, 'up')
+        expect(select.vm.pointer).toStrictEqual(select.vm.getOption(2))
+      })
+
+      it('should should move to next pointer when openDirection=top', async () => {
+        let select = createSelect({
+          value: 1,
+          options: [1,2,3],
+          openDirection: 'top',
+        })
+
+        select.vm.setPointer(select.vm.getOption(1))
+
+        keydown(select, 'up')
+        expect(select.vm.pointer).toStrictEqual(select.vm.getOption(2))
+      })
+    })
+
+    describe('down', () => {
+      it('should should move to next pointer when openDirection=bottom', async () => {
+        let select = createSelect({
+          value: 1,
+          options: [1,2,3],
+        })
+
+        select.vm.setPointer(select.vm.getOption(1))
+
+        keydown(select, 'down')
+        expect(select.vm.pointer).toStrictEqual(select.vm.getOption(2))
+      })
+
+      it('should should move to previous pointer when openDirection=top', async () => {
+        let select = createSelect({
+          value: 1,
+          options: [1,2,3],
+          openDirection: 'top',
+        })
+
+        select.vm.setPointer(select.vm.getOption(3))
+
+        keydown(select, 'down')
+        expect(select.vm.pointer).toStrictEqual(select.vm.getOption(2))
+      })
+    })
+
+    describe('semicolon', () => {
+      it('should not do anything when not tags', async () => {
+        let select = createSelect({
+          value: 1,
+          options: [1,2,3],
+        })
+
+        select.vm.setPointer(select.vm.getOption(2))
+
+        keydown(select, { keyCode: 186 })
+
+        await nextTick()
+
+        expect(getValue(select)).toStrictEqual(1)
+      })
+
+      it('should not do anything when if mode=tags and addTagOn contains ; but createTag is false', async () => {
+        let select = createSelect({
+          mode: 'tags',
+          value: [1],
+          options: [1,2,3],
+          addTagOn: [';'],
+          createTag: false,
+        })
+
+        select.vm.setPointer(select.vm.getOption(2))
+
+        keydown(select, { keyCode: 186 })
+
+        await nextTick()
+
+        expect(getValue(select)).toStrictEqual([1])
+      })
+
+      it('should not do anything when if mode=tags and addTagOn does not contain ;', async () => {
+        let select = createSelect({
+          mode: 'tags',
+          value: [1],
+          options: [1,2,3],
+          addTagOn: [','],
+          createTag: true,
+        })
+
+        select.vm.setPointer(select.vm.getOption(2))
+
+        keydown(select, { keyCode: 186 })
+
+        await nextTick()
+
+        expect(getValue(select)).toStrictEqual([1])
+      })
+
+      it('should select pointer if mode=tags and addTagOn contains ;', async () => {
+        let select = createSelect({
+          mode: 'tags',
+          value: [1],
+          options: [1,2,3],
+          addTagOn: [';'],
+          createTag: true,
+        })
+
+        select.vm.setPointer(select.vm.getOption(2))
+
+        keydown(select, { keyCode: 186 })
+
+        await nextTick()
+
+        expect(getValue(select)).toStrictEqual([1,2])
+      })
+    })
+
+    describe('comma', () => {
+      it('should not do anything when not tags', async () => {
+        let select = createSelect({
+          value: 1,
+          options: [1,2,3],
+        })
+
+        select.vm.setPointer(select.vm.getOption(2))
+
+        keydown(select, { keyCode: 188 })
+
+        await nextTick()
+
+        expect(getValue(select)).toStrictEqual(1)
+      })
+
+      it('should not do anything when if mode=tags and addTagOn contains , but createTag is false', async () => {
+        let select = createSelect({
+          mode: 'tags',
+          value: [1],
+          options: [1,2,3],
+          addTagOn: [','],
+          createTag: false,
+        })
+
+        select.vm.setPointer(select.vm.getOption(2))
+
+        keydown(select, { keyCode: 188 })
+
+        await nextTick()
+
+        expect(getValue(select)).toStrictEqual([1])
+      })
+
+      it('should not do anything when if mode=tags and addTagOn does not contain ,', async () => {
+        let select = createSelect({
+          mode: 'tags',
+          value: [1],
+          options: [1,2,3],
+          addTagOn: [';'],
+          createTag: true,
+        })
+
+        select.vm.setPointer(select.vm.getOption(2))
+
+        keydown(select, { keyCode: 188 })
+
+        await nextTick()
+
+        expect(getValue(select)).toStrictEqual([1])
+      })
+
+      it('should select pointer if mode=tags and addTagOn contains ,', async () => {
+        let select = createSelect({
+          mode: 'tags',
+          value: [1],
+          options: [1,2,3],
+          addTagOn: [','],
+          createTag: true,
+        })
+
+        select.vm.setPointer(select.vm.getOption(2))
+
+        keydown(select, { keyCode: 188 })
+
+        await nextTick()
+
+        expect(getValue(select)).toStrictEqual([1,2])
+      })
     })
   })
 })

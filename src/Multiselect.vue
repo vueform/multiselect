@@ -36,8 +36,7 @@
             <span
               v-if="!disabled"
               :class="classList.tagRemove"
-              @click.prevent
-              @mousedown.prevent.stop="handleTagRemove(option, $event)"
+              @mousedown.prevent="handleTagRemove(option, $event)"
             >
               <span :class="classList.tagRemoveIcon"></span>
             </span>

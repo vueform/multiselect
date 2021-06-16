@@ -2,7 +2,7 @@ import { ref, toRefs, computed } from 'composition-api'
 
 export default function useDropdown (props, context, dep)
 {
-  const { maxHeight } = toRefs(props)
+  const { maxHeight, disabled } = toRefs(props)
 
   // ================ DATA ================
 
@@ -17,7 +17,7 @@ export default function useDropdown (props, context, dep)
   // =============== METHODS ==============
 
   const open = () => {
-    if (isOpen.value) {
+    if (isOpen.value || disabled.value) {
       return
     }
 

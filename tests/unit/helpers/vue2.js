@@ -42,8 +42,13 @@ export const destroy = (wrapper) => {
 } 
 
 const keyEvent = (event, wrapper, key) => {
+  if (typeof key === 'object') {
+    wrapper.trigger(event, key)
+    return
+  }
+
   switch (key) {
-    case 'escape':
+    case 'esc':
       wrapper.trigger(event, { keyCode: 27 })
       break
     case 'backspace':

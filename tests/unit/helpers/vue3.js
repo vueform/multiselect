@@ -40,7 +40,11 @@ export const createSelect = (props = {}, options = {}) => {
 export const destroy = (wrapper) => {} 
 
 const keyEvent = (event, wrapper, key) => {
-  wrapper.trigger(`${event}.${key}`)
+  if (typeof key === 'object') {
+    wrapper.trigger(`${event}`, key)
+  } else {
+    wrapper.trigger(`${event}.${key}`)
+  }
 }
 
 export const keyup = (wrapper, key) => {

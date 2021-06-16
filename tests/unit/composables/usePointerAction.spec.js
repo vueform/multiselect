@@ -28,6 +28,18 @@ describe('usePointer Action', () => {
 
       expect(select.vm.pointer).toStrictEqual(select.vm.getOption(2))
     })
+
+    it('should not set pointer if showOptions=false', () => {
+      let select = createSelect({
+        value: null,
+        options: [1,2,3],
+        showOptions: false,
+      })
+
+      select.vm.setPointer(select.vm.getOption(2))
+
+      expect(select.vm.pointer).toStrictEqual(null)
+    })
   })
 
   describe('setPointerFirst', () => {
@@ -64,7 +76,7 @@ describe('usePointer Action', () => {
   })
 
   describe('selectPointer', () => {
-    it('should trigger select with current pointer value if not null and clear after that when not disabled', async () => {
+    it('should trigger select with current pointer value if not null when not disabled', async () => {
       let select = createSelect({
         options: [
           { value: 0, label: 0, disabled: false },
@@ -88,7 +100,6 @@ describe('usePointer Action', () => {
       await nextTick()
 
       expect(getValue(select)).toStrictEqual(1)
-      expect(select.vm.pointer).toStrictEqual(null)
 
       destroy(select)
     })
@@ -117,7 +128,6 @@ describe('usePointer Action', () => {
       await nextTick()
 
       expect(getValue(select)).toStrictEqual(null)
-      expect(select.vm.pointer).toStrictEqual(null)
 
       destroy(select)
     })
@@ -342,9 +352,11 @@ describe('usePointer Action', () => {
   })
 
   describe('watch', () => {
-    it('should set first option as pointer when search changes', async () => {
+    it('should set first option as pointer when search changes and searchable and has search value', async () => {
       let select = createSelect({
-        options: ['v1','v2','v3']
+        value: null,
+        options: ['v1','v2','v3'],
+        searchable: true,
       })
 
       select.vm.search = 'v'
@@ -352,6 +364,35 @@ describe('usePointer Action', () => {
       await nextTick()
 
       expect(select.vm.pointer).toStrictEqual(select.vm.getOption('v1'))
+    })
+
+    it('should not set first option as pointer when search changes and not searchable', async () => {
+      let select = createSelect({
+        value: null,
+        options: ['v1','v2','v3'],
+        searchable: false,
+      })
+
+      select.vm.search = 'v'
+
+      await nextTick()
+
+      expect(select.vm.pointer).toStrictEqual(null)
+    })
+
+    it('should clear pointer when search changes and searchable and does not have search value', async () => {
+      let select = createSelect({
+        value: null,
+        options: ['v1','v2','v3'],
+        searchable: true,
+      })
+
+      select.vm.setPointer(select.vm.getOption('v2'))
+      select.vm.search = ''
+
+      await nextTick()
+
+      expect(select.vm.pointer).toStrictEqual(null)
     })
   })
 })

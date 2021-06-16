@@ -24,16 +24,6 @@ describe('Multiselect', () => {
       expect(select.find('.multiselect-fake-input').element.value).toBe('value1')
     })
 
-    it('should add "open-top" class if openDirection is "top"', () => {
-      let select = createSelect({
-        value: 'value1',
-        options: ['value1', 'value2', 'value3'],
-        openDirection: 'top'
-      })
-      
-      expect(select.element.classList.contains('open-top')).toBe(true)
-    })
-
     it('should not render native inputs if nativeInput=false', () => {
       let select = createSelect({
         mode: 'single',
@@ -167,13 +157,13 @@ describe('Multiselect', () => {
         expect(options.at(1).html()).toContain('value2')
     })
 
-    it('should options have max height defined as maxHeight', () => {
+    it('should dropdown have max height defined as maxHeight', () => {
         let select = createSelect({
           options: [1,2,3],
           maxHeight: 300,
         })
 
-        expect(select.find('.multiselect-options').element.style.maxHeight).toBe('300px')
+        expect(select.find('.multiselect-dropdown').element.style.maxHeight).toBe('300px')
     })
 
     it('should set pointer to option on mouseenter', async () => {
@@ -186,331 +176,6 @@ describe('Multiselect', () => {
         await nextTick()
 
         expect(select.vm.pointer).toStrictEqual(select.vm.getOption(2))
-    })
-
-    it('should select option on click and blur', async () => {
-        let blurMock = jest.fn()
-        
-        let select = createSelect({
-          value: null,
-          options: [1,2,3],
-          valueProp: 'v',
-        }, {
-          attach: true,
-        })
-
-        select.find('.multiselect-input').element.blur = blurMock
-
-        findAll(select, '.multiselect-option').at(1).trigger('click')
-
-        await nextTick()
-
-        expect(getValue(select)).toStrictEqual(2)
-        expect(blurMock).toHaveBeenCalled()
-
-        destroy(select)
-    })
-
-    it('should open on focus', () => {
-      let select = createSelect()
-
-      select.find('.multiselect-input').trigger('focus')
-
-      expect(select.vm.isOpen).toBe(true)
-    })
-    
-    it('should close on blur', () => {
-      let select = createSelect()
-
-      select.find('.multiselect-input').trigger('focus')
-      select.find('.multiselect-input').trigger('blur')
-
-      expect(select.vm.isOpen).toBe(false)
-    })
-
-    it('should close, clear pointer and blur on escape', async () => {
-      let blurMock = jest.fn()
-
-      let select = createSelect({
-        options: [1,2,3],
-        value: 1,
-      })
-
-      select.vm.pointer = select.vm.getOption(1)
-      select.vm.open()
-      select.find('.multiselect-input').element.blur = blurMock
-
-      keyup(select.find('.multiselect-input'), 'escape')
-
-      await nextTick()
-
-      expect(select.vm.pointer).toBe(null)
-      expect(select.vm.isOpen).toBe(false)
-      expect(blurMock).toHaveBeenCalled()
-    })
-
-    it('should remove last element on backspace', async () => {
-      let select = createSelect({
-        mode: 'multiple',
-        options: [1,2,3],
-        value: [1,2],
-      })
-
-      keydown(select.find('.multiselect-input'), 'backspace')
-
-      await nextTick()
-
-      expect(getValue(select)).toStrictEqual([1])
-    })
-
-    it('should set pointer on up&down and select with enter', async () => {
-      let select = createSelect({
-        options: [1,2,3],
-        value: null,
-      }, {
-        attach: true,
-      })
-
-      select.vm.open()
-      keydown(select.find('.multiselect-input'), 'down')
-      keydown(select.find('.multiselect-input'), 'down')
-      keydown(select.find('.multiselect-input'), 'down')
-      keydown(select.find('.multiselect-input'), 'up')
-      keyup(select.find('.multiselect-input'), 'enter')
-
-      await nextTick()
-
-      expect(getValue(select)).toStrictEqual(2)
-
-      destroy(select)
-    })
-
-    it('should set pointer on up&down and select with enter when openDirection=top', async () => {
-      let select = createSelect({
-        options: [1,2,3],
-        value: null,
-      }, {
-        attach: true,
-      })
-
-      select.vm.open()
-      keydown(select.find('.multiselect-input'), 'up')
-      keydown(select.find('.multiselect-input'), 'up')
-      keydown(select.find('.multiselect-input'), 'up')
-      keydown(select.find('.multiselect-input'), 'down')
-      keyup(select.find('.multiselect-input'), 'enter')
-
-      await nextTick()
-
-      expect(getValue(select)).toStrictEqual(2)
-
-      destroy(select)
-    })
-
-    it('should select first option on enter, createTag=false, addTagOn=enter,space', async () => {
-      let select = createSelect({
-        value: [],
-        mode: 'tags',
-        searchable: true,
-        addTagOn: ['enter', 'space'],
-        options: {
-          java: 'Java',
-          javascript: 'Javascript',
-        },
-      }, {
-        attach: true,
-      })
-
-      select.vm.open()
-      select.vm.search = 'Javas'
-
-      await nextTick()
-
-      keyup(select.find('.multiselect-tags .multiselect-search input'), 'enter')
-
-      await nextTick()
-
-      expect(getValue(select)).toStrictEqual(['javascript'])
-
-      destroy(select)
-    })
-
-    it('should not select first option on space, createTag=false, addTagOn=enter,space', async () => {
-      let select = createSelect({
-        value: [],
-        mode: 'tags',
-        searchable: true,
-        addTagOn: ['enter', 'space'],
-        options: {
-          java: 'Java',
-          javascript: 'Javascript',
-        },
-      }, {
-        attach: true,
-      })
-
-      select.vm.open()
-      select.vm.search = 'Javas'
-
-      await nextTick()
-
-      keyup(select.find('.multiselect-tags .multiselect-search input'), 'space')
-
-      await nextTick()
-
-      expect(getValue(select)).toStrictEqual([])
-
-      destroy(select)
-    })
-
-    it('should create new tag on enter, createTag=true, addTagOn=enter,space', async () => {
-      let select = createSelect({
-        value: [],
-        mode: 'tags',
-        searchable: true,
-        addTagOn: ['enter', 'space'],
-        createTag: true,
-        options: {
-          java: 'Java',
-          javascript: 'Javascript',
-        },
-      }, {
-        attach: true,
-      })
-
-      select.vm.open()
-      select.vm.search = 'Javas'
-
-      await nextTick()
-
-      keyup(select.find('.multiselect-tags .multiselect-search input'), 'enter')
-
-      await nextTick()
-
-      expect(getValue(select)).toStrictEqual(['Javas'])
-
-      destroy(select)
-    })
-
-    it('should not create new tag on enter, createTag=true, addTagOn=space', async () => {
-      let select = createSelect({
-        value: [],
-        mode: 'tags',
-        searchable: true,
-        addTagOn: ['space'],
-        createTag: true,
-        options: {
-          java: 'Java',
-          javascript: 'Javascript',
-        },
-      }, {
-        attach: true,
-      })
-
-      select.vm.open()
-      select.vm.search = 'Javas'
-
-      await nextTick()
-
-      keyup(select.find('.multiselect-tags .multiselect-search input'), 'enter')
-
-      await nextTick()
-
-      expect(getValue(select)).toStrictEqual([])
-
-      destroy(select)
-    })
-
-    it('should not create new tag on space, createTag=true, addTagOn=enter', async () => {
-      let select = createSelect({
-        value: [],
-        mode: 'tags',
-        searchable: true,
-        addTagOn: ['enter'],
-        createTag: true,
-        options: {
-          java: 'Java',
-          javascript: 'Javascript',
-        },
-      }, {
-        attach: true,
-      })
-
-      select.vm.open()
-      select.vm.search = 'Javas'
-
-      await nextTick()
-
-      keyup(select.find('.multiselect-tags .multiselect-search input'), 'space')
-
-      await nextTick()
-
-      expect(getValue(select)).toStrictEqual([])
-
-      destroy(select)
-    })
-
-    it('should create new tag on enter, createTag=true, addTagOn=enter,space', async () => {
-      let select = createSelect({
-        value: [],
-        mode: 'tags',
-        searchable: true,
-        addTagOn: ['enter', 'space'],
-        createTag: true,
-        options: {
-          java: 'Java',
-          javascript: 'Javascript',
-        },
-      }, {
-        attach: true,
-      })
-
-      select.vm.open()
-      select.vm.search = 'Javas'
-
-      await nextTick()
-
-      keyup(select.find('.multiselect-tags .multiselect-search input'), 'enter')
-
-      await nextTick()
-
-      expect(getValue(select)).toStrictEqual([
-        'Javas'
-      ])
-
-      destroy(select)
-    })
-
-    it('should create new tag on enter, createTag=true, addTagOn=enter,space', async () => {
-      let select = createSelect({
-        value: [],
-        mode: 'tags',
-        searchable: true,
-        addTagOn: ['enter', 'space'],
-        createTag: true,
-        options: {
-          java: 'Java',
-          javascript: 'Javascript',
-        },
-      }, {
-        attach: true,
-      })
-
-      select.vm.open()
-      select.vm.search = 'Javas'
-
-      await nextTick()
-
-      keyup(select.find('.multiselect-tags .multiselect-search input'), 'space')
-
-      await nextTick()
-      await nextTick()
-
-      expect(getValue(select)).toStrictEqual([
-        'Javas'
-      ])
-
-      destroy(select)
     })
   })
 
@@ -705,12 +370,12 @@ describe('Multiselect', () => {
         expect(select.find('.multiselect-clear').exists()).toBe(false)
       })
 
-      it('should not render clear if canDeselect is false', () => {
+      it('should not render clear if canClear is false', () => {
         let select = createSelect({
           mode: 'single',
           value: ['value1'],
           options: ['value1','value2','value3'],
-          canDeselect: false,
+          canClear: false,
         })
 
         expect(select.find('.multiselect-clear').exists()).toBe(false)
@@ -733,7 +398,7 @@ describe('Multiselect', () => {
           options: ['value1','value2','value3'],
         })
 
-        select.find('.multiselect-clear').trigger('click')
+        select.find('.multiselect-clear').trigger('mousedown')
 
         await nextTick()
 
@@ -824,7 +489,7 @@ describe('Multiselect', () => {
           options: [1,2,3],
         })
 
-        expect(findAll(select, '.multiselect-tag').at(0).find('i').exists()).toBe(true)
+        expect(findAll(select, '.multiselect-tag').at(0).find('.multiselect-tag-remove').exists()).toBe(true)
       })
 
       it('should not show remove icon for tags if disabled', () => {
@@ -847,7 +512,7 @@ describe('Multiselect', () => {
           options: [1,2,3],
         })
 
-        findAll(select, '.multiselect-tag').at(0).find('i').trigger('mousedown', { button: 0 })
+        findAll(select, '.multiselect-tag').at(0).find('.multiselect-tag-remove').trigger('mousedown', { button: 0 })
 
         await nextTick()
 
@@ -861,7 +526,7 @@ describe('Multiselect', () => {
           options: [1,2,3],
         })
 
-        findAll(select, '.multiselect-tag').at(0).find('i').trigger('mousedown', { button: 2 })
+        findAll(select, '.multiselect-tag').at(0).find('.multiselect-tag-remove').trigger('mousedown', { button: 2 })
 
         await nextTick()
 
@@ -919,7 +584,7 @@ describe('Multiselect', () => {
           options: ['value1','value2','value3'],
         })
 
-        select.find('.multiselect-clear').trigger('click')
+        select.find('.multiselect-clear').trigger('mousedown')
 
         await nextTick()
 
@@ -962,22 +627,6 @@ describe('Multiselect', () => {
         await nextTick()
 
         expect(getValue(select)).toStrictEqual([0,1])
-      })
-
-      it('should have search width according to search length', async () => {
-        let select = createSelect({
-          mode: 'tags',
-          options: [1,2,3],
-          value: [0,1],
-          searchable: true,
-        })
-
-        select.vm.search = 'value'
-
-        await nextTick()
-
-        expect(select.find('.multiselect-tags .multiselect-search').element.style.width).toBe('5ch')
-        expect(select.find('input').element.style.width).toBe('5ch')
       })
     })
   })

@@ -67,16 +67,22 @@ export default function useKeyboard (props, context, dep)
 
       // up
       case 38:
+        e.preventDefault()
         openDirection.value === 'top' ? forwardPointer() : backwardPointer()
         break
 
       // down
       case 40:
+        e.preventDefault()
         openDirection.value === 'top' ? backwardPointer() : forwardPointer()
         break
 
       // semicolon
       case 186:
+        if (mode.value !== 'tags') {
+          return
+        }
+
         if (addTagOn.value.indexOf(';') === -1 || !createTag.value) {
           return
         }
@@ -87,6 +93,10 @@ export default function useKeyboard (props, context, dep)
       
       // comma
       case 188:
+        if (mode.value !== 'tags') {
+          return
+        }
+
         if (addTagOn.value.indexOf(',') === -1 || !createTag.value) {
           return
         }
@@ -97,12 +107,7 @@ export default function useKeyboard (props, context, dep)
     }
   }
 
-  const handleSearchInput = (e) => {
-    search.value = e.target.value
-  }
-
   return {
     handleKeydown,
-    handleSearchInput,
   }
 }

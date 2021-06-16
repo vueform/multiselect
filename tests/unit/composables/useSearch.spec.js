@@ -21,17 +21,6 @@ describe('useSearch', () => {
   })
 
   describe('tagsSearchWidth', () => {
-    it('should be equal to length of search with ch suffix', () => {
-      let select = createSelect({
-        mode: 'tags',
-        options: [1,2,3],
-      })
-
-      select.vm.search = 'value'
-
-      expect(select.vm.tagsSearchWidth).toBe('5ch')
-    })
-
     it('should be 100% if search and value are empty', () => {
       let select = createSelect({
         mode: 'tags',
@@ -65,37 +54,20 @@ describe('useSearch', () => {
     })
   })
 
-  describe('blurSearch', () => {
-    it('should blur search input if searchable', () => {
-      let blurMock = jest.fn()
-
+  describe('handleSearchInput', () => {
+    it('should set search value on input', async () => {
       let select = createSelect({
+        value: null,
+        options: [1,2,3],
         searchable: true,
       })
 
-      select.vm.input.blur = blurMock
-
-      select.vm.blurSearch()
-
-      expect(blurMock).toHaveBeenCalled()
-    })
-
-    it('should not blur search input if not searchable', async () => {
-      let blurMock = jest.fn()
-
-      let select = createSelect({
-        searchable: true,
-      })
-
-      select.vm.input.blur = blurMock
-
-      select.vm.$parent.props.searchable = false
+      select.vm.input.value = 'aaa'
+      select.vm.input.dispatchEvent(new Event('input'))
 
       await nextTick()
 
-      select.vm.blurSearch()
-
-      expect(blurMock).not.toHaveBeenCalled()
+      expect(select.vm.search).toBe('aaa')
     })
   })
 

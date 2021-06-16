@@ -22,6 +22,7 @@ export default function useStyle (props, context, dependencies)
     search: 'multiselect-search',
     tags: 'multiselect-tags',
     tag: 'multiselect-tag',
+    tagDisabled: 'is-disabled',
     tagRemove: 'multiselect-tag-remove',
     tagRemoveIcon: 'multiselect-tag-remove-icon',
     tagsSearch: 'multiselect-tags-search',
@@ -59,7 +60,8 @@ export default function useStyle (props, context, dependencies)
       multipleLabel: classes.multipleLabel,
       search: classes.search,
       tags: classes.tags,
-      tag: classes.tag,
+      tag: [classes.tag]
+        .concat(disabled.value ? classes.tagDisabled : []),
       tagRemove: classes.tagRemove,
       tagRemoveIcon: classes.tagRemoveIcon,
       tagsSearch: classes.tagsSearch,

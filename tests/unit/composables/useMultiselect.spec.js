@@ -1,4 +1,4 @@
-import { createSelect } from 'unit-test-helpers'
+import { createSelect, destroy } from 'unit-test-helpers'
 
 describe('useMultiselect', () => {
   describe('multiselect', () => {
@@ -27,21 +27,76 @@ describe('useMultiselect', () => {
     })
   })
 
-  describe('blurInput', () => {
-    it('should blur .multiselect-input DOM', () => {
-      let blurMock = jest.fn()
-
-      let select = createSelect({}, {
+  describe('blur', () => {
+    it('should blur input if searchable', () => {
+      let select = createSelect({
+        value: null,
+        options: [1,2,3],
+        searchable: true,
+      }, {
         attach: true
       })
 
-      let multiselectInput = select.vm.multiselect.querySelector('.multiselect-input')
+      select.element.focus()
+      expect(select.vm.isOpen).toBe(true)
 
-      multiselectInput.blur = blurMock
+      select.vm.blur()
+      expect(select.vm.isOpen).toBe(false)
 
-      select.vm.blurInput()
+      destroy(select)
+    })
 
-      expect(blurMock).toHaveBeenCalled()
+    it('should blur multiselect if not searchable', () => {
+      let select = createSelect({
+        value: null,
+        options: [1,2,3],
+      }, {
+        attach: true
+      })
+
+      select.element.focus()
+      expect(select.vm.isOpen).toBe(true)
+
+      select.vm.blur()
+      expect(select.vm.isOpen).toBe(false)
+
+      destroy(select)
+    })
+  })
+
+  describe('handleFocus', () => {
+    it('should focus input if searchable', () => {
+      let select = createSelect({
+        value: null,
+        options: [1,2,3],
+        searchable: true,
+      }, {
+        attach: true
+      })
+
+      expect(select.vm.isOpen).toBe(false)
+
+      select.vm.handleFocus()
+      expect(select.vm.isOpen).toBe(true)
+
+      destroy(select)
+    })
+
+    it('should not focus input if not searchable', () => {
+      let select = createSelect({
+        value: null,
+        options: [1,2,3],
+        searchable: false,
+      }, {
+        attach: true
+      })
+
+      expect(select.vm.isOpen).toBe(false)
+
+      select.vm.handleFocus()
+      expect(select.vm.isOpen).toBe(false)
+
+      destroy(select)
     })
   })
 })

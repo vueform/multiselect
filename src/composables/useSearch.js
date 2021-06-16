@@ -17,6 +17,7 @@ export default function useSearch (props, context, dep)
   // ============== COMPUTED ==============
 
   const tagsSearchWidth = computed(() => {
+    // istanbul ignore next
     if (search.value) {
       return `${textWidth.value}px`
     }
@@ -48,6 +49,10 @@ export default function useSearch (props, context, dep)
     search.value = ''
   }
 
+  const handleSearchInput = (e) => {
+    search.value = e.target.value
+  }
+
   // ============== WATCHERS ==============
 
   watch(search, (val) => {
@@ -59,5 +64,6 @@ export default function useSearch (props, context, dep)
     input,
     tagsSearchWidth,
     clearSearch,
+    handleSearchInput,
   }
 }
