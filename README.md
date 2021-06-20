@@ -20,7 +20,7 @@
     <img alt="npm" src="https://img.shields.io/npm/v/@vueform/multiselect">
   </a>
 
-  <h1>Vue 3 Multiselect</h1>
+  <h1>Vue 3 Multiselect with Tailwind support</h1>
   
   <a href="https://vueform.com?ref=github" target="_blank">
     <br>
@@ -46,12 +46,13 @@
 
 ## Other libraries
 
-* [@vueform/slider](https://github.com/vueform/slider) - Vue 3 slider component with multihandles, tooltips merging and formatting.
+* [@vueform/slider](https://github.com/vueform/slider) - Vue 3 slider component with Tailwind support.
 * [@vueform/toggle](https://github.com/vueform/toggle) - Vue 3 toggle component with labels, custom slots and styling options.
 
 ## Multiselect features
 
 * Vue 2 & 3 support
+* Tailwind & utility class support
 * No dependencies
 * 100% coverage
 * TypeScript support
@@ -157,6 +158,155 @@ After that make sure to change the imported module to Vue 2 version of Multisele
 import Multiselect from '@vueform/multiselect/dist/multiselect.vue2.js'
 ```
 
+## Styling with CSS vars
+
+The following CSS variables can be used to customize multiselect when using `default.css`:
+
+``` css
+--ms-font-size: 1rem
+--ms-line-height: 1.375
+--ms-bg: #FFFFFF
+--ms-bg-disabled: #F3F4F6
+--ms-border-color: #D1D5DB
+--ms-border-width: 1px
+--ms-radius: 4px
+--ms-py: 0.5rem
+--ms-px: 0.875rem
+--ms-ring-width: 3px
+--ms-ring-color: #10B98130
+--ms-placeholder-color: #9CA3AF
+  
+--ms-tag-font-size: 0.875rem
+--ms-tag-line-height: 1.25rem
+--ms-tag-font-weight: 600
+--ms-tag-bg: #10B981
+--ms-tag-bg-disabled: #9CA3AF
+--ms-tag-color: #FFFFFF
+--ms-tag-color-disabled: #FFFFFF
+--ms-tag-radius: 4px
+--ms-tag-py: 0.125rem
+--ms-tag-px: 0.5rem
+--ms-tag-my: 0.25rem
+--ms-tag-mx: 0.25rem
+
+--ms-tag-remove-radius: 4px
+--ms-tag-remove-py: 0.25rem
+--ms-tag-remove-px: 0.25rem
+--ms-tag-remove-my: 0rem
+--ms-tag-remove-mx: 0.125rem
+
+--ms-dropdown-bg: #FFFFFF
+--ms-dropdown-border-color: #D1D5DB
+--ms-dropdown-border-width: 1px
+--ms-dropdown-radius: 4px
+
+--ms-option-font-size: 1rem
+--ms-option-line-height: 1.375
+--ms-option-bg-pointed: #FFFFFF
+--ms-option-bg-selected: #10B981
+--ms-option-bg-disabled: #FFFFFF
+--ms-option-bg-selected-pointed: #26C08E
+--ms-option-bg-selected-disabled: #FFFFFF
+--ms-option-color-pointed: #1F2937
+--ms-option-color-selected: #FFFFFF
+--ms-option-color-disabled: #D1D5DB
+--ms-option-color-selected-pointed: #FFFFFF
+--ms-option-color-selected-disabled: #D1FAE5
+--ms-option-py: 0.5rem
+--ms-option-px: 0.75rem
+
+--ms-empty-color: #4B5563
+```
+
+Override them globally:
+
+``` css
+:root {
+  --ms-tag-bg: #059669;
+  --ms-tag-color: #D1FAE5;
+  --ms-tag-radius: 9999px;
+  --ms-tag-font-weight: 400;
+}
+```
+
+Or on an instance level:
+
+``` vue
+<Multiselect
+  v-model="value"
+  :options="options"
+  class="multiselect-green"
+/>
+
+<Multiselect
+  v-model="value"
+  :options="options"
+  class="multiselect-blue"
+/>
+```
+
+``` css
+.multiselect-green {
+  --ms-tag-bg: #D1FAE5;
+  --ms-tag-color: #059669;
+}
+
+.multiselect-blue {
+  --ms-tag-bg: #DBEAFE;
+  --ms-tag-color: #2563EB;
+}
+```
+
+## Styling with Tailwind CSS
+
+The `Multiselect` component accepts a `classes` property which allows to override default class names. When using utility classes you don't need to import `default.css`. Here's a default styling for Tailwind CSS:
+
+``` vue
+<Multiselect v-model="value" :options="options" :classes="{
+  container: 'relative mx-auto w-full flex items-center justify-end box-border cursor-pointer border border-gray-300 rounded bg-white text-base leading-snug outline-none',
+  containerDisabled: 'cursor-default bg-gray-100',
+  containerOpen: 'rounded-b-none',
+  containerOpenTop: 'rounded-t-none',
+  containerActive: 'ring ring-green-500 ring-opacity-30',
+  singleLabel: 'flex items-center h-full absolute left-0 top-0 pointer-events-none bg-transparent leading-snug pl-3.5',
+  multipleLabel: 'flex items-center h-full absolute left-0 top-0 pointer-events-none bg-transparent leading-snug pl-3.5',
+  search: 'w-full absolute inset-0 outline-none appearance-none box-border border-0 text-base font-sans bg-white rounded pl-3.5',
+  tags: 'flex-grow flex-shrink flex flex-wrap mt-1 pl-2',
+  tag: 'bg-green-500 text-white text-sm font-semibold py-0.5 pl-2 rounded mr-1 mb-1 flex items-center whitespace-nowrap',
+  tagDisabled: 'pr-2 !bg-gray-400 text-white',
+  tagRemove: 'flex items-center justify-center p-1 mx-0.5 rounded-sm hover:bg-black hover:bg-opacity-10 group',
+  tagRemoveIcon: 'bg-multiselect-remove bg-center bg-no-repeat opacity-30 inline-block w-3 h-3 group-hover:opacity-60',
+  tagsSearch: 'h-full border-0 outline-none appearance-none p-0 text-base font-sans mx-1 mb-1 box-border flex-grow flex-shrink',
+  placeholder: 'flex items-center h-full absolute left-0 top-0 pointer-events-none bg-transparent leading-snug pl-3.5 text-gray-400',
+  caret: 'bg-multiselect-caret bg-center bg-no-repeat w-2.5 h-4 py-px box-content mr-3.5 relative z-10 opacity-40 flex-shrink-0 flex-grow-0 transition-transform transform',
+  caretOpen: 'rotate-180',
+  clear: 'pr-3.5 relative z-10 opacity-40 transition duration-300 flex-shrink-0 flex-grow-0 flex hover:opacity-80',
+  clearIcon: 'bg-multiselect-remove bg-center bg-no-repeat w-2.5 h-4 py-px box-content inline-block',
+  spinner: 'bg-multiselect-spinner bg-center bg-no-repeat w-4 h-4 z-10 mr-3.5 animate-spin flex-shrink-0 flex-grow-0',
+  dropdown: 'absolute -left-px -right-px bottom-0 transform translate-y-full border border-gray-300 -mt-px overflow-y-scroll z-50 bg-white flex flex-col rounded-b',
+  dropdownTop: '-translate-y-full top-px bottom-auto flex-col-reverse rounded-b-none rounded-t',
+  options: 'flex flex-col p-0 m-0 list-none',
+  optionsTop: 'flex-col-reverse',
+  option: 'flex items-center justify-start box-border text-left cursor-pointer text-base leading-snug py-2 px-3',
+  optionPointed: 'text-gray-800 bg-gray-100',
+  optionSelected: 'text-white bg-green-500',
+  optionDisabled: 'text-gray-300 cursor-not-allowed',
+  optionSelectedPointed: 'text-white bg-green-500 opacity-90',
+  optionSelectedDisabled: 'text-green-100 bg-green-500 bg-opacity-50 cursor-not-allowed',
+  noOptions: 'py-2 px-3 text-gray-600 bg-white',
+  noResults: 'py-2 px-3 text-gray-600 bg-white',
+  fakeInput: 'bg-transparent absolute left-0 right-0 -bottom-px w-full h-px border-0 p-0 appearance-none outline-none text-transparent',
+  spacer: 'h-9 py-px box-content',
+}" />
+```
+
+Certain classes has different states which are merged to the base class when the state is active. For exmple `dropdown` will be merged with `dropdownTop` when `open-direction: 'top'` resulting in the following classes:
+```absolute -left-px -right-px bottom-0 transform translate-y-full border border-gray-300 -mt-px overflow-y-scroll z-50 bg-white flex flex-col rounded-b -translate-y-full top-px bottom-auto flex-col-reverse rounded-b-none rounded-t```
+
+The same is true for `container`, `tag`, `options` and `option` classes.
+
+In case you need to override the same type of utility you might use [@neojp/tailwind-important-variant](https://www.npmjs.com/package/@neojp/tailwindcss-important-variant) and use eg. `bg-green-500!`.
+
 ## Support
 
 Join our [Discord channel](https://discord.gg/WhX2nG6GTQ) or [open an issue](https://github.com/vueform/multiselect/issues).
@@ -180,10 +330,11 @@ Join our [Discord channel](https://discord.gg/WhX2nG6GTQ) or [open an issue](htt
 | **loading** | `boolean` | `false` | Whether a loading spinner should be shown. |
 | **id** | `string` | `'multiselect'` | The `id` of the multiselect container DOM. |
 | **caret** | `boolean` | `true` | Whether should display the caret symbol on the right. |
-| **maxHeight** | `number` | `160` | The maximum height of options list (px). |
+| **maxHeight** | `string` | `10rem` | The maximum height of options list. |
 | **noOptionsText** | `string` | `'The list is empty'` | The text that should be displayed when options list is empty. |
 | **noResultsText** | `string` | `'No results found'` | The text that should be displayed when there are no search results. |
 | **openDirection** | `string` | `bottom` | Whether the option list should be displayed above or below the multiselect. Possible values: `top\|bottom` |
+| **classes** | `object` | | An object of class names that gets merged with the default values. Default: `{`<br>&nbsp;&nbsp;`container: 'multiselect',`<br>&nbsp;&nbsp;`containerDisabled: 'is-disabled',`<br>&nbsp;&nbsp;`containerOpen: 'is-open',`<br>&nbsp;&nbsp;`containerOpenTop: 'is-open-top',`<br>&nbsp;&nbsp;`containerActive: 'is-active',`<br>&nbsp;&nbsp;`singleLabel: 'multiselect-single-label',`<br>&nbsp;&nbsp;`multipleLabel: 'multiselect-multiple-label',`<br>&nbsp;&nbsp;`search: 'multiselect-search',`<br>&nbsp;&nbsp;`tags: 'multiselect-tags',`<br>&nbsp;&nbsp;`tag: 'multiselect-tag',`<br>&nbsp;&nbsp;`tagDisabled: 'is-disabled',`<br>&nbsp;&nbsp;`tagRemove: 'multiselect-tag-remove',`<br>&nbsp;&nbsp;`tagRemoveIcon: 'multiselect-tag-remove-icon',`<br>&nbsp;&nbsp;`tagsSearch: 'multiselect-tags-search',`<br>&nbsp;&nbsp;`placeholder: 'multiselect-placeholder',`<br>&nbsp;&nbsp;`caret: 'multiselect-caret',`<br>&nbsp;&nbsp;`caretOpen: 'is-open',`<br>&nbsp;&nbsp;`clear: 'multiselect-clear',`<br>&nbsp;&nbsp;`clearIcon: 'multiselect-clear-icon',`<br>&nbsp;&nbsp;`spinner: 'multiselect-spinner',`<br>&nbsp;&nbsp;`dropdown: 'multiselect-dropdown',`<br>&nbsp;&nbsp;`dropdownTop: 'is-top',`<br>&nbsp;&nbsp;`options: 'multiselect-options',`<br>&nbsp;&nbsp;`optionsTop: 'is-top',`<br>&nbsp;&nbsp;`option: 'multiselect-option',`<br>&nbsp;&nbsp;`optionPointed: 'is-pointed',`<br>&nbsp;&nbsp;`optionSelected: 'is-selected',`<br>&nbsp;&nbsp;`optionDisabled: 'is-disabled',`<br>&nbsp;&nbsp;`optionSelectedPointed: 'is-selected is-pointed',`<br>&nbsp;&nbsp;`optionSelectedDisabled: 'is-selected is-disabled',`<br>&nbsp;&nbsp;`noOptions: 'multiselect-no-options',`<br>&nbsp;&nbsp;`noResults: 'multiselect-no-results',`<br>&nbsp;&nbsp;`fakeInput: 'multiselect-fake-input',`<br>&nbsp;&nbsp;`spacer: 'multiselect-spacer'`<br>`}` |
 
 ### Advanced Props
 
@@ -199,7 +350,7 @@ Join our [Discord channel](https://discord.gg/WhX2nG6GTQ) or [open an issue](htt
 | **resolveOnLoad** | `boolean` | `true` | Whether async options should be loaded initially (with an empty query). This should be `true` if you are planning to load non-object value(s) initially while using async options (to fetch matching objects for values). |
 | **appendNewTag** | `boolean` | `true` | Whether it should append new tag automatically to option list when using `tags` mode with `createTag`. If set to `false` you need to take care of appending a new tag to the provided `:options` list upon `@tag` event. |
 | **createTag** | `boolean` | `false` | Whether it should allow creating new tag based on search query when using `tags` mode. |
-| **addTagOn** | `array` | `['enter']` | The list of keys that creates a new tag while typing in the search field when having `createTag` enabled. Possible values: `enter\|space`. |
+| **addTagOn** | `array` | `['enter']` | The list of keys that creates a new tag while typing in the search field when having `createTag` enabled. Possible values: `enter\|space\|;\|,`. |
 | **hideSelected** | `boolean` | `true` | Whether selected options should be excluded from the option list when using `multiple` or `tags` mode. |
 | **showOptions** | `boolean` | `true` | Whether option list should be displayed. Can be used to create free-typed tags. |
 | **object** | `boolean` | `false` | Whether the value should be stored as an object.<br>If **false**:<br>`value: ['js','jsx','ts']`<br>If **true**:<br> `value: [`<br>&nbsp;&nbsp;`{value:'js',label:'Javascript'},`<br>&nbsp;&nbsp;`{value:'jsx',label:'JSX'},`<br>&nbsp;&nbsp;`{value:'ts',label:'Typescript'}`<br>`]` |

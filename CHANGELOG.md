@@ -1,3 +1,13 @@
+## v2.0.0
+
+> `2021-06-20`
+
+### 🎉 Feature
+  - **BREAKING**: Completely rewritten `<template>` and `default.css`.
+  - Caret is now always displayed when `caret: true` regardless if the multiselect has selected option(s).
+  - Added `canDeselect` and `classes` prop.
+  - Added `;` and `,` options to `addTagOn` prop.
+  
 ## v1.5.0
 
 > `2021-05-17`
