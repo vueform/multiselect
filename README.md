@@ -163,59 +163,59 @@ import Multiselect from '@vueform/multiselect/dist/multiselect.vue2.js'
 The following CSS variables can be used to customize multiselect when using `default.css`:
 
 ``` css
---ms-font-size: 1rem
---ms-line-height: 1.375
---ms-bg: #FFFFFF
---ms-bg-disabled: #F3F4F6
---ms-border-color: #D1D5DB
---ms-border-width: 1px
---ms-radius: 4px
---ms-py: 0.5rem
---ms-px: 0.875rem
---ms-ring-width: 3px
---ms-ring-color: #10B98130
---ms-placeholder-color: #9CA3AF
+--ms-font-size: 1rem;
+--ms-line-height: 1.375;
+--ms-bg: #FFFFFF;
+--ms-bg-disabled: #F3F4F6;
+--ms-border-color: #D1D5DB;
+--ms-border-width: 1px;
+--ms-radius: 4px;
+--ms-py: 0.5rem;
+--ms-px: 0.875rem;
+--ms-ring-width: 3px;
+--ms-ring-color: #10B98130;
+--ms-placeholder-color: #9CA3AF;
   
---ms-tag-font-size: 0.875rem
---ms-tag-line-height: 1.25rem
---ms-tag-font-weight: 600
---ms-tag-bg: #10B981
---ms-tag-bg-disabled: #9CA3AF
---ms-tag-color: #FFFFFF
---ms-tag-color-disabled: #FFFFFF
---ms-tag-radius: 4px
---ms-tag-py: 0.125rem
---ms-tag-px: 0.5rem
---ms-tag-my: 0.25rem
---ms-tag-mx: 0.25rem
+--ms-tag-font-size: 0.875rem;
+--ms-tag-line-height: 1.25rem;
+--ms-tag-font-weight: 600;
+--ms-tag-bg: #10B981;
+--ms-tag-bg-disabled: #9CA3AF;
+--ms-tag-color: #FFFFFF;
+--ms-tag-color-disabled: #FFFFFF;
+--ms-tag-radius: 4px;
+--ms-tag-py: 0.125rem;
+--ms-tag-px: 0.5rem;
+--ms-tag-my: 0.25rem;
+--ms-tag-mx: 0.25rem;
 
---ms-tag-remove-radius: 4px
---ms-tag-remove-py: 0.25rem
---ms-tag-remove-px: 0.25rem
---ms-tag-remove-my: 0rem
---ms-tag-remove-mx: 0.125rem
+--ms-tag-remove-radius: 4px;
+--ms-tag-remove-py: 0.25rem;
+--ms-tag-remove-px: 0.25rem;
+--ms-tag-remove-my: 0rem;
+--ms-tag-remove-mx: 0.125rem;
 
---ms-dropdown-bg: #FFFFFF
---ms-dropdown-border-color: #D1D5DB
---ms-dropdown-border-width: 1px
---ms-dropdown-radius: 4px
+--ms-dropdown-bg: #FFFFFF;
+--ms-dropdown-border-color: #D1D5DB;
+--ms-dropdown-border-width: 1px;
+--ms-dropdown-radius: 4px;
 
---ms-option-font-size: 1rem
---ms-option-line-height: 1.375
---ms-option-bg-pointed: #FFFFFF
---ms-option-bg-selected: #10B981
---ms-option-bg-disabled: #FFFFFF
---ms-option-bg-selected-pointed: #26C08E
---ms-option-bg-selected-disabled: #FFFFFF
---ms-option-color-pointed: #1F2937
---ms-option-color-selected: #FFFFFF
---ms-option-color-disabled: #D1D5DB
---ms-option-color-selected-pointed: #FFFFFF
---ms-option-color-selected-disabled: #D1FAE5
---ms-option-py: 0.5rem
---ms-option-px: 0.75rem
+--ms-option-font-size: 1rem;
+--ms-option-line-height: 1.375;
+--ms-option-bg-pointed: #FFFFFF;
+--ms-option-bg-selected: #10B981;
+--ms-option-bg-disabled: #FFFFFF;
+--ms-option-bg-selected-pointed: #26C08E;
+--ms-option-bg-selected-disabled: #FFFFFF;
+--ms-option-color-pointed: #1F2937;
+--ms-option-color-selected: #FFFFFF;
+--ms-option-color-disabled: #D1D5DB;
+--ms-option-color-selected-pointed: #FFFFFF;
+--ms-option-color-selected-disabled: #D1FAE5;
+--ms-option-py: 0.5rem;
+--ms-option-px: 0.75rem;
 
---ms-empty-color: #4B5563
+--ms-empty-color: #4B5563;
 ```
 
 Override them globally:
