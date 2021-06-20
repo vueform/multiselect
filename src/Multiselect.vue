@@ -4,8 +4,8 @@
     :tabindex="tabindex"
     :class="classList.container"
     :id="id"
-    @focusin="open"
-    @focusout="close"
+    @focusin="activate"
+    @focusout="deactivate"
     @keydown="handleKeydown"
     @focus="handleFocus"
   >
@@ -144,6 +144,9 @@
       </template>
     </template>
 
+    <!-- Create height for empty input -->
+    <div :class="classList.spacer"></div>
+
   </div>
 </template>
 
@@ -228,9 +231,9 @@
         default: -1,
       },
       maxHeight: {
-        type: Number,
+        type: [String, Number],
         required: false,
-        default: 160,
+        default: '10rem',
       },
       hideSelected: {
         type: Boolean,
@@ -368,6 +371,8 @@
 
       const multiselect = useMultiselect(props, context, {
         input: search.input,
+        open: dropdown.open,
+        close: dropdown.close,
       })
 
       const options = useOptions(props, context, {
@@ -403,6 +408,7 @@
         isPointed: pointerAction.isPointed,
         isSelected: options.isSelected,
         isDisabled: options.isDisabled,
+        isActive: multiselect.isActive,
       })
 
       return {

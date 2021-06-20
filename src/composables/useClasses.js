@@ -11,12 +11,14 @@ export default function useStyle (props, context, dependencies)
   const isPointed = dependencies.isPointed
   const isSelected = dependencies.isSelected
   const isDisabled = dependencies.isDisabled
+  const isActive = dependencies.isActive
 
   const classes = {
     container: 'multiselect',
     containerDisabled: 'is-disabled',
     containerOpen: 'is-open',
     containerOpenTop: 'is-open-top',
+    containerActive: 'is-active',
     singleLabel: 'multiselect-single-label',
     multipleLabel: 'multiselect-multiple-label',
     search: 'multiselect-search',
@@ -45,6 +47,7 @@ export default function useStyle (props, context, dependencies)
     noOptions: 'multiselect-no-options',
     noResults: 'multiselect-no-results',
     fakeInput: 'multiselect-fake-input',
+    spacer: 'multiselect-spacer',
     ...refs.classes.value,
   }
 
@@ -55,7 +58,9 @@ export default function useStyle (props, context, dependencies)
       container: [classes.container]
         .concat(disabled.value ? classes.containerDisabled : [])
         .concat(isOpen.value && openDirection.value === 'top' ? classes.containerOpenTop : [])
-        .concat(isOpen.value && openDirection.value !== 'top' ? classes.containerOpen : []),
+        .concat(isOpen.value && openDirection.value !== 'top' ? classes.containerOpen : [])
+        .concat(isActive.value ? classes.containerActive : []),
+      spacer: classes.spacer,
       singleLabel: classes.singleLabel,
       multipleLabel: classes.multipleLabel,
       search: classes.search,
@@ -74,7 +79,7 @@ export default function useStyle (props, context, dependencies)
       dropdown: [classes.dropdown]
         .concat(openDirection.value === 'top' ? classes.dropdownTop : []),
       options: [classes.options]
-        .concat(openDirection.value === 'top' ? classes.dropdownTop : []),
+        .concat(openDirection.value === 'top' ? classes.optionsTop : []),
       option: (o) => {
         let option = [classes.option]
 
