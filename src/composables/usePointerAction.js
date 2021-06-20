@@ -26,7 +26,7 @@ export default function usePointer (props, context, dep)
   }
 
   const setPointer = (option) => {
-    if (!showOptions.value) {
+    if (!showOptions.value || (option !== null && option.disabled)) {
       return
     }
 
