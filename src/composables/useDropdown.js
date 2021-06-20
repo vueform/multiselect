@@ -11,7 +11,7 @@ export default function useDropdown (props, context, dep)
   // ============== COMPUTED ==============
 
   const contentMaxHeight = computed(() => {
-    return `${maxHeight.value}px`
+    return typeof maxHeight.value === 'number' ? `${maxHeight.value}px` : maxHeight.value
   })
 
   // =============== METHODS ==============
