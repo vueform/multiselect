@@ -99,4 +99,46 @@ describe('useMultiselect', () => {
       destroy(select)
     })
   })
+
+  describe('activate', () => {
+    it('should set isActive to true and open', () => {
+      let select = createSelect({
+        value: null,
+        options: [1,2,3],
+      })
+
+      select.vm.activate()
+
+      expect(select.vm.isOpen).toBe(true)
+      expect(select.vm.isActive).toBe(true)
+    })
+
+    it('should not set isActive to true and open when disabled', () => {
+      let select = createSelect({
+        value: null,
+        options: [1,2,3],
+        disabled: true,
+      })
+
+      select.vm.activate()
+
+      expect(select.vm.isOpen).toBe(false)
+      expect(select.vm.isActive).toBe(false)
+    })
+  })
+
+  describe('deactivate', () => {
+    it('should set isActive to false and close', () => {
+      let select = createSelect({
+        value: null,
+        options: [1,2,3],
+      })
+
+      select.vm.activate()
+      select.vm.deactivate()
+
+      expect(select.vm.isOpen).toBe(false)
+      expect(select.vm.isActive).toBe(false)
+    })
+  })
 })
