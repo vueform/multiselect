@@ -46,8 +46,8 @@
 
 ## Other libraries
 
-* [@vueform/slider](https://github.com/vueform/slider) - Vue 3 slider component with Tailwind support.
-* [@vueform/toggle](https://github.com/vueform/toggle) - Vue 3 toggle component with labels, custom slots and styling options.
+* [@vueform/slider](https://github.com/vueform/slider) - Vue 3 slider component with multihandles, tooltips merging and formatting.
+* [@vueform/toggle](https://github.com/vueform/toggle) - Vue 3 toggle component with Tailwind support.
 
 ## Multiselect features
 
