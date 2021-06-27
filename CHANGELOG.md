@@ -1,3 +1,11 @@
+## v2.0.1
+
+> `2021-06-27`
+
+### 🎉 Feature
+  - Classname fixes.
+  - Readme update.
+
 ## v2.0.0
 
 > `2021-06-20`
