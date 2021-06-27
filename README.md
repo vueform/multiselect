@@ -4,6 +4,8 @@
     <img alt="npm" src="https://img.shields.io/npm/dm/@vueform/multiselect?color=%2353ca2f">
   </a>
 
+  <img alt="CircleCI" src="https://img.shields.io/circleci/build/github/vueform/multiselect">
+
   <a href="https://codecov.io/gh/vueform/multiselect" target="_blank">
     <img src="https://img.shields.io/codecov/c/github/vueform/multiselect"/>
   </a>
@@ -46,8 +48,8 @@
 
 ## Other libraries
 
-* [@vueform/slider](https://github.com/vueform/slider) - Vue 3 slider component with multihandles, tooltips merging and formatting.
-* [@vueform/toggle](https://github.com/vueform/toggle) - Vue 3 toggle component with Tailwind support.
+* [@vueform/slider](https://github.com/vueform/slider) - Vue 3 slider component with tooltips & Tailwind support.
+* [@vueform/toggle](https://github.com/vueform/toggle) - Vue 3 toggle component with custom labels & Tailwind support.
 
 ## Multiselect features
 

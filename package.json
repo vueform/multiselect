@@ -2,7 +2,7 @@
   "name": "@vueform/multiselect",
   "version": "2.0.0",
   "private": false,
-  "description": "Vue 3 multiselect component with Tailwind support.",
+  "description": "Vue 3 multiselect component with tagging options & Tailwind support.",
   "license": "MIT",
   "author": "Adam Berecz <adam@vueform.com>",
   "main": "./dist/multiselect.js",

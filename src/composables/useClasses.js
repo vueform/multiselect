@@ -1,6 +1,6 @@
 import { computed, toRefs } from 'composition-api'
 
-export default function useStyle (props, context, dependencies)
+export default function useClasses (props, context, dependencies)
 {
   const refs = toRefs(props)
   const { disabled, openDirection } = refs
