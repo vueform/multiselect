@@ -22,7 +22,7 @@
     <img alt="npm" src="https://img.shields.io/npm/v/@vueform/multiselect">
   </a>
 
-  <h1>Vue 3 Multiselect with Tailwind support</h1>
+  <h1>Vue 3 Multiselect</h1>
   
   <a href="https://vueform.com?ref=github" target="_blank">
     <br>
@@ -48,13 +48,12 @@
 
 ## Other libraries
 
-* [@vueform/slider](https://github.com/vueform/slider) - Vue 3 slider component with tooltips & Tailwind support.
-* [@vueform/toggle](https://github.com/vueform/toggle) - Vue 3 toggle component with custom labels & Tailwind support.
+* [@vueform/slider](https://github.com/vueform/slider) - Vue 3 slider component with multihandles, tooltips merging and formatting.
+* [@vueform/toggle](https://github.com/vueform/toggle) - Vue 3 toggle component with labels, custom slots and styling options.
 
 ## Multiselect features
 
 * Vue 2 & 3 support
-* Tailwind & utility class support
 * No dependencies
 * 100% coverage
 * TypeScript support
@@ -66,6 +65,8 @@
 * Search & filtering
 * Custom slots
 * Events
+* CSS vars support
+* Tailwind & utility class support
 * Fully configurable
 
 ## Demo
