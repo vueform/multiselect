@@ -102,34 +102,39 @@
       <div
         v-show="isOpen && showOptions"
         :class="classList.dropdown"
-        :style="{ maxHeight: contentMaxHeight }"
       >
-        <slot name="beforelist" :options="fo"></slot>
+        <div
+          class="w-full"
+          :style="{ maxHeight: contentMaxHeight }"
+        >
+          <slot name="beforelist" :options="fo"></slot>
 
-        <ul :class="classList.options">
-          <li
-            v-for="(option, i, key) in fo"
-            :class="classList.option(option)"
-            :key="key"
-            :data-pointed="isPointed(option)"
-            @mouseenter="setPointer(option)"
-            @click="handleOptionClick(option)"
-          >
-            <slot name="option" :option="option" :search="search">
-              <span>{{ option[label] }}</span>
-            </slot>
-          </li>
-        </ul>
+          <ul :class="classList.options">
+            <li
+              v-for="(option, i, key) in fo"
+              :class="classList.option(option)"
+              :key="key"
+              :data-pointed="isPointed(option)"
+              @mouseenter="setPointer(option)"
+              @click="handleOptionClick(option)"
+            >
+              <slot name="option" :option="option" :search="search">
+                <span>{{ option[label] }}</span>
+              </slot>
+            </li>
+          </ul>
 
-        <slot v-if="noOptions" name="nooptions">
-          <div :class="classList.noOptions" v-html="noOptionsText"></div>
-        </slot>
+          <slot v-if="noOptions" name="nooptions">
+            <div :class="classList.noOptions" v-html="noOptionsText"></div>
+          </slot>
 
-        <slot v-if="noResults" name="noresults">
-          <div :class="classList.noResults" v-html="noResultsText"></div>
-        </slot>
+          <slot v-if="noResults" name="noresults">
+            <div :class="classList.noResults" v-html="noResultsText"></div>
+          </slot>
 
-        <slot name="afterlist" :options="fo"></slot>
+          <slot name="afterlist" :options="fo"></slot>
+        </div>
+        <slot name="action"></slot>
       </div>
     </transition>
 
