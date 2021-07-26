@@ -68,6 +68,7 @@
 * CSS vars support
 * Tailwind & utility class support
 * Fully configurable
+* CSP compilant
 
 ## Demo
 
