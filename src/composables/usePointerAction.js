@@ -26,7 +26,7 @@ export default function usePointer (props, context, dep)
   }
 
   const setPointer = (option) => {
-    if (!showOptions.value || (option !== null && option.disabled)) {
+    if (option === undefined || (option !== null && option.disabled)) {
       return
     }
 
@@ -111,7 +111,7 @@ export default function usePointer (props, context, dep)
 
   watch(search, (val) => {
     if (searchable.value) {
-      if (val.length) {
+      if (val.length && showOptions.value) {
         setPointerFirst()
       } else {
         clearPointer()

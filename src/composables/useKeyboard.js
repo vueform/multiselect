@@ -2,19 +2,33 @@ import { toRefs } from 'composition-api'
 
 export default function useKeyboard (props, context, dep)
 {
-  const { mode, addTagOn, createTag, openDirection, searchable } = toRefs(props)
+  const {
+      mode, addTagOn, createTag, openDirection, searchable,
+      showOptions, valueProp, 
+    } = toRefs(props)
 
   // ============ DEPENDENCIES ============
 
   const iv = dep.iv
   const update = dep.update
   const search = dep.search
+  const setPointer = dep.setPointer
   const selectPointer = dep.selectPointer
   const backwardPointer = dep.backwardPointer
   const forwardPointer = dep.forwardPointer
   const blur = dep.blur
+  const fo = dep.fo
 
   // =============== METHODS ==============
+
+  // no export
+  const handleAddTag = () => {
+    if (mode.value === 'tags' && !showOptions.value && createTag.value && searchable.value) {
+      setPointer(fo.value[fo.value.map(o => o[valueProp.value]).indexOf(search.value)])
+    }
+
+    selectPointer()
+  }
 
   const handleKeydown = (e) => {
     switch (e.keyCode) {
@@ -42,8 +56,8 @@ export default function useKeyboard (props, context, dep)
         if (mode.value === 'tags' && addTagOn.value.indexOf('enter') === -1) {
           return
         }
-
-        selectPointer()
+        
+        handleAddTag()
         break
 
       // escape
@@ -62,18 +76,29 @@ export default function useKeyboard (props, context, dep)
         }
 
         e.preventDefault()
-        selectPointer()
+        
+        handleAddTag()
         break
 
       // up
       case 38:
         e.preventDefault()
+
+        if (!showOptions.value) {
+          return
+        }
+
         openDirection.value === 'top' ? forwardPointer() : backwardPointer()
         break
 
       // down
       case 40:
         e.preventDefault()
+
+        if (!showOptions.value) {
+          return
+        }
+
         openDirection.value === 'top' ? backwardPointer() : forwardPointer()
         break
 
@@ -87,7 +112,7 @@ export default function useKeyboard (props, context, dep)
           return
         }
 
-        selectPointer()
+        handleAddTag()
         e.preventDefault()
         break
       
@@ -101,7 +126,7 @@ export default function useKeyboard (props, context, dep)
           return
         }
 
-        selectPointer()
+        handleAddTag()
         e.preventDefault()
         break
     }

@@ -397,10 +397,12 @@
         iv: value.iv,
         update: data.update,
         search: search.search,
+        setPointer: pointerAction.setPointer,
         selectPointer: pointerAction.selectPointer,
         backwardPointer: pointerAction.backwardPointer,
         forwardPointer: pointerAction.forwardPointer,
         blur: multiselect.blur,
+        fo: options.fo,
       })
 
       const classes = useClasses(props, context, {
