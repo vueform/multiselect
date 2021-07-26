@@ -3,7 +3,7 @@ import { computed, toRefs } from 'composition-api'
 export default function useClasses (props, context, dependencies)
 {
   const refs = toRefs(props)
-  const { disabled, openDirection } = refs
+  const { disabled, openDirection, showOptions } = refs
 
   // ============ DEPENDENCIES ============
 
@@ -57,8 +57,8 @@ export default function useClasses (props, context, dependencies)
     return {
       container: [classes.container]
         .concat(disabled.value ? classes.containerDisabled : [])
-        .concat(isOpen.value && openDirection.value === 'top' ? classes.containerOpenTop : [])
-        .concat(isOpen.value && openDirection.value !== 'top' ? classes.containerOpen : [])
+        .concat(isOpen.value && openDirection.value === 'top' && showOptions.value ? classes.containerOpenTop : [])
+        .concat(isOpen.value && openDirection.value !== 'top' && showOptions.value ? classes.containerOpen : [])
         .concat(isActive.value ? classes.containerActive : []),
       spacer: classes.spacer,
       singleLabel: classes.singleLabel,
