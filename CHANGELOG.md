@@ -1,3 +1,19 @@
+## v2.1.0
+
+> `2021-07-26`
+
+### 🎉 Feature
+  - **BREAKING**: removed `:maxHeight` prop. Use `var(--ms-max-height)` instead.
+  - **BREAKING**: tags search layout has changed -> added a wrapper div and an extra span to calculate input width.
+  - Dropddown can be closed on caret click [#88](https://github.com/vueform/multiselect/issues/88).
+  - Added `:strict` prop to achieve accent-free search [#82](https://github.com/vueform/multiselect/issues/82).
+  - Removed inline styles, CSP compilance [#84](https://github.com/vueform/multiselect/issues/84).
+  - Background images are now customizable via `background-color` [#85](https://github.com/vueform/multiselect/issues/85).
+  
+### 🐞 Bug Fixes
+  - Free typed tags fix [#96](https://github.com/vueform/multiselect/issues/96).
+  - Tabindex becomes `-1` when `:disabled`.
+
 ## v2.0.1
 
 > `2021-06-27`
