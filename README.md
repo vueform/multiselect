@@ -274,7 +274,7 @@ The `Multiselect` component accepts a `classes` property which allows to overrid
   singleLabel: 'flex items-center h-full absolute left-0 top-0 pointer-events-none bg-transparent leading-snug pl-3.5',
   multipleLabel: 'flex items-center h-full absolute left-0 top-0 pointer-events-none bg-transparent leading-snug pl-3.5',
   search: 'w-full absolute inset-0 outline-none appearance-none box-border border-0 text-base font-sans bg-white rounded pl-3.5',
-  tags: 'flex-grow flex-shrink flex flex-wrap mt-1 pl-2',
+  tags: 'flex-grow flex-shrink flex flex-wrap items-center mt-1 pl-2',
   tag: 'bg-green-500 text-white text-sm font-semibold py-0.5 pl-2 rounded mr-1 mb-1 flex items-center whitespace-nowrap',
   tagDisabled: 'pr-2 !bg-gray-400 text-white',
   tagRemove: 'flex items-center justify-center p-1 mx-0.5 rounded-sm hover:bg-black hover:bg-opacity-10 group',
