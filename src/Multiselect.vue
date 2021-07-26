@@ -363,12 +363,9 @@
       const value = useValue(props, context)
       const pointer = usePointer(props, context)
       const dropdown = useDropdown(props, context)
+      const search = useSearch(props, context)
 
       const data = useData(props, context, {
-        iv: value.iv,
-      })
-
-      const search = useSearch(props, context, {
         iv: value.iv,
       })
 
