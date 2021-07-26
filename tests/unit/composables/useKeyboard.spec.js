@@ -2,6 +2,30 @@ import { createSelect, getValue, keydown, destroy } from 'unit-test-helpers'
 import { nextTick } from 'composition-api'
 
 describe('useKeyboard', () => {
+
+  describe('handleAddTag', () => {
+    it('should set pointer manually and select it when showOptions are false and should add tag', async () => {
+      let select = createSelect({
+        value: null,
+        options: [],
+        mode: 'tags',
+        searchable: true,
+        createTag: true,
+        showOptions: false,
+      })
+
+      select.vm.search = 'lorem'
+
+      select.vm.handleKeydown({keyCode: 13, preventDefault: () => {}})
+
+      expect(select.vm.pointer).toStrictEqual({value:'lorem',label:'lorem'})
+
+      await nextTick()
+
+      expect(getValue(select)).toStrictEqual(['lorem'])
+    })
+  })
+
   describe('handleKeydown', () => {
     describe('backspace', () => {
       it('should not do anything when single', async () => {
@@ -314,6 +338,19 @@ describe('useKeyboard', () => {
         keydown(select, 'up')
         expect(select.vm.pointer).toStrictEqual(select.vm.getOption(2))
       })
+
+      it('should not should move to next pointer when showOptions=false', async () => {
+        let select = createSelect({
+          value: 1,
+          options: [1,2,3],
+          showOptions: false,
+        })
+
+        select.vm.setPointer(select.vm.getOption(1))
+
+        keydown(select, 'up')
+        expect(select.vm.pointer).toStrictEqual(select.vm.getOption(1))
+      })
     })
 
     describe('down', () => {
@@ -340,6 +377,19 @@ describe('useKeyboard', () => {
 
         keydown(select, 'down')
         expect(select.vm.pointer).toStrictEqual(select.vm.getOption(2))
+      })
+
+      it('should not should move to next pointer when showOptions=false', async () => {
+        let select = createSelect({
+          value: 1,
+          options: [1,2,3],
+          showOptions: false,
+        })
+
+        select.vm.setPointer(select.vm.getOption(1))
+
+        keydown(select, 'down')
+        expect(select.vm.pointer).toStrictEqual(select.vm.getOption(1))
       })
     })
 

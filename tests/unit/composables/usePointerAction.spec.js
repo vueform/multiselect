@@ -29,14 +29,14 @@ describe('usePointer Action', () => {
       expect(select.vm.pointer).toStrictEqual(select.vm.getOption(2))
     })
 
-    it('should not set pointer if showOptions=false', () => {
+    it('should not set pointer if option is undefined', () => {
       let select = createSelect({
         value: null,
         options: [1,2,3],
         showOptions: false,
       })
 
-      select.vm.setPointer(select.vm.getOption(2))
+      select.vm.setPointer(select.vm.getOption(4))
 
       expect(select.vm.pointer).toStrictEqual(null)
     })
@@ -371,6 +371,21 @@ describe('usePointer Action', () => {
         value: null,
         options: ['v1','v2','v3'],
         searchable: false,
+      })
+
+      select.vm.search = 'v'
+
+      await nextTick()
+
+      expect(select.vm.pointer).toStrictEqual(null)
+    })
+
+    it('should not set first option as pointer when search changes, searchable=true, showOptions=false', async () => {
+      let select = createSelect({
+        value: null,
+        options: ['v1','v2','v3'],
+        searchable: true,
+        showOptions: false,
       })
 
       select.vm.search = 'v'

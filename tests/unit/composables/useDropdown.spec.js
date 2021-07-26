@@ -10,16 +10,6 @@ describe('useDropdown', () => {
     })
   })
 
-  describe('contentMaxHeight', () => {
-    it('should maxHeight with px', () => {
-      let select = createSelect({
-        maxHeight: 220
-      })
-
-      expect(select.vm.contentMaxHeight).toBe('220px')
-    })
-  })
-
   describe('open', () => {
     it('should set isOpen to true', () => {
       let select = createSelect()

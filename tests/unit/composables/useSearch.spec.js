@@ -20,28 +20,6 @@ describe('useSearch', () => {
     })
   })
 
-  describe('tagsSearchWidth', () => {
-    it('should be 100% if search and value are empty', () => {
-      let select = createSelect({
-        mode: 'tags',
-        options: [1,2,3],
-        value: [],
-      })
-
-      expect(select.vm.tagsSearchWidth).toBe('100%')
-    })
-
-    it('should be 1ch if search is but value isn\'t empty', () => {
-      let select = createSelect({
-        mode: 'tags',
-        options: [1,2,3],
-        value: [1],
-      })
-
-      expect(select.vm.tagsSearchWidth).toBe('1ch')
-    })
-  })
-
   describe('clearSearch', () => {
     it('should clear search', () => {
       let select = createSelect()

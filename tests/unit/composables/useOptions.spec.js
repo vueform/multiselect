@@ -93,7 +93,7 @@ describe('useOptions', () => {
       ])
     })
 
-    it('should contain only options with normalized trackBys that match normalized search', () => {
+    it('should contain only options with normalized trackBys that match normalized search, strict=true', () => {
       const select = createSelect({
         options: [
           { value: 0, name: 'Value0', },
@@ -108,6 +108,24 @@ describe('useOptions', () => {
 
       expect(select.vm.fo.length).toBe(1)
       expect(select.vm.fo[0].name).toBe('Value1')
+    })
+
+    it('should contain only options with normalized trackBys that match normalized search, strict=false', () => {
+      const select = createSelect({
+        options: [
+          { value: 0, name: 'Válué0', },
+          { value: 1, name: 'Válué1', },
+          { value: 2, name: 'Value2', }
+        ],
+        trackBy: 'name',
+        label: 'name',
+        strict: false,
+      })
+
+      select.vm.search = 'VALUE1'
+
+      expect(select.vm.fo.length).toBe(1)
+      expect(select.vm.fo[0].name).toBe('Válué1')
     })
 
     it('should hide selected tags when hideSelected is true', async () => {

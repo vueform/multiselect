@@ -101,7 +101,7 @@ describe('Multiselect', () => {
       expect(select.find('.multiselect-fake-input').exists()).toBe(false)
     })
 
-    it('should not render options if showOptions is false', async () => {
+    it('should not render dropdown if showOptions is false', async () => {
       let select = createSelect({
         options: ['value1', 'value2', 'value3'],
         valueProp: 'v',
@@ -110,12 +110,12 @@ describe('Multiselect', () => {
         attach: true,
       })
 
-      let options = findAll(select, '.multiselect-options').at(0)
+      let dropdown = findAll(select, '.multiselect-dropdown').at(0)
       
-      expect(options.element).not.toBeVisible()
+      expect(dropdown.element.classList.contains('is-hidden')).toBe(true)
     })
 
-    it('should render options if open', async () => {
+    it('should render dropdown if open', async () => {
       let select = createSelect({
         options: ['value1', 'value2', 'value3'],
         valueProp: 'v',
@@ -129,13 +129,13 @@ describe('Multiselect', () => {
       expect(options.at(0).html()).toContain('value1')
       expect(options.at(1).html()).toContain('value2')
       expect(options.at(2).html()).toContain('value3')
-      expect(select.find('.multiselect-options').element).not.toBeVisible()
+      expect(findAll(select, '.multiselect-dropdown').at(0).element.classList.contains('is-hidden')).toBe(true)
       
       select.vm.open()
 
       await nextTick()
 
-      expect(select.find('.multiselect-options').element).toBeVisible()
+      expect(findAll(select, '.multiselect-dropdown').at(0).element.classList.contains('is-hidden')).toBe(false)
 
       destroy(select)
     })
@@ -155,15 +155,6 @@ describe('Multiselect', () => {
         expect(options.length).toBe(2)
         expect(options.at(0).html()).toContain('value1')
         expect(options.at(1).html()).toContain('value2')
-    })
-
-    it('should dropdown have max height defined as maxHeight', () => {
-        let select = createSelect({
-          options: [1,2,3],
-          maxHeight: 300,
-        })
-
-        expect(select.find('.multiselect-dropdown').element.style.maxHeight).toBe('300px')
     })
 
     it('should set pointer to option on mouseenter', async () => {

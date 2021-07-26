@@ -141,4 +141,32 @@ describe('useMultiselect', () => {
       expect(select.vm.isActive).toBe(false)
     })
   })
+
+  describe('handleCaretClick', () => {
+    it('should deactivate and blur when isActive', () => {
+      let select = createSelect({
+        value: null,
+        options: [1,2,3],
+      })
+
+      select.vm.activate()
+
+      select.vm.handleCaretClick()
+
+      expect(select.vm.isOpen).toBe(false)
+      expect(select.vm.isActive).toBe(false)
+    })
+
+    it('should not deactivate and blur when not isActive', () => {
+      let select = createSelect({
+        value: null,
+        options: [1,2,3],
+      })
+
+      select.vm.handleCaretClick()
+
+      expect(select.vm.isOpen).toBe(false)
+      expect(select.vm.isActive).toBe(false)
+    })
+  })
 })
