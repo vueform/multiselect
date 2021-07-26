@@ -43,15 +43,20 @@
           </div>
         </slot>
     
-        <input    
-          v-if="searchable && !disabled"
-          :modelValue="search"
-          :value="search"
-          :class="classList.tagsSearch"
-          :style="{ width: tagsSearchWidth }"
-          @input="handleSearchInput"
-          ref="input"
-        />
+        <div :class="classList.tagsSearchWrapper">
+          <!-- Used for measuring search width -->
+          <span :class="classList.tagsSearchCopy">{{ search }}</span>
+
+          <!-- Actual search input -->
+          <input    
+            v-if="searchable && !disabled"
+            :modelValue="search"
+            :value="search"
+            :class="classList.tagsSearch"
+            @input="handleSearchInput"
+            ref="input"
+          />
+        </div>
       </div>
     </template>
 
@@ -100,9 +105,7 @@
     <!-- Options -->
     <transition v-if="!resolving || !clearOnSearch" name="multiselect" @after-leave="clearSearch">
       <div
-        v-show="isOpen && showOptions"
         :class="classList.dropdown"
-        :style="{ maxHeight: contentMaxHeight }"
       >
         <slot name="beforelist" :options="fo"></slot>
 
@@ -229,11 +232,6 @@
         type: Number,
         required: false,
         default: -1,
-      },
-      maxHeight: {
-        type: [String, Number],
-        required: false,
-        default: '10rem',
       },
       hideSelected: {
         type: Boolean,

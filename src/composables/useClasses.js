@@ -27,7 +27,9 @@ export default function useClasses (props, context, dependencies)
     tagDisabled: 'is-disabled',
     tagRemove: 'multiselect-tag-remove',
     tagRemoveIcon: 'multiselect-tag-remove-icon',
+    tagsSearchWrapper: 'multiselect-tags-search-wrapper',
     tagsSearch: 'multiselect-tags-search',
+    tagsSearchCopy: 'multiselect-tags-search-copy',
     placeholder: 'multiselect-placeholder',
     caret: 'multiselect-caret',
     caretOpen: 'is-open',
@@ -36,6 +38,7 @@ export default function useClasses (props, context, dependencies)
     spinner: 'multiselect-spinner',
     dropdown: 'multiselect-dropdown',
     dropdownTop: 'is-top',
+    dropdownHidden: 'is-hidden',
     options: 'multiselect-options',
     optionsTop: 'is-top',
     option: 'multiselect-option',
@@ -69,7 +72,9 @@ export default function useClasses (props, context, dependencies)
         .concat(disabled.value ? classes.tagDisabled : []),
       tagRemove: classes.tagRemove,
       tagRemoveIcon: classes.tagRemoveIcon,
+      tagsSearchWrapper: classes.tagsSearchWrapper,
       tagsSearch: classes.tagsSearch,
+      tagsSearchCopy: classes.tagsSearchWrapperCopy,
       placeholder: classes.placeholder,
       caret: [classes.caret]
         .concat(isOpen.value ? classes.caretOpen : []),
@@ -77,7 +82,8 @@ export default function useClasses (props, context, dependencies)
       clearIcon: classes.clearIcon,
       spinner: classes.spinner,
       dropdown: [classes.dropdown]
-        .concat(openDirection.value === 'top' ? classes.dropdownTop : []),
+        .concat(openDirection.value === 'top' ? classes.dropdownTop : [])
+        .concat(!isOpen.value || !showOptions.value ? classes.dropdownHidden : []),
       options: [classes.options]
         .concat(openDirection.value === 'top' ? classes.optionsTop : []),
       option: (o) => {

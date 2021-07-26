@@ -178,6 +178,7 @@ The following CSS variables can be used to customize multiselect when using `def
 --ms-ring-width: 3px;
 --ms-ring-color: #10B98130;
 --ms-placeholder-color: #9CA3AF;
+--ms-max-height: 10rem;
 
 --ms-spinner-color: #10B981;
 --ms-caret-color: #999999;
@@ -293,6 +294,7 @@ The `Multiselect` component accepts a `classes` property which allows to overrid
   spinner: 'bg-multiselect-spinner bg-center bg-no-repeat w-4 h-4 z-10 mr-3.5 animate-spin flex-shrink-0 flex-grow-0',
   dropdown: 'absolute -left-px -right-px bottom-0 transform translate-y-full border border-gray-300 -mt-px overflow-y-scroll z-50 bg-white flex flex-col rounded-b',
   dropdownTop: '-translate-y-full top-px bottom-auto flex-col-reverse rounded-b-none rounded-t',
+  dropdownHidden: 'hidden',
   options: 'flex flex-col p-0 m-0 list-none',
   optionsTop: 'flex-col-reverse',
   option: 'flex items-center justify-start box-border text-left cursor-pointer text-base leading-snug py-2 px-3',
@@ -363,7 +365,6 @@ Join our [Discord channel](https://discord.gg/WhX2nG6GTQ) or [open an issue](htt
 | **loading** | `boolean` | `false` | Whether a loading spinner should be shown. |
 | **id** | `string` | `'multiselect'` | The `id` of the multiselect container DOM. |
 | **caret** | `boolean` | `true` | Whether should display the caret symbol on the right. |
-| **maxHeight** | `string` | `10rem` | The maximum height of options list. |
 | **noOptionsText** | `string` | `'The list is empty'` | The text that should be displayed when options list is empty. |
 | **noResultsText** | `string` | `'No results found'` | The text that should be displayed when there are no search results. |
 | **openDirection** | `string` | `bottom` | Whether the option list should be displayed above or below the multiselect. Possible values: `top\|bottom` |

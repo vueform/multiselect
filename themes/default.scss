@@ -129,18 +129,35 @@
   height: 0.75rem;
 }
 
-.multiselect-tags-search {
+.multiselect-tags-search-wrapper {
+  display: inline-block;
+  position: relative;
+  margin: 0 var(--ms-tag-mx, 4px) var(--ms-tag-my, 4px);
+  flex-grow: 1;
+  flex-shrink: 1;
   height: 100%;
+}
+
+.multiselect-tags-search-copy {
+  visibility: hidden;
+  white-space: pre-wrap;
+  display: inline-block;
+  height: 1px;
+}
+
+.multiselect-tags-search {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
   border: 0;
   appearance: none;
   outline: none;
   padding: 0;
   font-size: inherit;
   font-family: inherit;
-  margin: 0 var(--ms-tag-mx, 4px) var(--ms-tag-my, 4px);
   box-sizing: border-box;
-  flex-grow: 1;
-  flex-shrink: 1;
 }
 
 .multiselect-spinner {
@@ -242,6 +259,10 @@
     flex-direction: column-reverse;
     border-radius: var(--ms-dropdown-radius, 4px) var(--ms-dropdown-radius, 4px) 0 0;
   }
+
+  &.is-hidden {
+    display: none;
+  }
 }
 
 .multiselect-options {
@@ -250,6 +271,7 @@
   list-style: none;
   display: flex;
   flex-direction: column;
+  max-height: var(--ms-max-height, 10rem);
 
   &.is-top {
     flex-direction: column-reverse;

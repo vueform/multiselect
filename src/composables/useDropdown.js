@@ -8,12 +8,6 @@ export default function useDropdown (props, context, dep)
 
   const isOpen = ref(false)
 
-  // ============== COMPUTED ==============
-
-  const contentMaxHeight = computed(() => {
-    return typeof maxHeight.value === 'number' ? `${maxHeight.value}px` : maxHeight.value
-  })
-
   // =============== METHODS ==============
 
   const open = () => {
@@ -36,7 +30,6 @@ export default function useDropdown (props, context, dep)
 
   return {
     isOpen,
-    contentMaxHeight,
     open,
     close,
   }
