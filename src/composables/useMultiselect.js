@@ -19,7 +19,7 @@ export default function useMultiselect (props, context, dep)
   // ============== COMPUTED ==============
 
   const tabindex = computed(() => {
-    return searchable.value ? -1 : 0
+    return searchable.value || disabled.value ? -1 : 0
   })
 
   // =============== METHODS ==============
