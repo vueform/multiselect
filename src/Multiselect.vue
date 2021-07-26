@@ -351,7 +351,12 @@
         type: Object,
         required: false,
         default: () => ({})
-      }
+      },
+      strict: {
+        type: Boolean,
+        required: false,
+        default: true,
+      },
     },
     setup(props, context)
     { 

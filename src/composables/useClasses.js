@@ -74,7 +74,7 @@ export default function useClasses (props, context, dependencies)
       tagRemoveIcon: classes.tagRemoveIcon,
       tagsSearchWrapper: classes.tagsSearchWrapper,
       tagsSearch: classes.tagsSearch,
-      tagsSearchCopy: classes.tagsSearchWrapperCopy,
+      tagsSearchCopy: classes.tagsSearchCopy,
       placeholder: classes.placeholder,
       caret: [classes.caret]
         .concat(isOpen.value ? classes.caretOpen : []),

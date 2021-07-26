@@ -10,7 +10,7 @@ export default function useOptions (props, context, dep)
     options, mode, trackBy, limit, hideSelected, createTag, label,
     appendNewTag, multipleLabel, object, loading, delay, resolveOnLoad,
     minChars, filterResults, clearOnSearch, clearOnSelect, valueProp,
-    canDeselect, max
+    canDeselect, max, strict,
   } = toRefs(props)
 
   // ============ DEPENDENCIES ============
@@ -73,7 +73,7 @@ export default function useOptions (props, context, dep)
 
     if (search.value && filterResults.value) {
       fo = fo.filter((option) => {
-        return normalize(option[trackBy.value]).indexOf(normalize(search.value)) !== -1
+        return normalize(option[trackBy.value], strict.value).indexOf(normalize(search.value, strict.value)) !== -1
       })
     }
 
