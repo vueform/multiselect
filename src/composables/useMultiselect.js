@@ -54,6 +54,13 @@ export default function useMultiselect (props, context, dep)
     close()
   }
 
+  const handleCaretClick = () => {
+    if (isActive.value) {
+      deactivate()
+      blur()
+    }
+  }
+
   return {
     multiselect,
     tabindex,
@@ -62,5 +69,6 @@ export default function useMultiselect (props, context, dep)
     handleFocus,
     activate,
     deactivate,
+    handleCaretClick,
   }
 }

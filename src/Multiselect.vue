@@ -99,7 +99,7 @@
 
     <!-- Caret -->
     <slot v-if="caret" name="caret">
-      <span :class="classList.caret"></span>
+      <span :class="classList.caret" @click="handleCaretClick"></span>
     </slot>
 
     <!-- Options -->

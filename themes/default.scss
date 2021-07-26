@@ -229,9 +229,11 @@
   z-index: 10;
   flex-shrink: 0;
   flex-grow: 0;
+  pointer-events: none;
 
   &.is-open {
     transform: rotate(180deg);
+    pointer-events: auto;
   }
 }
 
