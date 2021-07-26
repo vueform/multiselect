@@ -178,6 +178,11 @@ The following CSS variables can be used to customize multiselect when using `def
 --ms-ring-width: 3px;
 --ms-ring-color: #10B98130;
 --ms-placeholder-color: #9CA3AF;
+
+--ms-spinner-color: #10B981;
+--ms-caret-color: #999999;
+--ms-clear-color: #999999;
+--ms-clear-color-hover: #000000;
   
 --ms-tag-font-size: 0.875rem;
 --ms-tag-line-height: 1.25rem;
