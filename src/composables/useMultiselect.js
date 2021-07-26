@@ -55,10 +55,8 @@ export default function useMultiselect (props, context, dep)
   }
 
   const handleCaretClick = () => {
-    if (isActive.value) {
-      deactivate()
-      blur()
-    }
+    deactivate()
+    blur()
   }
 
   return {
