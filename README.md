@@ -162,6 +162,117 @@ After that make sure to change the imported module to Vue 2 version of Multisele
 import Multiselect from '@vueform/multiselect/dist/multiselect.vue2.js'
 ```
 
+## Support
+
+Join our [Discord channel](https://discord.gg/WhX2nG6GTQ) or [open an issue](https://github.com/vueform/multiselect/issues).
+
+## Basic props
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| **mode** | `string` | `single` | Possible values: `single\|multiple\|tags`. |
+| **options** | `array\|object\|function` | `[]` | List of options. Can be:<br>- an array (eg. `[1,2,3]`)<br>- an object (eg. `{a:1,b:2,c:3}`)<br>- an array of objects `[{value:1,label:'v1'},{value:2,label:'v2'},{value:3,label:'v3',disabled:true}]`<br>- a function returning a Promise (async function) with `query` input param. The promise should return options as an **object** or as an **array of objects**.<br>When an array of objects is provided it **must** have properties that equal to `:valueProp`'s, `:trackBy`'s and `:label`'s value. |
+| **required** | `boolean` | `false` | Whether the HTML5 required attribute should be used for multiselect (using an invisible fake input). |
+| **searchable** | `boolean` | `false` | Whether the options should be searchable. |
+| **valueProp** | `string` | `'value'` | If you provide an array of objects as options this property should be used as the value of the option. |
+| **trackBy** | `string` | `'label'` | The name of the property that should be searched when `searchable` is `true` and an array of objects are provided as `:options`. |
+| **label** | `string` | `'label'` | If you provide an array of objects as options the value this property will be displayed as selected option. |
+| **placeholder** | `string` | `null` | The text that should be displayed before any option is selected. |
+| **multipleLabel** | `function` |  | A function that returns the label to be displayed for selected options when using `multiple` mode. It receives `value` as an argument. By default it renders `1 option selected` and `[n] options selected` based on `value` length. |
+| **disabled** | `boolean` | `false` | Whether the input should be disabled for the user (API can still be used programmatically). |
+| **max** | `number` | `-1` | The maximum number of options that **can be selected** when using `multiple` or `tags` mode. If `-1` the number of options won't be limited. |
+| **limit** | `number` | `-1` | The maximum number of options that **should be displayed**. If `-1` the number of options won't be limited. |
+| **loading** | `boolean` | `false` | Whether a loading spinner should be shown. |
+| **id** | `string` | `'multiselect'` | The `id` of the multiselect container DOM. |
+| **caret** | `boolean` | `true` | Whether should display the caret symbol on the right. |
+| **noOptionsText** | `string` | `'The list is empty'` | The text that should be displayed when options list is empty. |
+| **noResultsText** | `string` | `'No results found'` | The text that should be displayed when there are no search results. |
+| **openDirection** | `string` | `bottom` | Whether the option list should be displayed above or below the multiselect. Possible values: `top\|bottom` |
+| **strict** | `boolean` | `true` | Whether should regard accents/diacritics in search. |
+| **classes** | `object` | | An object of class names that gets merged with the default values. Default: `{`<br>&nbsp;&nbsp;`container: 'multiselect',`<br>&nbsp;&nbsp;`containerDisabled: 'is-disabled',`<br>&nbsp;&nbsp;`containerOpen: 'is-open',`<br>&nbsp;&nbsp;`containerOpenTop: 'is-open-top',`<br>&nbsp;&nbsp;`containerActive: 'is-active',`<br>&nbsp;&nbsp;`singleLabel: 'multiselect-single-label',`<br>&nbsp;&nbsp;`multipleLabel: 'multiselect-multiple-label',`<br>&nbsp;&nbsp;`search: 'multiselect-search',`<br>&nbsp;&nbsp;`tags: 'multiselect-tags',`<br>&nbsp;&nbsp;`tag: 'multiselect-tag',`<br>&nbsp;&nbsp;`tagDisabled: 'is-disabled',`<br>&nbsp;&nbsp;`tagRemove: 'multiselect-tag-remove',`<br>&nbsp;&nbsp;`tagRemoveIcon: 'multiselect-tag-remove-icon',`<br>&nbsp;&nbsp;`tagsSearch: 'multiselect-tags-search',`<br>&nbsp;&nbsp;`placeholder: 'multiselect-placeholder',`<br>&nbsp;&nbsp;`caret: 'multiselect-caret',`<br>&nbsp;&nbsp;`caretOpen: 'is-open',`<br>&nbsp;&nbsp;`clear: 'multiselect-clear',`<br>&nbsp;&nbsp;`clearIcon: 'multiselect-clear-icon',`<br>&nbsp;&nbsp;`spinner: 'multiselect-spinner',`<br>&nbsp;&nbsp;`dropdown: 'multiselect-dropdown',`<br>&nbsp;&nbsp;`dropdownTop: 'is-top',`<br>&nbsp;&nbsp;`options: 'multiselect-options',`<br>&nbsp;&nbsp;`optionsTop: 'is-top',`<br>&nbsp;&nbsp;`option: 'multiselect-option',`<br>&nbsp;&nbsp;`optionPointed: 'is-pointed',`<br>&nbsp;&nbsp;`optionSelected: 'is-selected',`<br>&nbsp;&nbsp;`optionDisabled: 'is-disabled',`<br>&nbsp;&nbsp;`optionSelectedPointed: 'is-selected is-pointed',`<br>&nbsp;&nbsp;`optionSelectedDisabled: 'is-selected is-disabled',`<br>&nbsp;&nbsp;`noOptions: 'multiselect-no-options',`<br>&nbsp;&nbsp;`noResults: 'multiselect-no-results',`<br>&nbsp;&nbsp;`fakeInput: 'multiselect-fake-input',`<br>&nbsp;&nbsp;`spacer: 'multiselect-spacer'`<br>`}` |
+
+### Advanced Props
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| **canDeselect** | `boolean` | `true` | Whether a selected option can be deselected when using `single` mode. |
+| **canClear** | `boolean` | `true` | Whether option(s) can be cleared. |
+| **clearOnSearch** | `boolean` | `false` | Whether the option list should be cleared when a new character is typed before loading new options list, when using async options. |
+| **clearOnSelect** | `boolean` | `true` | Whether the option list should be cleared upon selecting an option when using async options. |
+| **delay** | `number` | `-1` | The delay in milliseconds that should occur between the last typed character and refreshing an async option list. If `-1` the option list will not refresh when the search query changes. If `0` it will refresh without delay. |
+| **filterResults** | `boolean` | `true` | Whether option list should be filtered by search query. This may be set to `false` if you are handling filtering manually when returning async options. |
+| **minChars** | `number` | `0` | The minimum number of characters that should be typed to refresh async option list. If `0` it will refresh even when the search field becomes empty. |
+| **resolveOnLoad** | `boolean` | `true` | Whether async options should be loaded initially (with an empty query). This should be `true` if you are planning to load non-object value(s) initially while using async options (to fetch matching objects for values). |
+| **appendNewTag** | `boolean` | `true` | Whether it should append new tag automatically to option list when using `tags` mode with `createTag`. If set to `false` you need to take care of appending a new tag to the provided `:options` list upon `@tag` event. |
+| **createTag** | `boolean` | `false` | Whether it should allow creating new tag based on search query when using `tags` mode. |
+| **addTagOn** | `array` | `['enter']` | The list of keys that creates a new tag while typing in the search field when having `createTag` enabled. Possible values: `enter\|space\|;\|,`. |
+| **hideSelected** | `boolean` | `true` | Whether selected options should be excluded from the option list when using `multiple` or `tags` mode. |
+| **showOptions** | `boolean` | `true` | Whether option list should be displayed. Can be used to create free-typed tags. |
+| **object** | `boolean` | `false` | Whether the value should be stored as an object.<br>If **false**:<br>`value: ['js','jsx','ts']`<br>If **true**:<br> `value: [`<br>&nbsp;&nbsp;`{value:'js',label:'Javascript'},`<br>&nbsp;&nbsp;`{value:'jsx',label:'JSX'},`<br>&nbsp;&nbsp;`{value:'ts',label:'Typescript'}`<br>`]` |
+| **nativeSupport** | `boolean` | `false` | Whether hidden input fields should be appended to achieve native data handling. |
+
+## API
+
+| Name | Params | Description |
+| --- | --- | --- |
+| **open** |  | Opens the options list and focuses the multiselect. |
+| **close** |  | Closes the options list and blurs the multiselect. |
+| **select** | `value`, `option` | Selects an option based on its value. |
+| **deselect** | `value`, `option` | Deselects an option based on its value. |
+| **remove** | `value`, `option` | Alias for `deselect`. |
+| **clear** |  | Deselects all selected options. |
+| **refreshOptions** | `callback` | Refreshes async options list. |
+
+
+To access API use `ref` on `Multiselect` component:
+``` html
+<Multiselect
+  v-model="value"
+  :options="options"
+  ref="multiselect"
+/>
+```
+
+``` js
+// eg:
+mounted() {
+  this.$refs.multiselect.open()
+}
+```
+
+
+## Events
+
+| Event | Attributes | Description |
+| --- | --- | --- |
+| **@change** | `value` | Emitted after the value is changed. |
+| **@close** |  | Emitted after closing the option list. |
+| **@deselect** | `option` | Emitted after an option is deselected or a tag is removed. |
+| **@open** | | Emitted after opening the option list. |
+| **@search-change** | `query` | Emitted after a character is typed. |
+| **@select** | `option` | Emitted after an option or tag is selected. |
+| **@tag** | `query` | Emitted after enter is hit when a new tag is being created. |
+| **@clear** |  | Emitted when the options are cleared. |
+
+## Slots
+
+| Slot | Attributes | Description |
+| --- | --- | --- |
+| **placeholder** | | Rendered as placeholder when the multiselect does not have value and `placeholder` prop is defined. |
+| **afterlist** | | Rendered after the options list. |
+| **beforelist** | | Rendered before the options list. |
+| **multiplelabel** | `values` | Rendered when using `multiple` mode and options are selected. By default it renders the return value of `multipleLabel` function. |
+| **nooptions** |  | Rendered when the options list is empty. By default renders `noOptionsText`. |
+| **noresults** |  | Rendered when there are no search results. By default renders `noResultsText`. |
+| **option** | `option, search` | Renders an option in options list. |
+| **singlelabel** | `value` | Rendered when using `single` mode and an option is selected. By default it renders the `:label` if the selected option. |
+| **tag** | `option, handleTagRemove, disabled` | Renders a tag when using `tags` mode. When `disabled` the remove icon should not be displayed. The `handleTagRemove` prop should be used to trigger the removal of the tag. |
+| **caret** | | Renders a small triangle on the right side of the multiselect. |
+| **clear** | | Renders a remove icon if the multiselect has any value. |
+| **spinner** | | Renders a loader icon when async options are being fetched. |
+
+> Note: we don't use camelCase because they are [normalized back to lowercase](https://github.com/vuejs/vue/issues/9449#issuecomment-461170017) when written in DOM.
+
 ## Styling with CSS vars
 
 The following CSS variables can be used to customize multiselect when using `default.css`:
@@ -344,117 +455,6 @@ module.exports = {
 }
 
 ```
-
-## Support
-
-Join our [Discord channel](https://discord.gg/WhX2nG6GTQ) or [open an issue](https://github.com/vueform/multiselect/issues).
-
-## Basic props
-
-| Name | Type | Default | Description |
-| --- | --- | --- | --- |
-| **mode** | `string` | `single` | Possible values: `single\|multiple\|tags`. |
-| **options** | `array\|object\|function` | `[]` | List of options. Can be:<br>- an array (eg. `[1,2,3]`)<br>- an object (eg. `{a:1,b:2,c:3}`)<br>- an array of objects `[{value:1,label:'v1'},{value:2,label:'v2'},{value:3,label:'v3',disabled:true}]`<br>- a function returning a Promise (async function) with `query` input param. The promise should return options as an **object** or as an **array of objects**.<br>When an array of objects is provided it **must** have properties that equal to `:valueProp`'s, `:trackBy`'s and `:label`'s value. |
-| **required** | `boolean` | `false` | Whether the HTML5 required attribute should be used for multiselect (using an invisible fake input). |
-| **searchable** | `boolean` | `false` | Whether the options should be searchable. |
-| **valueProp** | `string` | `'value'` | If you provide an array of objects as options this property should be used as the value of the option. |
-| **trackBy** | `string` | `'label'` | The name of the property that should be searched when `searchable` is `true` and an array of objects are provided as `:options`. |
-| **label** | `string` | `'label'` | If you provide an array of objects as options the value this property will be displayed as selected option. |
-| **placeholder** | `string` | `null` | The text that should be displayed before any option is selected. |
-| **multipleLabel** | `function` |  | A function that returns the label to be displayed for selected options when using `multiple` mode. It receives `value` as an argument. By default it renders `1 option selected` and `[n] options selected` based on `value` length. |
-| **disabled** | `boolean` | `false` | Whether the input should be disabled for the user (API can still be used programmatically). |
-| **max** | `number` | `-1` | The maximum number of options that **can be selected** when using `multiple` or `tags` mode. If `-1` the number of options won't be limited. |
-| **limit** | `number` | `-1` | The maximum number of options that **should be displayed**. If `-1` the number of options won't be limited. |
-| **loading** | `boolean` | `false` | Whether a loading spinner should be shown. |
-| **id** | `string` | `'multiselect'` | The `id` of the multiselect container DOM. |
-| **caret** | `boolean` | `true` | Whether should display the caret symbol on the right. |
-| **noOptionsText** | `string` | `'The list is empty'` | The text that should be displayed when options list is empty. |
-| **noResultsText** | `string` | `'No results found'` | The text that should be displayed when there are no search results. |
-| **openDirection** | `string` | `bottom` | Whether the option list should be displayed above or below the multiselect. Possible values: `top\|bottom` |
-| **strict** | `boolean` | `true` | Whether should regard accents/diacritics in search. |
-| **classes** | `object` | | An object of class names that gets merged with the default values. Default: `{`<br>&nbsp;&nbsp;`container: 'multiselect',`<br>&nbsp;&nbsp;`containerDisabled: 'is-disabled',`<br>&nbsp;&nbsp;`containerOpen: 'is-open',`<br>&nbsp;&nbsp;`containerOpenTop: 'is-open-top',`<br>&nbsp;&nbsp;`containerActive: 'is-active',`<br>&nbsp;&nbsp;`singleLabel: 'multiselect-single-label',`<br>&nbsp;&nbsp;`multipleLabel: 'multiselect-multiple-label',`<br>&nbsp;&nbsp;`search: 'multiselect-search',`<br>&nbsp;&nbsp;`tags: 'multiselect-tags',`<br>&nbsp;&nbsp;`tag: 'multiselect-tag',`<br>&nbsp;&nbsp;`tagDisabled: 'is-disabled',`<br>&nbsp;&nbsp;`tagRemove: 'multiselect-tag-remove',`<br>&nbsp;&nbsp;`tagRemoveIcon: 'multiselect-tag-remove-icon',`<br>&nbsp;&nbsp;`tagsSearch: 'multiselect-tags-search',`<br>&nbsp;&nbsp;`placeholder: 'multiselect-placeholder',`<br>&nbsp;&nbsp;`caret: 'multiselect-caret',`<br>&nbsp;&nbsp;`caretOpen: 'is-open',`<br>&nbsp;&nbsp;`clear: 'multiselect-clear',`<br>&nbsp;&nbsp;`clearIcon: 'multiselect-clear-icon',`<br>&nbsp;&nbsp;`spinner: 'multiselect-spinner',`<br>&nbsp;&nbsp;`dropdown: 'multiselect-dropdown',`<br>&nbsp;&nbsp;`dropdownTop: 'is-top',`<br>&nbsp;&nbsp;`options: 'multiselect-options',`<br>&nbsp;&nbsp;`optionsTop: 'is-top',`<br>&nbsp;&nbsp;`option: 'multiselect-option',`<br>&nbsp;&nbsp;`optionPointed: 'is-pointed',`<br>&nbsp;&nbsp;`optionSelected: 'is-selected',`<br>&nbsp;&nbsp;`optionDisabled: 'is-disabled',`<br>&nbsp;&nbsp;`optionSelectedPointed: 'is-selected is-pointed',`<br>&nbsp;&nbsp;`optionSelectedDisabled: 'is-selected is-disabled',`<br>&nbsp;&nbsp;`noOptions: 'multiselect-no-options',`<br>&nbsp;&nbsp;`noResults: 'multiselect-no-results',`<br>&nbsp;&nbsp;`fakeInput: 'multiselect-fake-input',`<br>&nbsp;&nbsp;`spacer: 'multiselect-spacer'`<br>`}` |
-
-### Advanced Props
-
-| Name | Type | Default | Description |
-| --- | --- | --- | --- |
-| **canDeselect** | `boolean` | `true` | Whether a selected option can be deselected when using `single` mode. |
-| **canClear** | `boolean` | `true` | Whether option(s) can be cleared. |
-| **clearOnSearch** | `boolean` | `false` | Whether the option list should be cleared when a new character is typed before loading new options list, when using async options. |
-| **clearOnSelect** | `boolean` | `true` | Whether the option list should be cleared upon selecting an option when using async options. |
-| **delay** | `number` | `-1` | The delay in milliseconds that should occur between the last typed character and refreshing an async option list. If `-1` the option list will not refresh when the search query changes. If `0` it will refresh without delay. |
-| **filterResults** | `boolean` | `true` | Whether option list should be filtered by search query. This may be set to `false` if you are handling filtering manually when returning async options. |
-| **minChars** | `number` | `0` | The minimum number of characters that should be typed to refresh async option list. If `0` it will refresh even when the search field becomes empty. |
-| **resolveOnLoad** | `boolean` | `true` | Whether async options should be loaded initially (with an empty query). This should be `true` if you are planning to load non-object value(s) initially while using async options (to fetch matching objects for values). |
-| **appendNewTag** | `boolean` | `true` | Whether it should append new tag automatically to option list when using `tags` mode with `createTag`. If set to `false` you need to take care of appending a new tag to the provided `:options` list upon `@tag` event. |
-| **createTag** | `boolean` | `false` | Whether it should allow creating new tag based on search query when using `tags` mode. |
-| **addTagOn** | `array` | `['enter']` | The list of keys that creates a new tag while typing in the search field when having `createTag` enabled. Possible values: `enter\|space\|;\|,`. |
-| **hideSelected** | `boolean` | `true` | Whether selected options should be excluded from the option list when using `multiple` or `tags` mode. |
-| **showOptions** | `boolean` | `true` | Whether option list should be displayed. Can be used to create free-typed tags. |
-| **object** | `boolean` | `false` | Whether the value should be stored as an object.<br>If **false**:<br>`value: ['js','jsx','ts']`<br>If **true**:<br> `value: [`<br>&nbsp;&nbsp;`{value:'js',label:'Javascript'},`<br>&nbsp;&nbsp;`{value:'jsx',label:'JSX'},`<br>&nbsp;&nbsp;`{value:'ts',label:'Typescript'}`<br>`]` |
-| **nativeSupport** | `boolean` | `false` | Whether hidden input fields should be appended to achieve native data handling. |
-
-## API
-
-| Name | Params | Description |
-| --- | --- | --- |
-| **open** |  | Opens the options list and focuses the multiselect. |
-| **close** |  | Closes the options list and blurs the multiselect. |
-| **select** | `value`, `option` | Selects an option based on its value. |
-| **deselect** | `value`, `option` | Deselects an option based on its value. |
-| **remove** | `value`, `option` | Alias for `deselect`. |
-| **clear** |  | Deselects all selected options. |
-| **refreshOptions** | `callback` | Refreshes async options list. |
-
-
-To access API use `ref` on `Multiselect` component:
-``` html
-<Multiselect
-  v-model="value"
-  :options="options"
-  ref="multiselect"
-/>
-```
-
-``` js
-// eg:
-mounted() {
-  this.$refs.multiselect.open()
-}
-```
-
-
-## Events
-
-| Event | Attributes | Description |
-| --- | --- | --- |
-| **@change** | `value` | Emitted after the value is changed. |
-| **@close** |  | Emitted after closing the option list. |
-| **@deselect** | `option` | Emitted after an option is deselected or a tag is removed. |
-| **@open** | | Emitted after opening the option list. |
-| **@search-change** | `query` | Emitted after a character is typed. |
-| **@select** | `option` | Emitted after an option or tag is selected. |
-| **@tag** | `query` | Emitted after enter is hit when a new tag is being created. |
-| **@clear** |  | Emitted when the options are cleared. |
-
-## Slots
-
-| Slot | Attributes | Description |
-| --- | --- | --- |
-| **placeholder** | | Rendered as placeholder when the multiselect does not have value and `placeholder` prop is defined. |
-| **afterlist** | | Rendered after the options list. |
-| **beforelist** | | Rendered before the options list. |
-| **multiplelabel** | `values` | Rendered when using `multiple` mode and options are selected. By default it renders the return value of `multipleLabel` function. |
-| **nooptions** |  | Rendered when the options list is empty. By default renders `noOptionsText`. |
-| **noresults** |  | Rendered when there are no search results. By default renders `noResultsText`. |
-| **option** | `option, search` | Renders an option in options list. |
-| **singlelabel** | `value` | Rendered when using `single` mode and an option is selected. By default it renders the `:label` if the selected option. |
-| **tag** | `option, handleTagRemove, disabled` | Renders a tag when using `tags` mode. When `disabled` the remove icon should not be displayed. The `handleTagRemove` prop should be used to trigger the removal of the tag. |
-| **caret** | | Renders a small triangle on the right side of the multiselect. |
-| **clear** | | Renders a remove icon if the multiselect has any value. |
-| **spinner** | | Renders a loader icon when async options are being fetched. |
-
-> Note: we don't use camelCase because they are [normalized back to lowercase](https://github.com/vuejs/vue/issues/9449#issuecomment-461170017) when written in DOM.
 
 ## Examples
 
