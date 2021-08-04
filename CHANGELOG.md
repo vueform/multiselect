@@ -3,6 +3,7 @@
 > `2021-07-26`
 
 ### 🎉 Feature
+  - **BREAKING**: `dropdown` class now has `dropdownHidden` when it is closed instead of using `v-show` (requires using 2.1.0's `themes/default.css`)
   - **BREAKING**: removed `:maxHeight` prop. Use `var(--ms-max-height)` instead.
   - **BREAKING**: tags search layout has changed -> added a wrapper div and an extra span to calculate input width.
   - Dropddown can be closed on caret click [#88](https://github.com/vueform/multiselect/issues/88).
