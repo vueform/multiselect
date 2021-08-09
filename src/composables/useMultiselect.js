@@ -49,7 +49,7 @@ export default function useMultiselect (props, context, dep)
     open()
   }
 
-  const deactivate = async () => {
+  const deactivate = () => {
     isActive.value = false
 
     setTimeout(() => {
