@@ -31,7 +31,7 @@
           :handleTagRemove="handleTagRemove"
           :disabled="disabled"
         >
-          <div :class="classList.tag" :key="key">
+          <span :class="classList.tag" :key="key">
             {{ option[label] }}
             <span
               v-if="!disabled"
@@ -40,7 +40,7 @@
             >
               <span :class="classList.tagRemoveIcon"></span>
             </span>
-          </div>
+          </span>
         </slot>
     
         <div :class="classList.tagsSearchWrapper">
@@ -103,38 +103,37 @@
     </slot>
 
     <!-- Options -->
-    <transition v-if="!resolving || !clearOnSearch" name="multiselect" @after-leave="clearSearch">
-      <div
-        :class="classList.dropdown"
-      >
-        <slot name="beforelist" :options="fo"></slot>
+    <div
+      :class="classList.dropdown"
+      tabindex="-1"
+    >
+      <slot name="beforelist" :options="fo"></slot>
 
-        <ul :class="classList.options">
-          <li
-            v-for="(option, i, key) in fo"
-            :class="classList.option(option)"
-            :key="key"
-            :data-pointed="isPointed(option)"
-            @mouseenter="setPointer(option)"
-            @click="handleOptionClick(option)"
-          >
-            <slot name="option" :option="option" :search="search">
-              <span>{{ option[label] }}</span>
-            </slot>
-          </li>
-        </ul>
+      <ul :class="classList.options">
+        <li
+          v-for="(option, i, key) in fo"
+          :class="classList.option(option)"
+          :key="key"
+          :data-pointed="isPointed(option)"
+          @mouseenter="setPointer(option)"
+          @click="handleOptionClick(option)"
+        >
+          <slot name="option" :option="option" :search="search">
+            <span>{{ option[label] }}</span>
+          </slot>
+        </li>
+      </ul>
 
-        <slot v-if="noOptions" name="nooptions">
-          <div :class="classList.noOptions" v-html="noOptionsText"></div>
-        </slot>
+      <slot v-if="noOptions" name="nooptions">
+        <div :class="classList.noOptions" v-html="noOptionsText"></div>
+      </slot>
 
-        <slot v-if="noResults" name="noresults">
-          <div :class="classList.noResults" v-html="noResultsText"></div>
-        </slot>
+      <slot v-if="noResults" name="noresults">
+        <div :class="classList.noResults" v-html="noResultsText"></div>
+      </slot>
 
-        <slot name="afterlist" :options="fo"></slot>
-      </div>
-    </transition>
+      <slot name="afterlist" :options="fo"></slot>
+    </div>
 
     <!-- Hacky input element to show HTML5 required warning -->
     <input v-if="required" :class="classList.fakeInput" tabindex="-1" :value="textValue" required/>
@@ -357,6 +356,11 @@
         required: false,
         default: true,
       },
+      closeOnSelect: {
+        type: Boolean,
+        required: false,
+        default: true,
+      },
     },
     setup(props, context)
     { 
@@ -373,6 +377,7 @@
         input: search.input,
         open: dropdown.open,
         close: dropdown.close,
+        clearSearch: search.clearSearch,
       })
 
       const options = useOptions(props, context, {
@@ -383,6 +388,7 @@
         update: data.update,
         pointer: pointer.pointer,
         blur: multiselect.blur,
+        deactivate: multiselect.deactivate,
       })
 
       const pointerAction = usePointerAction(props, context, {
