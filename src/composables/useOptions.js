@@ -244,6 +244,7 @@ export default function useOptions (props, context, dep)
 
         blur()
         select(option)
+        clearSearch()
         break
 
       case 'multiple':
