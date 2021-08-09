@@ -1,8 +1,8 @@
-import { ref, toRefs, computed } from 'composition-api'
+import { ref, toRefs } from 'composition-api'
 
 export default function useDropdown (props, context, dep)
 {
-  const { maxHeight, disabled } = toRefs(props)
+  const { disabled } = toRefs(props)
 
   // ================ DATA ================
 
