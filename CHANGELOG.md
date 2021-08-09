@@ -1,3 +1,10 @@
+## v2.1.2
+
+> `2021-08-09`
+
+### 🐞 Bug Fixes
+  - Removed async/await.
+
 ## v2.1.1
 
 > `2021-08-09`
@@ -8,6 +15,7 @@
 ### 🐞 Bug Fixes
   - Clear search on single option select [#99](https://github.com/vueform/multiselect/issues/99) and [#106](https://github.com/vueform/multiselect/issues/106).
   - No blur when tags are being removed.
+
 
 ## v2.1.0
 
