@@ -9,6 +9,7 @@ export default function useMultiselect (props, context, dep)
   const input = dep.input
   const open = dep.open
   const close = dep.close
+  const clearSearch = dep.clearSearch
 
   // ================ DATA ================
 
@@ -48,10 +49,15 @@ export default function useMultiselect (props, context, dep)
     open()
   }
 
-  const deactivate = () => {
+  const deactivate = async () => {
     isActive.value = false
 
-    close()
+    setTimeout(() => {
+      if (!isActive.value) {
+        close()
+        clearSearch()
+      }
+    }, 1)
   }
 
   const handleCaretClick = () => {
