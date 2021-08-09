@@ -1,4 +1,4 @@
-import { ref, toRefs, computed, watch } from 'composition-api'
+import { ref, toRefs, computed, watch, nextTick } from 'composition-api'
 import normalize from './../utils/normalize'
 import isObject from './../utils/isObject'
 import isNullish from './../utils/isNullish'
@@ -10,7 +10,7 @@ export default function useOptions (props, context, dep)
     options, mode, trackBy, limit, hideSelected, createTag, label,
     appendNewTag, multipleLabel, object, loading, delay, resolveOnLoad,
     minChars, filterResults, clearOnSearch, clearOnSelect, valueProp,
-    canDeselect, max, strict,
+    canDeselect, max, strict, closeOnSelect,
   } = toRefs(props)
 
   // ============ DEPENDENCIES ============
@@ -22,6 +22,7 @@ export default function useOptions (props, context, dep)
   const update = dep.update
   const pointer = dep.pointer
   const blur = dep.blur
+  const deactivate = dep.deactivate
 
   // ================ DATA ================
 
@@ -244,7 +245,6 @@ export default function useOptions (props, context, dep)
 
         blur()
         select(option)
-        clearSearch()
         break
 
       case 'multiple':
@@ -290,6 +290,10 @@ export default function useOptions (props, context, dep)
 
         select(option)
         break
+    }
+
+    if (closeOnSelect.value) {
+      deactivate()
     }
   }
 
