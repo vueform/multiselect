@@ -1,5 +1,7 @@
 import { createSelect, destroy } from 'unit-test-helpers'
 
+jest.useFakeTimers()
+
 describe('useMultiselect', () => {
   describe('multiselect', () => {
     it('should be the ref of container DOM', () => {
@@ -41,6 +43,7 @@ describe('useMultiselect', () => {
       expect(select.vm.isOpen).toBe(true)
 
       select.vm.blur()
+      jest.advanceTimersByTime(1)
       expect(select.vm.isOpen).toBe(false)
 
       destroy(select)
@@ -58,6 +61,7 @@ describe('useMultiselect', () => {
       expect(select.vm.isOpen).toBe(true)
 
       select.vm.blur()
+      jest.advanceTimersByTime(1)
       expect(select.vm.isOpen).toBe(false)
 
       destroy(select)
@@ -137,8 +141,25 @@ describe('useMultiselect', () => {
       select.vm.activate()
       select.vm.deactivate()
 
+      jest.advanceTimersByTime(1)
       expect(select.vm.isOpen).toBe(false)
       expect(select.vm.isActive).toBe(false)
+    })
+
+    it('should not close and clearSearch if isActivate is true in 1 tick', () => {
+      let select = createSelect({
+        value: null,
+        options: [1,2,3],
+      })
+
+      select.vm.activate()
+      select.vm.deactivate()
+
+      select.vm.activate()
+
+      jest.advanceTimersByTime(1)
+      expect(select.vm.isOpen).toBe(true)
+      expect(select.vm.isActive).toBe(true)
     })
   })
 
@@ -153,6 +174,7 @@ describe('useMultiselect', () => {
 
       select.vm.handleCaretClick()
 
+      jest.advanceTimersByTime(1)
       expect(select.vm.isOpen).toBe(false)
       expect(select.vm.isActive).toBe(false)
     })

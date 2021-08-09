@@ -1,6 +1,8 @@
 import { createSelect, getValue, keydown, destroy } from 'unit-test-helpers'
 import { nextTick } from 'composition-api'
 
+jest.useFakeTimers()
+
 describe('useKeyboard', () => {
 
   describe('handleAddTag', () => {
@@ -171,6 +173,7 @@ describe('useKeyboard', () => {
         await nextTick()
 
         keydown(select, 'esc')
+        jest.advanceTimersByTime(1)
         expect(select.vm.isOpen).toBe(false)
 
         destroy(select)

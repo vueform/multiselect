@@ -1279,6 +1279,38 @@ describe('useOptions', () => {
         { v: 3, label: 3 },
       ])
     })
+
+    it('should deactivate on select when closeOnSelect=true', async () => {
+      let select = createSelect({
+        value: null,
+        options: [1,2,3],
+        closeOnSelect: true,
+      })
+
+      select.vm.open()
+      expect(select.vm.isOpen).toBe(true)
+
+      select.vm.handleOptionClick(select.vm.getOption(2))
+
+      jest.advanceTimersByTime(1)
+      expect(select.vm.isOpen).toBe(false)
+    })
+
+    it('should not deactivate on select when closeOnSelect=false', async () => {
+      let select = createSelect({
+        value: null,
+        options: [1,2,3],
+        closeOnSelect: false,
+      })
+
+      select.vm.open()
+      expect(select.vm.isOpen).toBe(true)
+
+      select.vm.handleOptionClick(select.vm.getOption(2))
+
+      jest.advanceTimersByTime(1)
+      expect(select.vm.isOpen).toBe(true)
+    })
   })
 
   describe('getOption', () => {
