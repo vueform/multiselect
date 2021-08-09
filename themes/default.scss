@@ -255,6 +255,7 @@
   display: flex;
   flex-direction: column;
   border-radius: 0 0 var(--ms-dropdown-radius, 4px) var(--ms-dropdown-radius, 4px);
+  outline: none;
 
   &.is-top {
     transform: translateY(-100%);
