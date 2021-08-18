@@ -308,7 +308,7 @@ export default function useOptions (props, context, dep)
 
   // no export
   const shouldHideOption = (option) => {
-    return mode.value === 'tags' && hideSelected.value && isSelected(option)
+    return hideSelected.value && isSelected(option)
   }
 
   // no export
