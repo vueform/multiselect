@@ -11,10 +11,11 @@
   >
     <!-- Search -->
     <template v-if="mode !== 'tags' && searchable && !disabled">
-      <input    
+      <input
         :modelValue="search"
         :value="search"
         :class="classList.search"
+        :autocomplete="autocomplete"
         @input="handleSearchInput"
         ref="input"
       />
@@ -53,6 +54,7 @@
             :modelValue="search"
             :value="search"
             :class="classList.tagsSearch"
+            :autocomplete="autocomplete"
             @input="handleSearchInput"
             ref="input"
           />
@@ -360,6 +362,10 @@
         type: Boolean,
         required: false,
         default: true,
+      },
+      autocomplete: {
+        type: String,
+        required: false,
       },
     },
     setup(props, context)
