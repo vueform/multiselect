@@ -425,7 +425,7 @@ The `Multiselect` component accepts a `classes` property which allows to overrid
 }" />
 ```
 
-Certain classes has different states which are merged to the base class when the state is active. For exmple `dropdown` will be merged with `dropdownTop` when `open-direction: 'top'` resulting in the following classes:
+Certain classes has different states which are merged to the base class when the state is active. For example `dropdown` will be merged with `dropdownTop` when `open-direction: 'top'` resulting in the following classes:
 ```absolute -left-px -right-px bottom-0 transform translate-y-full border border-gray-300 -mt-px overflow-y-scroll z-50 bg-white flex flex-col rounded-b -translate-y-full top-px bottom-auto flex-col-reverse rounded-b-none rounded-t```
 
 The same is true for `container`, `tag`, `options` and `option` classes.
