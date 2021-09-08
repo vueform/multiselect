@@ -18,30 +18,6 @@ describe('usePointer Action', () => {
     })
   })
 
-  describe('setPointer', () => {
-    it('should set pointer', () => {
-      let select = createSelect({
-        options: [1,2,3]
-      })
-
-      select.vm.setPointer(select.vm.getOption(2))
-
-      expect(select.vm.pointer).toStrictEqual(select.vm.getOption(2))
-    })
-
-    it('should not set pointer if option is undefined', () => {
-      let select = createSelect({
-        value: null,
-        options: [1,2,3],
-        showOptions: false,
-      })
-
-      select.vm.setPointer(select.vm.getOption(4))
-
-      expect(select.vm.pointer).toStrictEqual(null)
-    })
-  })
-
   describe('setPointerFirst', () => {
     it('should set first option as pointer', () => {
       let select = createSelect({
@@ -59,19 +35,6 @@ describe('usePointer Action', () => {
       select.vm.setPointerFirst()
 
       expect(select.vm.pointer).toStrictEqual(null)
-    })
-  })
-
-  describe('clearPointer', () => {
-    it('should set pointer to null', () => {
-      let select = createSelect({
-        options: [1,2,3],
-      })
-
-      select.vm.pointer = select.vm.getOption(1)
-      select.vm.clearPointer()
-
-      expect(select.vm.pointer).toBe(null)
     })
   })
 
@@ -134,7 +97,7 @@ describe('usePointer Action', () => {
   })
 
   describe('forwardPointer', () => {
-    it('should set first enabled option if pointer is null', async () => {
+    it('should set first enabled option if pointer is null and groups=false', async () => {
       let select = createSelect({
         options: [
           { value: 0, label: 0, disabled: true },
@@ -152,6 +115,29 @@ describe('usePointer Action', () => {
       expect(select.vm.pointer).toStrictEqual(select.vm.getOption(1))
 
       destroy(select)
+    })
+
+    it('should set first enabled group if pointer is null and groups=true', async () => {
+      let select = createSelect({
+        value: null,
+        options: [
+          {
+            label: 'First',
+            options: [1,2,3],
+          },
+          {
+            label: 'Second',
+            options: [4,5,6],
+          },
+        ],
+        groups: true
+      })
+
+      select.vm.forwardPointer()
+
+      await nextTick()
+
+      expect(select.vm.pointer).toStrictEqual(select.vm.fg[0])
     })
 
     it('should not do anything if has no enabled options and pointer is null', async () => {
@@ -240,10 +226,213 @@ describe('usePointer Action', () => {
 
       destroy(select)
     })
+
+    it('should set first enabled option of the group if pointer is group and has enabled option groups=true', async () => {
+      let select = createSelect({
+        options: [
+          {
+            label: 'First',
+            options: [
+              { value: 1, label: 1, disabled: true },
+              { value: 2, label: 2, disabled: false },
+              { value: 3, label: 3, disabled: false },
+            ],
+          },
+          {
+            label: 'Second',
+            options: [4,5,6],
+          },
+        ],
+        groups: true
+      })
+
+      select.vm.pointer = select.vm.fg[0]
+      select.vm.forwardPointer()
+
+      await nextTick()
+
+      expect(select.vm.pointer).toStrictEqual(select.vm.getOption(2))
+    })
+
+    it('should set next enabled group label if pointer is group and has not enabled options groups=true', async () => {
+      let select = createSelect({
+        options: [
+          {
+            label: 'First',
+            options: [
+              { value: 1, label: 1, disabled: true }
+            ],
+          },
+          {
+            label: 'Second',
+            disabled: true,
+            options: [4,5,6],
+          },
+          {
+            label: 'Third',
+            options: [7,8,9],
+          },
+        ],
+        groups: true
+      })
+
+      select.vm.pointer = select.vm.fg[0]
+      select.vm.forwardPointer()
+
+      await nextTick()
+
+      expect(select.vm.pointer).toStrictEqual(select.vm.fg[2])
+    })
+
+    it('should set first enabled group label if pointer is group and has not enabled options and has no enabled next group groups=true', async () => {
+      let select = createSelect({
+        options: [
+          {
+            label: 'First',
+            options: [
+              { value: 1, label: 1, disabled: true }
+            ],
+          },
+          {
+            label: 'Second',
+            options: [
+              { value: 4, label: 4, disabled: true },
+              { value: 5, label: 5, disabled: true },
+              { value: 6, label: 6, disabled: true },
+            ],
+          },
+          {
+            label: 'Third',
+            disabled: true,
+            options: [7,8,9],
+          },
+        ],
+        groups: true
+      })
+
+      select.vm.pointer = select.vm.fg[1]
+      select.vm.forwardPointer()
+
+      await nextTick()
+
+      expect(select.vm.pointer).toStrictEqual(select.vm.fg[0])
+    })
+
+    it('should set next enabled option in group groups=true', async () => {
+      let select = createSelect({
+        options: [
+          {
+            label: 'First',
+            options: [
+              { value: 1, label: 1, disabled: false },
+              { value: 2, label: 2, disabled: true },
+              { value: 3, label: 3, disabled: false },
+            ],
+          },
+          {
+            label: 'Second',
+            options: [
+              { value: 4, label: 4, },
+              { value: 5, label: 5, },
+              { value: 6, label: 6, },
+            ],
+          },
+        ],
+        groups: true
+      })
+
+      select.vm.pointer = select.vm.getOption(1)
+      select.vm.forwardPointer()
+
+      await nextTick()
+
+      expect(select.vm.pointer).toStrictEqual(select.vm.getOption(3))
+    })
+
+    it('should set next enabled group if has no enabled next option groups=true', async () => {
+      let select = createSelect({
+        options: [
+          {
+            label: 'First',
+            options: [
+              { value: 1, label: 1, disabled: false },
+              { value: 2, label: 2, disabled: true },
+              { value: 3, label: 3, disabled: true },
+            ],
+          },
+          {
+            label: 'Second',
+            disabled: true,
+            options: [
+              { value: 4, label: 4, },
+              { value: 5, label: 5, },
+              { value: 6, label: 6, },
+            ],
+          },
+          {
+            label: 'Third',
+            options: [
+              { value: 7, label: 7, },
+              { value: 8, label: 8, },
+              { value: 9, label: 9, },
+            ],
+          },
+        ],
+        groups: true
+      })
+
+      select.vm.pointer = select.vm.getOption(1)
+      select.vm.forwardPointer()
+
+      await nextTick()
+
+      expect(select.vm.pointer).toStrictEqual(select.vm.fg[2])
+    })
+
+    it('should set first enabled group if has no enabled next option nor next group groups=true', async () => {
+      let select = createSelect({
+        options: [
+          {
+            label: 'First',
+            options: [
+              { value: 1, label: 1, disabled: false },
+              { value: 2, label: 2, disabled: true },
+              { value: 3, label: 3, disabled: true },
+            ],
+          },
+          {
+            label: 'Second',
+            disabled: true,
+            options: [
+              { value: 4, label: 4, },
+              { value: 5, label: 5, },
+              { value: 6, label: 6, },
+            ],
+          },
+          {
+            label: 'Third',
+            disabled: true,
+            options: [
+              { value: 7, label: 7, disabled: true, },
+              { value: 8, label: 8, disabled: true, },
+              { value: 9, label: 9, disabled: true, },
+            ],
+          },
+        ],
+        groups: true
+      })
+
+      select.vm.pointer = select.vm.getOption(1)
+      select.vm.forwardPointer()
+
+      await nextTick()
+
+      expect(select.vm.pointer).toStrictEqual(select.vm.fg[0])
+    })
   })
 
   describe('backwardPointer', () => {
-    it('should set last enabled option if pointer is null', async () => {
+    it('should set last enabled option if pointer is null groups=false', async () => {
       let select = createSelect({
         options: [
           { value: 0, label: 0, disabled: false },
@@ -261,6 +450,66 @@ describe('usePointer Action', () => {
       expect(select.vm.pointer).toStrictEqual(select.vm.getOption(1))
 
       destroy(select)
+    })
+
+    it('should set last enabled option if pointer is null groups=true', async () => {
+      let select = createSelect({
+        options: [
+          {
+            label: 'First',
+            options: [
+              { value: 1, label: 1, disabled: false },
+              { value: 2, label: 2, disabled: false },
+              { value: 3, label: 3, disabled: false },
+            ],
+          },
+          {
+            label: 'Second',
+            options: [
+              { value: 4, label: 4, },
+              { value: 5, label: 5, },
+              { value: 6, label: 6, disabled: true },
+            ],
+          },
+        ],
+        groups: true,
+      })
+
+      select.vm.backwardPointer()
+
+      await nextTick()
+
+      expect(select.vm.pointer).toStrictEqual(select.vm.getOption(5))
+    })
+
+    it('should set last enabled group label if pointer is null and has no enabled last option groups=true', async () => {
+      let select = createSelect({
+        options: [
+          {
+            label: 'First',
+            options: [
+              { value: 1, label: 1, disabled: false },
+              { value: 2, label: 2, disabled: false },
+              { value: 3, label: 3, disabled: false },
+            ],
+          },
+          {
+            label: 'Second',
+            options: [
+              { value: 4, label: 4, disabled: true },
+              { value: 5, label: 5, disabled: true },
+              { value: 6, label: 6, disabled: true },
+            ],
+          },
+        ],
+        groups: true,
+      })
+
+      select.vm.backwardPointer()
+
+      await nextTick()
+
+      expect(select.vm.pointer).toStrictEqual(select.vm.fg[1])
     })
 
     it('should not do anything if has no enabled options and pointer is null', async () => {
@@ -348,6 +597,171 @@ describe('usePointer Action', () => {
       expect(select.vm.pointer).toStrictEqual(select.vm.getOption(1))
 
       destroy(select)
+    })
+
+    it('should set previous group label if has no prev enabled option and pointer is group groups=true', async () => {
+      let select = createSelect({
+        options: [
+          {
+            label: 'First',
+            options: [
+              { value: 1, label: 1, disabled: true },
+              { value: 2, label: 2, disabled: true },
+              { value: 3, label: 3, disabled: true },
+            ],
+          },
+          {
+            label: 'Second',
+            options: [
+              { value: 4, label: 4, disabled: true },
+              { value: 5, label: 5, disabled: true },
+              { value: 6, label: 6, disabled: true },
+            ],
+          },
+        ],
+        groups: true,
+      })
+
+      select.vm.pointer = select.vm.fg[1]
+      select.vm.backwardPointer()
+
+      await nextTick()
+
+      expect(select.vm.pointer).toStrictEqual(select.vm.fg[0])
+    })
+
+    it('should set last group last enabled option if has no prev option nor group and pointer is group groups=true', async () => {
+      let select = createSelect({
+        options: [
+          {
+            label: 'First',
+            disabled: true,
+            options: [
+              { value: 1, label: 1, disabled: true },
+              { value: 2, label: 2, disabled: true },
+              { value: 3, label: 3, disabled: true },
+            ],
+          },
+          {
+            label: 'Second',
+            options: [
+              { value: 4, label: 4, disabled: true },
+              { value: 5, label: 5, disabled: false },
+              { value: 6, label: 6, disabled: true },
+            ],
+          },
+        ],
+        groups: true,
+      })
+
+      select.vm.pointer = select.vm.fg[1]
+      select.vm.backwardPointer()
+
+      await nextTick()
+
+      expect(select.vm.pointer).toStrictEqual(select.vm.getOption(5))
+    })
+
+    it('should set last group header if has no prev option nor group nor last option in last group and pointer is group groups=true', async () => {
+      let select = createSelect({
+        options: [
+          {
+            label: 'First',
+            options: [
+              { value: 1, label: 1, disabled: true },
+              { value: 2, label: 2, disabled: true },
+              { value: 3, label: 3, disabled: true },
+            ],
+          },
+          {
+            label: 'Second',
+            options: [
+              { value: 4, label: 4, disabled: true },
+              { value: 5, label: 5, disabled: true },
+              { value: 6, label: 6, disabled: true },
+            ],
+          },
+          {
+            label: 'Third',
+            disabled: true,
+            options: [
+              { value: 4, label: 4, disabled: true },
+              { value: 5, label: 5, disabled: true },
+              { value: 6, label: 6, disabled: true },
+            ],
+          },
+        ],
+        groups: true,
+      })
+
+      select.vm.pointer = select.vm.fg[0]
+      select.vm.backwardPointer()
+
+      await nextTick()
+
+      expect(select.vm.pointer).toStrictEqual(select.vm.fg[1])
+    })
+
+    it('should set prev enabled option if pointer is not group groups=true', async () => {
+      let select = createSelect({
+        options: [
+          {
+            label: 'First',
+            options: [
+              { value: 1, label: 1, disabled: false },
+              { value: 2, label: 2, disabled: true },
+              { value: 3, label: 3, disabled: false },
+            ],
+          },
+          {
+            label: 'Second',
+            options: [
+              { value: 4, label: 4, disabled: true },
+              { value: 5, label: 5, disabled: true },
+              { value: 6, label: 6, disabled: true },
+            ],
+          },
+        ],
+        groups: true,
+      })
+
+      select.vm.pointer = select.vm.getOption(3)
+      select.vm.backwardPointer()
+
+      await nextTick()
+
+      expect(select.vm.pointer).toStrictEqual(select.vm.getOption(1))
+    })
+
+    it('should set group label if has no enabled prev option if pointer is not group groups=true', async () => {
+      let select = createSelect({
+        options: [
+          {
+            label: 'First',
+            options: [
+              { value: 1, label: 1, disabled: true },
+              { value: 2, label: 2, disabled: true },
+              { value: 3, label: 3, disabled: false },
+            ],
+          },
+          {
+            label: 'Second',
+            options: [
+              { value: 4, label: 4, disabled: true },
+              { value: 5, label: 5, disabled: true },
+              { value: 6, label: 6, disabled: true },
+            ],
+          },
+        ],
+        groups: true,
+      })
+
+      select.vm.pointer = select.vm.getOption(3)
+      select.vm.backwardPointer()
+
+      await nextTick()
+
+      expect(select.vm.pointer).toStrictEqual(select.vm.fg[0])
     })
   })
 

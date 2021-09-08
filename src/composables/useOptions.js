@@ -219,6 +219,10 @@ export default function useOptions (props, context, dep)
   }
 
   const isSelected = (option) => {
+    if (option.group !== undefined) {
+      return mode.value === 'single' ? false : areAllEnabledSelected(option[groupOptions.value])
+    }
+
     switch (mode.value) {
       case 'single':
         return !isNullish(iv.value) && iv.value[valueProp.value] == option[valueProp.value]
@@ -342,6 +346,7 @@ export default function useOptions (props, context, dep)
     }
   }
 
+  // no export
   const areAllEnabledSelected = (options) => {
     return options.find(o => !isSelected(o) && !o.disabled) === undefined
   }
@@ -357,7 +362,7 @@ export default function useOptions (props, context, dep)
 
   // no export
   const shouldHideOption = (option) => {
-    return mode.value === 'tags' && hideSelected.value && isSelected(option)
+    return ['tags', 'multiple'].indexOf(mode.value) !== -1 && hideSelected.value && isSelected(option)
   }
 
   // no export
@@ -365,6 +370,7 @@ export default function useOptions (props, context, dep)
     ap.value.push(option)
   }
 
+  // no export
   const filterGroups = (groups) => {
     // If the search has value we need to filter among 
     // he ones that are visible to the user to avoid
@@ -378,6 +384,7 @@ export default function useOptions (props, context, dep)
       : groups.filter(g => search.value ? g.__VISIBLE__.length : true)
   }
 
+  // no export
   const filterOptions = (options, excludeHideSelected = true) => {
     let fo = options
     
@@ -394,6 +401,7 @@ export default function useOptions (props, context, dep)
     return fo
   }
 
+  // no export
   const optionsToArray = (options) => {
     let uo = options
     

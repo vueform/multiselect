@@ -274,6 +274,478 @@ describe('useOptions', () => {
 
       expect(select.vm.$parent.value).toStrictEqual([{ code: 'ru', name: 'Россия' }, { code: 'au', name: 'Австралия' }])
     })
+
+    it('should be equal to all options from groups', async () => {
+      let select = createSelect({
+        groups: true,
+        options: [
+          {
+            label: 'First',
+            options: [1,2,3],
+          },
+          {
+            label: 'Second',
+            options: [4,5,6],
+          },
+        ],
+        value: null,
+      })
+
+      expect(select.vm.fo).toStrictEqual([
+        { value: 1, label: 1 },
+        { value: 2, label: 2 },
+        { value: 3, label: 3 },
+        { value: 4, label: 4 },
+        { value: 5, label: 5 },
+        { value: 6, label: 6 },
+      ])
+    })
+  })
+
+  describe('fg', () => {
+    it('should have options/__visible__ equal to options', async () => {
+      let select = createSelect({
+        groups: true,
+        options: [
+          {
+            label: 'First',
+            options: [1,2,3],
+          },
+          {
+            label: 'Second',
+            options: [4,5,6],
+          },
+        ],
+        value: null,
+      })
+
+      expect(select.vm.fg).toStrictEqual([
+        {
+          label: 'First',
+          group: true,
+          options: [
+            { value: 1, label: 1 },
+            { value: 2, label: 2 },
+            { value: 3, label: 3 },
+          ],
+          __VISIBLE__: [
+            { value: 1, label: 1 },
+            { value: 2, label: 2 },
+            { value: 3, label: 3 },
+          ]
+        },
+        {
+          label: 'Second',
+          group: true,
+          options: [
+            { value: 4, label: 4 },
+            { value: 5, label: 5 },
+            { value: 6, label: 6 },
+          ],
+          __VISIBLE__: [
+            { value: 4, label: 4 },
+            { value: 5, label: 5 },
+            { value: 6, label: 6 },
+          ]
+        },
+      ])
+    })
+
+    it('should have options/__visible__ equal to filtered by search options', async () => {
+      let select = createSelect({
+        groups: true,
+        searchable: true,
+        options: [
+          {
+            label: 'First',
+            options: ['value1','value2',3],
+          },
+          {
+            label: 'Second',
+            options: ['value4',5,6],
+          },
+        ],
+        value: null,
+      })
+
+      select.vm.search = 'value'
+
+      expect(select.vm.fg).toStrictEqual([
+        {
+          label: 'First',
+          group: true,
+          options: [
+            { value: 'value1', label: 'value1' },
+            { value: 'value2', label: 'value2' },
+          ],
+          __VISIBLE__: [
+            { value: 'value1', label: 'value1' },
+            { value: 'value2', label: 'value2' },
+          ]
+        },
+        {
+          label: 'Second',
+          group: true,
+          options: [
+            { value: 'value4', label: 'value4' },
+          ],
+          __VISIBLE__: [
+            { value: 'value4', label: 'value4' },
+          ]
+        },
+      ])
+    })
+
+    it('should have options/__visible__ equal to filtered by search options when has selected and hideSelected = false', async () => {
+      let select = createSelect({
+        mode: 'multiple',
+        groups: true,
+        searchable: true,
+        hideSelected: false,
+        options: [
+          {
+            label: 'First',
+            options: ['value1','value2',3],
+          },
+          {
+            label: 'Second',
+            options: ['value4',5,6],
+          },
+        ],
+        value: ['value2'],
+      })
+
+      select.vm.search = 'value'
+
+      expect(select.vm.fg).toStrictEqual([
+        {
+          label: 'First',
+          group: true,
+          options: [
+            { value: 'value1', label: 'value1' },
+            { value: 'value2', label: 'value2' },
+          ],
+          __VISIBLE__: [
+            { value: 'value1', label: 'value1' },
+            { value: 'value2', label: 'value2' },
+          ]
+        },
+        {
+          label: 'Second',
+          group: true,
+          options: [
+            { value: 'value4', label: 'value4' },
+          ],
+          __VISIBLE__: [
+            { value: 'value4', label: 'value4' },
+          ]
+        },
+      ])
+    })
+
+    it('should have options/__visible__ equal to filtered by search options when has selected and hideSelected = true', async () => {
+      let select = createSelect({
+        mode: 'multiple',
+        groups: true,
+        searchable: true,
+        hideSelected: true,
+        options: [
+          {
+            label: 'First',
+            options: ['value1','value2',3],
+          },
+          {
+            label: 'Second',
+            options: ['value4',5,6],
+          },
+        ],
+        value: ['value2'],
+      })
+
+      select.vm.search = 'value'
+
+      expect(select.vm.fg).toStrictEqual([
+        {
+          label: 'First',
+          group: true,
+          options: [
+            { value: 'value1', label: 'value1' },
+            { value: 'value2', label: 'value2' },
+          ],
+          __VISIBLE__: [
+            { value: 'value1', label: 'value1' },
+          ]
+        },
+        {
+          label: 'Second',
+          group: true,
+          options: [
+            { value: 'value4', label: 'value4' },
+          ],
+          __VISIBLE__: [
+            { value: 'value4', label: 'value4' },
+          ]
+        },
+      ])
+    })
+
+    it('should have options/__visible__ equal to filtered by search options when has selected and hideSelected = false', async () => {
+      let select = createSelect({
+        mode: 'multiple',
+        groups: true,
+        searchable: true,
+        hideSelected: false,
+        options: [
+          {
+            label: 'First',
+            options: ['value1','value2',3],
+          },
+          {
+            label: 'Second',
+            options: ['value4',5,6],
+          },
+        ],
+        value: ['value2'],
+      })
+
+      select.vm.search = 'value'
+
+      expect(select.vm.fg).toStrictEqual([
+        {
+          label: 'First',
+          group: true,
+          options: [
+            { value: 'value1', label: 'value1' },
+            { value: 'value2', label: 'value2' },
+          ],
+          __VISIBLE__: [
+            { value: 'value1', label: 'value1' },
+            { value: 'value2', label: 'value2' },
+          ]
+        },
+        {
+          label: 'Second',
+          group: true,
+          options: [
+            { value: 'value4', label: 'value4' },
+          ],
+          __VISIBLE__: [
+            { value: 'value4', label: 'value4' },
+          ]
+        },
+      ])
+    })
+
+    it('should hide group if has search and hideSelected=true and has a selected option', async () => {
+      let select = createSelect({
+        mode: 'multiple',
+        groups: true,
+        searchable: true,
+        hideSelected: true,
+        options: [
+          {
+            label: 'First',
+            options: ['value1','value2',3],
+          },
+          {
+            label: 'Second',
+            options: ['value4',5,6],
+          },
+        ],
+        value: ['value4'],
+      })
+
+      select.vm.search = 'value'
+
+      expect(select.vm.fg).toStrictEqual([
+        {
+          label: 'First',
+          group: true,
+          options: [
+            { value: 'value1', label: 'value1' },
+            { value: 'value2', label: 'value2' },
+          ],
+          __VISIBLE__: [
+            { value: 'value1', label: 'value1' },
+            { value: 'value2', label: 'value2' },
+          ]
+        },
+      ])
+    })
+
+    it('should not hide group if has search and hideSelected=false and has a selected option', async () => {
+      let select = createSelect({
+        mode: 'multiple',
+        groups: true,
+        searchable: true,
+        hideSelected: false,
+        options: [
+          {
+            label: 'First',
+            options: ['value1','value2',3],
+          },
+          {
+            label: 'Second',
+            options: ['value4',5,6],
+          },
+        ],
+        value: ['value4'],
+      })
+
+      select.vm.search = 'value'
+
+      expect(select.vm.fg).toStrictEqual([
+        {
+          label: 'First',
+          group: true,
+          options: [
+            { value: 'value1', label: 'value1' },
+            { value: 'value2', label: 'value2' },
+          ],
+          __VISIBLE__: [
+            { value: 'value1', label: 'value1' },
+            { value: 'value2', label: 'value2' },
+          ]
+        },
+        {
+          label: 'Second',
+          group: true,
+          options: [
+            { value: 'value4', label: 'value4' },
+          ],
+          __VISIBLE__: [
+            { value: 'value4', label: 'value4' },
+          ]
+        },
+      ])
+    })
+
+    it('should not hide group if it has no search and hideSelected=true and groupHideEmpty=true and has only selected options', async () => {
+      let select = createSelect({
+        mode: 'multiple',
+        groups: true,
+        searchable: true,
+        hideSelected: true,
+        groupHideEmpty: true,
+        options: [
+          {
+            label: 'First',
+            options: ['value1','value2',3],
+          },
+          {
+            label: 'Second',
+            options: ['value4', 5, 6],
+          },
+        ],
+        value: ['value4', 5, 6],
+      })
+
+      expect(select.vm.fg).toStrictEqual([
+        {
+          label: 'First',
+          group: true,
+          options: [
+            { value: 'value1', label: 'value1' },
+            { value: 'value2', label: 'value2' },
+            { value: 3, label: 3 },
+          ],
+          __VISIBLE__: [
+            { value: 'value1', label: 'value1' },
+            { value: 'value2', label: 'value2' },
+            { value: 3, label: 3 },
+          ]
+        },
+        {
+          label: 'Second',
+          group: true,
+          options: [
+            { value: 'value4', label: 'value4' },
+            { value: 5, label: 5 },
+            { value: 6, label: 6 },
+          ],
+          __VISIBLE__: [
+          ]
+        },
+      ])
+    })
+
+    it('should hide group if groupHideEmpty=true and has no options', async () => {
+      let select = createSelect({
+        mode: 'multiple',
+        groups: true,
+        searchable: true,
+        groupHideEmpty: true,
+        options: [
+          {
+            label: 'First',
+            options: ['value1','value2',3],
+          },
+          {
+            label: 'Second',
+            options: [],
+          },
+        ],
+      })
+
+      expect(select.vm.fg).toStrictEqual([
+        {
+          label: 'First',
+          group: true,
+          options: [
+            { value: 'value1', label: 'value1' },
+            { value: 'value2', label: 'value2' },
+            { value: 3, label: 3 },
+          ],
+          __VISIBLE__: [
+            { value: 'value1', label: 'value1' },
+            { value: 'value2', label: 'value2' },
+            { value: 3, label: 3 },
+          ]
+        },
+      ])
+    })
+
+    it('should hide group if groupHideEmpty=false and has no options', async () => {
+      let select = createSelect({
+        mode: 'multiple',
+        groups: true,
+        searchable: true,
+        groupHideEmpty: false,
+        options: [
+          {
+            label: 'First',
+            options: ['value1','value2',3],
+          },
+          {
+            label: 'Second',
+            options: [],
+          },
+        ],
+      })
+
+      expect(select.vm.fg).toStrictEqual([
+        {
+          label: 'First',
+          group: true,
+          options: [
+            { value: 'value1', label: 'value1' },
+            { value: 'value2', label: 'value2' },
+            { value: 3, label: 3 },
+          ],
+          __VISIBLE__: [
+            { value: 'value1', label: 'value1' },
+            { value: 'value2', label: 'value2' },
+            { value: 3, label: 3 },
+          ]
+        },
+        {
+          label: 'Second',
+          group: true,
+          options: [],
+          __VISIBLE__: []
+        },
+      ])
+    })
   })
 
   describe('hasSelected', () => {
@@ -1307,6 +1779,241 @@ describe('useOptions', () => {
       expect(select.vm.isOpen).toBe(true)
 
       select.vm.handleOptionClick(select.vm.getOption(2))
+
+      jest.advanceTimersByTime(1)
+      expect(select.vm.isOpen).toBe(true)
+    })
+  })
+
+  describe('handleGroupClick', () => {
+    it('should not select options in group when disabled and mode=multiple ', async () => {
+      let select = createSelect({
+        mode: 'multiple',
+        value: [],
+        options: [
+          {
+            label: 'First',
+            disabled: true,
+            options: [1,2,3],
+          },
+          {
+            label: 'Second',
+            options: [4,5,6],
+          },
+        ],
+        groups: true,
+      })
+
+      select.vm.handleGroupClick(select.vm.fg[0])
+
+      await nextTick()
+
+      expect(getValue(select)).toStrictEqual([])
+    })
+
+    it('should not select options in group when mode=single ', async () => {
+      let select = createSelect({
+        mode: 'single',
+        value: null,
+        options: [
+          {
+            label: 'First',
+            disabled: true,
+            options: [1,2,3],
+          },
+          {
+            label: 'Second',
+            options: [4,5,6],
+          },
+        ],
+        groups: true,
+      })
+
+      select.vm.handleGroupClick(select.vm.fg[0])
+
+      await nextTick()
+
+      expect(getValue(select)).toStrictEqual(null)
+    })
+
+    it('should select options in group when multiple', async () => {
+      let select = createSelect({
+        mode: 'multiple',
+        value: [],
+        options: [
+          {
+            label: 'First',
+            options: [1,2,3],
+          },
+          {
+            label: 'Second',
+            options: [4,5,6],
+          },
+        ],
+        groups: true,
+      })
+
+      select.vm.handleGroupClick(select.vm.fg[0])
+
+      await nextTick()
+
+      expect(getValue(select)).toStrictEqual([1,2,3])
+    })
+
+    it('should select only enabled options in group when multiple', async () => {
+      let select = createSelect({
+        mode: 'multiple',
+        value: [],
+        options: [
+          {
+            label: 'First',
+            options: [
+              1,
+              { value: 2, label: 2, disabled: true, },
+              3,
+            ],
+          },
+          {
+            label: 'Second',
+            options: [4,5,6],
+          },
+        ],
+        groups: true,
+      })
+
+      select.vm.handleGroupClick(select.vm.fg[0])
+
+      await nextTick()
+
+      expect(getValue(select)).toStrictEqual([1,3])
+    })
+
+    it('should select only max amount of options when group is selected', async () => {
+      let select = createSelect({
+        mode: 'multiple',
+        value: [],
+        max: 2,
+        options: [
+          {
+            label: 'First',
+            options: [1,2,3],
+          },
+          {
+            label: 'Second',
+            options: [4,5,6],
+          },
+        ],
+        groups: true,
+      })
+
+      select.vm.handleGroupClick(select.vm.fg[0])
+
+      await nextTick()
+
+      expect(getValue(select)).toStrictEqual([1,2])
+    })
+
+    it('should select only unselected options', async () => {
+      let select = createSelect({
+        mode: 'multiple',
+        value: [1],
+        options: [
+          {
+            label: 'First',
+            options: [1,2,3],
+          },
+          {
+            label: 'Second',
+            options: [4,5,6],
+          },
+        ],
+        groups: true,
+      })
+
+      select.vm.handleGroupClick(select.vm.fg[0])
+
+      await nextTick()
+
+      expect(getValue(select)).toStrictEqual([1,2,3])
+    })
+
+    it('should deselect options in group when multiple', async () => {
+      let select = createSelect({
+        mode: 'multiple',
+        value: [1,2,3],
+        options: [
+          {
+            label: 'First',
+            options: [1,2,3],
+          },
+          {
+            label: 'Second',
+            options: [4,5,6],
+          },
+        ],
+        groups: true,
+      })
+
+      select.vm.handleGroupClick(select.vm.fg[0])
+
+      await nextTick()
+
+      expect(getValue(select)).toStrictEqual([])
+    })
+
+    it('should deactivate on select when closeOnSelect=true', async () => {
+      let select = createSelect({
+        mode: 'multiple',
+        value: [],
+        closeOnSelect: true,
+        options: [
+          {
+            label: 'First',
+            options: [1,2,3],
+          },
+          {
+            label: 'Second',
+            options: [4,5,6],
+          },
+        ],
+        groups: true,
+      })
+
+      select.vm.open()
+      expect(select.vm.isOpen).toBe(true)
+
+      select.vm.handleGroupClick(select.vm.fg[0])
+
+      await nextTick()
+
+      jest.advanceTimersByTime(1)
+      expect(select.vm.isOpen).toBe(false)
+    })
+
+    it('should not deactivate on select when closeOnSelect=false', async () => {
+      let select = createSelect({
+        mode: 'multiple',
+        value: [],
+        closeOnSelect: false,
+        options: [
+          {
+            label: 'First',
+            options: [1,2,3],
+          },
+          {
+            label: 'Second',
+            options: [4,5,6],
+          },
+        ],
+        groups: true,
+      })
+
+      select.vm.open()
+      expect(select.vm.isOpen).toBe(true)
+
+      select.vm.handleGroupClick(select.vm.fg[0])
+
+      await nextTick()
 
       jest.advanceTimersByTime(1)
       expect(select.vm.isOpen).toBe(true)

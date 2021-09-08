@@ -157,6 +157,40 @@ describe('Multiselect', () => {
         expect(options.at(1).html()).toContain('value2')
     })
 
+    it('should render filtered groups', async () => {
+        let select = createSelect({
+          options: [
+            {
+              label: 'First',
+              options: ['value1', 'value2']
+            },
+            {
+              label: 'Second',
+              options: ['value3', '4']
+            },
+          ],
+          groups: true,
+        })
+
+        select.vm.search = 'value'
+
+        await nextTick()
+
+        let groups = findAll(select, '.multiselect-group')
+        let groupLabels = findAll(select, '.multiselect-group')
+        let options = findAll(select, '.multiselect-option')
+
+        expect(groups.length).toBe(2)
+        expect(groupLabels.length).toBe(2)
+        expect(groupLabels.at(0).html()).toContain('First')
+        expect(groupLabels.at(1).html()).toContain('Second')
+
+        expect(options.length).toBe(3)
+        expect(options.at(0).html()).toContain('value1')
+        expect(options.at(1).html()).toContain('value2')
+        expect(options.at(2).html()).toContain('value3')
+    })
+
     it('should set pointer to option on mouseenter', async () => {
         let select = createSelect({
           options: [1,2,3],

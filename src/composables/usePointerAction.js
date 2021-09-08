@@ -4,7 +4,7 @@ export default function usePointer (props, context, dep)
 {
   const {
     valueProp, showOptions, searchable, groupLabel,
-    groups: groupped, groupOptions,
+    groups: groupped,
   } = toRefs(props)
 
   // ============ DEPENDENCIES ============
@@ -66,26 +66,26 @@ export default function usePointer (props, context, dep)
     return [...groups.value].slice(-1)[0]
   })
   
-  const currentGroupFirstOption = computed(() => {
-    return pointer.value.__VISIBLE__[0]
+  const currentGroupFirstEnabledOption = computed(() => {
+    return pointer.value.__VISIBLE__.filter(o => !o.disabled)[0]
   })
 
-  const currentGroupPrevOption = computed(() => {
-    const options = currentGroup.value.__VISIBLE__
+  const currentGroupPrevEnabledOption = computed(() => {
+    const options = currentGroup.value.__VISIBLE__.filter(o => !o.disabled)
     return options[options.map(o => o[valueProp.value]).indexOf(pointer.value[valueProp.value]) - 1]
   })
   
-  const currentGroupNextOption = computed(() => {
-    const options = getParentGroup(pointer.value).__VISIBLE__
+  const currentGroupNextEnabledOption = computed(() => {
+    const options = getParentGroup(pointer.value).__VISIBLE__.filter(o => !o.disabled)
     return options[options.map(o => o[valueProp.value]).indexOf(pointer.value[valueProp.value]) + 1]
   })
 
-  const prevGroupLastOption = computed(() => {
-    return [...prevGroup.value.__VISIBLE__].slice(-1)[0]
+  const prevGroupLastEnabledOption = computed(() => {
+    return [...prevGroup.value.__VISIBLE__.filter(o => !o.disabled)].slice(-1)[0]
   })
 
-  const lastGroupLastOption = computed(() => {
-    return [...lastGroup.value.__VISIBLE__].slice(-1)[0]
+  const lastGroupLastEnabledOption = computed(() => {
+    return [...lastGroup.value.__VISIBLE__.filter(o => !o.disabled)].slice(-1)[0]
   })
 
   // =============== METHODS ==============
@@ -118,7 +118,7 @@ export default function usePointer (props, context, dep)
       setPointer((groupped.value ? groups.value[0] : options.value[0]) || null)
     }
     else if (groupped.value) {
-      let nextPointer = isPointerGroup.value ? currentGroupFirstOption.value : currentGroupNextOption.value
+      let nextPointer = isPointerGroup.value ? currentGroupFirstEnabledOption.value : currentGroupNextEnabledOption.value
 
       if (nextPointer === undefined) {
         nextPointer = nextGroup.value
@@ -145,7 +145,7 @@ export default function usePointer (props, context, dep)
       let prevPointer = options.value[options.value.length - 1]
 
       if (groupped.value) {
-        prevPointer = lastGroupLastOption.value
+        prevPointer = lastGroupLastEnabledOption.value
 
         if (prevPointer === undefined) {
           prevPointer = lastGroup.value
@@ -155,7 +155,7 @@ export default function usePointer (props, context, dep)
       setPointer(prevPointer  || null)
     }
     else if (groupped.value) {
-      let prevPointer = isPointerGroup.value ? prevGroupLastOption.value : currentGroupPrevOption.value
+      let prevPointer = isPointerGroup.value ? prevGroupLastEnabledOption.value : currentGroupPrevEnabledOption.value
 
       if (prevPointer === undefined) {
         prevPointer = isPointerGroup.value ? prevGroup.value : currentGroup.value
