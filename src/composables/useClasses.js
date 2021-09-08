@@ -12,6 +12,7 @@ export default function useClasses (props, context, dependencies)
   const isSelected = dependencies.isSelected
   const isDisabled = dependencies.isDisabled
   const isActive = dependencies.isActive
+  const canPointGroups = dependencies.canPointGroups
 
   const classes = {
     container: 'multiselect',
@@ -43,6 +44,7 @@ export default function useClasses (props, context, dependencies)
     optionsTop: 'is-top',
     group: 'multiselect-group',
     groupLabel: 'multiselect-group-label',
+    groupLabelPointable: 'is-pointable',
     groupLabelPointed: 'is-pointed',
     groupLabelSelected: 'is-selected',
     groupLabelDisabled: 'is-disabled',
@@ -100,10 +102,14 @@ export default function useClasses (props, context, dependencies)
 
         if (isPointed(g)) {
           groupLabel.push(isSelected(g) ? classes.groupLabelSelectedPointed : classes.groupLabelPointed)
-        } else if (isSelected(g)) {
+        } else if (isSelected(g) && canPointGroups.value) {
           groupLabel.push(isDisabled(g) ? classes.groupLabelSelectedDisabled : classes.groupLabelSelected)
         } else if (isDisabled(g)) {
           groupLabel.push(classes.groupLabelDisabled)
+        }
+
+        if (canPointGroups.value) {
+          groupLabel.push(classes.groupLabelPointable)
         }
 
         return groupLabel

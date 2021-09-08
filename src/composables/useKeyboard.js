@@ -70,7 +70,7 @@ export default function useKeyboard (props, context, dep)
           return
         }
 
-        if (mode.value === 'tags' && addTagOn.value.indexOf('space') === -1 && createTag.value) {
+        if (mode.value === 'tags' && ((addTagOn.value.indexOf('space') === -1 && createTag.value) || !createTag.value)) {
           return
         }
 
@@ -105,6 +105,7 @@ export default function useKeyboard (props, context, dep)
       // escape
       case 27:
         blur()
+        break
 
       // up
       case 38:

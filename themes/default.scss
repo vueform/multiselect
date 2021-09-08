@@ -299,78 +299,89 @@
 }
 
 .multiselect-group {
-  
+  padding: 0;
+  margin: 0;
+
+  @apply p-0 m-0;
 }
 
-.multiselect-group-label,
-.multiselect-option {
+.multiselect-group-label {
+  padding: var(--ms-group-label-py, 0.3rem) var(--ms-group-label-px, 0.75rem);
+  font-size: 0.875rem;
+  font-weight: 600;
+  background: #E5E7EB;
+  color: #374151;
+  cursor: default;
+  line-height: var(--ms-group-label-line-height, 1.375);
   display: flex;
   box-sizing: border-box;
   text-decoration: none;
   align-items: center;
   justify-content: flex-start;
   text-align: left;
-  cursor: pointer;
-  line-height: var(--ms-option-line-height, 1.375);
-}
 
-
-.multiselect-group-label {
-  padding: var(--ms-option-py, 0.3rem) var(--ms-option-px, 0.75rem);
-  font-size: 0.875rem;
-  font-weight: 600;
-  background: #E5E7EB;
-  color: #374151;
-
-  &.is-pointed {
-    background: var(--ms-group-bg-pointed, #D1D5DB);
-    color: var(--ms-group-color-pointed, #374151);
+  &.is-pointable {
+    cursor: pointer;
   }
 
-  &.is-disabled {
-    background: var(--ms-option-bg-disabled, #FFFFFF);
-    color: var(--ms-option-color-disabled, #D1D5DB);
-    cursor: not-allowed;
+  &.is-pointed {
+    background: var(--ms-group-label-bg-pointed, #D1D5DB);
+    color: var(--ms-group-label-color-pointed, #374151);
   }
 
   &.is-selected {
-    background: var(--ms-option-bg-selected, #059669);
-    color: var(--ms-option-color-selected, #FFFFFF);
+    background: var(--ms-group-label-bg-selected, #059669);
+    color: var(--ms-group-label-color-selected, #FFFFFF);
+  }
+
+  &.is-disabled {
+    background: var(--ms-group-label-bg-disabled, #F3F4F6);
+    color: var(--ms-group-label-color-disabled, #D1D5DB);
+    cursor: not-allowed;
   }
 
   &.is-selected.is-pointed {
-    background: var(--ms-option-bg-selected-pointed, #0c9e70);
-    color: var(--ms-option-color-selected-pointed, #FFFFFF);
+    background: var(--ms-group-label-bg-selected-pointed, #0c9e70);
+    color: var(--ms-group-label-color-selected-pointed, #FFFFFF);
   }
 
   &.is-selected.is-disabled {
-    background: var(--ms-option-bg-selected-disabled, #87dcc0);
-    color: var(--ms-option-color-selected-disabled, #D1FAE5);
+    background: var(--ms-group-label-bg-selected-disabled, #75cfb1);
+    color: var(--ms-group-label-color-selected-disabled, #D1FAE5);
   }
 }
 
 .multiselect-group-options {
   padding: 0;
+  margin: 0;
 }
 
 .multiselect-option {
   padding: var(--ms-option-py, 0.5rem) var(--ms-option-px, 0.75rem);
   font-size: var(--ms-option-font-size, 1rem);
+  line-height: var(--ms-option-line-height, 1.375);
+  cursor: pointer;
+  display: flex;
+  box-sizing: border-box;
+  text-decoration: none;
+  align-items: center;
+  justify-content: flex-start;
+  text-align: left;
 
   &.is-pointed {
     background: var(--ms-option-bg-pointed, #F3F4F6);
     color: var(--ms-option-color-pointed, #1F2937);
   }
 
+  &.is-selected {
+    background: var(--ms-option-bg-selected, #10B981);
+    color: var(--ms-option-color-selected, #FFFFFF);
+  }
+
   &.is-disabled {
     background: var(--ms-option-bg-disabled, #FFFFFF);
     color: var(--ms-option-color-disabled, #D1D5DB);
     cursor: not-allowed;
-  }
-
-  &.is-selected {
-    background: var(--ms-option-bg-selected, #10B981);
-    color: var(--ms-option-color-selected, #FFFFFF);
   }
 
   &.is-selected.is-pointed {

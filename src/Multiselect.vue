@@ -424,6 +424,11 @@
         required: false,
         default: false,
       },
+      groupSelect: {
+        type: Boolean,
+        required: false,
+        default: true,
+      },
     },
     setup(props, context)
     { 
@@ -482,6 +487,7 @@
       const classes = useClasses(props, context, {
         isOpen: dropdown.isOpen,
         isPointed: pointerAction.isPointed,
+        canPointGroups: pointerAction.canPointGroups,
         isSelected: options.isSelected,
         isDisabled: options.isDisabled,
         isActive: multiselect.isActive,

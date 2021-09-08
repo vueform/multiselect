@@ -4,7 +4,7 @@ export default function usePointer (props, context, dep)
 {
   const {
     valueProp, showOptions, searchable, groupLabel,
-    groups: groupped,
+    groups: groupped, mode, groupSelect,
   } = toRefs(props)
 
   // ============ DEPENDENCIES ============
@@ -28,6 +28,10 @@ export default function usePointer (props, context, dep)
 
   const groups = computed(() => {
     return fg.value.filter(o => !o.disabled)
+  })
+
+  const canPointGroups = computed(() => {
+    return mode.value !== 'single' && groupSelect.value
   })
 
   const isPointerGroup = computed(() => {
@@ -64,6 +68,10 @@ export default function usePointer (props, context, dep)
 
   const lastGroup = computed(() => {
     return [...groups.value].slice(-1)[0]
+  })
+
+  const lastGroupWithEnabledItems = computed(() => {
+    return groups.value.filter(g=>!g.disabled).find(g => g.__VISIBLE__.find(o => !o.disabled) !== undefined)
   })
   
   const currentGroupFirstEnabledOption = computed(() => {
@@ -115,9 +123,9 @@ export default function usePointer (props, context, dep)
 
   const forwardPointer = () => {
     if (pointer.value === null) {
-      setPointer((groupped.value ? groups.value[0] : options.value[0]) || null)
+      setPointer((groupped.value && canPointGroups.value ? groups.value[0] : options.value[0]) || null)
     }
-    else if (groupped.value) {
+    else if (groupped.value && canPointGroups.value) {
       let nextPointer = isPointerGroup.value ? currentGroupFirstEnabledOption.value : currentGroupNextEnabledOption.value
 
       if (nextPointer === undefined) {
@@ -144,7 +152,7 @@ export default function usePointer (props, context, dep)
     if (pointer.value === null) {
       let prevPointer = options.value[options.value.length - 1]
 
-      if (groupped.value) {
+      if (groupped.value && canPointGroups.value) {
         prevPointer = lastGroupLastEnabledOption.value
 
         if (prevPointer === undefined) {
@@ -154,7 +162,7 @@ export default function usePointer (props, context, dep)
 
       setPointer(prevPointer  || null)
     }
-    else if (groupped.value) {
+    else if (groupped.value && canPointGroups.value) {
       let prevPointer = isPointerGroup.value ? prevGroupLastEnabledOption.value : currentGroupPrevEnabledOption.value
 
       if (prevPointer === undefined) {
@@ -217,6 +225,7 @@ export default function usePointer (props, context, dep)
 
   return {
     pointer,
+    canPointGroups,
     isPointed,
     setPointerFirst,
     selectPointer,

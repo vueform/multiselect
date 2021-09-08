@@ -322,6 +322,20 @@ The following CSS variables can be used to customize multiselect when using `def
 --ms-dropdown-border-width: 1px;
 --ms-dropdown-radius: 4px;
 
+--ms-group-label-py: 0.3rem;
+--ms-group-label-px: 0.75rem;
+--ms-group-label-line-height: 1.375;
+--ms-group-label-bg-pointed: #D1D5DB;
+--ms-group-label-color-pointed: #374151;
+--ms-group-label-bg-disabled: #F3F4F6;
+--ms-group-label-color-disabled: #D1D5DB;
+--ms-group-label-bg-selected: #059669;
+--ms-group-label-color-selected: #FFFFFF;
+--ms-group-label-bg-selected-pointed: #0c9e70;
+--ms-group-label-color-selected-pointed: #FFFFFF;
+--ms-group-label-bg-selected-disabled: #75cfb1;
+--ms-group-label-color-selected-disabled: #D1FAE5;
+
 --ms-option-font-size: 1rem;
 --ms-option-line-height: 1.375;
 --ms-option-bg-pointed: #FFFFFF;
@@ -412,6 +426,15 @@ The `Multiselect` component accepts a `classes` property which allows to overrid
   dropdownHidden: 'hidden',
   options: 'flex flex-col p-0 m-0 list-none',
   optionsTop: 'flex-col-reverse',
+  group: 'p-0 m-0',
+  groupLabel: 'flex text-sm box-border items-center justify-start text-left py-1 px-3 font-semibold bg-gray-200 cursor-default leading-normal',
+  groupLabelPointable: 'cursor-pointer',
+  groupLabelPointed: 'bg-gray-300 text-gray-700',
+  groupLabelSelected: 'bg-green-600 text-white',
+  groupLabelDisabled: 'bg-gray-100 text-gray-300 cursor-not-allowed',
+  groupLabelSelectedPointed: 'bg-green-600 text-white opacity-90',
+  groupLabelSelectedDisabled: 'text-green-100 bg-green-600 bg-opacity-50 cursor-not-allowed',
+  groupOptions: 'p-0 m-0',
   option: 'flex items-center justify-start box-border text-left cursor-pointer text-base leading-snug py-2 px-3',
   optionPointed: 'text-gray-800 bg-gray-100',
   optionSelected: 'text-white bg-green-500',
@@ -454,7 +477,6 @@ module.exports = {
     },
   }
 }
-
 ```
 
 ## Examples

@@ -11,7 +11,7 @@ export default function useOptions (props, context, dep)
     appendNewTag, multipleLabel, object, loading, delay, resolveOnLoad,
     minChars, filterResults, clearOnSearch, clearOnSelect, valueProp,
     canDeselect, max, strict, closeOnSelect, groups: groupped, groupLabel,
-    groupOptions, groupHideEmpty,
+    groupOptions, groupHideEmpty, groupSelect,
   } = toRefs(props)
 
   // ============ DEPENDENCIES ============
@@ -50,7 +50,7 @@ export default function useOptions (props, context, dep)
 
       groups.forEach((group) => {
         optionsToArray(group[groupOptions.value]).forEach((option) => {
-          eo.push(option)
+          eo.push({ ...option, disabled: !!group.disabled })
         })
       })
 
@@ -73,8 +73,8 @@ export default function useOptions (props, context, dep)
       return {
         ...group,
         group: true,
-        [groupOptions.value]: filterOptions(arrayOptions, false),
-        __VISIBLE__: filterOptions(arrayOptions),
+        [groupOptions.value]: filterOptions(arrayOptions, false).map(o => ({ ...o, disabled: !!group.disabled })),
+        __VISIBLE__: filterOptions(arrayOptions).map(o => ({ ...o, disabled: !!group.disabled })),
       }
     }))
   })
@@ -220,7 +220,7 @@ export default function useOptions (props, context, dep)
 
   const isSelected = (option) => {
     if (option.group !== undefined) {
-      return mode.value === 'single' ? false : areAllEnabledSelected(option[groupOptions.value])
+      return mode.value === 'single' ? false : areAllSelected(option[groupOptions.value])
     }
 
     switch (mode.value) {
@@ -322,7 +322,7 @@ export default function useOptions (props, context, dep)
   }
 
   const handleGroupClick = (group) => {
-    if (isDisabled(group) || mode.value === 'single') {
+    if (isDisabled(group) || mode.value === 'single' || !groupSelect.value) {
       return
     }
 
@@ -349,6 +349,11 @@ export default function useOptions (props, context, dep)
   // no export
   const areAllEnabledSelected = (options) => {
     return options.find(o => !isSelected(o) && !o.disabled) === undefined
+  }
+
+  // no export
+  const areAllSelected = (options) => {
+    return options.find(o => !isSelected(o)) === undefined
   }
 
   const getOption = (val) => {

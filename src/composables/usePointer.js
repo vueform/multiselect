@@ -1,7 +1,9 @@
-import { ref } from 'composition-api'
+import { ref, toRefs } from 'composition-api'
 
 export default function usePointer (props, context, dep)
 {
+  const { groupSelect, mode, groups } = toRefs(props)
+
   // ================ DATA ================
 
   const pointer = ref(null)
@@ -10,6 +12,10 @@ export default function usePointer (props, context, dep)
 
   const setPointer = (option) => {
     if (option === undefined || (option !== null && option.disabled)) {
+      return
+    }
+
+    if (groups.value && option && option.group && (mode.value === 'single' || !groupSelect.value)) {
       return
     }
 
