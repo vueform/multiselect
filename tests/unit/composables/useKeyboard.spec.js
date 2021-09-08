@@ -5,8 +5,8 @@ jest.useFakeTimers()
 
 describe('useKeyboard', () => {
 
-  describe('handleAddTag', () => {
-    it('should set pointer manually and select it when showOptions are false and should add tag', async () => {
+  describe('preparePointer', () => {
+    it('should set pointer manually when showOptions are false and should add tag', async () => {
       let select = createSelect({
         value: null,
         options: [],
@@ -18,13 +18,9 @@ describe('useKeyboard', () => {
 
       select.vm.search = 'lorem'
 
+      select.vm.preparePointer()
+
       select.vm.handleKeydown({keyCode: 13, preventDefault: () => {}})
-
-      expect(select.vm.pointer).toStrictEqual({value:'lorem',label:'lorem'})
-
-      await nextTick()
-
-      expect(getValue(select)).toStrictEqual(['lorem'])
     })
   })
 
@@ -123,12 +119,13 @@ describe('useKeyboard', () => {
         expect(getValue(select)).toStrictEqual(2)
       })
 
-      it('should not select pointer when mode=tags and addTagOn does not contain enter', async () => {
+      it('should not select pointer when mode=tags and createTag and addTagOn does not contain enter', async () => {
         let select = createSelect({
           mode: 'tags',
           value: [],
           options: [1,2,3],
-          addTagOn: ['space']
+          addTagOn: ['space'],
+          createTag: true,
         })
 
         select.vm.setPointer(select.vm.getOption(2))
@@ -140,12 +137,13 @@ describe('useKeyboard', () => {
         expect(getValue(select)).toStrictEqual([])
       })
 
-      it('should select pointer when mode=tags and addTagOn does contain enter', async () => {
+      it('should select pointer when mode=tags and createTag and addTagOn does contain enter', async () => {
         let select = createSelect({
           mode: 'tags',
           value: [],
           options: [1,2,3],
-          addTagOn: ['space', 'enter']
+          addTagOn: ['space', 'enter'],
+          createTag: true,
         })
 
         select.vm.setPointer(select.vm.getOption(2))
@@ -245,12 +243,13 @@ describe('useKeyboard', () => {
         expect(getValue(select)).toStrictEqual([1])
       })
 
-      it('should select pointer if not searchable and tags and addTagOn contains space', async () => {
+      it('should select pointer if not searchable and createTag and tags and addTagOn contains space', async () => {
         let select = createSelect({
           mode: 'tags',
           value: [1],
           options: [1,2,3],
           addTagOn: ['space'],
+          createTag: true,
         })
 
         select.vm.setPointer(select.vm.getOption(2))
@@ -262,13 +261,14 @@ describe('useKeyboard', () => {
         expect(getValue(select)).toStrictEqual([1,2])
       })
 
-      it('should select pointer if searchable and tags and addTagOn contains space', async () => {
+      it('should select pointer if searchable and createTag and tags and addTagOn contains space', async () => {
         let select = createSelect({
           mode: 'tags',
           value: [1],
           options: [1,2,3],
           searchable: true,
           addTagOn: ['space'],
+          createTag: true,
         })
 
         select.vm.setPointer(select.vm.getOption(2))
@@ -280,12 +280,13 @@ describe('useKeyboard', () => {
         expect(getValue(select)).toStrictEqual([1, 2])
       })
 
-      it('should not select pointer if not searchable and tags and addTagOn does not contain space', async () => {
+      it('should not select pointer if not searchable and createTag and tags and addTagOn does not contain space', async () => {
         let select = createSelect({
           mode: 'tags',
           value: [1],
           options: [1,2,3],
           addTagOn: ['enter'],
+          createTag: true,
         })
 
         select.vm.setPointer(select.vm.getOption(2))
@@ -297,13 +298,14 @@ describe('useKeyboard', () => {
         expect(getValue(select)).toStrictEqual([1])
       })
 
-      it('should not select pointer if searchable and tags and addTagOn does not contain space', async () => {
+      it('should not select pointer if searchable and createTag and tags and addTagOn does not contain space', async () => {
         let select = createSelect({
           mode: 'tags',
           value: [1],
           options: [1,2,3],
           searchable: true,
           addTagOn: ['enter'],
+          createTag: true,
         })
 
         select.vm.setPointer(select.vm.getOption(2))

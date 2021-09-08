@@ -16,7 +16,7 @@ describe('useSearch', () => {
         searchable: true,
       })
 
-      expect(select.vm.input.type).toBe('text')
+      expect(select.vm.input.type).toBe('search')
     })
   })
 
