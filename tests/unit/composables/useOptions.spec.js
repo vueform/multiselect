@@ -705,7 +705,7 @@ describe('useOptions', () => {
       ])
     })
 
-    it('should hide group if groupHideEmpty=false and has no options', async () => {
+    it('should not hide group if groupHideEmpty=false and has no options', async () => {
       let select = createSelect({
         mode: 'multiple',
         groups: true,
@@ -743,6 +743,54 @@ describe('useOptions', () => {
           group: true,
           options: [],
           __VISIBLE__: []
+        },
+      ])
+    })
+
+    it('should not hide group if groupHideEmpty=true if has seaarch and has visible options', async () => {
+      let select = createSelect({
+        mode: 'multiple',
+        groups: true,
+        searchable: true,
+        groupHideEmpty: true,
+        options: [
+          {
+            label: 'First',
+            options: ['value1','value2',3],
+          },
+          {
+            label: 'Second',
+            options: ['value4', 'value5'],
+          },
+        ],
+        value: ['value4']
+      })
+
+      select.vm.search = 'value'
+
+      expect(select.vm.fg).toStrictEqual([
+        {
+          label: 'First',
+          group: true,
+          options: [
+            { value: 'value1', label: 'value1' },
+            { value: 'value2', label: 'value2' },
+          ],
+          __VISIBLE__: [
+            { value: 'value1', label: 'value1' },
+            { value: 'value2', label: 'value2' },
+          ]
+        },
+        {
+          label: 'Second',
+          group: true,
+          options: [
+            { value: 'value4', label: 'value4' },
+            { value: 'value5', label: 'value5' },
+          ],
+          __VISIBLE__: [
+            { value: 'value5', label: 'value5' },
+          ]
         },
       ])
     })
@@ -1560,6 +1608,22 @@ describe('useOptions', () => {
 
       expect(getValue(select)).toStrictEqual([1,2])
       expect(select.vm.search).toBe('value')
+    })
+
+    it('should not clear pointer after select when multiple and hideSelected is false', async () => {
+      let select = createSelect({
+        mode: 'multiple',
+        value: [],
+        options: [1,2,3],
+        hideSelected: false,
+      })
+
+      select.vm.pointer = select.vm.getOption(2)
+      select.vm.handleOptionClick({ value: 2, label: 2 })
+
+      await nextTick()
+
+      expect(select.vm.pointer).toStrictEqual(select.vm.getOption(2))
     })
 
     /* TAGS */

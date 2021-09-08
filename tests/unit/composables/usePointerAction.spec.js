@@ -67,6 +67,31 @@ describe('usePointer Action', () => {
       destroy(select)
     })
 
+    it('should trigger select with current pointer value if not null when not disabled and pointer is group', async () => {
+      let select = createSelect({
+        mode: 'multiple',
+        groups: true,
+        options: [
+          {
+            label: 'First',
+            options: [1,2,3],
+          },
+          {
+            label: 'Second',
+            options: [4,5,6],
+          },
+        ],
+        value: [],
+      })
+
+      select.vm.pointer = select.vm.fg[1]
+      select.vm.selectPointer()
+
+      await nextTick()
+
+      expect(getValue(select)).toStrictEqual([4,5,6])
+    })
+
     it('should not select option when not disabled', async () => {
       let select = createSelect({
         options: [
@@ -119,6 +144,7 @@ describe('usePointer Action', () => {
 
     it('should set first enabled group if pointer is null and groups=true', async () => {
       let select = createSelect({
+        mode: 'multiple',
         value: null,
         options: [
           {
@@ -229,6 +255,7 @@ describe('usePointer Action', () => {
 
     it('should set first enabled option of the group if pointer is group and has enabled option groups=true', async () => {
       let select = createSelect({
+        mode: 'multiple',
         options: [
           {
             label: 'First',
@@ -256,6 +283,7 @@ describe('usePointer Action', () => {
 
     it('should set next enabled group label if pointer is group and has not enabled options groups=true', async () => {
       let select = createSelect({
+        mode: 'multiple',
         options: [
           {
             label: 'First',
@@ -286,6 +314,7 @@ describe('usePointer Action', () => {
 
     it('should set first enabled group label if pointer is group and has not enabled options and has no enabled next group groups=true', async () => {
       let select = createSelect({
+        mode: 'multiple',
         options: [
           {
             label: 'First',
@@ -320,6 +349,7 @@ describe('usePointer Action', () => {
 
     it('should set next enabled option in group groups=true', async () => {
       let select = createSelect({
+        mode: 'multiple',
         options: [
           {
             label: 'First',
@@ -351,6 +381,7 @@ describe('usePointer Action', () => {
 
     it('should set next enabled group if has no enabled next option groups=true', async () => {
       let select = createSelect({
+        mode: 'multiple',
         options: [
           {
             label: 'First',
@@ -391,6 +422,7 @@ describe('usePointer Action', () => {
 
     it('should set first enabled group if has no enabled next option nor next group groups=true', async () => {
       let select = createSelect({
+        mode: 'multiple',
         options: [
           {
             label: 'First',
@@ -454,6 +486,7 @@ describe('usePointer Action', () => {
 
     it('should set last enabled option if pointer is null groups=true', async () => {
       let select = createSelect({
+        mode: 'multiple',
         options: [
           {
             label: 'First',
@@ -484,6 +517,7 @@ describe('usePointer Action', () => {
 
     it('should set last enabled group label if pointer is null and has no enabled last option groups=true', async () => {
       let select = createSelect({
+        mode: 'multiple',
         options: [
           {
             label: 'First',
@@ -601,6 +635,7 @@ describe('usePointer Action', () => {
 
     it('should set previous group label if has no prev enabled option and pointer is group groups=true', async () => {
       let select = createSelect({
+        mode: 'multiple',
         options: [
           {
             label: 'First',
@@ -632,6 +667,7 @@ describe('usePointer Action', () => {
 
     it('should set last group last enabled option if has no prev option nor group and pointer is group groups=true', async () => {
       let select = createSelect({
+        mode: 'multiple',
         options: [
           {
             label: 'First',
@@ -664,6 +700,7 @@ describe('usePointer Action', () => {
 
     it('should set last group header if has no prev option nor group nor last option in last group and pointer is group groups=true', async () => {
       let select = createSelect({
+        mode: 'multiple',
         options: [
           {
             label: 'First',
@@ -704,6 +741,7 @@ describe('usePointer Action', () => {
 
     it('should set prev enabled option if pointer is not group groups=true', async () => {
       let select = createSelect({
+        mode: 'multiple',
         options: [
           {
             label: 'First',
@@ -735,6 +773,7 @@ describe('usePointer Action', () => {
 
     it('should set group label if has no enabled prev option if pointer is not group groups=true', async () => {
       let select = createSelect({
+        mode: 'multiple',
         options: [
           {
             label: 'First',

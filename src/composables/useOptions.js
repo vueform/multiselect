@@ -44,13 +44,13 @@ export default function useOptions (props, context, dep)
   // extendedOptions
   const eo = computed(() => {
     if (groupped.value) {
-      let groups = ro.value || []
+      let groups = ro.value || /* istanbul ignore next */ []
 
       let eo = []
 
       groups.forEach((group) => {
         optionsToArray(group[groupOptions.value]).forEach((option) => {
-          eo.push({ ...option, disabled: !!group.disabled })
+          eo.push(Object.assign({}, option, group.disabled ? { disabled: true } : {}))
         })
       })
 
@@ -67,15 +67,16 @@ export default function useOptions (props, context, dep)
   })
 
   const fg = computed(() => {
-    return filterGroups((ro.value || []).map((group) => {
+    return filterGroups((ro.value || /* istanbul ignore next */ []).map((group) => {
       const arrayOptions = optionsToArray(group[groupOptions.value])
 
       return {
         ...group,
         group: true,
-        [groupOptions.value]: filterOptions(arrayOptions, false).map(o => ({ ...o, disabled: !!group.disabled })),
-        __VISIBLE__: filterOptions(arrayOptions).map(o => ({ ...o, disabled: !!group.disabled })),
+        [groupOptions.value]: filterOptions(arrayOptions, false).map(o => Object.assign({}, o, group.disabled ? { disabled: true } : {})),
+        __VISIBLE__: filterOptions(arrayOptions).map(o => Object.assign({}, o, group.disabled ? { disabled: true } : {})),
       }
+      // Difference between __VISIBLE__ and {groupOptions}: visible does not contain selected options when hideSelected=true
     }))
   })
 

@@ -31,6 +31,51 @@ describe('usePointer', () => {
 
       expect(select.vm.pointer).toStrictEqual(null)
     })
+
+    it('should not set pointer if option is a group and groupSelect=false', () => {
+      let select = createSelect({
+        mode: 'multiple',
+        value: null,
+        groups: true,
+        options: [
+          {
+            label: 'First',
+            options: [1,2,3],
+          },
+          {
+            label: 'Second',
+            options: [4,5,6],
+          },
+        ],
+        groupSelect: false,
+      })
+
+      select.vm.setPointer(select.vm.fg[1])
+
+      expect(select.vm.pointer).toStrictEqual(null)
+    })
+
+    it('should not set pointer if option is a group and mode=single', () => {
+      let select = createSelect({
+        mode: 'single',
+        value: null,
+        groups: true,
+        options: [
+          {
+            label: 'First',
+            options: [1,2,3],
+          },
+          {
+            label: 'Second',
+            options: [4,5,6],
+          },
+        ],
+      })
+
+      select.vm.setPointer(select.vm.fg[1])
+
+      expect(select.vm.pointer).toStrictEqual(null)
+    })
   })
 
   describe('clearPointer', () => {

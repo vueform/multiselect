@@ -43,7 +43,7 @@ export default function usePointer (props, context, dep)
   })
 
   const prevGroup = computed(() => {
-    const group = isPointerGroup.value ? pointer.value : getParentGroup(pointer.value)
+    const group = isPointerGroup.value ? pointer.value : /* istanbul ignore next */ getParentGroup(pointer.value)
     const groupIndex = groups.value.map(g => g[groupLabel.value]).indexOf(group[groupLabel.value])
     let prevGroup = groups.value[groupIndex - 1]
 
@@ -68,10 +68,6 @@ export default function usePointer (props, context, dep)
 
   const lastGroup = computed(() => {
     return [...groups.value].slice(-1)[0]
-  })
-
-  const lastGroupWithEnabledItems = computed(() => {
-    return groups.value.filter(g=>!g.disabled).find(g => g.__VISIBLE__.find(o => !o.disabled) !== undefined)
   })
   
   const currentGroupFirstEnabledOption = computed(() => {
@@ -132,7 +128,7 @@ export default function usePointer (props, context, dep)
         nextPointer = nextGroup.value
       }
 
-      setPointer(nextPointer || null)
+      setPointer(nextPointer || /* istanbul ignore next */ null)
     } else {
       let next = options.value.map(o => o[valueProp.value]).indexOf(pointer.value[valueProp.value]) + 1
 
@@ -169,7 +165,7 @@ export default function usePointer (props, context, dep)
         prevPointer = isPointerGroup.value ? prevGroup.value : currentGroup.value
       }
 
-      setPointer(prevPointer || null)
+      setPointer(prevPointer || /* istanbul ignore next */ null)
     } else {
       let prevIndex = options.value.map(o => o[valueProp.value]).indexOf(pointer.value[valueProp.value]) - 1
 
