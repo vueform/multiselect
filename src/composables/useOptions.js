@@ -10,7 +10,8 @@ export default function useOptions (props, context, dep)
     options, mode, trackBy, limit, hideSelected, createTag, label,
     appendNewTag, multipleLabel, object, loading, delay, resolveOnLoad,
     minChars, filterResults, clearOnSearch, clearOnSelect, valueProp,
-    canDeselect, max, strict, closeOnSelect,
+    canDeselect, max, strict, closeOnSelect, groups: groupped, groupLabel,
+    groupOptions, groupHideEmpty,
   } = toRefs(props)
 
   // ============ DEPENDENCIES ============
@@ -21,6 +22,7 @@ export default function useOptions (props, context, dep)
   const clearSearch = dep.clearSearch
   const update = dep.update
   const pointer = dep.pointer
+  const clearPointer = dep.clearPointer
   const blur = dep.blur
   const deactivate = dep.deactivate
 
@@ -41,52 +43,57 @@ export default function useOptions (props, context, dep)
   // no export
   // extendedOptions
   const eo = computed(() => {
-    let eo = ro.value || []
+    if (groupped.value) {
+      let groups = ro.value || []
 
-    // Transforming an object to an array of objects
-    if (isObject(eo)) {
-      eo = Object.keys(eo).map((key) => {
-        let val = eo[key]
+      let eo = []
 
-        return { [valueProp.value]: key, [trackBy.value]: val, [label.value]: val}
+      groups.forEach((group) => {
+        optionsToArray(group[groupOptions.value]).forEach((option) => {
+          eo.push(option)
+        })
       })
+
+      return eo
+    } else {
+      let eo = optionsToArray(ro.value || [])
+
+      if (ap.value.length) {
+        eo = eo.concat(ap.value)
+      }
+
+      return eo
     }
+  })
 
-    // Transforming an plain arrays to an array of objects
-    eo = eo.map((val, key) => {
-      return typeof val === 'object' ? val : { [valueProp.value]: val, [trackBy.value]: val, [label.value]: val}
-    })
+  const fg = computed(() => {
+    return filterGroups((ro.value || []).map((group) => {
+      const arrayOptions = optionsToArray(group[groupOptions.value])
 
-    if (ap.value.length) {
-      eo = eo.concat(ap.value)
-    }
-
-    return eo
+      return {
+        ...group,
+        group: true,
+        [groupOptions.value]: filterOptions(arrayOptions, false),
+        __VISIBLE__: filterOptions(arrayOptions),
+      }
+    }))
   })
 
   // filteredOptions
   const fo = computed(() => {
-    let fo = eo.value
+    let options = eo.value
 
     if (createdTag.value.length) {
-      fo = createdTag.value.concat(fo)
+      options = createdTag.value.concat(fo)
     }
 
-    if (search.value && filterResults.value) {
-      fo = fo.filter((option) => {
-        return normalize(option[trackBy.value], strict.value).indexOf(normalize(search.value, strict.value)) !== -1
-      })
-    }
-
-    if (hideSelected.value) {
-      fo = fo.filter((option) => !shouldHideOption(option))
-    }
+    options = filterOptions(options)
 
     if (limit.value > 0) {
-      fo = fo.slice(0, limit.value)
+      options = options.slice(0, limit.value)
     }
 
-    return fo
+    return options
   })
 
   const hasSelected = computed(() => {
@@ -145,6 +152,9 @@ export default function useOptions (props, context, dep)
 
   // =============== METHODS ==============
 
+  /**
+   * @param {array|object|string|number} option 
+   */
   const select = (option) => {
     if (typeof option !== 'object') {
       option = getOption(option)
@@ -176,7 +186,9 @@ export default function useOptions (props, context, dep)
 
       case 'tags':
       case 'multiple':
-        update(iv.value.filter((val) => val[valueProp.value] != option[valueProp.value]))
+        update(Array.isArray(option)
+          ? iv.value.filter(v => option.map(o => o[valueProp.value]).indexOf(v[valueProp.value]) === -1)
+          : iv.value.filter(v => v[valueProp.value] != option[valueProp.value]))
         break
     }
 
@@ -262,6 +274,10 @@ export default function useOptions (props, context, dep)
         if (clearOnSelect.value) {
           clearSearch()
         }
+
+        if (hideSelected.value) {
+          clearPointer()
+        }
         break
 
       case 'tags':
@@ -289,12 +305,45 @@ export default function useOptions (props, context, dep)
         }
 
         select(option)
+
+        if (hideSelected.value) {
+          clearPointer()
+        }
         break
     }
 
     if (closeOnSelect.value) {
       deactivate()
     }
+  }
+
+  const handleGroupClick = (group) => {
+    if (isDisabled(group) || mode.value === 'single') {
+      return
+    }
+
+    switch (mode.value) {
+      case 'multiple':
+      case 'tags':
+        if (areAllEnabledSelected(group[groupOptions.value])) {
+          deselect(group[groupOptions.value])
+        } else {
+          select(group[groupOptions.value]
+            .filter(o => iv.value.map(v => v[valueProp.value]).indexOf(o[valueProp.value]) === -1)
+            .filter(o => !o.disabled)
+            .filter((o, k) => iv.value.length + 1 + k <= max.value || max.value === -1)
+          )
+        }
+        break
+    }
+
+    if (closeOnSelect.value) {
+      deactivate()
+    }
+  }
+
+  const areAllEnabledSelected = (options) => {
+    return options.find(o => !isSelected(o) && !o.disabled) === undefined
   }
 
   const getOption = (val) => {
@@ -314,6 +363,55 @@ export default function useOptions (props, context, dep)
   // no export
   const appendOption = (option) => {
     ap.value.push(option)
+  }
+
+  const filterGroups = (groups) => {
+    // If the search has value we need to filter among 
+    // he ones that are visible to the user to avoid
+    // displaying groups which technically have options
+    // based on search but that option is already selected.
+    return groupHideEmpty.value
+      ? groups.filter(g => search.value
+          ? g.__VISIBLE__.length
+          : g[groupOptions.value].length
+        )
+      : groups.filter(g => search.value ? g.__VISIBLE__.length : true)
+  }
+
+  const filterOptions = (options, excludeHideSelected = true) => {
+    let fo = options
+    
+    if (search.value && filterResults.value) {
+      fo = fo.filter((option) => {
+        return normalize(option[trackBy.value], strict.value).indexOf(normalize(search.value, strict.value)) !== -1
+      })
+    }
+
+    if (hideSelected.value && excludeHideSelected) {
+      fo = fo.filter((option) => !shouldHideOption(option))
+    }
+
+    return fo
+  }
+
+  const optionsToArray = (options) => {
+    let uo = options
+    
+    // Transforming an object to an array of objects
+    if (isObject(uo)) {
+      uo = Object.keys(uo).map((key) => {
+        let val = uo[key]
+
+        return { [valueProp.value]: key, [trackBy.value]: val, [label.value]: val}
+      })
+    }
+
+    // Transforming an plain arrays to an array of objects
+    uo = uo.map((val) => {
+      return typeof val === 'object' ? val : { [valueProp.value]: val, [trackBy.value]: val, [label.value]: val}
+    })
+
+    return uo
   }
 
   // no export
@@ -473,6 +571,8 @@ export default function useOptions (props, context, dep)
     multipleLabelText,
     eo,
     extendedOptions: eo,
+    fg,
+    filteredGroups: fg,
     noOptions,
     noResults,
     resolving,
@@ -486,6 +586,7 @@ export default function useOptions (props, context, dep)
     isMax,
     getOption,
     handleOptionClick,
+    handleGroupClick,
     handleTagRemove,
     refreshOptions,
     resolveOptions,

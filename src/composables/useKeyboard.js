@@ -4,7 +4,7 @@ export default function useKeyboard (props, context, dep)
 {
   const {
       mode, addTagOn, createTag, openDirection, searchable,
-      showOptions, valueProp, 
+      showOptions, valueProp, groups: groupped,
     } = toRefs(props)
 
   // ============ DEPENDENCIES ============
@@ -22,12 +22,15 @@ export default function useKeyboard (props, context, dep)
   // =============== METHODS ==============
 
   // no export
-  const handleAddTag = () => {
-    if (mode.value === 'tags' && !showOptions.value && createTag.value && searchable.value) {
+  const preparePointer = () => {
+    // When options are hidden and creating tags is allowed
+    // no pointer will be set (because options are hidden).
+    // In such case we need to set the pointer manually to the 
+    // first option, which equals to the option created from
+    // the search value.
+    if (mode.value === 'tags' && !showOptions.value && createTag.value && searchable.value && !groupped.value) {
       setPointer(fo.value[fo.value.map(o => o[valueProp.value]).indexOf(search.value)])
     }
-
-    selectPointer()
   }
 
   const handleKeydown = (e) => {
@@ -53,32 +56,55 @@ export default function useKeyboard (props, context, dep)
       case 13:
         e.preventDefault()
 
-        if (mode.value === 'tags' && addTagOn.value.indexOf('enter') === -1) {
+        if (mode.value === 'tags' && addTagOn.value.indexOf('enter') === -1 && createTag.value) {
           return
         }
         
-        handleAddTag()
-        break
-
-      // escape
-      case 27:
-        blur()
+        preparePointer()
+        selectPointer()
         break
 
       // space
       case 32:
-        if (mode.value !== 'tags' && searchable.value) {
+        if (searchable.value && mode.value !== 'tags' && !createTag.value) {
           return
         }
 
-        if (mode.value === 'tags' && addTagOn.value.indexOf('space') === -1) {
+        if (mode.value === 'tags' && addTagOn.value.indexOf('space') === -1 && createTag.value) {
           return
         }
 
         e.preventDefault()
         
-        handleAddTag()
+        preparePointer()
+        selectPointer()
         break
+      
+      // semicolon
+      // comma
+      case 186:
+      case 188:
+        if (mode.value !== 'tags') {
+          return
+        }
+
+        const charMap = {
+          186: ';',
+          188: ','
+        }
+
+        if (addTagOn.value.indexOf(charMap[e.keyCode]) === -1 || !createTag.value) {
+          return
+        }
+
+        preparePointer()
+        selectPointer()
+        e.preventDefault()
+        break
+
+      // escape
+      case 27:
+        blur()
 
       // up
       case 38:
@@ -101,38 +127,11 @@ export default function useKeyboard (props, context, dep)
 
         openDirection.value === 'top' ? backwardPointer() : forwardPointer()
         break
-
-      // semicolon
-      case 186:
-        if (mode.value !== 'tags') {
-          return
-        }
-
-        if (addTagOn.value.indexOf(';') === -1 || !createTag.value) {
-          return
-        }
-
-        handleAddTag()
-        e.preventDefault()
-        break
-      
-      // comma
-      case 188:
-        if (mode.value !== 'tags') {
-          return
-        }
-
-        if (addTagOn.value.indexOf(',') === -1 || !createTag.value) {
-          return
-        }
-
-        handleAddTag()
-        e.preventDefault()
-        break
     }
   }
 
   return {
     handleKeydown,
+    preparePointer,
   }
 }

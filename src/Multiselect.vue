@@ -114,18 +114,53 @@
       <slot name="beforelist" :options="fo"></slot>
 
       <ul :class="classList.options">
-        <li
-          v-for="(option, i, key) in fo"
-          :class="classList.option(option)"
-          :key="key"
-          :data-pointed="isPointed(option)"
-          @mouseenter="setPointer(option)"
-          @click="handleOptionClick(option)"
-        >
-          <slot name="option" :option="option" :search="search">
-            <span>{{ option[label] }}</span>
-          </slot>
-        </li>
+        <template v-if="groups">
+          <li
+            v-for="(group, i, key) in fg"
+            :class="classList.group"
+            :key="key"
+          >
+            <div
+              :class="classList.groupLabel(group)"
+              :data-pointed="isPointed(group)"
+              @mouseenter="setPointer(group)"
+              @click="handleGroupClick(group)"
+            >
+              <slot name="grouplabel" :group="group">
+                <span>{{ group[groupLabel] }}</span>
+              </slot>
+            </div>
+
+            <ul :class="classList.groupOptions">
+              <li
+                v-for="(option, i, key) in group.__VISIBLE__"
+                :class="classList.option(option, group)"
+                :key="key"
+                :data-pointed="isPointed(option)"
+                @mouseenter="setPointer(option)"
+                @click="handleOptionClick(option)"
+              >
+                <slot name="option" :option="option" :search="search">
+                  <span>{{ option[label] }}</span>
+                </slot>
+              </li>
+            </ul>
+          </li>
+        </template>
+        <template v-else>
+          <li
+            v-for="(option, i, key) in fo"
+            :class="classList.option(option)"
+            :key="key"
+            :data-pointed="isPointed(option)"
+            @mouseenter="setPointer(option)"
+            @click="handleOptionClick(option)"
+          >
+            <slot name="option" :option="option" :search="search">
+              <span>{{ option[label] }}</span>
+            </slot>
+          </li>
+        </template>
       </ul>
 
       <slot v-if="noOptions" name="nooptions">
@@ -369,6 +404,26 @@
         type: String,
         required: false,
       },
+      groups: {
+        type: Boolean,
+        required: false,
+        default: false,
+      },
+      groupLabel: {
+        type: String,
+        required: false,
+        default: 'label',
+      },
+      groupOptions: {
+        type: String,
+        required: false,
+        default: 'options',
+      },
+      groupHideEmpty: {
+        type: Boolean,
+        required: false,
+        default: false,
+      },
     },
     setup(props, context)
     { 
@@ -395,15 +450,20 @@
         clearSearch: search.clearSearch,
         update: data.update,
         pointer: pointer.pointer,
+        clearPointer: pointer.clearPointer,
         blur: multiselect.blur,
         deactivate: multiselect.deactivate,
       })
 
       const pointerAction = usePointerAction(props, context, {
         fo: options.fo,
+        fg: options.fg,
         handleOptionClick: options.handleOptionClick,
+        handleGroupClick: options.handleGroupClick,
         search: search.search,
         pointer: pointer.pointer,
+        setPointer: pointer.setPointer,
+        clearPointer: pointer.clearPointer,
         multiselect: multiselect.multiselect,
       })
 
@@ -411,7 +471,7 @@
         iv: value.iv,
         update: data.update,
         search: search.search,
-        setPointer: pointerAction.setPointer,
+        setPointer: pointer.setPointer,
         selectPointer: pointerAction.selectPointer,
         backwardPointer: pointerAction.backwardPointer,
         forwardPointer: pointerAction.forwardPointer,

@@ -67,6 +67,13 @@
   background: var(--ms-bg, #FFFFFF);
   border-radius: var(--ms-radius, 4px);
   padding-left: var(--ms-px, 0.875rem);
+
+  &::-webkit-search-decoration,
+  &::-webkit-search-cancel-button,
+  &::-webkit-search-results-button,
+  &::-webkit-search-results-decoration {
+    -webkit-appearance:none;
+  }
 }
 
 .multiselect-tags {
@@ -160,6 +167,14 @@
   font-family: inherit;
   box-sizing: border-box;
   width: 100%;
+  appearance: none;
+
+  &::-webkit-search-decoration,
+  &::-webkit-search-cancel-button,
+  &::-webkit-search-results-button,
+  &::-webkit-search-results-decoration {
+    -webkit-appearance:none;
+  }
 }
 
 .multiselect-spinner {
@@ -283,7 +298,30 @@
   }
 }
 
-.multiselect-option {
+.multiselect-group {
+  
+}
+
+
+.multiselect-group-label {
+  padding: var(--ms-option-py, 0.3rem) var(--ms-option-px, 0.75rem);
+  font-size: 0.875rem;
+  font-weight: 600;
+  background: #E5E7EB;
+  color: #374151;
+
+  &.is-pointed {
+    background: var(--ms-group-bg-pointed, #D1D5DB);
+    color: var(--ms-group-color-pointed, #374151);
+  }
+}
+
+.multiselect-group-options {
+  padding: 0;
+}
+
+.multiselect-option,
+.multiselect-group-label {
   display: flex;
   box-sizing: border-box;
   text-decoration: none;
@@ -291,14 +329,7 @@
   justify-content: flex-start;
   text-align: left;
   cursor: pointer;
-  font-size: var(--ms-option-font-size, 1rem);
   line-height: var(--ms-option-line-height, 1.375);
-  padding: var(--ms-option-py, 0.5rem) var(--ms-option-px, 0.75rem);
-
-  &.is-pointed {
-    background: var(--ms-option-bg-pointed, #F3F4F6);
-    color: var(--ms-option-color-pointed, #1F2937);
-  }
 
   &.is-disabled {
     background: var(--ms-option-bg-disabled, #FFFFFF);
@@ -319,6 +350,16 @@
   &.is-selected.is-disabled {
     background: var(--ms-option-bg-selected-disabled, #87dcc0);
     color: var(--ms-option-color-selected-disabled, #D1FAE5);
+  }
+}
+
+.multiselect-option {
+  padding: var(--ms-option-py, 0.5rem) var(--ms-option-px, 0.75rem);
+  font-size: var(--ms-option-font-size, 1rem);
+
+  &.is-pointed {
+    background: var(--ms-option-bg-pointed, #F3F4F6);
+    color: var(--ms-option-color-pointed, #1F2937);
   }
 }
 

@@ -41,6 +41,14 @@ export default function useClasses (props, context, dependencies)
     dropdownHidden: 'is-hidden',
     options: 'multiselect-options',
     optionsTop: 'is-top',
+    group: 'multiselect-group',
+    groupLabel: 'multiselect-group-label',
+    groupLabelPointed: 'is-pointed',
+    groupLabelSelected: 'is-selected',
+    groupLabelDisabled: 'is-disabled',
+    groupLabelSelectedPointed: 'is-selected is-pointed',
+    groupLabelSelectedDisabled: 'is-selected is-disabled',
+    groupOptions: 'multiselect-group-options',
     option: 'multiselect-option',
     optionPointed: 'is-pointed',
     optionSelected: 'is-selected',
@@ -86,14 +94,29 @@ export default function useClasses (props, context, dependencies)
         .concat(!isOpen.value || !showOptions.value ? classes.dropdownHidden : []),
       options: [classes.options]
         .concat(openDirection.value === 'top' ? classes.optionsTop : []),
-      option: (o) => {
+      group: classes.group,
+      groupLabel: (g) => {
+        let groupLabel = [classes.groupLabel]
+
+        if (isPointed(g)) {
+          groupLabel.push(isSelected(g) ? classes.groupLabelSelectedPointed : classes.groupLabelPointed)
+        } else if (isSelected(g)) {
+          groupLabel.push(isDisabled(g) ? classes.groupLabelSelectedDisabled : classes.groupLabelSelected)
+        } else if (isDisabled(g)) {
+          groupLabel.push(classes.groupLabelDisabled)
+        }
+
+        return groupLabel
+      },
+      groupOptions: classes.groupOptions,
+      option: (o, g) => {
         let option = [classes.option]
 
         if (isPointed(o)) {
           option.push(isSelected(o) ? classes.optionSelectedPointed : classes.optionPointed)
         } else if (isSelected(o)) {
           option.push(isDisabled(o) ? classes.optionSelectedDisabled : classes.optionSelected)
-        } else if (isDisabled(o)) {
+        } else if (isDisabled(o) || (g && isDisabled(g))) {
           option.push(classes.optionDisabled)
         }
 
