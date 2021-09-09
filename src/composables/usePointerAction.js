@@ -95,10 +95,10 @@ export default function usePointer (props, context, dep)
   // =============== METHODS ==============
 
   const isPointed = (option) => {
-    return !!pointer.value && (
+    return (!!pointer.value && (
       (!option.group && pointer.value[valueProp.value] == option[valueProp.value]) ||
       (option.group !== undefined && pointer.value[groupLabel.value] == option[groupLabel.value])
-    )
+    )) ? true : undefined
   }
 
   const setPointerFirst = () => {
@@ -197,6 +197,14 @@ export default function usePointer (props, context, dep)
     }
 
     let wrapper = pointedOption.parentElement.parentElement
+
+    if (groupped.value) {
+      wrapper = isPointerGroup.value
+        ? pointedOption.parentElement.parentElement.parentElement
+        : pointedOption.parentElement.parentElement.parentElement.parentElement
+    }
+
+    console.log(wrapper)
 
     if (pointedOption.offsetTop + pointedOption.offsetHeight > wrapper.clientHeight + wrapper.scrollTop) {
       wrapper.scrollTop = pointedOption.offsetTop + pointedOption.offsetHeight - wrapper.clientHeight
