@@ -53,6 +53,7 @@ declare class Multiselect extends Vue {
   $emit(eventName: 'remove', e: {originalEvent: Event, value: any, option: any}): this;
   $emit(eventName: 'search-change', e: {originalEvent: Event, query: string}): this;
   $emit(eventName: 'tag', e: {originalEvent: Event, query: string}): this;
+  $emit(eventName: 'paste', e: {originalEvent: Event}): this;
   $emit(eventName: 'open'): this;
   $emit(eventName: 'close'): this;
   $emit(eventName: 'clear'): this;

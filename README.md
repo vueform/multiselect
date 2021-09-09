@@ -227,6 +227,7 @@ Join our [Discord channel](https://discord.gg/WhX2nG6GTQ) or [open an issue](htt
 | **deselect** | `value`, `option` | Deselects an option based on its value. |
 | **remove** | `value`, `option` | Alias for `deselect`. |
 | **clear** |  | Deselects all selected options. |
+| **clearSearch** |  | Clears current search query. |
 | **refreshOptions** | `callback` | Refreshes async options list. |
 
 
@@ -259,6 +260,7 @@ mounted() {
 | **@select** | `option` | Emitted after an option or tag is selected. |
 | **@tag** | `query` | Emitted after enter is hit when a new tag is being created. |
 | **@clear** |  | Emitted when the options are cleared. |
+| **@paste** | `Event` | Emitted when value is pasted into the search field. |
 
 ## Slots
 

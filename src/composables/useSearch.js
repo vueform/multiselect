@@ -19,6 +19,10 @@ export default function useSearch (props, context, dep)
     search.value = e.target.value
   }
 
+  const handlePaste = (e) => {
+    context.emit('paste', e)
+  }
+
   // ============== WATCHERS ==============
 
   watch(search, (val) => {
@@ -30,5 +34,6 @@ export default function useSearch (props, context, dep)
     input,
     clearSearch,
     handleSearchInput,
+    handlePaste,
   }
 }

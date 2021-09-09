@@ -18,6 +18,7 @@
         :class="classList.search"
         :autocomplete="autocomplete"
         @input="handleSearchInput"
+        @paste.stop="handlePaste"
         ref="input"
       />
     </template>
@@ -58,6 +59,7 @@
             :class="classList.tagsSearch"
             :autocomplete="autocomplete"
             @input="handleSearchInput"
+            @paste.stop="handlePaste"
             ref="input"
           />
         </div>
