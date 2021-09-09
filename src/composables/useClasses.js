@@ -13,6 +13,8 @@ export default function useClasses (props, context, dependencies)
   const isDisabled = dependencies.isDisabled
   const isActive = dependencies.isActive
   const canPointGroups = dependencies.canPointGroups
+  const resolving = dependencies.resolving
+  const fo = dependencies.fo
 
   const classes = {
     container: 'multiselect',
@@ -67,11 +69,13 @@ export default function useClasses (props, context, dependencies)
   // ============== COMPUTED ==============
 
   const classList = computed(() => {
+    const showDropdown = isOpen.value && showOptions.value && (!resolving.value || (resolving.value && fo.value.length))
+
     return {
       container: [classes.container]
         .concat(disabled.value ? classes.containerDisabled : [])
-        .concat(isOpen.value && openDirection.value === 'top' && showOptions.value ? classes.containerOpenTop : [])
-        .concat(isOpen.value && openDirection.value !== 'top' && showOptions.value ? classes.containerOpen : [])
+        .concat(showDropdown && openDirection.value === 'top'  ? classes.containerOpenTop : [])
+        .concat(showDropdown && openDirection.value !== 'top' ? classes.containerOpen : [])
         .concat(isActive.value ? classes.containerActive : []),
       spacer: classes.spacer,
       singleLabel: classes.singleLabel,
@@ -93,7 +97,7 @@ export default function useClasses (props, context, dependencies)
       spinner: classes.spinner,
       dropdown: [classes.dropdown]
         .concat(openDirection.value === 'top' ? classes.dropdownTop : [])
-        .concat(!isOpen.value || !showOptions.value ? classes.dropdownHidden : []),
+        .concat(!isOpen.value || !showOptions.value || !showDropdown ? classes.dropdownHidden : []),
       options: [classes.options]
         .concat(openDirection.value === 'top' ? classes.optionsTop : []),
       group: classes.group,

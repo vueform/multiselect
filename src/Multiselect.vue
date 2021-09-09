@@ -498,6 +498,8 @@
         isSelected: options.isSelected,
         isDisabled: options.isDisabled,
         isActive: multiselect.isActive,
+        resolving: options.resolving,
+        fo: options.fo,
       })
 
       return {
