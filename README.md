@@ -445,7 +445,7 @@ Then you need to import `themes/tailwind.scss` to you main component:
 </template>
 
 <script>
-  <!-- ... --->
+  // ...
 </script>
 
 <script lang="scss">
