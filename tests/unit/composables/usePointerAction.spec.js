@@ -3,17 +3,17 @@ import { nextTick } from 'composition-api'
 
 describe('usePointer Action', () => {
   describe('isPointed', () => {
-    it('should be true if option is pointer', () => {
+    it('should be true if option is pointed', () => {
       let select = createSelect({
         options: [1,2,3],
         valueProp: 'v',
       })
 
-      expect(select.vm.isPointed(select.vm.getOption(2))).toBe(false)
+      expect(select.vm.isPointed(select.vm.getOption(2))).toBe(undefined)
 
       select.vm.pointer = select.vm.getOption(2)
 
-      expect(select.vm.isPointed(select.vm.getOption(1))).toBe(false)
+      expect(select.vm.isPointed(select.vm.getOption(1))).toBe(undefined)
       expect(select.vm.isPointed(select.vm.getOption(2))).toBe(true)
     })
   })

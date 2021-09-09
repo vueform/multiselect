@@ -14,9 +14,10 @@ describe('useSearch', () => {
     it('should equal to search input', () => {
       let select = createSelect({
         searchable: true,
+        inputType: 'search',
       })
 
-      expect(select.vm.input.type).toBe('search')
+      expect(select.vm.input.type).toBe(select.vm.inputType)
     })
   })
 
@@ -46,6 +47,24 @@ describe('useSearch', () => {
       await nextTick()
 
       expect(select.vm.search).toBe('aaa')
+    })
+  })
+
+  describe('handlePaste', () => {
+    it('should emit paste event on @paste', async () => {
+      let select = createSelect({
+        value: null,
+        options: [1,2,3],
+        searchable: true,
+      })
+
+      const e = new Event('paste')
+
+      select.vm.input.dispatchEvent(e)
+
+      await nextTick()
+
+      expect(select.emitted('paste')[0][0]).toBe(e)
     })
   })
 

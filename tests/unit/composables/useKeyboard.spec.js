@@ -539,5 +539,76 @@ describe('useKeyboard', () => {
         expect(getValue(select)).toStrictEqual([1,2])
       })
     })
+
+    describe('tab', () => {
+      it('should not do anything when not tags', async () => {
+        let select = createSelect({
+          value: 1,
+          options: [1,2,3],
+        })
+
+        select.vm.setPointer(select.vm.getOption(2))
+
+        keydown(select, { keyCode: 9 })
+
+        await nextTick()
+
+        expect(getValue(select)).toStrictEqual(1)
+      })
+
+      it('should not do anything when if mode=tags and addTagOn contains tab but createTag is false', async () => {
+        let select = createSelect({
+          mode: 'tags',
+          value: [1],
+          options: [1,2,3],
+          addTagOn: ['tab'],
+          createTag: false,
+        })
+
+        select.vm.setPointer(select.vm.getOption(2))
+
+        keydown(select, { keyCode: 9 })
+
+        await nextTick()
+
+        expect(getValue(select)).toStrictEqual([1])
+      })
+
+      it('should not do anything when if mode=tags and addTagOn does not contain tab', async () => {
+        let select = createSelect({
+          mode: 'tags',
+          value: [1],
+          options: [1,2,3],
+          addTagOn: ['enter'],
+          createTag: true,
+        })
+
+        select.vm.setPointer(select.vm.getOption(2))
+
+        keydown(select, { keyCode: 9 })
+
+        await nextTick()
+
+        expect(getValue(select)).toStrictEqual([1])
+      })
+
+      it('should select pointer if mode=tags and addTagOn contains tab', async () => {
+        let select = createSelect({
+          mode: 'tags',
+          value: [1],
+          options: [1,2,3],
+          addTagOn: ['tab'],
+          createTag: true,
+        })
+
+        select.vm.setPointer(select.vm.getOption(2))
+
+        keydown(select, { keyCode: 9 })
+
+        await nextTick()
+
+        expect(getValue(select)).toStrictEqual([1,2])
+      })
+    })
   })
 })

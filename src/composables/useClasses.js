@@ -68,14 +68,16 @@ export default function useClasses (props, context, dependencies)
 
   // ============== COMPUTED ==============
 
-  const classList = computed(() => {
-    const showDropdown = isOpen.value && showOptions.value && (!resolving.value || (resolving.value && fo.value.length))
+  const showDropdown = computed(() => {
+    return !!(isOpen.value && showOptions.value && (!resolving.value || (resolving.value && fo.value.length)))
+  })
 
+  const classList = computed(() => {
     return {
       container: [classes.container]
         .concat(disabled.value ? classes.containerDisabled : [])
-        .concat(showDropdown && openDirection.value === 'top'  ? classes.containerOpenTop : [])
-        .concat(showDropdown && openDirection.value !== 'top' ? classes.containerOpen : [])
+        .concat(showDropdown.value && openDirection.value === 'top'  ? classes.containerOpenTop : [])
+        .concat(showDropdown.value && openDirection.value !== 'top' ? classes.containerOpen : [])
         .concat(isActive.value ? classes.containerActive : []),
       spacer: classes.spacer,
       singleLabel: classes.singleLabel,
@@ -97,7 +99,7 @@ export default function useClasses (props, context, dependencies)
       spinner: classes.spinner,
       dropdown: [classes.dropdown]
         .concat(openDirection.value === 'top' ? classes.dropdownTop : [])
-        .concat(!isOpen.value || !showOptions.value || !showDropdown ? classes.dropdownHidden : []),
+        .concat(!isOpen.value || !showOptions.value || !showDropdown.value ? classes.dropdownHidden : []),
       options: [classes.options]
         .concat(openDirection.value === 'top' ? classes.optionsTop : []),
       group: classes.group,
@@ -140,5 +142,6 @@ export default function useClasses (props, context, dependencies)
 
   return {
     classList,
+    showDropdown,
   }
 }

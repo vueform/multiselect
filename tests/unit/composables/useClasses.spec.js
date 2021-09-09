@@ -1,5 +1,7 @@
-import { createSelect } from 'unit-test-helpers'
+import { createSelect, destroy } from 'unit-test-helpers'
 import { nextTick } from 'composition-api'
+
+jest.useFakeTimers()
 
 describe('useClasses', () => {
   describe('classList', () => {
@@ -72,6 +74,94 @@ describe('useClasses', () => {
       })
 
       expect(select.vm.classList.groupLabel(select.vm.fg[0])).toStrictEqual(['multiselect-group-label', 'is-selected is-disabled', 'is-pointable'])
+    })
+  })
+
+  describe('showDropdown', () => {
+    it('should be true if resolving but has options', async () => {
+      const select = createSelect({
+        mode: 'multiple',
+        value: [],
+        clearOnSearch: false,
+        showOptions: true,
+        options: async () => {
+          return new Promise((resolve, reject) => {
+            setTimeout(() => {
+              resolve([1,2,3])
+            }, 1)
+          })
+        }
+      }, {
+        attach: true,
+      })
+
+      select.vm.activate()
+
+      expect(select.vm.showDropdown).toBe(false)
+
+      jest.advanceTimersByTime(1)
+      await nextTick()
+      await nextTick()
+
+      expect(select.vm.showDropdown).toBe(true)
+
+      select.vm.search = 'a'
+
+      expect(select.vm.showDropdown).toBe(true)
+
+      jest.advanceTimersByTime(1)
+      await nextTick()
+      await nextTick()
+
+      expect(select.vm.showDropdown).toBe(true)
+
+      destroy(select)
+    })
+
+    it('should be false if resolving but has no options', async () => {
+      const select = createSelect({
+        mode: 'multiple',
+        value: [],
+        clearOnSearch: true,
+        showOptions: true,
+        delay: 1,
+        options: async () => {
+          return new Promise((resolve, reject) => {
+            setTimeout(() => {
+              resolve([1,2,3])
+            }, 1)
+          })
+        }
+      }, {
+        attach: true,
+      })
+
+      select.vm.activate()
+
+      expect(select.vm.showDropdown).toBe(false)
+
+      jest.advanceTimersByTime(1)
+      await nextTick()
+      await nextTick()
+
+      expect(select.vm.showDropdown).toBe(true)
+
+      select.vm.search = 'aaa'
+      
+      await nextTick()
+      await nextTick()
+
+      expect(select.vm.resolving).toBe(true)
+      expect(select.vm.showDropdown).toBe(false)
+
+      jest.advanceTimersByTime(2)
+      await nextTick()
+      await nextTick()
+      await nextTick()
+
+      expect(select.vm.showDropdown).toBe(true)
+
+      destroy(select)
     })
   })
 })

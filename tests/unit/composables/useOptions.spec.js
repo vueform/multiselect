@@ -794,6 +794,16 @@ describe('useOptions', () => {
         },
       ])
     })
+
+    it('should be an empty array if groups=false', async () => {
+      let select = createSelect({
+        mode: 'multiple',
+        options: [1,2,3],
+        value: []
+      })
+
+      expect(select.vm.fg).toStrictEqual([])
+    })
   })
 
   describe('hasSelected', () => {
@@ -1626,6 +1636,54 @@ describe('useOptions', () => {
       expect(select.vm.pointer).toStrictEqual(select.vm.getOption(2))
     })
 
+    it('should blur input after select if closeOnSelect=true && mode=multiple', async () => {
+      let select = createSelect({
+        mode: 'multiple',
+        value: [],
+        options: [1,2,3],
+        searchable: true,
+        closeOnSelect: true,
+      }, {
+        attach: true,
+      })
+
+      select.vm.input.focus()
+
+      expect(document.activeElement == select.vm.input).toBe(true)
+
+      select.vm.handleOptionClick(select.vm.getOption(2))
+
+      await nextTick()
+
+      expect(document.activeElement == select.vm.input).toBe(false)
+
+      destroy(select)
+    })
+
+    it('should not blur input after select if closeOnSelect=false && mode=multiple', async () => {
+      let select = createSelect({
+        mode: 'multiple',
+        value: [],
+        options: [1,2,3],
+        searchable: true,
+        closeOnSelect: false,
+      }, {
+        attach: true,
+      })
+
+      select.vm.input.focus()
+
+      expect(document.activeElement == select.vm.input).toBe(true)
+
+      select.vm.handleOptionClick(select.vm.getOption(2))
+
+      await nextTick()
+
+      expect(document.activeElement == select.vm.input).toBe(true)
+
+      destroy(select)
+    })
+
     /* TAGS */
 
     it('should remove option from value if selected when tags', async () => {
@@ -1814,6 +1872,54 @@ describe('useOptions', () => {
         { v: 2, label: 2 },
         { v: 3, label: 3 },
       ])
+    })
+
+    it('should blur input after select if closeOnSelect=true && mode=tags', async () => {
+      let select = createSelect({
+        mode: 'tags',
+        value: [],
+        options: [1,2,3],
+        searchable: true,
+        closeOnSelect: true,
+      }, {
+        attach: true,
+      })
+
+      select.vm.input.focus()
+
+      expect(document.activeElement == select.vm.input).toBe(true)
+
+      select.vm.handleOptionClick(select.vm.getOption(2))
+
+      await nextTick()
+
+      expect(document.activeElement == select.vm.input).toBe(false)
+
+      destroy(select)
+    })
+
+    it('should not blur input after select if closeOnSelect=false && mode=tags', async () => {
+      let select = createSelect({
+        mode: 'tags',
+        value: [],
+        options: [1,2,3],
+        searchable: true,
+        closeOnSelect: false,
+      }, {
+        attach: true,
+      })
+
+      select.vm.input.focus()
+
+      expect(document.activeElement == select.vm.input).toBe(true)
+
+      select.vm.handleOptionClick(select.vm.getOption(2))
+
+      await nextTick()
+
+      expect(document.activeElement == select.vm.input).toBe(true)
+
+      destroy(select)
     })
 
     it('should deactivate on select when closeOnSelect=true', async () => {
