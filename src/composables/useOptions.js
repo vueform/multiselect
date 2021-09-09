@@ -89,7 +89,7 @@ export default function useOptions (props, context, dep)
     let options = eo.value
 
     if (createdTag.value.length) {
-      options = createdTag.value.concat(fo)
+      options = createdTag.value.concat(options)
     }
 
     options = filterOptions(options)
@@ -119,7 +119,7 @@ export default function useOptions (props, context, dep)
   })
 
   const noOptions = computed(() => {
-    return !eo.value.length && !resolving.value
+    return !eo.value.length && !resolving.value && !createdTag.value.length
   })
 
 
