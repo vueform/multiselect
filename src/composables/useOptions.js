@@ -118,8 +118,9 @@ export default function useOptions (props, context, dep)
     return !eo.value.length && !resolving.value
   })
 
+
   const noResults = computed(() => {
-    return eo.value.length > 0 && fo.value.length == 0 
+    return eo.value.length > 0 && fo.value.length == 0 && ((search.value && groupped.value) || !groupped.value)
   })
 
   // no export
@@ -221,7 +222,7 @@ export default function useOptions (props, context, dep)
 
   const isSelected = (option) => {
     if (option.group !== undefined) {
-      return mode.value === 'single' ? false : areAllSelected(option[groupOptions.value])
+      return mode.value === 'single' ? false : areAllSelected(option[groupOptions.value]) && option[groupOptions.value].length
     }
 
     switch (mode.value) {
