@@ -133,7 +133,7 @@ export default function useOptions (props, context, dep)
       return []
     }
 
-    return getOptionByTrackBy(search.value) !== -1 ? [] : [{
+    return getOptionByTrackBy(search.value, false) !== -1 ? [] : [{
       [valueProp.value]: search.value,
       [label.value]: search.value,
       [trackBy.value]: search.value,
@@ -381,8 +381,8 @@ export default function useOptions (props, context, dep)
   }
 
   // no export
-  const getOptionByTrackBy = (val) => {
-    return eo.value.map(o => normalize(o[trackBy.value])).indexOf(normalize(val))
+  const getOptionByTrackBy = (val, norm = true) => {
+    return eo.value.map(o => norm ? normalize(o[trackBy.value]) : o[trackBy.value]).indexOf(norm ? normalize(val) : val)
   }
 
   // no export
