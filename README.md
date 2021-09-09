@@ -61,6 +61,7 @@
 * Single select options
 * Multiple select options
 * Tags
+* Option groups
 * Async options
 * Search & filtering
 * Custom slots
@@ -510,9 +511,9 @@ Alternatively you can define class names directly by passing them to the `Multis
 Certain classes has different states which are merged to the base class when the state is active. For example `dropdown` will be merged with `dropdownTop` when `open-direction: 'top'` resulting in the following classes:
 ```absolute -left-px -right-px bottom-0 transform translate-y-full border border-gray-300 -mt-px overflow-y-scroll z-50 bg-white flex flex-col rounded-b -translate-y-full top-px bottom-auto flex-col-reverse rounded-b-none rounded-t```
 
-The same is true for `container`, `tag`, `options` and `option` classes.
+The same is true for `container`, `tag`, `options`, `groupLabel` and `option` classes.
 
-In case you need to override the same type of utility you might use [@neojp/tailwind-important-variant](https://www.npmjs.com/package/@neojp/tailwindcss-important-variant) and use eg. `bg-green-500!`.
+In case you need to override the same type of utility you might use [@neojp/tailwind-important-variant](https://www.npmjs.com/package/@neojp/tailwindcss-important-variant) for eg. `bg-green-500!`.
 
 ## Examples
 
