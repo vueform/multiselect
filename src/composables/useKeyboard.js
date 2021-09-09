@@ -80,8 +80,10 @@ export default function useKeyboard (props, context, dep)
         selectPointer()
         break
       
+      // tab
       // semicolon
       // comma
+      case 9:
       case 186:
       case 188:
         if (mode.value !== 'tags') {
@@ -89,6 +91,7 @@ export default function useKeyboard (props, context, dep)
         }
 
         const charMap = {
+          9: 'tab',
           186: ';',
           188: ','
         }
