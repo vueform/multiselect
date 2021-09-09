@@ -12,7 +12,7 @@
     <!-- Search -->
     <template v-if="mode !== 'tags' && searchable && !disabled">
       <input
-        type="search"
+        :type="inputType"
         :modelValue="search"
         :value="search"
         :class="classList.search"
@@ -53,7 +53,7 @@
           <!-- Actual search input -->
           <input    
             v-if="searchable && !disabled"
-            type="search"
+            :type="inputType"
             :modelValue="search"
             :value="search"
             :class="classList.tagsSearch"
@@ -431,6 +431,11 @@
         required: false,
         default: true,
       },
+      inputType: {
+        type: String,
+        required: false,
+        default: 'text',
+      }
     },
     setup(props, context)
     { 
