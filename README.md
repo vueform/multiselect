@@ -436,8 +436,6 @@ module.exports = {
 Then you need to import `themes/tailwind.scss` to you main component:
 
 ``` vue
-<!-- eg. App.vue --->
-
 <template>
   <div id="app">
     <Multiselect ... />
