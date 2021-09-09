@@ -288,6 +288,13 @@ export default function useOptions (props, context, dep)
         if (hideSelected.value) {
           clearPointer()
         }
+
+        // If we need to close the dropdown on select we also need
+        // to blur the input, otherwise further searches will not
+        // display any options
+        if (closeOnSelect.value) {
+          blur()
+        }
         break
 
       case 'tags':
@@ -318,6 +325,13 @@ export default function useOptions (props, context, dep)
 
         if (hideSelected.value) {
           clearPointer()
+        }
+
+        // If we need to close the dropdown on select we also need
+        // to blur the input, otherwise further searches will not
+        // display any options
+        if (closeOnSelect.value) {
+          blur()
         }
         break
     }
