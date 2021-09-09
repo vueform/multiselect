@@ -72,7 +72,7 @@
 
 ## Demo
 
-Check out our <a href="https://jsfiddle.net/q6Lnpr7a/" target="_blank">demo</a>.
+Check out our <a href="https://jsfiddle.net/4q3oauy6/6/" target="_blank">demo</a>.
 
 ## Installation
 
@@ -171,12 +171,17 @@ Join our [Discord channel](https://discord.gg/WhX2nG6GTQ) or [open an issue](htt
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
 | **mode** | `string` | `single` | Possible values: `single\|multiple\|tags`. |
-| **options** | `array\|object\|function` | `[]` | List of options. Can be:<br>- an array (eg. `[1,2,3]`)<br>- an object (eg. `{a:1,b:2,c:3}`)<br>- an array of objects `[{value:1,label:'v1'},{value:2,label:'v2'},{value:3,label:'v3',disabled:true}]`<br>- a function returning a Promise (async function) with `query` input param. The promise should return options as an **object** or as an **array of objects**.<br>When an array of objects is provided it **must** have properties that equal to `:valueProp`'s, `:trackBy`'s and `:label`'s value. |
+| **options** | `array\|object\|function` | `[]` | List of options. Can be:<br>- an array (eg. `[1,2,3]`)<br>- an object (eg. `{a:1,b:2,c:3}`)<br>- an array of objects:<br>`[`<br>&nbsp;&nbsp;`{`<br>&nbsp;&nbsp;&nbsp;&nbsp;`[valueProp]: 1,`<br>&nbsp;&nbsp;&nbsp;&nbsp;`[label]: 'v1',`<br>&nbsp;&nbsp;&nbsp;&nbsp;`disabled:true\|false`<br>&nbsp;&nbsp;`},`<br>&nbsp;&nbsp;`//...`<br>`]`<br>- a function returning a Promise (async function) with `query` input param. The promise should return options as an **object** or as an **array of objects**.<br>When an array of objects is provided it **must** have properties that equal to `:valueProp`'s, `:trackBy`'s and `:label`'s value. |
+| **groups** | `boolean` | `false` | Whether options should be groupped. Example:<br>`{`<br>&nbsp;&nbsp;`groups: true,`<br>&nbsp;&nbsp;`options: [`<br>&nbsp;&nbsp;&nbsp;&nbsp;`{`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`[groupLabel]: 'Group label',`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`[groupOptions]: {options},`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`disabled: true\|false,`<br>&nbsp;&nbsp;&nbsp;&nbsp;`}`<br>&nbsp;&nbsp;&nbsp;&nbsp;`//...`<Br>&nbsp;&nbsp;`]`<br>`}`<br>The `{options}` should equal to regular `options` definition. |
+| **groupLabel** | `string` | `label` | The name of the property that contains the label of a group when `options` are provided in group format and `groups` is `true`. |
+| **groupOptions** | `string` | `options` | The name of the property that contains the options of a group when `options` are provided in group format and `groups` is `true`. |
+| **groupSelect** | `boolean` | `true` | Whether groups can be selected when using `multiple` or `tags` mode. |
+| **groupHideEmpty** | `boolean` | `false` | Whether groups that have no `options` by default should be hidden. |
 | **required** | `boolean` | `false` | Whether the HTML5 required attribute should be used for multiselect (using an invisible fake input). |
 | **searchable** | `boolean` | `false` | Whether the options should be searchable. |
-| **valueProp** | `string` | `'value'` | If you provide an array of objects as options this property should be used as the value of the option. |
-| **trackBy** | `string` | `'label'` | The name of the property that should be searched when `searchable` is `true` and an array of objects are provided as `:options`. |
-| **label** | `string` | `'label'` | If you provide an array of objects as options the value this property will be displayed as selected option. |
+| **valueProp** | `string` | `'value'` | If you provide an array of objects as `options` this property should be used as the value of the option. |
+| **trackBy** | `string` | `'label'` | The name of the property that should be searched when `searchable` is `true` and an array of objects are provided as `options`. |
+| **label** | `string` | `'label'` | If you provide an array of objects as `options` the value of this property will be displayed as selected option. |
 | **placeholder** | `string` | `null` | The text that should be displayed before any option is selected. |
 | **multipleLabel** | `function` |  | A function that returns the label to be displayed for selected options when using `multiple` mode. It receives `value` as an argument. By default it renders `1 option selected` and `[n] options selected` based on `value` length. |
 | **disabled** | `boolean` | `false` | Whether the input should be disabled for the user (API can still be used programmatically). |
@@ -189,7 +194,7 @@ Join our [Discord channel](https://discord.gg/WhX2nG6GTQ) or [open an issue](htt
 | **noResultsText** | `string` | `'No results found'` | The text that should be displayed when there are no search results. |
 | **openDirection** | `string` | `bottom` | Whether the option list should be displayed above or below the multiselect. Possible values: `top\|bottom` |
 | **strict** | `boolean` | `true` | Whether should regard accents/diacritics in search. |
-| **classes** | `object` | | An object of class names that gets merged with the default values. Default: `{`<br>&nbsp;&nbsp;`container: 'multiselect',`<br>&nbsp;&nbsp;`containerDisabled: 'is-disabled',`<br>&nbsp;&nbsp;`containerOpen: 'is-open',`<br>&nbsp;&nbsp;`containerOpenTop: 'is-open-top',`<br>&nbsp;&nbsp;`containerActive: 'is-active',`<br>&nbsp;&nbsp;`singleLabel: 'multiselect-single-label',`<br>&nbsp;&nbsp;`multipleLabel: 'multiselect-multiple-label',`<br>&nbsp;&nbsp;`search: 'multiselect-search',`<br>&nbsp;&nbsp;`tags: 'multiselect-tags',`<br>&nbsp;&nbsp;`tag: 'multiselect-tag',`<br>&nbsp;&nbsp;`tagDisabled: 'is-disabled',`<br>&nbsp;&nbsp;`tagRemove: 'multiselect-tag-remove',`<br>&nbsp;&nbsp;`tagRemoveIcon: 'multiselect-tag-remove-icon',`<br>&nbsp;&nbsp;`tagsSearchWrapper: 'multiselect-tags-search-wrapper',`<br>&nbsp;&nbsp;`tagsSearch: 'multiselect-tags-search',`<br>&nbsp;&nbsp;`tagsSearchCopy: 'multiselect-tags-search-copy',`<br>&nbsp;&nbsp;`placeholder: 'multiselect-placeholder',`<br>&nbsp;&nbsp;`caret: 'multiselect-caret',`<br>&nbsp;&nbsp;`caretOpen: 'is-open',`<br>&nbsp;&nbsp;`clear: 'multiselect-clear',`<br>&nbsp;&nbsp;`clearIcon: 'multiselect-clear-icon',`<br>&nbsp;&nbsp;`spinner: 'multiselect-spinner',`<br>&nbsp;&nbsp;`dropdown: 'multiselect-dropdown',`<br>&nbsp;&nbsp;`dropdownTop: 'is-top',`<br>&nbsp;&nbsp;`dropdownHidden: 'is-hidden',`<br>&nbsp;&nbsp;`options: 'multiselect-options',`<br>&nbsp;&nbsp;`optionsTop: 'is-top',`<br>&nbsp;&nbsp;`option: 'multiselect-option',`<br>&nbsp;&nbsp;`optionPointed: 'is-pointed',`<br>&nbsp;&nbsp;`optionSelected: 'is-selected',`<br>&nbsp;&nbsp;`optionDisabled: 'is-disabled',`<br>&nbsp;&nbsp;`optionSelectedPointed: 'is-selected is-pointed',`<br>&nbsp;&nbsp;`optionSelectedDisabled: 'is-selected is-disabled',`<br>&nbsp;&nbsp;`noOptions: 'multiselect-no-options',`<br>&nbsp;&nbsp;`noResults: 'multiselect-no-results',`<br>&nbsp;&nbsp;`fakeInput: 'multiselect-fake-input',`<br>&nbsp;&nbsp;`spacer: 'multiselect-spacer'`<br>`}` |
+| **classes** | `object` | | An object of class names that gets merged with the default values. Default: `{`<br>&nbsp;&nbsp;`container: 'multiselect',`<br>&nbsp;&nbsp;`containerDisabled: 'is-disabled',`<br>&nbsp;&nbsp;`containerOpen: 'is-open',`<br>&nbsp;&nbsp;`containerOpenTop: 'is-open-top',`<br>&nbsp;&nbsp;`containerActive: 'is-active',`<br>&nbsp;&nbsp;`singleLabel: 'multiselect-single-label',`<br>&nbsp;&nbsp;`multipleLabel: 'multiselect-multiple-label',`<br>&nbsp;&nbsp;`search: 'multiselect-search',`<br>&nbsp;&nbsp;`tags: 'multiselect-tags',`<br>&nbsp;&nbsp;`tag: 'multiselect-tag',`<br>&nbsp;&nbsp;`tagDisabled: 'is-disabled',`<br>&nbsp;&nbsp;`tagRemove: 'multiselect-tag-remove',`<br>&nbsp;&nbsp;`tagRemoveIcon: 'multiselect-tag-remove-icon',`<br>&nbsp;&nbsp;`tagsSearchWrapper: 'multiselect-tags-search-wrapper',`<br>&nbsp;&nbsp;`tagsSearch: 'multiselect-tags-search',`<br>&nbsp;&nbsp;`tagsSearchCopy: 'multiselect-tags-search-copy',`<br>&nbsp;&nbsp;`placeholder: 'multiselect-placeholder',`<br>&nbsp;&nbsp;`caret: 'multiselect-caret',`<br>&nbsp;&nbsp;`caretOpen: 'is-open',`<br>&nbsp;&nbsp;`clear: 'multiselect-clear',`<br>&nbsp;&nbsp;`clearIcon: 'multiselect-clear-icon',`<br>&nbsp;&nbsp;`spinner: 'multiselect-spinner',`<br>&nbsp;&nbsp;`dropdown: 'multiselect-dropdown',`<br>&nbsp;&nbsp;`dropdownTop: 'is-top',`<br>&nbsp;&nbsp;`dropdownHidden: 'is-hidden',`<br>&nbsp;&nbsp;`options: 'multiselect-options',`<br>&nbsp;&nbsp;`optionsTop: 'is-top',`<br>&nbsp;&nbsp;`group: 'multiselect-group',`<br>&nbsp;&nbsp;`groupLabel: 'multiselect-group-label',`<br>&nbsp;&nbsp;`groupLabelPointable: 'is-pointable',`<br>&nbsp;&nbsp;`groupLabelPointed: 'is-pointed',`<br>&nbsp;&nbsp;`groupLabelSelected: 'is-selected',`<br>&nbsp;&nbsp;`groupLabelDisabled: 'is-disabled',`<br>&nbsp;&nbsp;`groupLabelSelectedPointed: 'is-selected is-pointed',`<br>&nbsp;&nbsp;`groupLabelSelectedDisabled: 'is-selected is-disabled',`<br>&nbsp;&nbsp;`groupOptions: 'multiselect-group-options',`<br>&nbsp;&nbsp;`option: 'multiselect-option',`<br>&nbsp;&nbsp;`optionPointed: 'is-pointed',`<br>&nbsp;&nbsp;`optionSelected: 'is-selected',`<br>&nbsp;&nbsp;`optionDisabled: 'is-disabled',`<br>&nbsp;&nbsp;`optionSelectedPointed: 'is-selected is-pointed',`<br>&nbsp;&nbsp;`optionSelectedDisabled: 'is-selected is-disabled',`<br>&nbsp;&nbsp;`noOptions: 'multiselect-no-options',`<br>&nbsp;&nbsp;`noResults: 'multiselect-no-results',`<br>&nbsp;&nbsp;`fakeInput: 'multiselect-fake-input',`<br>&nbsp;&nbsp;`spacer: 'multiselect-spacer'`<br>`}` |
 
 ### Advanced Props
 
@@ -265,6 +270,7 @@ mounted() {
 | **multiplelabel** | `values` | Rendered when using `multiple` mode and options are selected. By default it renders the return value of `multipleLabel` function. |
 | **nooptions** |  | Rendered when the options list is empty. By default renders `noOptionsText`. |
 | **noresults** |  | Rendered when there are no search results. By default renders `noResultsText`. |
+| **grouplabel** | `group` | Renders an option group label. |
 | **option** | `option, search` | Renders an option in options list. |
 | **singlelabel** | `value` | Rendered when using `single` mode and an option is selected. By default it renders the `:label` if the selected option. |
 | **tag** | `option, handleTagRemove, disabled` | Renders a tag when using `tags` mode. When `disabled` the remove icon should not be displayed. The `handleTagRemove` prop should be used to trigger the removal of the tag. |
@@ -500,7 +506,7 @@ module.exports = {
 />
 ```
 
-<a href="https://jsfiddle.net/q6Lnpr7a/" target="_blank">JSFiddle - Example #1</a>
+<a href="https://jsfiddle.net/4q3oauy6/6/" target="_blank">JSFiddle - Example #1</a>
 
 ### Multiselect with object options
 
@@ -508,6 +514,7 @@ module.exports = {
 <Multiselect
   v-model="value"
   mode="multiple"
+  :closeOnSelect="false"
   :options="{
     batman: 'Batman',
     robin: 'Robin',
@@ -516,7 +523,7 @@ module.exports = {
 />
 ```
 
-<a href="https://jsfiddle.net/q6Lnpr7a/" target="_blank">JSFiddle - Example #2</a>
+<a href="https://jsfiddle.net/4q3oauy6/6/" target="_blank">JSFiddle - Example #2</a>
 
 ### Multiselect with disabled options
 
@@ -524,6 +531,7 @@ module.exports = {
 <Multiselect
   v-model="value"
   mode="multiple"
+  :closeOnSelect="false"
   :options="[
     { value: 'batman', label: 'Batman' },
     { value: 'robin', label: 'Robin', disabled: true },
@@ -532,7 +540,30 @@ module.exports = {
 />
 ```
 
-<a href="https://jsfiddle.net/q6Lnpr7a/" target="_blank">JSFiddle - Example #3</a>
+<a href="https://jsfiddle.net/4q3oauy6/6/" target="_blank">JSFiddle - Example #3</a>
+
+### Multiselect with groups
+
+``` vue
+<Multiselect
+  v-model="value"
+  mode="multiple"
+  :closeOnSelect="false"
+  :groups="true"
+  :options="[
+    {
+      label: 'DC',
+      options: ['Batman', 'Robin', 'Joker'],
+    },
+    {
+      label: 'Marvel',
+      options: ['Spiderman', 'Iron Man', 'Captain America'],
+    },
+  ]"
+/>
+```
+
+<a href="https://jsfiddle.net/4q3oauy6/6/" target="_blank">JSFiddle - Example #4</a>
 
 ### Tags with search, create and array of objects options
 
@@ -540,6 +571,7 @@ module.exports = {
 <Multiselect
   v-model="value"
   mode="tags"
+  :closeOnSelect="false"
   :searchable="true"
   :createTag="true"
   :options="[
@@ -550,7 +582,7 @@ module.exports = {
 />
 ```
 
-<a href="https://jsfiddle.net/q6Lnpr7a/" target="_blank">JSFiddle - Example #4</a>
+<a href="https://jsfiddle.net/4q3oauy6/6/" target="_blank">JSFiddle - Example #5</a>
 
 ### Autocomplete with async options
 
@@ -569,7 +601,7 @@ module.exports = {
 />
 ```
 
-<a href="https://jsfiddle.net/q6Lnpr7a/" target="_blank">JSFiddle - Example #5</a>
+<a href="https://jsfiddle.net/4q3oauy6/6/" target="_blank">JSFiddle - Example #6</a>
 
 ### Tags with async options
 
@@ -578,6 +610,7 @@ module.exports = {
   v-model="value"
   mode="tags"
   placeholder="Choose your stack"
+  :closeOnSelect="false"
   :filterResults="false"
   :minChars="1"
   :resolveOnLoad="false"
@@ -589,7 +622,7 @@ module.exports = {
 />
 ```
 
-<a href="https://jsfiddle.net/q6Lnpr7a/" target="_blank">JSFiddle - Example #6</a>
+<a href="https://jsfiddle.net/4q3oauy6/6/" target="_blank">JSFiddle - Example #7</a>
 
 ### Select with custom options slot
 
@@ -617,7 +650,7 @@ module.exports = {
 
 ```
 
-<a href="https://jsfiddle.net/q6Lnpr7a/" target="_blank">JSFiddle - Example #7</a>
+<a href="https://jsfiddle.net/4q3oauy6/6/" target="_blank">JSFiddle - Example #8</a>
 
 ### Multiselect with custom label slot
 
@@ -626,6 +659,7 @@ module.exports = {
   v-model="value"
   mode="multiple"
   placeholder="Select your characters"
+  :closeOnSelect="false"
   :options="{
     batman: 'Batman',
     robin: 'Robin',
@@ -641,7 +675,7 @@ module.exports = {
 
 ```
 
-<a href="https://jsfiddle.net/q6Lnpr7a/" target="_blank">JSFiddle - Example #8</a>
+<a href="https://jsfiddle.net/4q3oauy6/6/" target="_blank">JSFiddle - Example #9</a>
 
 ### Tags with custom tags slot
 
@@ -653,6 +687,7 @@ module.exports = {
     placeholder="Select employees"
     trackBy="name"
     label="name"
+    :closeOnSelect="false"
     :search="true"
     :options="[
       { value: 'judy', name: 'Judy', image: 'https://randomuser.me/api/portraits/med/women/1.jpg' },
@@ -665,11 +700,13 @@ module.exports = {
         <div class="multiselect-tag is-user">
           <img :src="option.image">
           {{ option.name }}
-          <i
+          <span
             v-if="!disabled"
-            @click.prevent
-            @mousedown.prevent.stop="handleTagRemove(option, $event)"
-          />
+            class="multiselect-tag-remove"
+            @mousedown.prevent="handleTagRemove(option, $event)"
+          >
+            <span class="multiselect-tag-remove-icon"></span>
+          </span>
         </div>
       </template>
   </Multiselect>
@@ -704,7 +741,7 @@ module.exports = {
 </style>
 ```
 
-<a href="https://jsfiddle.net/q6Lnpr7a/" target="_blank">JSFiddle - Example #9</a>
+<a href="https://jsfiddle.net/4q3oauy6/6/" target="_blank">JSFiddle - Example #10</a>
 
 ## About Vueform
 

@@ -41,6 +41,11 @@ declare class Multiselect extends Vue {
   strict?: boolean;
   closeOnSelect?: boolean;
   autocomplete?: string;
+  groups: boolean;
+  groupLabel: string;
+  groupOptions: string;
+  groupHideEmpty: boolean;
+  groupSelect: boolean;
 
   $emit(eventName: 'change', e: {originalEvent: Event, value: any}): this;
   $emit(eventName: 'select', e: {originalEvent: Event, value: any, option: any}): this;
@@ -60,6 +65,7 @@ declare class Multiselect extends Vue {
     multiplelabel: VNode[];
     singlelabel: VNode[];
     option: VNode[];
+    groupLabel: VNode[];
     tag: VNode[];
   };
 }
