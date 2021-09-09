@@ -1,3 +1,22 @@
+## v2.2.0
+
+> `2021-09-09`
+
+### 🎉 Feature
+  - 🎉🎉 Added `groups` and related props which allow groupping options. 🎉🎉
+  - Added `tailwind.scss` theme to use instead of `classes` if needed.
+  - Added support for case sensitive tags when `createTag` is `true` [#119](https://github.com/vueform/multiselect/issues/119).
+  - Added `inputType` prop [#108](https://github.com/vueform/multiselect/issues/116), [#116](https://github.com/vueform/multiselect/issues/116).
+  - Added `@paste` event [#105](https://github.com/vueform/multiselect/issues/105).
+  - Added `tab` as option for `addTagOn` [#117](https://github.com/vueform/multiselect/issues/117).
+  - Updated default `max-height` for dropdown (to `15rem`).
+
+
+### 🐞 Bug Fixes
+  - When `closeOnSelect` is `true` in `searchable` `tags` and `multiple` mode the input now blurs upon selecting an option.
+  - Fix for empty dropdown when async options are loading [#115](https://github.com/vueform/multiselect/issues/115).
+  - Fixed dropdown auto-scrolling when using arrows.
+
 ## v2.1.2
 
 > `2021-08-09`
