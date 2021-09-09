@@ -269,7 +269,7 @@ mounted() {
 | **singlelabel** | `value` | Rendered when using `single` mode and an option is selected. By default it renders the `:label` if the selected option. |
 | **tag** | `option, handleTagRemove, disabled` | Renders a tag when using `tags` mode. When `disabled` the remove icon should not be displayed. The `handleTagRemove` prop should be used to trigger the removal of the tag. |
 | **caret** | | Renders a small triangle on the right side of the multiselect. |
-| **clear** | | Renders a remove icon if the multiselect has any value. |
+| **clear** | `clear` | Renders a remove icon if the multiselect has any value. |
 | **spinner** | | Renders a loader icon when async options are being fetched. |
 
 > Note: we don't use camelCase because they are [normalized back to lowercase](https://github.com/vuejs/vue/issues/9449#issuecomment-461170017) when written in DOM.
