@@ -204,8 +204,6 @@ export default function usePointer (props, context, dep)
         : pointedOption.parentElement.parentElement.parentElement.parentElement
     }
 
-    console.log(wrapper)
-
     if (pointedOption.offsetTop + pointedOption.offsetHeight > wrapper.clientHeight + wrapper.scrollTop) {
       wrapper.scrollTop = pointedOption.offsetTop + pointedOption.offsetHeight - wrapper.clientHeight
     }
