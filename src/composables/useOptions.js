@@ -67,6 +67,10 @@ export default function useOptions (props, context, dep)
   })
 
   const fg = computed(() => {
+    if (!groupped.value) {
+      return []
+    }
+
     return filterGroups((ro.value || /* istanbul ignore next */ []).map((group) => {
       const arrayOptions = optionsToArray(group[groupOptions.value])
 
