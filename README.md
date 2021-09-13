@@ -188,7 +188,8 @@ Join our [Discord channel](https://discord.gg/WhX2nG6GTQ) or [open an issue](htt
 | **placeholder** | `string` | `null` | The text that should be displayed before any option is selected. |
 | **multipleLabel** | `function` |  | A function that returns the label to be displayed for selected options when using `multiple` mode. It receives `value` as an argument. By default it renders `1 option selected` and `[n] options selected` based on `value` length. |
 | **disabled** | `boolean` | `false` | Whether the input should be disabled for the user (API can still be used programmatically). |
-| **inputType** | `string` | `text` | The `type` attribute of search input. |
+| **inputType** | `string` | `text` | The `type` attribute of the search input. |
+| **autocomplete** | `string` | `undefined` | The `autocomplete` attribute of the search input. |
 | **max** | `number` | `-1` | The maximum number of options that **can be selected** when using `multiple` or `tags` mode. If `-1` the number of options won't be limited. |
 | **limit** | `number` | `-1` | The maximum number of options that **should be displayed**. If `-1` the number of options won't be limited. |
 | **loading** | `boolean` | `false` | Whether a loading spinner should be shown. |
