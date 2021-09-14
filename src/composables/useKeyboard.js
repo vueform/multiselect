@@ -25,7 +25,7 @@ export default function useKeyboard (props, context, dep)
   const preparePointer = () => {
     // When options are hidden and creating tags is allowed
     // no pointer will be set (because options are hidden).
-    // In such case we need to set the pointer manually to the 
+    // In such case we need to set the pointer manually to the
     // first option, which equals to the option created from
     // the search value.
     if (mode.value === 'tags' && !showOptions.value && createTag.value && searchable.value && !groupped.value) {
@@ -34,9 +34,9 @@ export default function useKeyboard (props, context, dep)
   }
 
   const handleKeydown = (e) => {
-    switch (e.keyCode) {
+    switch (e.key) {
       // backspace
-      case 8:
+      case 'Backspace':
         if (mode.value === 'single') {
           return
         }
@@ -48,24 +48,24 @@ export default function useKeyboard (props, context, dep)
         if (iv.value.length === 0) {
           return
         }
-        
+
         update([...iv.value].slice(0,-1))
         break
 
       // enter
-      case 13:
+      case 'Enter':
         e.preventDefault()
 
         if (mode.value === 'tags' && addTagOn.value.indexOf('enter') === -1 && createTag.value) {
           return
         }
-        
+
         preparePointer()
         selectPointer()
         break
 
       // space
-      case 32:
+      case ' ':
         if (searchable.value && mode.value !== 'tags' && !createTag.value) {
           return
         }
@@ -75,17 +75,17 @@ export default function useKeyboard (props, context, dep)
         }
 
         e.preventDefault()
-        
+
         preparePointer()
         selectPointer()
         break
-      
+
       // tab
       // semicolon
       // comma
-      case 9:
-      case 186:
-      case 188:
+      case 'Tab':
+      case ';':
+      case ',':
         if (mode.value !== 'tags') {
           return
         }
@@ -106,12 +106,12 @@ export default function useKeyboard (props, context, dep)
         break
 
       // escape
-      case 27:
+      case 'Escape':
         blur()
         break
 
       // up
-      case 38:
+      case 'ArrowUp':
         e.preventDefault()
 
         if (!showOptions.value) {
@@ -122,7 +122,7 @@ export default function useKeyboard (props, context, dep)
         break
 
       // down
-      case 40:
+      case 'ArrowDown':
         e.preventDefault()
 
         if (!showOptions.value) {
