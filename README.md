@@ -228,9 +228,9 @@ Join our [Discord channel](https://discord.gg/WhX2nG6GTQ) or [open an issue](htt
 | --- | --- | --- |
 | **open** |  | Opens the options list and focuses the multiselect. |
 | **close** |  | Closes the options list and blurs the multiselect. |
-| **select** | `value`, `option` | Selects an option based on its value. |
-| **deselect** | `value`, `option` | Deselects an option based on its value. |
-| **remove** | `value`, `option` | Alias for `deselect`. |
+| **select** | `option` | Selects an option based on its value. |
+| **deselect** | `option` | Deselects an option based on its value. |
+| **remove** | `option` | Alias for `deselect`. |
 | **clear** |  | Deselects all selected options. |
 | **clearSearch** |  | Clears current search query. |
 | **refreshOptions** | `callback` | Refreshes async options list. |
