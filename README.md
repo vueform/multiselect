@@ -232,6 +232,7 @@ Join our [Discord channel](https://discord.gg/WhX2nG6GTQ) or [open an issue](htt
 | **deselect** | `option` | Deselects an option based on its value. |
 | **remove** | `option` | Alias for `deselect`. |
 | **clear** |  | Deselects all selected options. |
+| **setPointer** | `option` | Points an option based on its value. |
 | **clearSearch** |  | Clears current search query. |
 | **refreshOptions** | `callback` | Refreshes async options list. |
 
