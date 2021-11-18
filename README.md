@@ -226,8 +226,8 @@ Join our [Discord channel](https://discord.gg/WhX2nG6GTQ) or [open an issue](htt
 
 | Name | Params | Description |
 | --- | --- | --- |
-| **open** |  | Opens the options list and focuses the multiselect. |
-| **close** |  | Closes the options list and blurs the multiselect. |
+| **open** |  | Opens the options list. |
+| **close** |  | Closes the options list. |
 | **select** | `option` | Selects an option based on its value. |
 | **deselect** | `option` | Deselects an option based on its value. |
 | **remove** | `option` | Alias for `deselect`. |
@@ -252,6 +252,12 @@ mounted() {
 }
 ```
 
+To programmatically open and focus the multiselect, call `focus()` on the element:
+```js
+mounted() {
+  this.$refs.multiselect.$el.focus()
+}
+```
 
 ## Events
 
