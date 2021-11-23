@@ -1,3 +1,10 @@
+## v2.2.1
+
+> `2021-11-23`
+
+### 🐞 Bug Fixes
+  - Added missing CSS vars.
+
 ## v2.2.0
 
 > `2021-09-09`
@@ -10,7 +17,6 @@
   - Added `@paste` event [#105](https://github.com/vueform/multiselect/issues/105).
   - Added `tab` as option for `addTagOn` [#117](https://github.com/vueform/multiselect/issues/117).
   - Updated default `max-height` for dropdown (to `15rem`).
-
 
 ### 🐞 Bug Fixes
   - When `closeOnSelect` is `true` in `searchable` `tags` and `multiple` mode the input now blurs upon selecting an option.
