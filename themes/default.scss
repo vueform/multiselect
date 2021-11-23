@@ -309,8 +309,8 @@
   padding: var(--ms-group-label-py, 0.3rem) var(--ms-group-label-px, 0.75rem);
   font-size: 0.875rem;
   font-weight: 600;
-  background: #E5E7EB;
-  color: #374151;
+  background: var(--ms-group-label-bg, #E5E7EB);
+  color: var(--ms-group-label-color, #374151);
   cursor: default;
   line-height: var(--ms-group-label-line-height, 1.375);
   display: flex;

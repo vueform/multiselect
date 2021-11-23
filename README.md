@@ -338,6 +338,8 @@ The following CSS variables can be used to customize multiselect when using `def
 --ms-group-label-py: 0.3rem;
 --ms-group-label-px: 0.75rem;
 --ms-group-label-line-height: 1.375;
+--ms-group-label-bg: #E5E7EB;
+--ms-group-label-color: #374151;
 --ms-group-label-bg-pointed: #D1D5DB;
 --ms-group-label-color-pointed: #374151;
 --ms-group-label-bg-disabled: #F3F4F6;
@@ -352,14 +354,14 @@ The following CSS variables can be used to customize multiselect when using `def
 --ms-option-font-size: 1rem;
 --ms-option-line-height: 1.375;
 --ms-option-bg-pointed: #FFFFFF;
---ms-option-bg-selected: #10B981;
---ms-option-bg-disabled: #FFFFFF;
---ms-option-bg-selected-pointed: #26C08E;
---ms-option-bg-selected-disabled: #FFFFFF;
 --ms-option-color-pointed: #1F2937;
+--ms-option-bg-selected: #10B981;
 --ms-option-color-selected: #FFFFFF;
+--ms-option-bg-disabled: #FFFFFF;
 --ms-option-color-disabled: #D1D5DB;
+--ms-option-bg-selected-pointed: #26C08E;
 --ms-option-color-selected-pointed: #FFFFFF;
+--ms-option-bg-selected-disabled: #FFFFFF;
 --ms-option-color-selected-disabled: #D1FAE5;
 --ms-option-py: 0.5rem;
 --ms-option-px: 0.75rem;
