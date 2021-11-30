@@ -1,4 +1,10 @@
 <div align="center">
+  <a href="https://vueform.com?ref=ghb">
+    <img align="center" src="https://github.com/vueform/toggle/raw/main/assets/vueform-gh.png" alt="Vueform" title="Vueform">
+  </a>
+
+  <br>
+  <br>
 
   <a href="https://www.npmjs.com/package/@vueform/multiselect" target="_blank">
     <img alt="npm" src="https://img.shields.io/npm/dm/@vueform/multiselect?color=%2353ca2f">
@@ -777,7 +783,11 @@ In case you need to override the same type of utility you might use [@neojp/tail
 
 ## About Vueform
 
-[Vueform](https://vueform.com?ref=github) streamlines the entire form building process in Vue 2 & 3. It comes with 30+ elements, file uploads, element nesting, 50+ validators, conditions, form steps, i18n including reactive configuration, API access, ESM modules and many more. Check out our [live demos](https://vueform.com?ref=github#demo) or see [all the features](https://vueform.com?ref=github#features) and [sign up for beta](https://vueform.com?ref=github#beta) to get early access.
+Vueform is a comprehensive form builder for Vue.js that makes form development a breeze. It supercharges and standardizes the entire form building process and takes care of everything from rendering to validation and processing.
+
+Vueform pre-release is open for registration for the first 100 developers.
+
+Learn more: [https://vueform.com](https://vueform.com)
 
 
 ## License
