@@ -1,11 +1,4 @@
 <div align="center">
-  <a href="https://vueform.com?ref=ghb">
-    <img align="center" src="https://github.com/vueform/toggle/raw/main/assets/vueform-gh.png" alt="Vueform" title="Vueform">
-  </a>
-
-  <br>
-  <br>
-
   <a href="https://www.npmjs.com/package/@vueform/multiselect" target="_blank">
     <img alt="npm" src="https://img.shields.io/npm/dm/@vueform/multiselect?color=%2353ca2f">
   </a>
@@ -51,6 +44,29 @@
 <div align="center"><br>
   <a href="https://vueform.com?ref=github"><img src="https://github.com/vueform/multiselect/raw/main/assets/logo-horizontal.svg" width="200"></a>
 </div>
+
+## About Vueform
+
+<a href="https://vueform.com?ref=ghb">
+  <img align="center" src="https://github.com/vueform/multiselect/raw/main/assets/vueform-banner.png" alt="Vueform" title="Vueform">
+</a>
+
+<br>
+<br>
+
+Vueform is a comprehensive form builder for Vue.js that makes form development a breeze. It standardizes and handles the entire form building process, including:
+- a complete theming and templating system with **Tailwind support** (similar to @vueform libraries)
+- 25+ form elements with **multi-file uploads**, date pickers and rich text editor
+- element **nesting** and **repeating**
+- **50+ validators** with async, dependent and custom rules
+- **conditional logic** on element & form level
+- breaking forms into **steps** with **form wizard**
+- **dynamic** form rendering with **JSON** support
+- **translating** form content and global i18n support.
+
+Vueform [pre-release](https://vueform.com) is open for registration for the **first 100 developers** with **special discounts**.
+
+Learn more: [https://vueform.com](https://vueform.com)
 
 ## Other libraries
 
@@ -206,6 +222,10 @@ Join our [Discord channel](https://discord.gg/WhX2nG6GTQ) or [open an issue](htt
 | **openDirection** | `string` | `bottom` | Whether the option list should be displayed above or below the multiselect. Possible values: `top\|bottom` |
 | **strict** | `boolean` | `true` | Whether should regard accents/diacritics in search. |
 | **classes** | `object` | | An object of class names that gets merged with the default values. Default: `{`<br>&nbsp;&nbsp;`container: 'multiselect',`<br>&nbsp;&nbsp;`containerDisabled: 'is-disabled',`<br>&nbsp;&nbsp;`containerOpen: 'is-open',`<br>&nbsp;&nbsp;`containerOpenTop: 'is-open-top',`<br>&nbsp;&nbsp;`containerActive: 'is-active',`<br>&nbsp;&nbsp;`singleLabel: 'multiselect-single-label',`<br>&nbsp;&nbsp;`multipleLabel: 'multiselect-multiple-label',`<br>&nbsp;&nbsp;`search: 'multiselect-search',`<br>&nbsp;&nbsp;`tags: 'multiselect-tags',`<br>&nbsp;&nbsp;`tag: 'multiselect-tag',`<br>&nbsp;&nbsp;`tagDisabled: 'is-disabled',`<br>&nbsp;&nbsp;`tagRemove: 'multiselect-tag-remove',`<br>&nbsp;&nbsp;`tagRemoveIcon: 'multiselect-tag-remove-icon',`<br>&nbsp;&nbsp;`tagsSearchWrapper: 'multiselect-tags-search-wrapper',`<br>&nbsp;&nbsp;`tagsSearch: 'multiselect-tags-search',`<br>&nbsp;&nbsp;`tagsSearchCopy: 'multiselect-tags-search-copy',`<br>&nbsp;&nbsp;`placeholder: 'multiselect-placeholder',`<br>&nbsp;&nbsp;`caret: 'multiselect-caret',`<br>&nbsp;&nbsp;`caretOpen: 'is-open',`<br>&nbsp;&nbsp;`clear: 'multiselect-clear',`<br>&nbsp;&nbsp;`clearIcon: 'multiselect-clear-icon',`<br>&nbsp;&nbsp;`spinner: 'multiselect-spinner',`<br>&nbsp;&nbsp;`dropdown: 'multiselect-dropdown',`<br>&nbsp;&nbsp;`dropdownTop: 'is-top',`<br>&nbsp;&nbsp;`dropdownHidden: 'is-hidden',`<br>&nbsp;&nbsp;`options: 'multiselect-options',`<br>&nbsp;&nbsp;`optionsTop: 'is-top',`<br>&nbsp;&nbsp;`group: 'multiselect-group',`<br>&nbsp;&nbsp;`groupLabel: 'multiselect-group-label',`<br>&nbsp;&nbsp;`groupLabelPointable: 'is-pointable',`<br>&nbsp;&nbsp;`groupLabelPointed: 'is-pointed',`<br>&nbsp;&nbsp;`groupLabelSelected: 'is-selected',`<br>&nbsp;&nbsp;`groupLabelDisabled: 'is-disabled',`<br>&nbsp;&nbsp;`groupLabelSelectedPointed: 'is-selected is-pointed',`<br>&nbsp;&nbsp;`groupLabelSelectedDisabled: 'is-selected is-disabled',`<br>&nbsp;&nbsp;`groupOptions: 'multiselect-group-options',`<br>&nbsp;&nbsp;`option: 'multiselect-option',`<br>&nbsp;&nbsp;`optionPointed: 'is-pointed',`<br>&nbsp;&nbsp;`optionSelected: 'is-selected',`<br>&nbsp;&nbsp;`optionDisabled: 'is-disabled',`<br>&nbsp;&nbsp;`optionSelectedPointed: 'is-selected is-pointed',`<br>&nbsp;&nbsp;`optionSelectedDisabled: 'is-selected is-disabled',`<br>&nbsp;&nbsp;`noOptions: 'multiselect-no-options',`<br>&nbsp;&nbsp;`noResults: 'multiselect-no-results',`<br>&nbsp;&nbsp;`fakeInput: 'multiselect-fake-input',`<br>&nbsp;&nbsp;`spacer: 'multiselect-spacer'`<br>`}` |
+
+<a href="https://vueform.com?ref=ghb">
+  <img align="center" src="https://github.com/vueform/multiselect/raw/main/assets/vueform-banner.png" alt="Vueform" title="Vueform">
+</a>
 
 ### Advanced Props
 
@@ -780,15 +800,6 @@ In case you need to override the same type of utility you might use [@neojp/tail
 ```
 
 <a href="https://jsfiddle.net/4q3oauy6/6/" target="_blank">JSFiddle - Example #10</a>
-
-## About Vueform
-
-Vueform is a comprehensive form builder for Vue.js that makes form development a breeze. It supercharges and standardizes the entire form building process and takes care of everything from rendering to validation and processing.
-
-Vueform pre-release is open for registration for the first 100 developers.
-
-Learn more: [https://vueform.com](https://vueform.com)
-
 
 ## License
 
