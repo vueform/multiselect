@@ -27,7 +27,7 @@
 }
 
 .multiselect-search {
-  @apply w-full absolute inset-0 outline-none appearance-none box-border border-0 text-base font-sans bg-white rounded pl-3.5;
+  @apply w-full absolute inset-0 outline-none focus:ring-0 appearance-none box-border border-0 text-base font-sans bg-white rounded pl-3.5;
 }
 
 .multiselect-tags {
@@ -55,7 +55,7 @@
 }
 
 .multiselect-tags-search {
-  @apply absolute inset-0 border-0 outline-none appearance-none p-0 text-base font-sans box-border w-full;
+  @apply absolute inset-0 border-0 outline-none focus:ring-0 appearance-none p-0 text-base font-sans box-border w-full;
 }
 
 .multiselect-tags-search-copy {
