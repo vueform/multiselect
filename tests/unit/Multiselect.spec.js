@@ -537,7 +537,7 @@ describe('Multiselect', () => {
           options: [1,2,3],
         })
 
-        findAll(select, '.multiselect-tag').at(0).find('.multiselect-tag-remove').trigger('mousedown', { button: 0 })
+        findAll(select, '.multiselect-tag').at(0).find('.multiselect-tag-remove').trigger('click', { button: 0 })
 
         await nextTick()
 
@@ -551,7 +551,7 @@ describe('Multiselect', () => {
           options: [1,2,3],
         })
 
-        findAll(select, '.multiselect-tag').at(0).find('.multiselect-tag-remove').trigger('mousedown', { button: 2 })
+        findAll(select, '.multiselect-tag').at(0).find('.multiselect-tag-remove').trigger('click', { button: 2 })
 
         await nextTick()
 
