@@ -592,7 +592,7 @@ export default function useOptions (props, context, dep)
         }
 
         options.value(search.value).then((response) => {
-          if (query == search.value) {
+          if (query == search.value || !search.value) {
             ro.value = response
             pointer.value = fo.value.filter(o => o.disabled !== true)[0] || null
             resolving.value = false
