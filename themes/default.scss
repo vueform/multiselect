@@ -45,10 +45,21 @@
   background: transparent;
   line-height: var(--ms-line-height, 1.375);
   padding-left: var(--ms-px, 0.875rem);
+  padding-right: calc(1.25rem + var(--ms-px, 0.875rem) * 3);
+  box-sizing: border-box;
+  max-width: 100%;
 }
 
 .multiselect-placeholder {
   color: var(--ms-placeholder-color, #9CA3AF);
+}
+
+.multiselect-single-label-text {
+  overflow: hidden;
+  display: block;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: 100%;
 }
 
 .multiselect-search {

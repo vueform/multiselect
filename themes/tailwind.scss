@@ -19,7 +19,11 @@
 }
 
 .multiselect-single-label {
-  @apply flex items-center h-full absolute left-0 top-0 pointer-events-none bg-transparent leading-snug pl-3.5;
+  @apply flex items-center h-full max-w-full absolute left-0 top-0 pointer-events-none bg-transparent leading-snug pl-3.5 pr-16 box-border;
+}
+
+.multiselect-single-label-text {
+  @apply overflow-ellipsis overflow-hidden block whitespace-nowrap max-w-full;
 }
 
 .multiselect-multiple-label {

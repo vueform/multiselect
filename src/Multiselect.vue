@@ -70,7 +70,7 @@
     <template v-if="mode == 'single' && hasSelected && !search && iv">
       <slot name="singlelabel" :value="iv">
         <div :class="classList.singleLabel">
-          {{ iv[label] }}
+          <span :class="classList.singleLabelText">{{ iv[label] }}</span>
         </div>
       </slot>
     </template>
