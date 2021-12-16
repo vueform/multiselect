@@ -1,9 +1,9 @@
 import { computed, toRefs } from 'composition-api'
 
 export default function useClasses (props, context, dependencies)
-{
-  const refs = toRefs(props)
-  const { disabled, openDirection, showOptions } = refs
+{const { 
+    classes: classes_, disabled, openDirection, showOptions
+  } = toRefs(props)
 
   // ============ DEPENDENCIES ============
 
@@ -16,7 +16,7 @@ export default function useClasses (props, context, dependencies)
   const resolving = dependencies.resolving
   const fo = dependencies.fo
 
-  const classes = {
+  const classes = computed(() => ({
     container: 'multiselect',
     containerDisabled: 'is-disabled',
     containerOpen: 'is-open',
@@ -63,8 +63,8 @@ export default function useClasses (props, context, dependencies)
     noResults: 'multiselect-no-results',
     fakeInput: 'multiselect-fake-input',
     spacer: 'multiselect-spacer',
-    ...refs.classes.value,
-  }
+    ...classes_.value,
+  }))
 
   // ============== COMPUTED ==============
 
@@ -73,70 +73,72 @@ export default function useClasses (props, context, dependencies)
   })
 
   const classList = computed(() => {
+    const c = classes.value
+
     return {
-      container: [classes.container]
-        .concat(disabled.value ? classes.containerDisabled : [])
-        .concat(showDropdown.value && openDirection.value === 'top'  ? classes.containerOpenTop : [])
-        .concat(showDropdown.value && openDirection.value !== 'top' ? classes.containerOpen : [])
-        .concat(isActive.value ? classes.containerActive : []),
-      spacer: classes.spacer,
-      singleLabel: classes.singleLabel,
-      multipleLabel: classes.multipleLabel,
-      search: classes.search,
-      tags: classes.tags,
-      tag: [classes.tag]
-        .concat(disabled.value ? classes.tagDisabled : []),
-      tagRemove: classes.tagRemove,
-      tagRemoveIcon: classes.tagRemoveIcon,
-      tagsSearchWrapper: classes.tagsSearchWrapper,
-      tagsSearch: classes.tagsSearch,
-      tagsSearchCopy: classes.tagsSearchCopy,
-      placeholder: classes.placeholder,
-      caret: [classes.caret]
-        .concat(isOpen.value ? classes.caretOpen : []),
-      clear: classes.clear,
-      clearIcon: classes.clearIcon,
-      spinner: classes.spinner,
-      dropdown: [classes.dropdown]
-        .concat(openDirection.value === 'top' ? classes.dropdownTop : [])
-        .concat(!isOpen.value || !showOptions.value || !showDropdown.value ? classes.dropdownHidden : []),
-      options: [classes.options]
-        .concat(openDirection.value === 'top' ? classes.optionsTop : []),
-      group: classes.group,
+      container: [c.container]
+        .concat(disabled.value ? c.containerDisabled : [])
+        .concat(showDropdown.value && openDirection.value === 'top'  ? c.containerOpenTop : [])
+        .concat(showDropdown.value && openDirection.value !== 'top' ? c.containerOpen : [])
+        .concat(isActive.value ? c.containerActive : []),
+      spacer: c.spacer,
+      singleLabel: c.singleLabel,
+      multipleLabel: c.multipleLabel,
+      search: c.search,
+      tags: c.tags,
+      tag: [c.tag]
+        .concat(disabled.value ? c.tagDisabled : []),
+      tagRemove: c.tagRemove,
+      tagRemoveIcon: c.tagRemoveIcon,
+      tagsSearchWrapper: c.tagsSearchWrapper,
+      tagsSearch: c.tagsSearch,
+      tagsSearchCopy: c.tagsSearchCopy,
+      placeholder: c.placeholder,
+      caret: [c.caret]
+        .concat(isOpen.value ? c.caretOpen : []),
+      clear: c.clear,
+      clearIcon: c.clearIcon,
+      spinner: c.spinner,
+      dropdown: [c.dropdown]
+        .concat(openDirection.value === 'top' ? c.dropdownTop : [])
+        .concat(!isOpen.value || !showOptions.value || !showDropdown.value ? c.dropdownHidden : []),
+      options: [c.options]
+        .concat(openDirection.value === 'top' ? c.optionsTop : []),
+      group: c.group,
       groupLabel: (g) => {
-        let groupLabel = [classes.groupLabel]
+        let groupLabel = [c.groupLabel]
 
         if (isPointed(g)) {
-          groupLabel.push(isSelected(g) ? classes.groupLabelSelectedPointed : classes.groupLabelPointed)
+          groupLabel.push(isSelected(g) ? c.groupLabelSelectedPointed : c.groupLabelPointed)
         } else if (isSelected(g) && canPointGroups.value) {
-          groupLabel.push(isDisabled(g) ? classes.groupLabelSelectedDisabled : classes.groupLabelSelected)
+          groupLabel.push(isDisabled(g) ? c.groupLabelSelectedDisabled : c.groupLabelSelected)
         } else if (isDisabled(g)) {
-          groupLabel.push(classes.groupLabelDisabled)
+          groupLabel.push(c.groupLabelDisabled)
         }
 
         if (canPointGroups.value) {
-          groupLabel.push(classes.groupLabelPointable)
+          groupLabel.push(c.groupLabelPointable)
         }
 
         return groupLabel
       },
-      groupOptions: classes.groupOptions,
+      groupOptions: c.groupOptions,
       option: (o, g) => {
-        let option = [classes.option]
+        let option = [c.option]
 
         if (isPointed(o)) {
-          option.push(isSelected(o) ? classes.optionSelectedPointed : classes.optionPointed)
+          option.push(isSelected(o) ? c.optionSelectedPointed : c.optionPointed)
         } else if (isSelected(o)) {
-          option.push(isDisabled(o) ? classes.optionSelectedDisabled : classes.optionSelected)
+          option.push(isDisabled(o) ? c.optionSelectedDisabled : c.optionSelected)
         } else if (isDisabled(o) || (g && isDisabled(g))) {
-          option.push(classes.optionDisabled)
+          option.push(c.optionDisabled)
         }
 
         return option
       },
-      noOptions: classes.noOptions,
-      noResults: classes.noResults,
-      fakeInput: classes.fakeInput,
+      noOptions: c.noOptions,
+      noResults: c.noResults,
+      fakeInput: c.fakeInput,
     }
   })
 
