@@ -47,11 +47,15 @@
 }
 
 .multiselect-tag-remove {
-  @apply flex items-center justify-center p-1 mx-0.5 rounded-sm hover:bg-black hover:bg-opacity-10 group;
+  @apply flex items-center justify-center p-1 mx-0.5 rounded-sm hover:bg-black hover:bg-opacity-10;
 }
 
 .multiselect-tag-remove-icon {
-  @apply bg-multiselect-remove bg-center bg-no-repeat opacity-30 inline-block w-3 h-3 group-hover:opacity-60;
+  @apply bg-multiselect-remove bg-center bg-no-repeat opacity-30 inline-block w-3 h-3;
+}
+
+.multiselect-tag-remove:hover .multiselect-tag-remove-icon {
+  @apply opacity-60;
 }
 
 .multiselect-tags-search-wrapper {
@@ -171,11 +175,11 @@
 }
 
 .multiselect-no-options {
-  @apply py-2 px-3 text-gray-600 bg-white;
+  @apply py-2 px-3 text-gray-600 bg-white text-left;
 }
 
 .multiselect-no-results {
-  @apply py-2 px-3 text-gray-600 bg-white;
+  @apply py-2 px-3 text-gray-600 bg-white text-left;
 }
 
 .multiselect-fake-input {

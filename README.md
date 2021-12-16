@@ -529,8 +529,8 @@ Alternatively you can define class names directly by passing them to the `Multis
   optionDisabled: 'text-gray-300 cursor-not-allowed',
   optionSelectedPointed: 'text-white bg-green-500 opacity-90',
   optionSelectedDisabled: 'text-green-100 bg-green-500 bg-opacity-50 cursor-not-allowed',
-  noOptions: 'py-2 px-3 text-gray-600 bg-white',
-  noResults: 'py-2 px-3 text-gray-600 bg-white',
+  noOptions: 'py-2 px-3 text-gray-600 bg-white text-left',
+  noResults: 'py-2 px-3 text-gray-600 bg-white text-left',
   fakeInput: 'bg-transparent absolute left-0 right-0 -bottom-px w-full h-px border-0 p-0 appearance-none outline-none text-transparent',
   spacer: 'h-9 py-px box-content',
 }" />
