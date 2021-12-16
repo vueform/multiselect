@@ -34,9 +34,8 @@ export default function useKeyboard (props, context, dep)
   }
 
   const handleKeydown = (e) => {
-    switch (e.keyCode) {
-      // backspace
-      case 8:
+    switch (e.key) {
+      case 'Backspace':
         if (mode.value === 'single') {
           return
         }
@@ -52,8 +51,7 @@ export default function useKeyboard (props, context, dep)
         update([...iv.value].slice(0,-1))
         break
 
-      // enter
-      case 13:
+      case 'Enter':
         e.preventDefault()
 
         if (mode.value === 'tags' && addTagOn.value.indexOf('enter') === -1 && createTag.value) {
@@ -64,8 +62,7 @@ export default function useKeyboard (props, context, dep)
         selectPointer()
         break
 
-      // space
-      case 32:
+      case ' ':
         if (searchable.value && mode.value !== 'tags' && !createTag.value) {
           return
         }
@@ -80,23 +77,14 @@ export default function useKeyboard (props, context, dep)
         selectPointer()
         break
       
-      // tab
-      // semicolon
-      // comma
-      case 9:
-      case 186:
-      case 188:
+      case 'Tab':
+      case ';':
+      case ',':
         if (mode.value !== 'tags') {
           return
         }
 
-        const charMap = {
-          9: 'tab',
-          186: ';',
-          188: ','
-        }
-
-        if (addTagOn.value.indexOf(charMap[e.keyCode]) === -1 || !createTag.value) {
+        if (addTagOn.value.indexOf(e.key.toLowerCase()) === -1 || !createTag.value) {
           return
         }
 
@@ -105,13 +93,11 @@ export default function useKeyboard (props, context, dep)
         e.preventDefault()
         break
 
-      // escape
-      case 27:
+      case 'Escape':
         blur()
         break
 
-      // up
-      case 38:
+      case 'ArrowUp':
         e.preventDefault()
 
         if (!showOptions.value) {
@@ -121,8 +107,7 @@ export default function useKeyboard (props, context, dep)
         openDirection.value === 'top' ? forwardPointer() : backwardPointer()
         break
 
-      // down
-      case 40:
+      case 'ArrowDown':
         e.preventDefault()
 
         if (!showOptions.value) {

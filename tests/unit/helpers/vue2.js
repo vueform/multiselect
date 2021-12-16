@@ -49,22 +49,22 @@ const keyEvent = (event, wrapper, key) => {
 
   switch (key) {
     case 'esc':
-      wrapper.trigger(event, { keyCode: 27 })
+      wrapper.trigger(event, { key: 'Escape' })
       break
     case 'backspace':
-      wrapper.trigger(event, { keyCode: 8 })
+      wrapper.trigger(event, { key: 'Backspace' })
       break
     case 'up':
-      wrapper.trigger(event, { keyCode: 38 })
+      wrapper.trigger(event, { key: 'ArrowUp' })
       break
     case 'down':
-      wrapper.trigger(event, { keyCode: 40 })
+      wrapper.trigger(event, { key: 'ArrowDown' })
       break
     case 'enter':
-      wrapper.trigger(event, { keyCode: 13 })
+      wrapper.trigger(event, { key: 'Enter' })
       break
     case 'space':
-      wrapper.trigger(event, { keyCode: 32 })
+      wrapper.trigger(event, { key: ' ' })
       break
   }
 }

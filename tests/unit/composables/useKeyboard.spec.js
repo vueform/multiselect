@@ -20,7 +20,7 @@ describe('useKeyboard', () => {
 
       select.vm.preparePointer()
 
-      select.vm.handleKeydown({keyCode: 13, preventDefault: () => {}})
+      select.vm.handleKeydown({ key: 'Enter', preventDefault: () => {}})
     })
   })
 
@@ -98,7 +98,7 @@ describe('useKeyboard', () => {
 
         select.vm.handleKeydown({
           preventDefault: preventMock,
-          keyCode: 13,
+          key: 'Enter',
         })
 
         expect(preventMock).toHaveBeenCalled()
@@ -407,7 +407,7 @@ describe('useKeyboard', () => {
 
         select.vm.setPointer(select.vm.getOption(2))
 
-        keydown(select, { keyCode: 186 })
+        keydown(select, { key: ';' })
 
         await nextTick()
 
@@ -425,7 +425,7 @@ describe('useKeyboard', () => {
 
         select.vm.setPointer(select.vm.getOption(2))
 
-        keydown(select, { keyCode: 186 })
+        keydown(select, { key: ';' })
 
         await nextTick()
 
@@ -443,7 +443,7 @@ describe('useKeyboard', () => {
 
         select.vm.setPointer(select.vm.getOption(2))
 
-        keydown(select, { keyCode: 186 })
+        keydown(select, { key: ';' })
 
         await nextTick()
 
@@ -461,7 +461,7 @@ describe('useKeyboard', () => {
 
         select.vm.setPointer(select.vm.getOption(2))
 
-        keydown(select, { keyCode: 186 })
+        keydown(select, { key: ';' })
 
         await nextTick()
 
@@ -478,7 +478,7 @@ describe('useKeyboard', () => {
 
         select.vm.setPointer(select.vm.getOption(2))
 
-        keydown(select, { keyCode: 188 })
+        keydown(select, { key: ',' })
 
         await nextTick()
 
@@ -496,7 +496,7 @@ describe('useKeyboard', () => {
 
         select.vm.setPointer(select.vm.getOption(2))
 
-        keydown(select, { keyCode: 188 })
+        keydown(select, { key: ',' })
 
         await nextTick()
 
@@ -514,7 +514,7 @@ describe('useKeyboard', () => {
 
         select.vm.setPointer(select.vm.getOption(2))
 
-        keydown(select, { keyCode: 188 })
+        keydown(select, { key: ',' })
 
         await nextTick()
 
@@ -532,7 +532,7 @@ describe('useKeyboard', () => {
 
         select.vm.setPointer(select.vm.getOption(2))
 
-        keydown(select, { keyCode: 188 })
+        keydown(select, { key: ',' })
 
         await nextTick()
 
@@ -549,7 +549,7 @@ describe('useKeyboard', () => {
 
         select.vm.setPointer(select.vm.getOption(2))
 
-        keydown(select, { keyCode: 9 })
+        keydown(select, { key: 'Tab' })
 
         await nextTick()
 
@@ -567,7 +567,7 @@ describe('useKeyboard', () => {
 
         select.vm.setPointer(select.vm.getOption(2))
 
-        keydown(select, { keyCode: 9 })
+        keydown(select, { key: 'Tab' })
 
         await nextTick()
 
@@ -585,7 +585,7 @@ describe('useKeyboard', () => {
 
         select.vm.setPointer(select.vm.getOption(2))
 
-        keydown(select, { keyCode: 9 })
+        keydown(select, { key: 'Tab' })
 
         await nextTick()
 
@@ -603,7 +603,7 @@ describe('useKeyboard', () => {
 
         select.vm.setPointer(select.vm.getOption(2))
 
-        keydown(select, { keyCode: 9 })
+        keydown(select, { key: 'Tab' })
 
         await nextTick()
 
