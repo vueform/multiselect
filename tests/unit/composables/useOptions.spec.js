@@ -93,6 +93,39 @@ describe('useOptions', () => {
       ])
     })
 
+    it('should contain only options with normalized labels that match normalized search, strict=true, trackBy=undefined', () => {
+      const select = createSelect({
+        options: [
+          { value: 0, name: 'Value0', },
+          { value: 1, name: 'Value1', },
+          { value: 2, name: 'Value2', }
+        ],
+        label: 'name',
+      })
+
+      select.vm.search = 'VALUE1'
+
+      expect(select.vm.fo.length).toBe(1)
+      expect(select.vm.fo[0].name).toBe('Value1')
+    })
+
+    it('should contain only options with normalized labels that match normalized search, strict=true, trackBy=search', () => {
+      const select = createSelect({
+        options: [
+          { value: 0, name: 'Value0', search: 'aaa', },
+          { value: 1, name: 'Value1', search: 'bbb', },
+          { value: 2, name: 'Value2', search: 'ccc', }
+        ],
+        label: 'name',
+        trackBy: 'search',
+      })
+
+      select.vm.search = 'bb'
+
+      expect(select.vm.fo.length).toBe(1)
+      expect(select.vm.fo[0].name).toBe('Value1')
+    })
+
     it('should contain only options with normalized trackBys that match normalized search, strict=true', () => {
       const select = createSelect({
         options: [

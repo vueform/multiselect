@@ -7,7 +7,7 @@ import arraysEqual from './../utils/arraysEqual'
 export default function useOptions (props, context, dep)
 {
   const { 
-    options, mode, trackBy, limit, hideSelected, createTag, label,
+    options, mode, trackBy: trackBy_, limit, hideSelected, createTag, label,
     appendNewTag, multipleLabel, object, loading, delay, resolveOnLoad,
     minChars, filterResults, clearOnSearch, clearOnSelect, valueProp,
     canDeselect, max, strict, closeOnSelect, groups: groupped, groupLabel,
@@ -139,6 +139,10 @@ export default function useOptions (props, context, dep)
       [label.value]: search.value,
       [trackBy.value]: search.value,
     }]
+  })
+
+  const trackBy = computed(() => {
+    return trackBy_.value || label.value
   })
 
   // no export

@@ -205,7 +205,7 @@ Join our [Discord channel](https://discord.gg/WhX2nG6GTQ) or [open an issue](htt
 | **required** | `boolean` | `false` | Whether the HTML5 required attribute should be used for multiselect (using an invisible fake input). |
 | **searchable** | `boolean` | `false` | Whether the options should be searchable. |
 | **valueProp** | `string` | `'value'` | If you provide an array of objects as `options` this property should be used as the value of the option. |
-| **trackBy** | `string` | `'label'` | The name of the property that should be searched when `searchable` is `true` and an array of objects are provided as `options`. |
+| **trackBy** | `string` | `undefined` | The name of the property that should be searched when `searchable` is `true` and an array of objects are provided as `options`. If left `undefined` the `label` prop will be used instead. |
 | **label** | `string` | `'label'` | If you provide an array of objects as `options` the value of this property will be displayed as selected option. |
 | **placeholder** | `string` | `null` | The text that should be displayed before any option is selected. |
 | **multipleLabel** | `function` |  | A function that returns the label to be displayed for selected options when using `multiple` mode. It receives `value` as an argument. By default it renders `1 option selected` and `[n] options selected` based on `value` length. |

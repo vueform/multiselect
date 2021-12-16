@@ -246,7 +246,7 @@
       trackBy: {
         type: String,
         required: false,
-        default: 'label',
+        default: undefined,
       },
       valueProp: {
         type: String,
