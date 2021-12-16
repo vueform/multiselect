@@ -63,7 +63,7 @@ describe('useOptions', () => {
       ])
     })
 
-    it('should append createdTag to `fo` when createTag true', () => {
+    it('should append createdOption to `fo` when createTag true', () => {
       const select = createSelect({
         mode: 'tags',
         createTag: true,
@@ -76,7 +76,7 @@ describe('useOptions', () => {
       expect(select.vm.fo[0].v).toStrictEqual('new-tag')
     })
 
-    it('should not append createdTag to `fo` when if it already exists exists', () => {
+    it('should not append createdOption to `fo` when if it already exists exists', () => {
       const select = createSelect({
         mode: 'tags',
         createTag: true,
@@ -981,7 +981,7 @@ describe('useOptions', () => {
   describe('noResults', () => {
     it('should be true if no options match search', () => {
       let select = createSelect({
-        options: ['Java', 'Javascript']
+        options: ['Java', 'Javascript'],
       })
       select.vm.search = 'jav'
       expect(select.vm.noResults).toBe(false)
@@ -1602,6 +1602,101 @@ describe('useOptions', () => {
       destroy(select)
     })
 
+    it('should emit option and clear search and not append option on select if createOption true and option does not exist', async () => {
+      let select = createSelect({
+        mode: 'single',
+        value: null,
+        options: [1,2,3],
+        createOption: true,
+        appendNewOption: false,
+        object: true,
+        valueProp: 'v'
+      })
+
+      select.vm.search = 'value'
+      select.vm.handleOptionClick({ v: 'value', label: 'value' })
+
+      await nextTick()
+
+      expect(select.emitted('option')[0][0]).toStrictEqual('value')
+      expect(select.vm.search).toBe('')
+      expect(select.vm.fo.length).toBe(3)
+    })
+
+    it('should append option if createOption && appendNewOption true and option does not exist', async () => {
+      let select = createSelect({
+        mode: 'single',
+        value: null,
+        options: [1,2,3],
+        createOption: true,
+        appendNewOption: true,
+        hideSelected: false,
+        valueProp: 'v'
+      })
+
+      select.vm.handleOptionClick({ v: 'value', label: 'value' })
+
+      await nextTick()
+
+      expect(select.emitted('option')[0][0]).toStrictEqual('value')
+      expect(select.vm.fo).toStrictEqual([
+        { v: 1, label: 1 },
+        { v: 2, label: 2 },
+        { v: 3, label: 3 },
+        { v: 'value', label: 'value' },
+      ])
+    })
+
+    it('should not append option if it already exists', async () => {
+      let select = createSelect({
+        mode: 'single',
+        value: null,
+        options: [1,2,3],
+        createOption: true,
+        appendNewOption: true,
+        hideSelected: false,
+        valueProp: 'v',
+      })
+
+      select.vm.handleOptionClick({ v: 'value', label: 'value' })
+
+      await nextTick()
+
+      select.vm.handleOptionClick({ v: 'value', label: 'value' })
+
+      await nextTick()
+      
+      expect(select.vm.fo).toStrictEqual([
+        { v: 1, label: 1 },
+        { v: 2, label: 2 },
+        { v: 3, label: 3 },
+        { v: 'value', label: 'value' },
+      ])
+    })
+
+    it('should not append option if appendNewOption is false', async () => {
+      let select = createSelect({
+        mode: 'single',
+        value: null,
+        options: [1,2,3],
+        createOption: true,
+        appendNewOption: false,
+        hideSelected: false,
+        object: true,
+        valueProp: 'v',
+      })
+
+      select.vm.handleOptionClick({ v: 'value', label: 'value' })
+
+      await nextTick()
+      
+      expect(select.vm.fo).toStrictEqual([
+        { v: 1, label: 1 },
+        { v: 2, label: 2 },
+        { v: 3, label: 3 },
+      ])
+    })
+
     /* MULTISELECT */
 
     it('should remove option from value if selected when multiple', async () => {
@@ -1710,6 +1805,101 @@ describe('useOptions', () => {
       await nextTick()
 
       expect(select.vm.pointer).toStrictEqual(select.vm.getOption(2))
+    })
+
+    it('should emit option and clear search and not append option on select if createOption true and option does not exist', async () => {
+      let select = createSelect({
+        mode: 'multiple',
+        value: [],
+        options: [1,2,3],
+        createOption: true,
+        appendNewOption: false,
+        object: true,
+        valueProp: 'v'
+      })
+
+      select.vm.search = 'value'
+      select.vm.handleOptionClick({ v: 'value', label: 'value' })
+
+      await nextTick()
+
+      expect(select.emitted('option')[0][0]).toStrictEqual('value')
+      expect(select.vm.search).toBe('')
+      expect(select.vm.fo.length).toBe(3)
+    })
+
+    it('should append option if createOption && appendNewOption true and option does not exist', async () => {
+      let select = createSelect({
+        mode: 'multiple',
+        value: [],
+        options: [1,2,3],
+        createOption: true,
+        appendNewOption: true,
+        hideSelected: false,
+        valueProp: 'v'
+      })
+
+      select.vm.handleOptionClick({ v: 'value', label: 'value' })
+
+      await nextTick()
+
+      expect(select.emitted('option')[0][0]).toStrictEqual('value')
+      expect(select.vm.fo).toStrictEqual([
+        { v: 1, label: 1 },
+        { v: 2, label: 2 },
+        { v: 3, label: 3 },
+        { v: 'value', label: 'value' },
+      ])
+    })
+
+    it('should not append option if it already exists', async () => {
+      let select = createSelect({
+        mode: 'multiple',
+        value: [],
+        options: [1,2,3],
+        createOption: true,
+        appendNewOption: true,
+        hideSelected: false,
+        valueProp: 'v',
+      })
+
+      select.vm.handleOptionClick({ v: 'value', label: 'value' })
+
+      await nextTick()
+
+      select.vm.handleOptionClick({ v: 'value', label: 'value' })
+
+      await nextTick()
+      
+      expect(select.vm.fo).toStrictEqual([
+        { v: 1, label: 1 },
+        { v: 2, label: 2 },
+        { v: 3, label: 3 },
+        { v: 'value', label: 'value' },
+      ])
+    })
+
+    it('should not append option if appendNewOption is false', async () => {
+      let select = createSelect({
+        mode: 'multiple',
+        value: [],
+        options: [1,2,3],
+        createOption: true,
+        appendNewOption: false,
+        hideSelected: false,
+        object: true,
+        valueProp: 'v',
+      })
+
+      select.vm.handleOptionClick({ v: 'value', label: 'value' })
+
+      await nextTick()
+      
+      expect(select.vm.fo).toStrictEqual([
+        { v: 1, label: 1 },
+        { v: 2, label: 2 },
+        { v: 3, label: 3 },
+      ])
     })
 
     it('should blur input after select if closeOnSelect=true && mode=multiple', async () => {

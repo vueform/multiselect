@@ -7,11 +7,11 @@ import arraysEqual from './../utils/arraysEqual'
 export default function useOptions (props, context, dep)
 {
   const { 
-    options, mode, trackBy: trackBy_, limit, hideSelected, createTag, label,
-    appendNewTag, multipleLabel, object, loading, delay, resolveOnLoad,
+    options, mode, trackBy: trackBy_, limit, hideSelected, createTag, createOption: createOption_, label,
+    appendNewTag, appendNewOption: appendNewOption_, multipleLabel, object, loading, delay, resolveOnLoad,
     minChars, filterResults, clearOnSearch, clearOnSelect, valueProp,
     canDeselect, max, strict, closeOnSelect, groups: groupped, groupLabel,
-    groupOptions, groupHideEmpty, groupSelect,
+    groupOptions, groupHideEmpty, groupSelect, 
   } = toRefs(props)
 
   // ============ DEPENDENCIES ============
@@ -40,6 +40,22 @@ export default function useOptions (props, context, dep)
   const resolving = ref(false)
 
   // ============== COMPUTED ==============
+
+  // no export
+  const createOption = computed(() => {
+    return createTag.value || createOption_.value || false
+  })
+
+  // no export
+  const appendNewOption = computed(() => {
+    if (appendNewTag.value !== undefined) {
+      return appendNewTag.value
+    } else if (appendNewOption_.value !== undefined) {
+      return appendNewOption_.value
+    }
+
+    return true
+  })
 
   // no export
   // extendedOptions
@@ -89,8 +105,8 @@ export default function useOptions (props, context, dep)
   const fo = computed(() => {
     let options = eo.value
 
-    if (createdTag.value.length) {
-      options = createdTag.value.concat(options)
+    if (createdOption.value.length) {
+      options = createdOption.value.concat(options)
     }
 
     options = filterOptions(options)
@@ -120,7 +136,7 @@ export default function useOptions (props, context, dep)
   })
 
   const noOptions = computed(() => {
-    return !eo.value.length && !resolving.value && !createdTag.value.length
+    return !eo.value.length && !resolving.value && !createdOption.value.length
   })
 
 
@@ -129,8 +145,8 @@ export default function useOptions (props, context, dep)
   })
 
   // no export
-  const createdTag = computed(() => {
-    if (createTag.value === false || !search.value) {
+  const createdOption = computed(() => {
+    if (createOption.value === false || !search.value) {
       return []
     }
 
@@ -270,6 +286,8 @@ export default function useOptions (props, context, dep)
           return
         }
 
+        handleOptionAppend(option)
+
         blur()
         select(option)
         break
@@ -283,6 +301,8 @@ export default function useOptions (props, context, dep)
         if (isMax()) {
           return
         }
+
+        handleOptionAppend(option)
 
         select(option)
 
@@ -312,15 +332,7 @@ export default function useOptions (props, context, dep)
           return
         }
 
-        if (getOption(option[valueProp.value]) === undefined && createTag.value) {
-          context.emit('tag', option[valueProp.value])
-
-          if (appendNewTag.value) {
-            appendOption(option)
-          }
-
-          clearSearch()
-        }
+        handleOptionAppend(option)
 
         if (clearOnSelect.value) {
           clearSearch()
@@ -370,6 +382,19 @@ export default function useOptions (props, context, dep)
 
     if (closeOnSelect.value) {
       deactivate()
+    }
+  }
+
+  const handleOptionAppend = (option) => {
+    if (getOption(option[valueProp.value]) === undefined && createOption.value) {
+      context.emit('tag', option[valueProp.value])
+      context.emit('option', option[valueProp.value])
+
+      if (appendNewOption.value) {
+        appendOption(option)
+      }
+
+      clearSearch()
     }
   }
 

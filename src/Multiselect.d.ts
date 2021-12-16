@@ -29,8 +29,11 @@ declare class Multiselect extends Vue {
   minChars?: number;
   resolveOnLoad?: boolean;
   appendNewTag?: boolean;
+  appendNewOption?: boolean;
   createTag?: boolean;
+  createOption?: boolean;
   addTagOn?: string[];
+  addOptionOn?: string[];
   hideSelected?: boolean;
   showOptions?: boolean;
   object?: boolean;
@@ -54,6 +57,7 @@ declare class Multiselect extends Vue {
   $emit(eventName: 'remove', e: {originalEvent: Event, value: any, option: any}): this;
   $emit(eventName: 'search-change', e: {originalEvent: Event, query: string}): this;
   $emit(eventName: 'tag', e: {originalEvent: Event, query: string}): this;
+  $emit(eventName: 'option', e: {originalEvent: Event, query: string}): this;
   $emit(eventName: 'paste', e: {originalEvent: Event}): this;
   $emit(eventName: 'open'): this;
   $emit(eventName: 'close'): this;

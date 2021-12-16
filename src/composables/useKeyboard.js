@@ -1,10 +1,11 @@
-import { toRefs } from 'composition-api'
+import { toRefs, computed } from 'composition-api'
 
 export default function useKeyboard (props, context, dep)
 {
   const {
-      mode, addTagOn, createTag, openDirection, searchable,
+      mode, addTagOn, openDirection, searchable,
       showOptions, valueProp, groups: groupped,
+      addOptionOn: addOptionOn_, createTag, createOption: createOption_,
     } = toRefs(props)
 
   // ============ DEPENDENCIES ============
@@ -19,6 +20,25 @@ export default function useKeyboard (props, context, dep)
   const blur = dep.blur
   const fo = dep.fo
 
+  // ============== COMPUTED ==============
+
+  // no export
+  const createOption = computed(() => {
+    return createTag.value || createOption_.value || false
+  })
+
+  // no export
+  const addOptionOn = computed(() => {
+    if (addTagOn.value !== undefined) {
+      return addTagOn.value
+    }
+    else if (addOptionOn_.value !== undefined) {
+      return addOptionOn_.value
+    }
+
+    return ['enter']
+  })
+
   // =============== METHODS ==============
 
   // no export
@@ -28,7 +48,7 @@ export default function useKeyboard (props, context, dep)
     // In such case we need to set the pointer manually to the 
     // first option, which equals to the option created from
     // the search value.
-    if (mode.value === 'tags' && !showOptions.value && createTag.value && searchable.value && !groupped.value) {
+    if (mode.value === 'tags' && !showOptions.value && createOption.value && searchable.value && !groupped.value) {
       setPointer(fo.value[fo.value.map(o => o[valueProp.value]).indexOf(search.value)])
     }
   }
@@ -54,7 +74,7 @@ export default function useKeyboard (props, context, dep)
       case 'Enter':
         e.preventDefault()
 
-        if (mode.value === 'tags' && addTagOn.value.indexOf('enter') === -1 && createTag.value) {
+        if (addOptionOn.value.indexOf('enter') === -1 && createOption.value) {
           return
         }
         
@@ -63,11 +83,19 @@ export default function useKeyboard (props, context, dep)
         break
 
       case ' ':
-        if (searchable.value && mode.value !== 'tags' && !createTag.value) {
+        if (!createOption.value && !searchable.value) {
+          e.preventDefault()
+          
+          preparePointer()
+          selectPointer()
           return
         }
 
-        if (mode.value === 'tags' && ((addTagOn.value.indexOf('space') === -1 && createTag.value) || !createTag.value)) {
+        if (!createOption.value) {
+          return false
+        } 
+
+        if (addOptionOn.value.indexOf('space') === -1 && createOption.value) {
           return
         }
 
@@ -80,11 +108,7 @@ export default function useKeyboard (props, context, dep)
       case 'Tab':
       case ';':
       case ',':
-        if (mode.value !== 'tags') {
-          return
-        }
-
-        if (addTagOn.value.indexOf(e.key.toLowerCase()) === -1 || !createTag.value) {
+        if (addOptionOn.value.indexOf(e.key.toLowerCase()) === -1 || !createOption.value) {
           return
         }
 

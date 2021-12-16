@@ -240,9 +240,12 @@ Join our [Discord channel](https://discord.gg/WhX2nG6GTQ) or [open an issue](htt
 | **filterResults** | `boolean` | `true` | Whether option list should be filtered by search query. This may be set to `false` if you are handling filtering manually when returning async options. |
 | **minChars** | `number` | `0` | The minimum number of characters that should be typed to refresh async option list. If `0` it will refresh even when the search field becomes empty. |
 | **resolveOnLoad** | `boolean` | `true` | Whether async options should be loaded initially (with an empty query). This should be `true` if you are planning to load non-object value(s) initially while using async options (to fetch matching objects for values). |
-| **appendNewTag** | `boolean` | `true` | Whether it should append new tag automatically to option list when using `tags` mode with `createTag`. If set to `false` you need to take care of appending a new tag to the provided `:options` list upon `@tag` event. |
-| **createTag** | `boolean` | `false` | Whether it should allow creating new tag based on search query when using `tags` mode. |
-| **addTagOn** | `array` | `['enter']` | The list of keys that creates a new tag while typing in the search field when having `createTag` enabled. Possible values: `'enter'\|'space'\|'tab'\|';'\|','`. |
+| **appendNewTag** | `boolean` | `true` | **Deprecated 2.3.0: use `appendNewOption` instead.**<br>Whether it should append new tag automatically to option list when using `tags` mode with `createTag`. If set to `false` you need to take care of appending a new tag to the provided `:options` list upon `@tag` event. |
+| **createTag** | `boolean` | `false` | **Deprecated 2.3.0: use `createOption` instead.**<br>Whether it should allow creating new tags based on search query when using `tags` mode. |
+| **addTagOn** | `array` | `['enter']` | **Deprecated 2.3.0: use `addOptionOn` instead.**<br>The list of keys that creates a new tag while typing in the search field when having `createTag` enabled. Possible values: `'enter'\|'space'\|'tab'\|';'\|','`. |
+| **appendNewOption** | `boolean` | `true` | Whether it should append new option automatically to option list when `searchable` and `createTag` are enabled. If set to `false` you need to take care of appending a new option to the provided `:options` list upon `@option` event. |
+| **createOption** | `boolean` | `false` | Whether it should allow creating new options based on search query when `searchable` is enabled. |
+| **addOptionOn** | `array` | `['enter']` | The list of keys that creates a new option while typing in the search field when having `createOption` enabled. Possible values: `'enter'\|'space'\|'tab'\|';'\|','`. |
 | **hideSelected** | `boolean` | `true` | Whether selected options should be excluded from the option list when using `multiple` or `tags` mode. |
 | **showOptions** | `boolean` | `true` | Whether option list should be displayed. Can be used to create free-typed tags. |
 | **object** | `boolean` | `false` | Whether the value should be stored as an object.<br>If **false**:<br>`value: ['js','jsx','ts']`<br>If **true**:<br> `value: [`<br>&nbsp;&nbsp;`{value:'js',label:'Javascript'},`<br>&nbsp;&nbsp;`{value:'jsx',label:'JSX'},`<br>&nbsp;&nbsp;`{value:'ts',label:'Typescript'}`<br>`]` |
@@ -290,7 +293,8 @@ mounted() {
 | **@open** | | Emitted after opening the option list. |
 | **@search-change** | `query` | Emitted after a character is typed. |
 | **@select** | `option` | Emitted after an option or tag is selected. |
-| **@tag** | `query` | Emitted after enter is hit when a new tag is being created. |
+| **@tag** | `query` | **Deprecated 2.3.0: use `@option` instead**. Emitted after enter is hit when a new tag is being created. |
+| **@option** | `query` | Emitted after enter is hit when a new option is being created. |
 | **@clear** |  | Emitted when the options are cleared. |
 | **@paste** | `Event` | Emitted when value is pasted into the search field. |
 

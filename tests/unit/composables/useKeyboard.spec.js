@@ -12,7 +12,7 @@ describe('useKeyboard', () => {
         options: [],
         mode: 'tags',
         searchable: true,
-        createTag: true,
+        createOption: true,
         showOptions: false,
       })
 
@@ -119,7 +119,7 @@ describe('useKeyboard', () => {
         expect(getValue(select)).toStrictEqual(2)
       })
 
-      it('should not select pointer when mode=tags and createTag and addTagOn does not contain enter', async () => {
+      it('should not select pointer when mode=tags and createTag and addOptionTag does not contain enter', async () => {
         let select = createSelect({
           mode: 'tags',
           value: [],
@@ -137,7 +137,7 @@ describe('useKeyboard', () => {
         expect(getValue(select)).toStrictEqual([])
       })
 
-      it('should select pointer when mode=tags and createTag and addTagOn does contain enter', async () => {
+      it('should select pointer when mode=tags and createTag and addOptionTag does contain enter', async () => {
         let select = createSelect({
           mode: 'tags',
           value: [],
@@ -153,6 +153,42 @@ describe('useKeyboard', () => {
         await nextTick()
 
         expect(getValue(select)).toStrictEqual([2])
+      })
+
+      it('should not select pointer when mode=single and createOption and addOptionOn does not contain enter', async () => {
+        let select = createSelect({
+          mode: 'single',
+          value: null,
+          options: [1,2,3],
+          addOptionOn: ['space'],
+          createOption: true,
+        })
+
+        select.vm.setPointer(select.vm.getOption(2))
+
+        keydown(select, 'enter')
+
+        await nextTick()
+
+        expect(getValue(select)).toStrictEqual(null)
+      })
+
+      it('should select pointer when mode=single and createOption and addOptionOn does contain enter', async () => {
+        let select = createSelect({
+          mode: 'single',
+          value: null,
+          options: [1,2,3],
+          addOptionOn: ['space', 'enter'],
+          createOption: true,
+        })
+
+        select.vm.setPointer(select.vm.getOption(2))
+
+        keydown(select, 'enter')
+
+        await nextTick()
+
+        expect(getValue(select)).toStrictEqual(2)
       })
     })
 
@@ -261,6 +297,24 @@ describe('useKeyboard', () => {
         expect(getValue(select)).toStrictEqual([1,2])
       })
 
+      it('should select pointer if not searchable and createOption and single and addOptionOn contains space', async () => {
+        let select = createSelect({
+          mode: 'single',
+          value: 1,
+          options: [1,2,3],
+          addOptionOn: ['space'],
+          createOption: true,
+        })
+
+        select.vm.setPointer(select.vm.getOption(2))
+
+        keydown(select, 'space')
+
+        await nextTick()
+
+        expect(getValue(select)).toStrictEqual(2)
+      })
+
       it('should select pointer if searchable and createTag and tags and addTagOn contains space', async () => {
         let select = createSelect({
           mode: 'tags',
@@ -278,6 +332,25 @@ describe('useKeyboard', () => {
         await nextTick()
 
         expect(getValue(select)).toStrictEqual([1, 2])
+      })
+
+      it('should select pointer if searchable and createOption and single and addOptionOn contains space', async () => {
+        let select = createSelect({
+          mode: 'single',
+          value: 1,
+          options: [1,2,3],
+          searchable: true,
+          addOptionOn: ['space'],
+          createOption: true,
+        })
+
+        select.vm.setPointer(select.vm.getOption(2))
+
+        keydown(select, 'space')
+
+        await nextTick()
+
+        expect(getValue(select)).toStrictEqual(2)
       })
 
       it('should not select pointer if not searchable and createTag and tags and addTagOn does not contain space', async () => {
@@ -298,6 +371,24 @@ describe('useKeyboard', () => {
         expect(getValue(select)).toStrictEqual([1])
       })
 
+      it('should not select pointer if not searchable and createOption and single and addOptionOn does not contain space', async () => {
+        let select = createSelect({
+          mode: 'single',
+          value: 1,
+          options: [1,2,3],
+          addOptionOn: ['enter'],
+          createOption: true,
+        })
+
+        select.vm.setPointer(select.vm.getOption(2))
+
+        keydown(select, 'space')
+
+        await nextTick()
+
+        expect(getValue(select)).toStrictEqual(1)
+      })
+
       it('should not select pointer if searchable and createTag and tags and addTagOn does not contain space', async () => {
         let select = createSelect({
           mode: 'tags',
@@ -315,6 +406,25 @@ describe('useKeyboard', () => {
         await nextTick()
 
         expect(getValue(select)).toStrictEqual([1])
+      })
+
+      it('should not select pointer if searchable and createOption and single and addOptionOn does not contain space', async () => {
+        let select = createSelect({
+          mode: 'single',
+          value: 1,
+          options: [1,2,3],
+          searchable: true,
+          addOptionOn: ['enter'],
+          createOption: true,
+        })
+
+        select.vm.setPointer(select.vm.getOption(2))
+
+        keydown(select, 'space')
+
+        await nextTick()
+
+        expect(getValue(select)).toStrictEqual(1)
       })
     })
 
@@ -432,6 +542,24 @@ describe('useKeyboard', () => {
         expect(getValue(select)).toStrictEqual([1])
       })
 
+      it('should not do anything when if mode=single and addOptionOn contains ; but createOption is false', async () => {
+        let select = createSelect({
+          mode: 'single',
+          value: 1,
+          options: [1,2,3],
+          addOptionOn: [';'],
+          createOption: false,
+        })
+
+        select.vm.setPointer(select.vm.getOption(2))
+
+        keydown(select, { key: ';' })
+
+        await nextTick()
+
+        expect(getValue(select)).toStrictEqual(1)
+      })
+
       it('should not do anything when if mode=tags and addTagOn does not contain ;', async () => {
         let select = createSelect({
           mode: 'tags',
@@ -450,6 +578,24 @@ describe('useKeyboard', () => {
         expect(getValue(select)).toStrictEqual([1])
       })
 
+      it('should not do anything when if mode=tags and addOptionOn does not contain ;', async () => {
+        let select = createSelect({
+          mode: 'single',
+          value: 1,
+          options: [1,2,3],
+          addOptionOn: [','],
+          createOption: true,
+        })
+
+        select.vm.setPointer(select.vm.getOption(2))
+
+        keydown(select, { key: ';' })
+
+        await nextTick()
+
+        expect(getValue(select)).toStrictEqual(1)
+      })
+
       it('should select pointer if mode=tags and addTagOn contains ;', async () => {
         let select = createSelect({
           mode: 'tags',
@@ -466,6 +612,24 @@ describe('useKeyboard', () => {
         await nextTick()
 
         expect(getValue(select)).toStrictEqual([1,2])
+      })
+
+      it('should select pointer if mode=single and addOptionOn contains ;', async () => {
+        let select = createSelect({
+          mode: 'single',
+          value: 1,
+          options: [1,2,3],
+          addOptionOn: [';'],
+          createOption: true,
+        })
+
+        select.vm.setPointer(select.vm.getOption(2))
+
+        keydown(select, { key: ';' })
+
+        await nextTick()
+
+        expect(getValue(select)).toStrictEqual(2)
       })
     })
 
@@ -503,6 +667,24 @@ describe('useKeyboard', () => {
         expect(getValue(select)).toStrictEqual([1])
       })
 
+      it('should not do anything when if mode=single and addOptionOn contains , but createOption is false', async () => {
+        let select = createSelect({
+          mode: 'single',
+          value: 1,
+          options: [1,2,3],
+          addOptionOn: [','],
+          createOption: false,
+        })
+
+        select.vm.setPointer(select.vm.getOption(2))
+
+        keydown(select, { key: ',' })
+
+        await nextTick()
+
+        expect(getValue(select)).toStrictEqual(1)
+      })
+
       it('should not do anything when if mode=tags and addTagOn does not contain ,', async () => {
         let select = createSelect({
           mode: 'tags',
@@ -521,6 +703,24 @@ describe('useKeyboard', () => {
         expect(getValue(select)).toStrictEqual([1])
       })
 
+      it('should not do anything when if mode=single and addOptionOn does not contain ,', async () => {
+        let select = createSelect({
+          mode: 'single',
+          value: 1,
+          options: [1,2,3],
+          addOptionOn: [';'],
+          createOption: true,
+        })
+
+        select.vm.setPointer(select.vm.getOption(2))
+
+        keydown(select, { key: ',' })
+
+        await nextTick()
+
+        expect(getValue(select)).toStrictEqual(1)
+      })
+
       it('should select pointer if mode=tags and addTagOn contains ,', async () => {
         let select = createSelect({
           mode: 'tags',
@@ -537,6 +737,24 @@ describe('useKeyboard', () => {
         await nextTick()
 
         expect(getValue(select)).toStrictEqual([1,2])
+      })
+
+      it('should select pointer if mode=single and addTagOn contains ,', async () => {
+        let select = createSelect({
+          mode: 'single',
+          value: 1,
+          options: [1,2,3],
+          addTagOn: [','],
+          createTag: true,
+        })
+
+        select.vm.setPointer(select.vm.getOption(2))
+
+        keydown(select, { key: ',' })
+
+        await nextTick()
+
+        expect(getValue(select)).toStrictEqual(2)
       })
     })
 
@@ -574,6 +792,24 @@ describe('useKeyboard', () => {
         expect(getValue(select)).toStrictEqual([1])
       })
 
+      it('should not do anything when if mode=single and addOptionOn contains tab but createOption is false', async () => {
+        let select = createSelect({
+          mode: 'single',
+          value: 1,
+          options: [1,2,3],
+          addOptionOn: ['tab'],
+          createOption: false,
+        })
+
+        select.vm.setPointer(select.vm.getOption(2))
+
+        keydown(select, { key: 'Tab' })
+
+        await nextTick()
+
+        expect(getValue(select)).toStrictEqual(1)
+      })
+
       it('should not do anything when if mode=tags and addTagOn does not contain tab', async () => {
         let select = createSelect({
           mode: 'tags',
@@ -592,6 +828,24 @@ describe('useKeyboard', () => {
         expect(getValue(select)).toStrictEqual([1])
       })
 
+      it('should not do anything when if mode=single and addOptionOn does not contain tab', async () => {
+        let select = createSelect({
+          mode: 'single',
+          value: 1,
+          options: [1,2,3],
+          addOptionOn: ['enter'],
+          createOption: true,
+        })
+
+        select.vm.setPointer(select.vm.getOption(2))
+
+        keydown(select, { key: 'Tab' })
+
+        await nextTick()
+
+        expect(getValue(select)).toStrictEqual(1)
+      })
+
       it('should select pointer if mode=tags and addTagOn contains tab', async () => {
         let select = createSelect({
           mode: 'tags',
@@ -608,6 +862,24 @@ describe('useKeyboard', () => {
         await nextTick()
 
         expect(getValue(select)).toStrictEqual([1,2])
+      })
+
+      it('should select pointer if mode=single and addOptionOn contains tab', async () => {
+        let select = createSelect({
+          mode: 'single',
+          value: 1,
+          options: [1,2,3],
+          addOptionOn: ['tab'],
+          createOption: true,
+        })
+
+        select.vm.setPointer(select.vm.getOption(2))
+
+        keydown(select, { key: 'Tab' })
+
+        await nextTick()
+
+        expect(getValue(select)).toStrictEqual(2)
       })
     })
   })

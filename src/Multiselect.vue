@@ -209,7 +209,7 @@
     name: 'Multiselect',
     emits: [
       'open', 'close', 'select', 'deselect', 
-      'input', 'search-change', 'tag', 'update:modelValue',
+      'input', 'search-change', 'tag', 'option', 'update:modelValue',
       'change', 'clear'
     ],
     props: {
@@ -281,12 +281,32 @@
       createTag: {
         type: Boolean,
         required: false,
-        default: false,
+        default: undefined,
+      },
+      createOption: {
+        type: Boolean,
+        required: false,
+        default: undefined,
       },
       appendNewTag: {
         type: Boolean,
         required: false,
-        default: true,
+        default: undefined,
+      },
+      appendNewOption: {
+        type: Boolean,
+        required: false,
+        default: undefined,
+      },
+      addTagOn: {
+        type: Array,
+        required: false,
+        default: undefined,
+      },
+      addOptionOn: {
+        type: Array,
+        required: false,
+        default: undefined,
       },
       caret: {
         type: Boolean,
@@ -366,11 +386,6 @@
         type: Boolean,
         required: false,
         default: true,
-      },
-      addTagOn: {
-        type: Array,
-        required: false,
-        default: () => (['enter']),
       },
       required: {
         type: Boolean,
