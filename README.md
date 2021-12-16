@@ -89,13 +89,43 @@ Learn more: [https://vueform.com](https://vueform.com)
 * Custom slots
 * Events
 * CSS vars support
-* Tailwind & utility class support
+* **Tailwind** & utility class support
 * Fully configurable
 * CSP compilant
 
+## Sections
+
+* [Demo](#demo)
+* [Installation](#installation)
+  * [Using with Vue 3](#using-with-vue-3)
+  * [Using with Vue 2](#using-with-vue-2)
+  * [Using with Nuxt.js](#using-with-nuxtjs)
+* [Support](#support)
+* [Configuration](#configuration)
+  * [Basic props](#basic-props)
+  * [Advanced props](#advanced-props)
+* [API](#api)
+* [Events](#events)
+* [Slots](#slots)
+* [Styling](#styling)
+  * [Styling with CSS vars](#styling-with-css-vars)
+  * [Styling with Tailwind CSS](#styling-with-tailwind-css)
+* [Examples](#examples)
+  * [Single select](#single-select)
+  * [Multiselect with object options](#multiselect-with-object-options)
+  * [Multiselect with disabled options](#multiselect-with-disabled-options)
+  * [Multiselect with groups](#multiselect-with-groups)
+  * [Tags with search, create and array of objects options](#tags-with-search-create-and-array-of-objects-options)
+  * [Autocomplete with async options](#autocomplete-with-async-options)
+  * [Tags with async options](#tags-with-async-options)
+  * [Select with custom options slot](#select-with-custom-options-slot)
+  * [Multiselect with custom label slot](#multiselect-with-custom-label-slot)
+  * [Tags with custom tags slot](#tags-with-custom-tags-slot)
+* [License](#license)
+
 ## Demo
 
-Check out our <a href="https://jsfiddle.net/4q3oauy6/6/" target="_blank">demo</a>.
+Check out our <a href="https://jsfiddle.net/xf0jzoct/" target="_blank">demo</a>.
 
 ## Installation
 
@@ -191,7 +221,9 @@ For more information on using `@nuxtjs/composition-api` read [their documentatio
 
 Join our [Discord channel](https://discord.gg/WhX2nG6GTQ) or [open an issue](https://github.com/vueform/multiselect/issues).
 
-## Basic props
+## Configuration
+
+### Basic props
 
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -327,7 +359,9 @@ mounted() {
 
 > Note: we don't use camelCase because they are [normalized back to lowercase](https://github.com/vuejs/vue/issues/9449#issuecomment-461170017) when written in DOM.
 
-## Styling with CSS vars
+## Styling
+
+### Styling with CSS vars
 
 The following CSS variables can be used to customize multiselect when using `default.css`:
 
@@ -448,7 +482,7 @@ Or on an instance level:
 }
 ```
 
-## Styling with Tailwind CSS
+### Styling with Tailwind CSS
 
 To use `Multiselect` with Tailwind CSS first you need to add background images to `tailwind.config.js`:
 
@@ -489,12 +523,12 @@ Then you need to import `themes/tailwind.scss` to you main component:
   // ...
 </script>
 
-<script lang="scss">
+<style lang="scss">
   @import 'path/to/node_modules/@vueform/multiselect/themes/tailwind.scss'
-</script>
+</style>
 ```
 
-### Using `:classes` prop
+#### Using `:classes` prop
 
 Alternatively you can define class names directly by passing them to the `Multiselect` component via `classes` property. When using this approach you don't need to import `tailwind.scss`. Here's a default styling for Tailwind CSS (the same included in `tailwind.scss`):
 
@@ -579,7 +613,7 @@ In case you need to override the same type of utility you might use [@neojp/tail
 />
 ```
 
-<a href="https://jsfiddle.net/4q3oauy6/6/" target="_blank">JSFiddle - Example #1</a>
+<a href="https://jsfiddle.net/xf0jzoct/" target="_blank">JSFiddle - Example #1</a>
 
 ### Multiselect with object options
 
@@ -587,7 +621,7 @@ In case you need to override the same type of utility you might use [@neojp/tail
 <Multiselect
   v-model="value"
   mode="multiple"
-  :closeOnSelect="false"
+  :close-on-select="false"
   :options="{
     batman: 'Batman',
     robin: 'Robin',
@@ -596,7 +630,7 @@ In case you need to override the same type of utility you might use [@neojp/tail
 />
 ```
 
-<a href="https://jsfiddle.net/4q3oauy6/6/" target="_blank">JSFiddle - Example #2</a>
+<a href="https://jsfiddle.net/xf0jzoct/" target="_blank">JSFiddle - Example #2</a>
 
 ### Multiselect with disabled options
 
@@ -604,7 +638,7 @@ In case you need to override the same type of utility you might use [@neojp/tail
 <Multiselect
   v-model="value"
   mode="multiple"
-  :closeOnSelect="false"
+  :close-on-select="false"
   :options="[
     { value: 'batman', label: 'Batman' },
     { value: 'robin', label: 'Robin', disabled: true },
@@ -613,7 +647,7 @@ In case you need to override the same type of utility you might use [@neojp/tail
 />
 ```
 
-<a href="https://jsfiddle.net/4q3oauy6/6/" target="_blank">JSFiddle - Example #3</a>
+<a href="https://jsfiddle.net/xf0jzoct/" target="_blank">JSFiddle - Example #3</a>
 
 ### Multiselect with groups
 
@@ -621,7 +655,7 @@ In case you need to override the same type of utility you might use [@neojp/tail
 <Multiselect
   v-model="value"
   mode="multiple"
-  :closeOnSelect="false"
+  :close-on-select="false"
   :groups="true"
   :options="[
     {
@@ -636,7 +670,7 @@ In case you need to override the same type of utility you might use [@neojp/tail
 />
 ```
 
-<a href="https://jsfiddle.net/4q3oauy6/6/" target="_blank">JSFiddle - Example #4</a>
+<a href="https://jsfiddle.net/xf0jzoct/" target="_blank">JSFiddle - Example #4</a>
 
 ### Tags with search, create and array of objects options
 
@@ -644,9 +678,9 @@ In case you need to override the same type of utility you might use [@neojp/tail
 <Multiselect
   v-model="value"
   mode="tags"
-  :closeOnSelect="false"
+  :close-on-select="false"
   :searchable="true"
-  :createTag="true"
+  :create-option="true"
   :options="[
     { value: 'batman', label: 'Batman' },
     { value: 'robin', label: 'Robin' },
@@ -655,7 +689,7 @@ In case you need to override the same type of utility you might use [@neojp/tail
 />
 ```
 
-<a href="https://jsfiddle.net/4q3oauy6/6/" target="_blank">JSFiddle - Example #5</a>
+<a href="https://jsfiddle.net/xf0jzoct/" target="_blank">JSFiddle - Example #5</a>
 
 ### Autocomplete with async options
 
@@ -663,9 +697,9 @@ In case you need to override the same type of utility you might use [@neojp/tail
 <Multiselect
   v-model="value"
   placeholder="Choose a programming language"
-  :filterResults="false"
-  :minChars="1"
-  :resolveOnLoad="false"
+  :filter-results="false"
+  :min-chars="1"
+  :resolve-on-load="false"
   :delay="0"
   :searchable="true"
   :options="async function(query) {
@@ -674,7 +708,7 @@ In case you need to override the same type of utility you might use [@neojp/tail
 />
 ```
 
-<a href="https://jsfiddle.net/4q3oauy6/6/" target="_blank">JSFiddle - Example #6</a>
+<a href="https://jsfiddle.net/xf0jzoct/" target="_blank">JSFiddle - Example #6</a>
 
 ### Tags with async options
 
@@ -683,10 +717,10 @@ In case you need to override the same type of utility you might use [@neojp/tail
   v-model="value"
   mode="tags"
   placeholder="Choose your stack"
-  :closeOnSelect="false"
-  :filterResults="false"
-  :minChars="1"
-  :resolveOnLoad="false"
+  :close-on-select="false"
+  :filter-results="false"
+  :min-chars="1"
+  :resolve-on-load="false"
   :delay="0"
   :searchable="true"
   :options="async function(query) {
@@ -695,7 +729,7 @@ In case you need to override the same type of utility you might use [@neojp/tail
 />
 ```
 
-<a href="https://jsfiddle.net/4q3oauy6/6/" target="_blank">JSFiddle - Example #7</a>
+<a href="https://jsfiddle.net/xf0jzoct/" target="_blank">JSFiddle - Example #7</a>
 
 ### Select with custom options slot
 
@@ -723,7 +757,7 @@ In case you need to override the same type of utility you might use [@neojp/tail
 
 ```
 
-<a href="https://jsfiddle.net/4q3oauy6/6/" target="_blank">JSFiddle - Example #8</a>
+<a href="https://jsfiddle.net/xf0jzoct/" target="_blank">JSFiddle - Example #8</a>
 
 ### Multiselect with custom label slot
 
@@ -732,7 +766,7 @@ In case you need to override the same type of utility you might use [@neojp/tail
   v-model="value"
   mode="multiple"
   placeholder="Select your characters"
-  :closeOnSelect="false"
+  :close-on-select="false"
   :options="{
     batman: 'Batman',
     robin: 'Robin',
@@ -748,7 +782,7 @@ In case you need to override the same type of utility you might use [@neojp/tail
 
 ```
 
-<a href="https://jsfiddle.net/4q3oauy6/6/" target="_blank">JSFiddle - Example #9</a>
+<a href="https://jsfiddle.net/xf0jzoct/" target="_blank">JSFiddle - Example #9</a>
 
 ### Tags with custom tags slot
 
@@ -758,9 +792,9 @@ In case you need to override the same type of utility you might use [@neojp/tail
     v-model="value"
     mode="tags"
     placeholder="Select employees"
-    trackBy="name"
+    track-by="name"
     label="name"
-    :closeOnSelect="false"
+    :close-on-select="false"
     :search="true"
     :options="[
       { value: 'judy', name: 'Judy', image: 'https://randomuser.me/api/portraits/med/women/1.jpg' },
@@ -814,7 +848,7 @@ In case you need to override the same type of utility you might use [@neojp/tail
 </style>
 ```
 
-<a href="https://jsfiddle.net/4q3oauy6/6/" target="_blank">JSFiddle - Example #10</a>
+<a href="https://jsfiddle.net/xf0jzoct/" target="_blank">JSFiddle - Example #10</a>
 
 ## License
 

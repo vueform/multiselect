@@ -1,6 +1,6 @@
 {
   "name": "@vueform/multiselect",
-  "version": "2.2.1",
+  "version": "2.3.0",
   "private": false,
   "description": "Vue 3 multiselect component with single select, multiselect and tagging options.",
   "license": "MIT",
@@ -10,6 +10,9 @@
   "module": "./dist/multiselect.js",
   "unpkg": "./dist/multiselect.global.js",
   "style": "./themes/default.css",
+  "exports": {
+    ".": "./dist/multiselect.js"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/vueform/multiselect.git"

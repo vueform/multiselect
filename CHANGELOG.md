@@ -1,3 +1,24 @@
+## v2.3.0
+
+> `2021-12-16`
+
+### 🎉 Feature
+  - **Deprecated:** `appendNewTag`, `createTag`, `addTagOn` props and `@tag` event.
+  - Added `appendNewOption`, `createOption`, `addOptionOn` props and `@option` event [#150](https://github.com/vueform/multiselect/issues/150).
+  - Added `selectAll` method [#172](https://github.com/vueform/multiselect/issues/172).
+  - The `trackBy` prop now defaults to `label` [#175](https://github.com/vueform/multiselect/issues/175).
+  - Replaces focus on search when an option is selected [#163](https://github.com/vueform/multiselect/issues/163).
+  - Added `<span>` wrapper for single label with `singleLabelText` class key [#157](https://github.com/vueform/multiselect/issues/157).
+
+### 🐞 Bug Fixes
+  - Don't show spinner when not active [#156](https://github.com/vueform/multiselect/issues/156).
+  - TailwindCSS 3 compatibility issue fix [#176](https://github.com/vueform/multiselect/issues/176).
+  - Don't show caret when `showOptions` are disabled [#173](https://github.com/vueform/multiselect/issues/173).
+  - Resolved headless UI modal click issue [#148](https://github.com/vueform/multiselect/issues/148).
+  - Resolved TailwindCSS/form ring issue [#135](https://github.com/vueform/multiselect/issues/135).
+  - Made classes reactive [#126](https://github.com/vueform/multiselect/issues/126).
+  - The `addTagOn` prop uses `key` instead of `keyCode` internally [#125](https://github.com/vueform/multiselect/issues/125).
+
 ## v2.2.1
 
 > `2021-11-23`
