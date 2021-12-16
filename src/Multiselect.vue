@@ -104,7 +104,7 @@
     </slot>
 
     <!-- Caret -->
-    <slot v-if="caret" name="caret">
+    <slot v-if="caret && showOptions" name="caret">
       <span :class="classList.caret" @click="handleCaretClick"></span>
     </slot>
 
