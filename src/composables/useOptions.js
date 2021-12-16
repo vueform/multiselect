@@ -373,6 +373,14 @@ export default function useOptions (props, context, dep)
     }
   }
 
+  const selectAll = () => {
+    if (mode.value === 'single') {
+      return
+    }
+
+    select(fo.value)
+  }
+
   // no export
   const areAllEnabledSelected = (options) => {
     return options.find(o => !isSelected(o) && !o.disabled) === undefined
@@ -620,6 +628,7 @@ export default function useOptions (props, context, dep)
     select,
     deselect,
     remove,
+    selectAll,
     clear,
     isSelected,
     isDisabled,

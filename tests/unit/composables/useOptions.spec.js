@@ -1291,6 +1291,49 @@ describe('useOptions', () => {
     })
   })
 
+  describe('selectAll', () => {
+    it('should do nothing when single', async () => {
+      let select = createSelect({
+        options: [1,2,3],
+        value: null,
+      })
+
+      select.vm.selectAll()
+
+      await nextTick()
+
+      expect(getValue(select)).toStrictEqual(null)
+    })
+
+    it('should select all when multiple', async () => {
+      let select = createSelect({
+        mode: 'multiple',
+        options: [1,2,3],
+        value: [],
+      })
+
+      select.vm.selectAll()
+
+      await nextTick()
+
+      expect(getValue(select)).toStrictEqual([1,2,3])
+    })
+
+    it('should select all when tags', async () => {
+      let select = createSelect({
+        mode: 'tags',
+        options: [1,2,3],
+        value: [],
+      })
+
+      select.vm.selectAll()
+
+      await nextTick()
+
+      expect(getValue(select)).toStrictEqual([1,2,3])
+    })
+  })
+
   describe('isSelected', () => {
     it('should be true if value equals option value when object false and single', () => {
       let select = createSelect({

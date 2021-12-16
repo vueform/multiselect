@@ -257,6 +257,7 @@ Join our [Discord channel](https://discord.gg/WhX2nG6GTQ) or [open an issue](htt
 | **select** | `option` | Selects an option based on its value. |
 | **deselect** | `option` | Deselects an option based on its value. |
 | **remove** | `option` | Alias for `deselect`. |
+| **selectAll** |  | Selects all options if mode is `tags` or `multiple`. |
 | **clear** |  | Deselects all selected options. |
 | **clearSearch** |  | Clears current search query. |
 | **refreshOptions** | `callback` | Refreshes async options list. |
