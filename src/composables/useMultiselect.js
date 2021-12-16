@@ -33,10 +33,14 @@ export default function useMultiselect (props, context, dep)
     multiselect.value.blur()
   }
 
-  const handleFocus = () => {
+  const focus = () => {
     if (searchable.value && !disabled.value) {
       input.value.focus()
     }
+  }
+
+  const handleFocus = () => {
+    focus()
   }
 
   const activate = () => {
@@ -70,6 +74,7 @@ export default function useMultiselect (props, context, dep)
     tabindex,
     isActive,
     blur,
+    focus,
     handleFocus,
     activate,
     deactivate,

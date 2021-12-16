@@ -464,6 +464,7 @@
         pointer: pointer.pointer,
         clearPointer: pointer.clearPointer,
         blur: multiselect.blur,
+        focus: multiselect.focus,
         deactivate: multiselect.deactivate,
       })
 

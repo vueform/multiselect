@@ -24,6 +24,7 @@ export default function useOptions (props, context, dep)
   const pointer = dep.pointer
   const clearPointer = dep.clearPointer
   const blur = dep.blur
+  const focus = dep.focus
   const deactivate = dep.deactivate
 
   // ================ DATA ================
@@ -338,6 +339,8 @@ export default function useOptions (props, context, dep)
 
     if (closeOnSelect.value) {
       deactivate()
+    } else {
+      focus()
     }
   }
 

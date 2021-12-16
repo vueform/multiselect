@@ -1953,6 +1953,48 @@ describe('useOptions', () => {
       jest.advanceTimersByTime(1)
       expect(select.vm.isOpen).toBe(true)
     })
+
+    it('should focus input on select when closeOnSelect=false and has search', async () => {
+      let select = createSelect({
+        value: null,
+        options: [1,2,3],
+        closeOnSelect: false,
+        searchable: true,
+      }, {
+        attach: true,
+      })
+
+      select.vm.open()
+      expect(select.vm.isOpen).toBe(true)
+
+      select.vm.handleOptionClick(select.vm.getOption(2))
+
+      jest.advanceTimersByTime(1)
+      expect(document.activeElement == select.vm.input).toBe(true)
+
+      destroy(select)
+    })
+
+    it('should not focus input on select when closeOnSelect=true and has search', async () => {
+      let select = createSelect({
+        value: null,
+        options: [1,2,3],
+        closeOnSelect: true,
+        searchable: true,
+      }, {
+        attach: true,
+      })
+
+      select.vm.open()
+      expect(select.vm.isOpen).toBe(true)
+
+      select.vm.handleOptionClick(select.vm.getOption(2))
+
+      jest.advanceTimersByTime(1)
+      expect(document.activeElement == select.vm.input).toBe(false)
+
+      destroy(select)
+    })
   })
 
   describe('handleGroupClick', () => {
