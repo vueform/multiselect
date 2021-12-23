@@ -236,7 +236,7 @@ Join our [Discord channel](https://discord.gg/WhX2nG6GTQ) or [open an issue](htt
 | **groupHideEmpty** | `boolean` | `false` | Whether groups that have no `options` by default should be hidden. |
 | **required** | `boolean` | `false` | Whether the HTML5 required attribute should be used for multiselect (using an invisible fake input). |
 | **searchable** | `boolean` | `false` | Whether the options should be searchable. |
-| **valueProp** | `string` | `'value'` | If you provide an array of objects as `options` this property should be used as the value of the option. |
+| **valueProp** | `string` | `'value'` | If you provide an array of objects as `options` this property should be used as the value of the option.<br>If you want the entire object as value, set the `object` prop to `true`. |
 | **trackBy** | `string` | `undefined` | The name of the property that should be searched when `searchable` is `true` and an array of objects are provided as `options`. If left `undefined` the `label` prop will be used instead. |
 | **label** | `string` | `'label'` | If you provide an array of objects as `options` the value of this property will be displayed as selected option. |
 | **placeholder** | `string` | `null` | The text that should be displayed before any option is selected. |
