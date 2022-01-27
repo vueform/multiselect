@@ -158,7 +158,7 @@
             @mouseenter="setPointer(option)"
             @click="handleOptionClick(option)"
           >
-            <slot name="option" :option="option" :search="search">
+            <slot name="option" :option="option" :search="search" :selected="isSelected(option)">
               <span>{{ option[label] }}</span>
             </slot>
           </li>
