@@ -1,3 +1,17 @@
+## v2.3.2
+
+> `2021-02-06`
+
+### 🐞 Bug Fixes
+  - Removed `@apply` from default theme.
+
+## v2.3.1
+
+> `2021-12-16`
+
+### 🐞 Bug Fixes
+  - Removed `exports` from `package.json` [#178](https://github.com/vueform/multiselect/issues/178).
+
 ## v2.3.0
 
 > `2021-12-16`
