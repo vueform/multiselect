@@ -2,7 +2,7 @@
 
 > `2021-02-26`
 
-### 🐞 Bug Fixes
+### 🎉 Feature
   - Added `attrs` prop.
 
 ## v2.3.2
