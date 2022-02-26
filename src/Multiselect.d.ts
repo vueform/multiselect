@@ -50,6 +50,7 @@ declare class Multiselect extends Vue {
   groupHideEmpty: boolean;
   groupSelect: boolean;
   inputType: string;
+  attrs?: object;
 
   $emit(eventName: 'change', e: {originalEvent: Event, value: any}): this;
   $emit(eventName: 'select', e: {originalEvent: Event, value: any, option: any}): this;

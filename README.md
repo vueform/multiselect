@@ -281,6 +281,7 @@ Join our [Discord channel](https://discord.gg/WhX2nG6GTQ) or [open an issue](htt
 | **hideSelected** | `boolean` | `true` | Whether selected options should be excluded from the option list when using `multiple` or `tags` mode. |
 | **showOptions** | `boolean` | `true` | Whether option list should be displayed. Can be used to create free-typed tags. |
 | **object** | `boolean` | `false` | Whether the value should be stored as an object.<br>If **false**:<br>`value: ['js','jsx','ts']`<br>If **true**:<br> `value: [`<br>&nbsp;&nbsp;`{value:'js',label:'Javascript'},`<br>&nbsp;&nbsp;`{value:'jsx',label:'JSX'},`<br>&nbsp;&nbsp;`{value:'ts',label:'Typescript'}`<br>`]` |
+| **attrs** | `object` | `{}` | HTML attributes to add to the `input` field when `search` is enabled. |
 | **nativeSupport** | `boolean` | `false` | Whether hidden input fields should be appended to achieve native data handling. |
 
 ## API

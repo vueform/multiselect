@@ -17,6 +17,7 @@
         :value="search"
         :class="classList.search"
         :autocomplete="autocomplete"
+        v-bind="attrs"
         @input="handleSearchInput"
         @paste.stop="handlePaste"
         ref="input"
@@ -58,6 +59,7 @@
             :value="search"
             :class="classList.tagsSearch"
             :autocomplete="autocomplete"
+            v-bind="attrs"
             @input="handleSearchInput"
             @paste.stop="handlePaste"
             ref="input"
@@ -450,7 +452,12 @@
         type: String,
         required: false,
         default: 'text',
-      }
+      },
+      attrs: {
+        required: false,
+        type: [Object],
+        default: () => ({}),
+      },
     },
     setup(props, context)
     { 
