@@ -289,7 +289,9 @@ export default function useOptions (props, context, dep)
         handleOptionAppend(option)
 
         blur()
-        select(option)
+        if (appendNewOption.value) {
+          select(option)
+        }
         break
 
       case 'multiple':
@@ -304,7 +306,9 @@ export default function useOptions (props, context, dep)
 
         handleOptionAppend(option)
 
-        select(option)
+        if (appendNewOption.value) {
+          select(option)
+        }
 
         if (clearOnSelect.value) {
           clearSearch()
@@ -337,8 +341,11 @@ export default function useOptions (props, context, dep)
         if (clearOnSelect.value) {
           clearSearch()
         }
+        
 
-        select(option)
+        if (appendNewOption.value) {
+          select(option)
+        }
 
         if (hideSelected.value) {
           clearPointer()
