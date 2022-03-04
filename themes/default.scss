@@ -28,6 +28,7 @@
   }
 
   &.is-active {
+    border: var(--ms-border-width-active, var(--ms-border-width, 1px)) solid var(--ms-border-color-active, var(--ms-border-color, #D1D5DB));
     box-shadow: 0 0 0 var(--ms-ring-width, 3px) var(--ms-ring-color, #10B98130);
   }
 }
