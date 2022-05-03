@@ -45,7 +45,7 @@ export default function useKeyboard (props, context, dep)
   const preparePointer = () => {
     // When options are hidden and creating tags is allowed
     // no pointer will be set (because options are hidden).
-    // In such case we need to set the pointer manually to the 
+    // In such case we need to set the pointer manually to the
     // first option, which equals to the option created from
     // the search value.
     if (mode.value === 'tags' && !showOptions.value && createOption.value && searchable.value && !groupped.value) {
@@ -67,17 +67,22 @@ export default function useKeyboard (props, context, dep)
         if (iv.value.length === 0) {
           return
         }
-        
+
         update([...iv.value].slice(0,-1))
         break
 
       case 'Enter':
         e.preventDefault()
 
+        if (e.keyCode === 229) {
+          // ignore IME confirmation
+          return
+        }
+
         if (addOptionOn.value.indexOf('enter') === -1 && createOption.value) {
           return
         }
-        
+
         preparePointer()
         selectPointer()
         break
@@ -85,7 +90,7 @@ export default function useKeyboard (props, context, dep)
       case ' ':
         if (!createOption.value && !searchable.value) {
           e.preventDefault()
-          
+
           preparePointer()
           selectPointer()
           return
@@ -93,18 +98,18 @@ export default function useKeyboard (props, context, dep)
 
         if (!createOption.value) {
           return false
-        } 
+        }
 
         if (addOptionOn.value.indexOf('space') === -1 && createOption.value) {
           return
         }
 
         e.preventDefault()
-        
+
         preparePointer()
         selectPointer()
         break
-      
+
       case 'Tab':
       case ';':
       case ',':
