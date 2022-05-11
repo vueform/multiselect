@@ -2534,6 +2534,38 @@ describe('useOptions', () => {
         { value: 3, label: 3 },
       ])
     })
+
+    it('should set empty options on error', async () => {
+      let errorMock = jest.fn()
+
+      const originalConsoleError = console.error
+      const originalConsoleWarn = console.warn
+      console.error = errorMock
+      console.warn = () => {}
+
+      let select = createSelect({
+        options: async () => {
+          return Promise.reject()
+        },
+        resolveOnLoad: false,
+      })
+  
+      await flushPromises()
+
+      expect(select.vm.fo).toStrictEqual([])
+
+      select.vm.resolveOptions()
+
+      await flushPromises()
+
+      expect(select.vm.fo).toStrictEqual([])
+      expect(select.vm.resolving).toStrictEqual(false)
+
+      expect(errorMock).toHaveBeenCalledTimes(1)
+
+      console.error = originalConsoleError
+      console.warn = originalConsoleWarn
+    })
   })
   
   describe('refreshOptions', () => {
@@ -2740,6 +2772,100 @@ describe('useOptions', () => {
   })
 
   describe('watchers', () => {
+    it('should resolve options when async options change & resolveOnLoad=true', async () => {
+      let asyncOptionsMock = jest.fn()
+      let asyncOptionsMock2 = jest.fn()
+
+      let select = createSelect({
+        resolveOnLoad: true,
+        options: async () => {
+          return await new Promise((resolve, reject) => {
+            asyncOptionsMock()
+            resolve([1,2,3])
+          })
+        },
+      })
+
+      await flushPromises()
+
+      expect(asyncOptionsMock).toHaveBeenCalledTimes(1)
+
+      select.vm.$parent.props.options = async () => {
+        return await new Promise((resolve, reject) => {
+          asyncOptionsMock2()
+          resolve([4,5,6])
+        })
+      }
+
+      await flushPromises()
+
+      expect(asyncOptionsMock2).toHaveBeenCalledTimes(1)
+    })
+
+    it('should not resolve options when async options change & resolveOnLoad=false', async () => {
+      let asyncOptionsMock = jest.fn()
+      let asyncOptionsMock2 = jest.fn()
+
+      let select = createSelect({
+        resolveOnLoad: false,
+        options: async () => {
+          return await new Promise((resolve, reject) => {
+            asyncOptionsMock()
+            resolve([1,2,3])
+          })
+        },
+      })
+
+      await flushPromises()
+
+      expect(asyncOptionsMock).toHaveBeenCalledTimes(0)
+
+      select.vm.$parent.props.options = async () => {
+        return await new Promise((resolve, reject) => {
+          asyncOptionsMock2()
+          resolve([4,5,6])
+        })
+      }
+
+      await flushPromises()
+
+      expect(asyncOptionsMock2).toHaveBeenCalledTimes(0)
+    })
+
+    it('should init internal value when async options change & resolveOnLoad=true', async () => {
+      let asyncOptionsMock = jest.fn()
+      let asyncOptionsMock2 = jest.fn()
+
+      let select = createSelect({
+        resolveOnLoad: true,
+        value: 2,
+        options: async () => {
+          return await new Promise((resolve, reject) => {
+            asyncOptionsMock()
+            resolve([1,2,3])
+          })
+        },
+      })
+
+      await flushPromises()
+
+      expect(asyncOptionsMock).toHaveBeenCalledTimes(1)
+
+      select.vm.$parent.props.options = async () => {
+        return await new Promise((resolve, reject) => {
+          asyncOptionsMock2()
+          resolve([4,5,6])
+        })
+      }
+
+      await flushPromises()
+
+      expect(asyncOptionsMock2).toHaveBeenCalledTimes(1)
+      await nextTick()
+      console.log(select.vm.eo)
+      expect(select.vm.iv).toEqual({})
+    })
+
     it('should not update async option list when search changes if delay is -1', async () => {
       let asyncOptionsMock = jest.fn()
 
@@ -2764,11 +2890,58 @@ describe('useOptions', () => {
       expect(asyncOptionsMock).toHaveBeenCalledTimes(1)
     })
 
-    it('should update async option list when search changes', async () => {
+    it('should unwatch search when delay changes & reinit only if it is >= 0', async () => {
+      let asyncOptionsMock = jest.fn()
+
       let select = createSelect({
         options: async () => {
           return await new Promise((resolve, reject) => {
+            asyncOptionsMock()
             resolve([1,2,3])
+          })
+        },
+        delay: 10
+      })
+
+      await flushPromises()
+
+      expect(asyncOptionsMock).toHaveBeenCalledTimes(1)
+
+      select.vm.search = 'value'
+
+      jest.advanceTimersByTime(10)
+      await flushPromises()
+      
+      expect(asyncOptionsMock).toHaveBeenCalledTimes(2)
+
+      select.vm.$parent.props.delay = 5 
+
+      await nextTick()
+
+      select.vm.search = 'value2'
+
+      jest.advanceTimersByTime(5)
+      await flushPromises()
+      
+      expect(asyncOptionsMock).toHaveBeenCalledTimes(3)
+
+      select.vm.$parent.props.delay = -1 
+
+      await nextTick()
+
+      select.vm.search = 'value3'
+
+      jest.advanceTimersByTime(10)
+      await flushPromises()
+      
+      expect(asyncOptionsMock).toHaveBeenCalledTimes(3)
+    })
+
+    it('should update async option list when search changes', async () => {
+      let select = createSelect({
+        options: async (query) => {
+          return await new Promise((resolve, reject) => {
+            resolve(query === 'val2' ? [4,5,6] : [1,2,3])
           })
         },
         delay: 10,
@@ -2777,17 +2950,15 @@ describe('useOptions', () => {
 
       await flushPromises()
 
-      select.vm.$parent.props.options = async () => {
-        return await new Promise((resolve, reject) => {
-          resolve([4,5,6])
-        })
-      }
-
       await nextTick()
 
       select.vm.search = 'val'
 
-      jest.runAllTimers()
+      jest.advanceTimersByTime(5)
+
+      select.vm.search = 'val2'
+
+      jest.advanceTimersByTime(10)
 
       await flushPromises()
       
@@ -2867,9 +3038,9 @@ describe('useOptions', () => {
 
     it('should not resolve async options when search changes if query is not equal to search value when delay has passed', async () => {
       let select = createSelect({
-        options: async () => {
+        options: async (query) => {
           return await new Promise((resolve, reject) => {
-            resolve([1,2,3])
+            resolve(query === 'val2' ? [4,5,6] : [1,2,3])
           })
         },
         delay: 10,
@@ -2877,12 +3048,6 @@ describe('useOptions', () => {
       })
 
       await flushPromises()
-
-      select.vm.$parent.props.options = async () => {
-        return await new Promise((resolve, reject) => {
-          resolve([4,5,6])
-        })
-      }
 
       await nextTick()
 
@@ -2905,9 +3070,9 @@ describe('useOptions', () => {
 
     it('should not update async option list when search changes during async request', async () => {
       let select = createSelect({
-        options: async () => {
+        options: async (query) => {
           return await new Promise((resolve, reject) => {
-            resolve([1,2,3])
+            resolve(query === 'val2' ? [4,5,6] : [1,2,3])
           })
         },
         delay: 10,
@@ -2915,12 +3080,6 @@ describe('useOptions', () => {
       })
 
       await flushPromises()
-
-      select.vm.$parent.props.options = async () => {
-        return await new Promise((resolve, reject) => {
-          resolve([4,5,6])
-        })
-      }
 
       await nextTick()
 

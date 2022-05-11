@@ -1,4 +1,4 @@
-import { ref, toRefs, computed, watch, nextTick } from 'composition-api'
+import { ref, toRefs, computed, watch, nextTick, getCurrentInstance } from 'composition-api'
 import normalize from './../utils/normalize'
 import isObject from './../utils/isObject'
 import isNullish from './../utils/isNullish'
@@ -13,6 +13,8 @@ export default function useOptions (props, context, dep)
     canDeselect, max, strict, closeOnSelect, groups: groupped, groupLabel,
     groupOptions, groupHideEmpty, groupSelect, 
   } = toRefs(props)
+
+  const $this = getCurrentInstance().proxy
 
   // ============ DEPENDENCIES ============
 
@@ -38,6 +40,9 @@ export default function useOptions (props, context, dep)
   const ro = ref([])
 
   const resolving = ref(false)
+
+  // no export
+  const searchWatcher = ref(null)
 
   // ============== COMPUTED ==============
 
@@ -73,7 +78,7 @@ export default function useOptions (props, context, dep)
 
       return eo
     } else {
-      let eo = optionsToArray(ro.value || [])
+      let eo = optionsToArray(ro.value || /* istanbul ignore next */ [])
 
       if (ap.value.length) {
         eo = eo.concat(ap.value)
@@ -131,7 +136,7 @@ export default function useOptions (props, context, dep)
 
   const multipleLabelText = computed(() => {
     return multipleLabel !== undefined && multipleLabel.value !== undefined
-      ? multipleLabel.value(iv.value)
+      ? multipleLabel.value(iv.value, $this)
       : (iv.value && iv.value.length > 1 ? `${iv.value.length} options selected` : `1 option selected`)
   })
 
@@ -497,14 +502,24 @@ export default function useOptions (props, context, dep)
   const resolveOptions = (callback) => {
     resolving.value = true
 
-    options.value(search.value).then((response) => {
-      ro.value = response
+    return new Promise((resolve, reject) => {
+      options.value(search.value, $this).then((response) => {
+        ro.value = response || []
 
-      if (typeof callback == 'function') {
-        callback(response)
-      }
+        if (typeof callback == 'function') {
+          callback(response)
+        }
 
-      resolving.value = false
+        resolving.value = false
+      }).catch((e) => {
+        console.error(e)
+
+        ro.value = []
+
+        resolving.value = false
+      }).finally(() => {
+        resolve()
+      })
     })
   }
 
@@ -515,21 +530,31 @@ export default function useOptions (props, context, dep)
     }
 
     if (mode.value === 'single') {
-      let newLabel = getOption(iv.value[valueProp.value])[label.value]
+      let option = getOption(iv.value[valueProp.value])
 
-      iv.value[label.value] = newLabel
+      /* istanbul ignore else */
+      if (option !== undefined) {
+        let newLabel = option[label.value]
 
-      if (object.value) {
-        ev.value[label.value] = newLabel
+        iv.value[label.value] = newLabel
+
+        if (object.value) {
+          ev.value[label.value] = newLabel
+        }
       }
     } else {
       iv.value.forEach((val, i) => {
-        let newLabel = getOption(iv.value[i][valueProp.value])[label.value]
+        let option = getOption(iv.value[i][valueProp.value])
 
-        iv.value[i][label.value] = newLabel
+        /* istanbul ignore else */
+        if (option !== undefined) {
+          let newLabel = option[label.value]
 
-        if (object.value) {
-          ev.value[i][label.value] = newLabel
+          iv.value[i][label.value] = newLabel
+
+          if (object.value) {
+            ev.value[i][label.value] = newLabel
+          }
         }
       })
     }
@@ -554,6 +579,37 @@ export default function useOptions (props, context, dep)
     return mode.value === 'single' ? getOption(val) || {} : val.filter(v => !! getOption(v)).map(v => getOption(v))
   }
 
+  // no export
+  const initSearchWatcher = () => {
+    searchWatcher.value = watch(search, (query) => {
+      if (query.length < minChars.value || !query) {
+        return
+      }
+
+      resolving.value = true
+
+      if (clearOnSearch.value) {
+        ro.value = []
+      }
+      setTimeout(() => {
+        if (query != search.value) {
+          return
+        }
+
+        options.value(search.value, $this).then((response) => {
+          if (query == search.value || !search.value) {
+            ro.value = response
+            pointer.value = fo.value.filter(o => o.disabled !== true)[0] || null
+            resolving.value = false
+          }
+        }).catch( /* istanbul ignore next */ (e) => {
+          console.error(e)
+        })
+      }, delay.value)
+
+    }, { flush: 'sync' })
+  }
+
   // ================ HOOKS ===============
 
   if (mode.value !== 'single' && !isNullish(ev.value) && !Array.isArray(ev.value)) {
@@ -576,32 +632,19 @@ export default function useOptions (props, context, dep)
   // ============== WATCHERS ==============
 
   if (delay.value > -1) {
-    watch(search, (query) => {
-      if (query.length < minChars.value) {
-        return
-      }
-
-      resolving.value = true
-
-      if (clearOnSearch.value) {
-        ro.value = []
-      }
-      setTimeout(() => {
-        if (query != search.value) {
-          return
-        }
-
-        options.value(search.value).then((response) => {
-          if (query == search.value || !search.value) {
-            ro.value = response
-            pointer.value = fo.value.filter(o => o.disabled !== true)[0] || null
-            resolving.value = false
-          }
-        })
-      }, delay.value)
-
-    }, { flush: 'sync' })
+    initSearchWatcher()
   }
+
+  watch(delay, (value, old) => {
+    /* istanbul ignore else */
+    if (searchWatcher.value) {
+      searchWatcher.value()
+    }
+
+    if (value >= 0) {
+      initSearchWatcher()
+    }
+  })
 
   watch(ev, (newValue) => {
     if (isNullish(newValue)) {
@@ -625,8 +668,16 @@ export default function useOptions (props, context, dep)
     }
   }, { deep: true })
 
-  if (typeof props.options !== 'function') {
-    watch(options, (n, o) => {
+  watch(options, (n, o) => {
+    if (typeof props.options === 'function') {
+      if (resolveOnLoad.value) {
+        resolveOptions(() => {
+          if (Object.keys(iv.value).length) {
+            initInternalValue()
+          }
+        })
+      }
+    } else {
       ro.value = props.options
 
       if (!Object.keys(iv.value).length) {
@@ -634,8 +685,8 @@ export default function useOptions (props, context, dep)
       }
 
       refreshLabels()
-    })
-  }
+    }
+  })
 
   return {
     fo,
@@ -664,5 +715,6 @@ export default function useOptions (props, context, dep)
     handleTagRemove,
     refreshOptions,
     resolveOptions,
+    refreshLabels,
   }
 }
