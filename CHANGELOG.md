@@ -1,3 +1,12 @@
+## v2.3.4
+
+> `2021-05-11`
+
+### 🎉 Feature
+  - Async options change detectiion.
+  - Label prop change detection.
+  - Option & label texts can contain HTML.
+
 ## v2.3.3
 
 > `2021-02-26`
