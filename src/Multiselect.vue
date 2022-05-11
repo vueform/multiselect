@@ -72,7 +72,7 @@
     <template v-if="mode == 'single' && hasSelected && !search && iv">
       <slot name="singlelabel" :value="iv">
         <div :class="classList.singleLabel">
-          <span :class="classList.singleLabelText">{{ iv[label] }}</span>
+          <span :class="classList.singleLabelText" v-html="iv[label]"></span>
         </div>
       </slot>
     </template>
@@ -80,9 +80,7 @@
     <!-- Multiple label -->
     <template v-if="mode == 'multiple' && hasSelected && !search">
       <slot name="multiplelabel" :values="iv">
-        <div :class="classList.multipleLabel">
-          {{ multipleLabelText }}
-        </div>
+        <div :class="classList.multipleLabel" v-html="multipleLabelText"></div>
       </slot>
     </template>
 
@@ -131,7 +129,7 @@
               @click="handleGroupClick(group)"
             >
               <slot name="grouplabel" :group="group">
-                <span>{{ group[groupLabel] }}</span>
+                <span v-html="group[groupLabel]"></span>
               </slot>
             </div>
 
@@ -145,7 +143,7 @@
                 @click="handleOptionClick(option)"
               >
                 <slot name="option" :option="option" :search="search">
-                  <span>{{ option[label] }}</span>
+                  <span v-html="option[label]"></span>
                 </slot>
               </li>
             </ul>
@@ -161,7 +159,7 @@
             @click="handleOptionClick(option)"
           >
             <slot name="option" :option="option" :search="search">
-              <span>{{ option[label] }}</span>
+              <span v-html="option[label]"></span>
             </slot>
           </li>
         </template>
