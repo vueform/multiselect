@@ -688,6 +688,8 @@ export default function useOptions (props, context, dep)
     }
   })
 
+  watch(label, refreshLabels)
+
   return {
     fo,
     filteredOptions: fo,
