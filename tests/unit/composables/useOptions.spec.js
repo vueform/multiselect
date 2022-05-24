@@ -1548,6 +1548,113 @@ describe('useOptions', () => {
       destroy(select)
     })
 
+    it('should not select option if onCreate returns false', async () => {
+      let select = createSelect({
+        value: 0,
+        options: [
+          { value: 0, label: 0 },
+          { value: 1, label: 1 },
+          { value: 2, label: 2 },
+        ],
+        createOption: true,
+        onCreate: () => false
+      }, {
+        attach: true,
+      })
+
+      select.vm.search = 'value'
+      select.vm.handleOptionClick({ value: 'value', label: 'value', __CREATE__: true })
+
+      await nextTick()
+
+      expect(select.vm.ev).toBe(0)
+
+      destroy(select)
+    })
+
+    it('should not select option if onCreate returns false mode=multiple', async () => {
+      let select = createSelect({
+        value: [1],
+        options: [
+          { value: 0, label: 0 },
+          { value: 1, label: 1 },
+          { value: 2, label: 2 },
+        ],
+        mode: 'multiple',
+        createOption: true,
+        onCreate: () => false
+      }, {
+        attach: true,
+      })
+
+      select.vm.search = 'value'
+      select.vm.handleOptionClick({ value: 'value', label: 'value', __CREATE__: true })
+
+      await nextTick()
+
+      expect(select.vm.ev).toStrictEqual([1])
+
+      destroy(select)
+    })
+
+    it('should not select option if onCreate returns false mode=tags', async () => {
+      let select = createSelect({
+        value: [1],
+        options: [
+          { value: 0, label: 0 },
+          { value: 1, label: 1 },
+          { value: 2, label: 2 },
+        ],
+        mode: 'tags',
+        createOption: true,
+        onCreate: () => false
+      }, {
+        attach: true,
+      })
+
+      select.vm.search = 'value'
+      select.vm.handleOptionClick({ value: 'value', label: 'value', __CREATE__: true })
+
+      await nextTick()
+
+      expect(select.vm.ev).toStrictEqual([1])
+
+      destroy(select)
+    })
+
+    it('should select modified option if onCreate returns it and append it to option list', async () => {
+      let select = createSelect({
+        value: 0,
+        options: [
+          { value: 0, label: 0 },
+          { value: 1, label: 1 },
+          { value: 2, label: 2 },
+        ],
+        object: true,
+        createOption: true,
+        onCreate: (option) => {
+          return {
+            ...option,
+            created_at: 'now'
+          }
+        }
+      }, {
+        attach: true,
+      })
+
+      select.vm.search = 'value'
+      select.vm.handleOptionClick({ value: 'value', label: 'value', __CREATE__: true })
+
+      await nextTick()
+
+      select.vm.search = null
+
+      expect(select.vm.ev).toStrictEqual({ value: 'value', label: 'value', created_at: 'now' })
+      expect(select.vm.fo[3]).toStrictEqual({ value: 'value', label: 'value', created_at: 'now' })
+
+      destroy(select)
+    })
+
     /* SINGLE */
 
     it('should select option as value if not selected when single', async () => {
@@ -2862,7 +2969,6 @@ describe('useOptions', () => {
 
       expect(asyncOptionsMock2).toHaveBeenCalledTimes(1)
       await nextTick()
-      console.log(select.vm.eo)
       expect(select.vm.iv).toEqual({})
     })
 

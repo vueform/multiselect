@@ -457,6 +457,10 @@
         type: [Object],
         default: () => ({}),
       },
+      onCreate: {
+        required: false,
+        type: [Function],
+      },
     },
     setup(props, context)
     { 

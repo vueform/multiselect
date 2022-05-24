@@ -11,7 +11,7 @@ export default function useOptions (props, context, dep)
     appendNewTag, appendNewOption: appendNewOption_, multipleLabel, object, loading, delay, resolveOnLoad,
     minChars, filterResults, clearOnSearch, clearOnSelect, valueProp,
     canDeselect, max, strict, closeOnSelect, groups: groupped, groupLabel,
-    groupOptions, groupHideEmpty, groupSelect, 
+    groupOptions, groupHideEmpty, groupSelect, onCreate,
   } = toRefs(props)
 
   const $this = getCurrentInstance().proxy
@@ -159,6 +159,7 @@ export default function useOptions (props, context, dep)
       [valueProp.value]: search.value,
       [label.value]: search.value,
       [trackBy.value]: search.value,
+      __CREATE__: true,
     }]
   })
 
@@ -282,23 +283,39 @@ export default function useOptions (props, context, dep)
       return
     }
 
+    if (onCreate && onCreate.value && !isSelected(option) && option.__CREATE__) {
+      option = { ...option }
+      delete option.__CREATE__
+      option = onCreate.value(option, $this)
+    }
+    
+    if (option.__CREATE__) {
+      option = { ...option }
+      delete option.__CREATE__
+    }
+
     switch (mode.value) {
       case 'single':
-        if (isSelected(option)) {
+        if (option && isSelected(option)) {
           if (canDeselect.value) {
             deselect(option)
           }
           return
         }
 
-        handleOptionAppend(option)
+        if (option) {
+          handleOptionAppend(option)
+        }
 
         blur()
-        select(option)
+
+        if (option) {
+          select(option)
+        }
         break
 
       case 'multiple':
-        if (isSelected(option)) {
+        if (option && isSelected(option)) {
           deselect(option)
           return
         }
@@ -307,9 +324,10 @@ export default function useOptions (props, context, dep)
           return
         }
 
-        handleOptionAppend(option)
-
-        select(option)
+        if (option) {
+          handleOptionAppend(option)
+          select(option)
+        }
 
         if (clearOnSelect.value) {
           clearSearch()
@@ -328,7 +346,7 @@ export default function useOptions (props, context, dep)
         break
 
       case 'tags':
-        if (isSelected(option)) {
+        if (option && isSelected(option)) {
           deselect(option)
           return
         }
@@ -337,13 +355,17 @@ export default function useOptions (props, context, dep)
           return
         }
 
-        handleOptionAppend(option)
+        if (option) {
+          handleOptionAppend(option)
+        }
 
         if (clearOnSelect.value) {
           clearSearch()
         }
 
-        select(option)
+        if (option) {
+          select(option)
+        }
 
         if (hideSelected.value) {
           clearPointer()
