@@ -11,7 +11,7 @@ export default function useOptions (props, context, dep)
     appendNewTag, appendNewOption: appendNewOption_, multipleLabel, object, loading, delay, resolveOnLoad,
     minChars, filterResults, clearOnSearch, clearOnSelect, valueProp,
     canDeselect, max, strict, closeOnSelect, groups: groupped, groupLabel,
-    groupOptions, groupHideEmpty, groupSelect, onCreate,
+    groupOptions, groupHideEmpty, groupSelect, onCreate, disabledProp,
   } = toRefs(props)
 
   const $this = getCurrentInstance().proxy
@@ -72,7 +72,7 @@ export default function useOptions (props, context, dep)
 
       groups.forEach((group) => {
         optionsToArray(group[groupOptions.value]).forEach((option) => {
-          eo.push(Object.assign({}, option, group.disabled ? { disabled: true } : {}))
+          eo.push(Object.assign({}, option, group[disabledProp.value] ? { [disabledProp.value]: true } : {}))
         })
       })
 
@@ -99,8 +99,8 @@ export default function useOptions (props, context, dep)
       return {
         ...group,
         group: true,
-        [groupOptions.value]: filterOptions(arrayOptions, false).map(o => Object.assign({}, o, group.disabled ? { disabled: true } : {})),
-        __VISIBLE__: filterOptions(arrayOptions).map(o => Object.assign({}, o, group.disabled ? { disabled: true } : {})),
+        [groupOptions.value]: filterOptions(arrayOptions, false).map(o => Object.assign({}, o, group[disabledProp.value] ? { [disabledProp.value]: true } : {})),
+        __VISIBLE__: filterOptions(arrayOptions).map(o => Object.assign({}, o, group[disabledProp.value] ? { [disabledProp.value]: true } : {})),
       }
       // Difference between __VISIBLE__ and {groupOptions}: visible does not contain selected options when hideSelected=true
     }))
@@ -267,7 +267,7 @@ export default function useOptions (props, context, dep)
   }
 
   const isDisabled = (option) => {
-    return option.disabled === true
+    return option[disabledProp.value] === true
   }
 
   const isMax = () => {
@@ -400,7 +400,7 @@ export default function useOptions (props, context, dep)
         } else {
           select(group[groupOptions.value]
             .filter(o => iv.value.map(v => v[valueProp.value]).indexOf(o[valueProp.value]) === -1)
-            .filter(o => !o.disabled)
+            .filter(o => !o[disabledProp.value])
             .filter((o, k) => iv.value.length + 1 + k <= max.value || max.value === -1)
           )
         }
@@ -435,7 +435,7 @@ export default function useOptions (props, context, dep)
 
   // no export
   const areAllEnabledSelected = (options) => {
-    return options.find(o => !isSelected(o) && !o.disabled) === undefined
+    return options.find(o => !isSelected(o) && !o[disabledProp.value]) === undefined
   }
 
   // no export
@@ -621,7 +621,7 @@ export default function useOptions (props, context, dep)
         options.value(search.value, $this).then((response) => {
           if (query == search.value || !search.value) {
             ro.value = response
-            pointer.value = fo.value.filter(o => o.disabled !== true)[0] || null
+            pointer.value = fo.value.filter(o => o[disabledProp.value] !== true)[0] || null
             resolving.value = false
           }
         }).catch( /* istanbul ignore next */ (e) => {

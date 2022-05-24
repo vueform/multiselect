@@ -4,7 +4,7 @@ export default function usePointer (props, context, dep)
 {
   const {
     valueProp, showOptions, searchable, groupLabel,
-    groups: groupped, mode, groupSelect,
+    groups: groupped, mode, groupSelect, disabledProp,
   } = toRefs(props)
 
   // ============ DEPENDENCIES ============
@@ -23,11 +23,11 @@ export default function usePointer (props, context, dep)
 
   // no export
   const options = computed(() => {
-    return fo.value.filter(o => !o.disabled)
+    return fo.value.filter(o => !o[disabledProp.value])
   })
 
   const groups = computed(() => {
-    return fg.value.filter(o => !o.disabled)
+    return fg.value.filter(o => !o[disabledProp.value])
   })
 
   const canPointGroups = computed(() => {
@@ -71,25 +71,25 @@ export default function usePointer (props, context, dep)
   })
   
   const currentGroupFirstEnabledOption = computed(() => {
-    return pointer.value.__VISIBLE__.filter(o => !o.disabled)[0]
+    return pointer.value.__VISIBLE__.filter(o => !o[disabledProp.value])[0]
   })
 
   const currentGroupPrevEnabledOption = computed(() => {
-    const options = currentGroup.value.__VISIBLE__.filter(o => !o.disabled)
+    const options = currentGroup.value.__VISIBLE__.filter(o => !o[disabledProp.value])
     return options[options.map(o => o[valueProp.value]).indexOf(pointer.value[valueProp.value]) - 1]
   })
   
   const currentGroupNextEnabledOption = computed(() => {
-    const options = getParentGroup(pointer.value).__VISIBLE__.filter(o => !o.disabled)
+    const options = getParentGroup(pointer.value).__VISIBLE__.filter(o => !o[disabledProp.value])
     return options[options.map(o => o[valueProp.value]).indexOf(pointer.value[valueProp.value]) + 1]
   })
 
   const prevGroupLastEnabledOption = computed(() => {
-    return [...prevGroup.value.__VISIBLE__.filter(o => !o.disabled)].slice(-1)[0]
+    return [...prevGroup.value.__VISIBLE__.filter(o => !o[disabledProp.value])].slice(-1)[0]
   })
 
   const lastGroupLastEnabledOption = computed(() => {
-    return [...lastGroup.value.__VISIBLE__.filter(o => !o.disabled)].slice(-1)[0]
+    return [...lastGroup.value.__VISIBLE__.filter(o => !o[disabledProp.value])].slice(-1)[0]
   })
 
   // =============== METHODS ==============
@@ -106,7 +106,7 @@ export default function usePointer (props, context, dep)
   }
 
   const selectPointer = () => {
-    if (!pointer.value || pointer.value.disabled === true) {
+    if (!pointer.value || pointer.value[disabledProp.value] === true) {
       return
     }
 

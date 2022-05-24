@@ -461,6 +461,11 @@
         required: false,
         type: [Function],
       },
+      disabledProp: {
+        type: String,
+        required: false,
+        default: 'disabled',
+      },
     },
     setup(props, context)
     { 
