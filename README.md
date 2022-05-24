@@ -350,8 +350,8 @@ mounted() {
 | **multiplelabel** | `values` | Rendered when using `multiple` mode and options are selected. By default it renders the return value of `multipleLabel` function. |
 | **nooptions** |  | Rendered when the options list is empty. By default renders `noOptionsText`. |
 | **noresults** |  | Rendered when there are no search results. By default renders `noResultsText`. |
-| **grouplabel** | `group` | Renders an option group label. |
-| **option** | `option, search` | Renders an option in options list. |
+| **grouplabel** | `group, isPointed, isSelected` | Renders an option group label. The `isPointed` and `isSelected` props are function that used be used like `isPointed(option)` to determine the state. |
+| **option** | `option, isPointed, isSelected, search` | Renders an option in options list. The `isPointed` and `isSelected` props are function that used be used like `isPointed(option)` to determine the state. |
 | **singlelabel** | `value` | Rendered when using `single` mode and an option is selected. By default it renders the `:label` if the selected option. |
 | **tag** | `option, handleTagRemove, disabled` | Renders a tag when using `tags` mode. When `disabled` the remove icon should not be displayed. The `handleTagRemove` prop should be used to trigger the removal of the tag. |
 | **caret** | | Renders a small triangle on the right side of the multiselect. |

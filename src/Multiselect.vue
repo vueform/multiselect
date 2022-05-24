@@ -128,7 +128,7 @@
               @mouseenter="setPointer(group)"
               @click="handleGroupClick(group)"
             >
-              <slot name="grouplabel" :group="group">
+              <slot name="grouplabel" :group="group" :is-selected="isSelected" :is-pointed="isPointed">
                 <span v-html="group[groupLabel]"></span>
               </slot>
             </div>
@@ -142,7 +142,7 @@
                 @mouseenter="setPointer(option)"
                 @click="handleOptionClick(option)"
               >
-                <slot name="option" :option="option" :search="search">
+                <slot name="option" :option="option" :is-selected="isSelected" :is-pointed="isPointed" :search="search">
                   <span v-html="option[label]"></span>
                 </slot>
               </li>
@@ -158,7 +158,7 @@
             @mouseenter="setPointer(option)"
             @click="handleOptionClick(option)"
           >
-            <slot name="option" :option="option" :search="search">
+            <slot name="option" :option="option" :isSelected="isSelected" :is-pointed="isPointed" :search="search">
               <span v-html="option[label]"></span>
             </slot>
           </li>
