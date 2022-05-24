@@ -8,7 +8,6 @@ export default function useSearch (props, context, dep)
 
   const input = ref(null)
 
-
   // =============== METHODS ==============
 
   const clearSearch = () => {
