@@ -282,6 +282,7 @@
   flex-direction: column;
   border-radius: 0 0 var(--ms-dropdown-radius, 4px) var(--ms-dropdown-radius, 4px);
   outline: none;
+  max-height: var(--ms-max-height, 10rem);
 
   &.is-top {
     transform: translateY(-100%);
@@ -302,7 +303,6 @@
   list-style: none;
   display: flex;
   flex-direction: column;
-  max-height: var(--ms-max-height, 10rem);
 
   &.is-top {
     flex-direction: column-reverse;
