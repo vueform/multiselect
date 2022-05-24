@@ -95,7 +95,7 @@
     </template>
 
     <!-- Spinner -->
-    <slot v-if="busy && isActive" name="spinner">
+    <slot v-if="loading || (resolving && isActive)" name="spinner">
       <span :class="classList.spinner"></span>
     </slot>
 
