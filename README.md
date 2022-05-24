@@ -339,6 +339,8 @@ mounted() {
 | **@option** | `query` | Emitted after enter is hit when a new option is being created. |
 | **@clear** |  | Emitted when the options are cleared. |
 | **@paste** | `Event` | Emitted when value is pasted into the search field. |
+| **@keydown** | `Event` | Emitted on `keydown`. |
+| **@keyup** | `Event` | Emitted on `keyup`. |
 
 ## Slots
 

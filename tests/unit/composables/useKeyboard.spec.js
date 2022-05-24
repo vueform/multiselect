@@ -1,4 +1,4 @@
-import { createSelect, getValue, keydown, destroy } from 'unit-test-helpers'
+import { createSelect, getValue, keydown, keyup, destroy } from 'unit-test-helpers'
 import { nextTick } from 'composition-api'
 
 jest.useFakeTimers()
@@ -881,6 +881,36 @@ describe('useKeyboard', () => {
 
         expect(getValue(select)).toStrictEqual(2)
       })
+    })
+
+    describe('general', () => {
+      it('should emit keydown event', async () => {
+        let select = createSelect({
+          value: 1,
+          options: [1,2,3],
+        })
+
+        keydown(select, 'backspace')
+
+        await nextTick()
+
+        expect(select.emitted('keydown').length).toBe(1)
+      })
+    })
+  })
+
+  describe('handleKeyup', () => {
+    it('should emit keyup event', async () => {
+      let select = createSelect({
+        value: 1,
+        options: [1,2,3],
+      })
+
+      keyup(select, 'backspace')
+
+      await nextTick()
+
+      expect(select.emitted('keyup').length).toBe(1)
     })
   })
 })

@@ -54,6 +54,8 @@ export default function useKeyboard (props, context, dep)
   }
 
   const handleKeydown = (e) => {
+    context.emit('keydown', e)
+
     switch (e.key) {
       case 'Backspace':
         if (mode.value === 'single') {
@@ -143,8 +145,13 @@ export default function useKeyboard (props, context, dep)
     }
   }
 
+  const handleKeyup = (e) => {
+    context.emit('keyup', e)
+  }
+
   return {
     handleKeydown,
+    handleKeyup,
     preparePointer,
   }
 }

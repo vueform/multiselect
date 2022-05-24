@@ -7,6 +7,7 @@
     @focusin="activate"
     @focusout="deactivate"
     @keydown="handleKeydown"
+    @keyup="handleKeyup"
     @focus="handleFocus"
   >
     <!-- Search -->
@@ -210,7 +211,7 @@
     emits: [
       'open', 'close', 'select', 'deselect', 
       'input', 'search-change', 'tag', 'option', 'update:modelValue',
-      'change', 'clear'
+      'change', 'clear', 'keydown'
     ],
     props: {
       value: {
