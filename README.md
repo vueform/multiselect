@@ -228,7 +228,7 @@ Join our [Discord channel](https://discord.gg/WhX2nG6GTQ) or [open an issue](htt
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
 | **mode** | `string` | `single` | Possible values: `single\|multiple\|tags`. |
-| **options** | `array\|object\|function` | `[]` | List of options. Can be:<br>- an array (eg. `[1,2,3]`)<br>- an object (eg. `{a:1,b:2,c:3}`)<br>- an array of objects:<br>`[`<br>&nbsp;&nbsp;`{`<br>&nbsp;&nbsp;&nbsp;&nbsp;`[valueProp]: 1,`<br>&nbsp;&nbsp;&nbsp;&nbsp;`[label]: 'v1',`<br>&nbsp;&nbsp;&nbsp;&nbsp;`disabled:true\|false`<br>&nbsp;&nbsp;`},`<br>&nbsp;&nbsp;`//...`<br>`]`<br>- a function returning a Promise (async function) with `query` input param. The promise should return options as an **object** or as an **array of objects**.<br>When an array of objects is provided it **must** have properties that equal to `:valueProp`'s, `:trackBy`'s and `:label`'s value. |
+| **options** | `array\|object\|function` | `[]` | List of options. Can be:<br>- an array (eg. `[1,2,3]`)<br>- an object (eg. `{a:1,b:2,c:3}`)<br>- an array of objects:<br>`[`<br>&nbsp;&nbsp;`{`<br>&nbsp;&nbsp;&nbsp;&nbsp;`[valueProp]: 1,`<br>&nbsp;&nbsp;&nbsp;&nbsp;`[label]: 'v1',`<br>&nbsp;&nbsp;&nbsp;&nbsp;`disabled:true\|false`<br>&nbsp;&nbsp;`},`<br>&nbsp;&nbsp;`//...`<br>`]`<br>- a function returning a Promise (async function) with `query` and `select$` param. The `select$` represents the Multiselect component and its API can be accessed. The promise should return options as an **object** or as an **array of objects**.<br>When an array of objects is provided it **must** have properties that equal to `:valueProp`'s, `:trackBy`'s and `:label`'s value. |
 | **groups** | `boolean` | `false` | Whether options should be groupped. Example:<br>`{`<br>&nbsp;&nbsp;`groups: true,`<br>&nbsp;&nbsp;`options: [`<br>&nbsp;&nbsp;&nbsp;&nbsp;`{`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`[groupLabel]: 'Group label',`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`[groupOptions]: {options},`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`disabled: true\|false,`<br>&nbsp;&nbsp;&nbsp;&nbsp;`}`<br>&nbsp;&nbsp;&nbsp;&nbsp;`//...`<Br>&nbsp;&nbsp;`]`<br>`}`<br>The `{options}` should equal to regular `options` definition. |
 | **groupLabel** | `string` | `label` | The name of the property that contains the label of a group when `options` are provided in group format and `groups` is `true`. |
 | **groupOptions** | `string` | `options` | The name of the property that contains the options of a group when `options` are provided in group format and `groups` is `true`. |
@@ -329,18 +329,20 @@ mounted() {
 
 | Event | Attributes | Description |
 | --- | --- | --- |
-| **@change** | `value` | Emitted after the value is changed. |
-| **@close** |  | Emitted after closing the option list. |
-| **@deselect** | `option` | Emitted after an option is deselected or a tag is removed. |
-| **@open** | | Emitted after opening the option list. |
-| **@search-change** | `query` | Emitted after a character is typed. |
-| **@select** | `option` | Emitted after an option or tag is selected. |
-| **@tag** | `query` | **Deprecated 2.3.0: use `@option` instead**. Emitted after enter is hit when a new tag is being created. |
-| **@option** | `query` | Emitted after enter is hit when a new option is being created. |
-| **@clear** |  | Emitted when the options are cleared. |
-| **@paste** | `Event` | Emitted when value is pasted into the search field. |
-| **@keydown** | `Event` | Emitted on `keydown`. |
-| **@keyup** | `Event` | Emitted on `keyup`. |
+| **@change** | `value, select$` | Emitted after the value is changed. |
+| **@close** | `select$` | Emitted after closing the option list. |
+| **@deselect** | `option, select$` | Emitted after an option is deselected or a tag is removed. |
+| **@open** | `select$` | Emitted after opening the option list. |
+| **@search-change** | `query, select$` | Emitted after a character is typed. |
+| **@select** | `option, select$` | Emitted after an option or tag is selected. |
+| **@tag** | `query, select$` | **Deprecated 2.3.0: use `@option` instead**. Emitted after enter is hit when a new tag is being created. |
+| **@option** | `query, select$` | Emitted after enter is hit when a new option is being created. |
+| **@clear** | `select$` | Emitted when the options are cleared. |
+| **@paste** | `Event, select$` | Emitted when value is pasted into the search field. |
+| **@keydown** | `Event, select$` | Emitted on `keydown`. |
+| **@keyup** | `Event, select$` | Emitted on `keyup`. |
+
+The `select$` param is each event is Multiselect component's instance.
 
 ## Slots
 
@@ -726,7 +728,7 @@ In case you need to override the same type of utility you might use [@neojp/tail
   :resolve-on-load="false"
   :delay="0"
   :searchable="true"
-  :options="async function(query) {
+  :options="async function(query, select$) {
     return await fetchLanguages(query) // check JS block in JSFiddle for implementation
   }"
 />

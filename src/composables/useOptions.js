@@ -1,4 +1,4 @@
-import { ref, toRefs, computed, watch, nextTick, getCurrentInstance } from 'composition-api'
+import { ref, toRefs, computed, watch, getCurrentInstance } from 'composition-api'
 import normalize from './../utils/normalize'
 import isObject from './../utils/isObject'
 import isNullish from './../utils/isNullish'
@@ -203,7 +203,7 @@ export default function useOptions (props, context, dep)
         break
     }
 
-    context.emit('select', finalValue(option), option)
+    context.emit('select', finalValue(option), option, $this)
   }
 
   const deselect = (option) => {
@@ -224,7 +224,7 @@ export default function useOptions (props, context, dep)
         break
     }
 
-    context.emit('deselect', finalValue(option), option)
+    context.emit('deselect', finalValue(option), option, $this)
   }
 
   // no export
@@ -246,7 +246,7 @@ export default function useOptions (props, context, dep)
   }
 
   const clear = () => {
-    context.emit('clear')
+    context.emit('clear', $this)
     update(nullValue.value)
   }
 
@@ -392,8 +392,8 @@ export default function useOptions (props, context, dep)
 
   const handleOptionAppend = (option) => {
     if (getOption(option[valueProp.value]) === undefined && createOption.value) {
-      context.emit('tag', option[valueProp.value])
-      context.emit('option', option[valueProp.value])
+      context.emit('tag', option[valueProp.value], $this)
+      context.emit('option', option[valueProp.value], $this)
 
       if (appendNewOption.value) {
         appendOption(option)

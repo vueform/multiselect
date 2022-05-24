@@ -1,12 +1,14 @@
-import { toRefs, computed } from 'composition-api'
+import { toRefs, computed, getCurrentInstance } from 'composition-api'
 
 export default function useKeyboard (props, context, dep)
 {
   const {
-      mode, addTagOn, openDirection, searchable,
-      showOptions, valueProp, groups: groupped,
-      addOptionOn: addOptionOn_, createTag, createOption: createOption_,
-    } = toRefs(props)
+    mode, addTagOn, openDirection, searchable,
+    showOptions, valueProp, groups: groupped,
+    addOptionOn: addOptionOn_, createTag, createOption: createOption_,
+  } = toRefs(props)
+
+  const $this = getCurrentInstance().proxy
 
   // ============ DEPENDENCIES ============
 
@@ -54,7 +56,7 @@ export default function useKeyboard (props, context, dep)
   }
 
   const handleKeydown = (e) => {
-    context.emit('keydown', e)
+    context.emit('keydown', e, $this)
 
     switch (e.key) {
       case 'Backspace':
@@ -146,7 +148,7 @@ export default function useKeyboard (props, context, dep)
   }
 
   const handleKeyup = (e) => {
-    context.emit('keyup', e)
+    context.emit('keyup', e, $this)
   }
 
   return {

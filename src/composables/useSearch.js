@@ -1,7 +1,9 @@
-import { ref, toRefs, computed, watch } from 'composition-api'
+import { ref, getCurrentInstance, watch } from 'composition-api'
 
 export default function useSearch (props, context, dep)
 {
+  const $this = getCurrentInstance().proxy
+
   // ================ DATA ================
 
   const search = ref(null)
@@ -19,13 +21,13 @@ export default function useSearch (props, context, dep)
   }
 
   const handlePaste = (e) => {
-    context.emit('paste', e)
+    context.emit('paste', e, $this)
   }
 
   // ============== WATCHERS ==============
 
   watch(search, (val) => {
-    context.emit('search-change', val)
+    context.emit('search-change', val, $this)
   })
 
   return {

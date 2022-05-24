@@ -1,9 +1,11 @@
-import { toRefs } from 'composition-api'
+import { toRefs, getCurrentInstance } from 'composition-api'
 import isNullish from './../utils/isNullish'
 
 export default function useData (props, context, dep)
 {
   const { object, valueProp, mode } = toRefs(props)
+
+  const $this = getCurrentInstance().proxy
 
   // ============ DEPENDENCIES ============
 
@@ -19,7 +21,7 @@ export default function useData (props, context, dep)
     // value based on `option` setting
     const externalVal = makeExternal(val)
 
-    context.emit('change', externalVal)
+    context.emit('change', externalVal, $this)
     context.emit('input', externalVal)
     context.emit('update:modelValue', externalVal)
   } 

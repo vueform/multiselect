@@ -1,8 +1,10 @@
-import { ref, toRefs } from 'composition-api'
+import { ref, toRefs, getCurrentInstance } from 'composition-api'
 
 export default function useDropdown (props, context, dep)
 {
   const { disabled } = toRefs(props)
+
+  const $this = getCurrentInstance().proxy
 
   // ================ DATA ================
 
@@ -16,7 +18,7 @@ export default function useDropdown (props, context, dep)
     }
 
     isOpen.value = true
-    context.emit('open')
+    context.emit('open', $this)
   }
 
   const close = () => {
@@ -25,7 +27,7 @@ export default function useDropdown (props, context, dep)
     }
 
     isOpen.value = false
-    context.emit('close')
+    context.emit('close', $this)
   }
 
   return {
