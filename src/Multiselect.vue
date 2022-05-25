@@ -21,6 +21,7 @@
         :autocomplete="autocomplete"
         v-bind="attrs"
         @input="handleSearchInput"
+        @keypress="handleKeypress"
         @paste.stop="handlePaste"
         ref="input"
       />
@@ -63,6 +64,7 @@
             :autocomplete="autocomplete"
             v-bind="attrs"
             @input="handleSearchInput"
+            @keypress="handleKeypress"
             @paste.stop="handlePaste"
             ref="input"
           />
@@ -478,6 +480,11 @@
         type: Boolean,
         required: false,
         default: false,
+      },
+      regex: {
+        type: [Object, String],
+        required: false,
+        default: undefined,
       },
     },
     setup(props, context)

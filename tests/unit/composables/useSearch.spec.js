@@ -50,6 +50,79 @@ describe('useSearch', () => {
     })
   })
 
+  describe('handleKeypress', () => {
+    it('should prevent if char does not match regex', async () => {
+      let select = createSelect({
+        value: null,
+        options: [1,2,3],
+        searchable: true,
+        regex: /\d/
+      })
+
+      let preventMock = jest.fn()
+
+      select.vm.handleKeypress({
+        key: 'a',
+        preventDefault: preventMock
+      })
+
+      expect(preventMock).toHaveBeenCalled()
+    })
+
+    it('should prevent if char does not match regex string', async () => {
+      let select = createSelect({
+        value: null,
+        options: [1,2,3],
+        searchable: true,
+        regex: '\\d'
+      })
+
+      let preventMock = jest.fn()
+
+      select.vm.handleKeypress({
+        key: 'a',
+        preventDefault: preventMock
+      })
+
+      expect(preventMock).toHaveBeenCalled()
+    })
+
+    it('should not prevent if char does match regex', async () => {
+      let select = createSelect({
+        value: null,
+        options: [1,2,3],
+        searchable: true,
+        regex: /\d/
+      })
+
+      let preventMock = jest.fn()
+
+      select.vm.handleKeypress({
+        key: '1',
+        preventDefault: preventMock
+      })
+
+      expect(preventMock).not.toHaveBeenCalled()
+    })
+
+    it('should not prevent if no regex', async () => {
+      let select = createSelect({
+        value: null,
+        options: [1,2,3],
+        searchable: true,
+      })
+
+      let preventMock = jest.fn()
+
+      select.vm.handleKeypress({
+        key: '1',
+        preventDefault: preventMock
+      })
+
+      expect(preventMock).not.toHaveBeenCalled()
+    })
+  })
+
   describe('handlePaste', () => {
     it('should emit paste event on @paste', async () => {
       let select = createSelect({
@@ -65,6 +138,66 @@ describe('useSearch', () => {
       await nextTick()
 
       expect(select.emitted('paste')[0][0]).toBe(e)
+    })
+
+    it('should prevent if paste data does not match regex', async () => {
+      let select = createSelect({
+        value: null,
+        options: [1,2,3],
+        searchable: true,
+        regex: /\d/
+      })
+
+      let preventMock = jest.fn()
+
+      select.vm.handlePaste({
+        clipboardData: {
+          getData: () => 'value'
+        },
+        preventDefault: preventMock
+      })
+
+      expect(preventMock).toHaveBeenCalled()
+    })
+
+    it('should prevent if paste data does not match regex string', async () => {
+      let select = createSelect({
+        value: null,
+        options: [1,2,3],
+        searchable: true,
+        regex: '\\d'
+      })
+
+      let preventMock = jest.fn()
+
+      select.vm.handlePaste({
+        clipboardData: {
+          getData: () => 'value'
+        },
+        preventDefault: preventMock
+      })
+
+      expect(preventMock).toHaveBeenCalled()
+    })
+
+    it('should not prevent if paste data does match regex', async () => {
+      let select = createSelect({
+        value: null,
+        options: [1,2,3],
+        searchable: true,
+        regex: /\d/
+      })
+
+      let preventMock = jest.fn()
+
+      select.vm.handlePaste({
+        clipboardData: {
+          getData: () => '123'
+        },
+        preventDefault: preventMock
+      })
+
+      expect(preventMock).not.toHaveBeenCalled()
     })
   })
 
