@@ -140,6 +140,7 @@
                 :class="classList.option(option, group)"
                 :key="key"
                 :data-pointed="isPointed(option)"
+                :data-selected="isSelected(option) || undefined"
                 @mouseenter="setPointer(option)"
                 @click="handleOptionClick(option)"
               >
@@ -156,6 +157,7 @@
             :class="classList.option(option)"
             :key="key"
             :data-pointed="isPointed(option)"
+            :data-selected="isSelected(option) || undefined"
             @mouseenter="setPointer(option)"
             @click="handleOptionClick(option)"
           >
@@ -471,6 +473,11 @@
         required: false,
         default: false,
       },
+      reverse: {
+        type: Boolean,
+        required: false,
+        default: false,
+      },
     },
     setup(props, context)
     { 
@@ -513,6 +520,7 @@
         setPointer: pointer.setPointer,
         clearPointer: pointer.clearPointer,
         multiselect: multiselect.multiselect,
+        isOpen: dropdown.isOpen,
       })
 
       const keyboard = useKeyboard(props, context, {

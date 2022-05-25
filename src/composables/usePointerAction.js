@@ -18,6 +18,7 @@ export default function usePointer (props, context, dep)
   const setPointer = dep.setPointer
   const clearPointer = dep.clearPointer
   const multiselect = dep.multiselect
+  const isOpen = dep.isOpen
 
   // ============== COMPUTED ==============
 
@@ -222,6 +223,26 @@ export default function usePointer (props, context, dep)
       } else {
         clearPointer()
       }
+    }
+  })
+
+  watch(isOpen, async (val) => {
+    if (val) {
+      let firstSelected = multiselect.value.querySelectorAll(`[data-selected]`)[0]
+
+      if (!firstSelected) {
+        return
+      }
+
+      let wrapper = firstSelected.parentElement.parentElement
+      await nextTick()
+
+      /* istanbul ignore next */
+      if (wrapper.scrollTop > 0) {
+        return
+      }
+
+      wrapper.scrollTop = firstSelected.offsetTop
     }
   })
 
