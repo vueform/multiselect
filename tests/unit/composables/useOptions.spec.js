@@ -3281,7 +3281,7 @@ describe('useOptions', () => {
       expect(asyncOptionsMock).toHaveBeenCalledTimes(1)
     })
 
-    it('should not update async option list when search changes to >= chars than minChars', async () => {
+    it('should update async option list when search changes to >= chars than minChars', async () => {
       let asyncOptionsMock = jest.fn()
 
       let select = createSelect({
@@ -3306,6 +3306,41 @@ describe('useOptions', () => {
       await flushPromises()
 
       expect(asyncOptionsMock).toHaveBeenCalledTimes(2)
+    })
+
+    it('should update async option list when search changes to empty when minChars=0', async () => {
+      let asyncOptionsMock = jest.fn()
+
+      let select = createSelect({
+        options: async () => {
+          return await new Promise((resolve, reject) => {
+            asyncOptionsMock()
+            resolve([1,2,3])
+          })
+        },
+        delay: 0,
+        minChars: 0
+      })
+
+      await flushPromises()
+
+      expect(asyncOptionsMock).toHaveBeenCalledTimes(1)
+
+      select.vm.search = 'val'
+
+      jest.runAllTimers()
+
+      await flushPromises()
+
+      expect(asyncOptionsMock).toHaveBeenCalledTimes(2)
+
+      select.vm.search = ''
+
+      jest.runAllTimers()
+
+      await flushPromises()
+
+      expect(asyncOptionsMock).toHaveBeenCalledTimes(3)
     })
 
     it('should clear options before updating async options if clearOnSearch is true', async () => {

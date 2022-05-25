@@ -612,7 +612,7 @@ export default function useOptions (props, context, dep)
   // no export
   const initSearchWatcher = () => {
     searchWatcher.value = watch(search, (query) => {
-      if (query.length < minChars.value || !query) {
+      if (query.length < minChars.value || (!query && minChars.value !== 0)) {
         return
       }
 
