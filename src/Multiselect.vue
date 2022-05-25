@@ -213,7 +213,7 @@
     emits: [
       'open', 'close', 'select', 'deselect', 
       'input', 'search-change', 'tag', 'option', 'update:modelValue',
-      'change', 'clear', 'keydown'
+      'change', 'clear', 'keydown', 'keyup'
     ],
     props: {
       value: {
