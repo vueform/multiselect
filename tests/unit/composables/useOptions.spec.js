@@ -2989,39 +2989,6 @@ describe('useOptions', () => {
       expect(asyncOptionsMock2).toHaveBeenCalledTimes(0)
     })
 
-    it('should init internal value when async options change & resolveOnLoad=true', async () => {
-      let asyncOptionsMock = jest.fn()
-      let asyncOptionsMock2 = jest.fn()
-
-      let select = createSelect({
-        resolveOnLoad: true,
-        value: 2,
-        options: async () => {
-          return await new Promise((resolve, reject) => {
-            asyncOptionsMock()
-            resolve([1,2,3])
-          })
-        },
-      })
-
-      await flushPromises()
-
-      expect(asyncOptionsMock).toHaveBeenCalledTimes(1)
-
-      select.vm.$parent.props.options = async () => {
-        return await new Promise((resolve, reject) => {
-          asyncOptionsMock2()
-          resolve([4,5,6])
-        })
-      }
-
-      await flushPromises()
-
-      expect(asyncOptionsMock2).toHaveBeenCalledTimes(1)
-      await nextTick()
-      expect(select.vm.iv).toEqual({})
-    })
-
     it('should not update async option list when search changes if delay is -1', async () => {
       let asyncOptionsMock = jest.fn()
 
