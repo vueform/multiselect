@@ -3471,7 +3471,7 @@ describe('useOptions', () => {
       let select = createSelect({
         mode: 'multiple',
         value: null,
-        options: [1,2,3],
+        options: [false,1,2,3],
       })
 
       select.vm.$parent.value = [1]
@@ -3493,9 +3493,12 @@ describe('useOptions', () => {
       await nextTick()
       expect(select.vm.iv).toStrictEqual([])
 
-      select.vm.$parent.value = false
+      select.vm.$parent.value = [false]
       await nextTick()
-      expect(select.vm.iv).toStrictEqual([])
+      expect(select.vm.iv).toStrictEqual([{
+        label: false,
+        value: false,
+      }])
 
       select.vm.$parent.value = []
       await nextTick()
@@ -3510,7 +3513,7 @@ describe('useOptions', () => {
       let select = createSelect({
         mode: 'multiple',
         value: null,
-        options: [1,2,3],
+        options: [false,1,2,3],
         object: true,
       })
 
@@ -3533,9 +3536,9 @@ describe('useOptions', () => {
       await nextTick()
       expect(select.vm.iv).toStrictEqual([])
 
-      select.vm.$parent.value = false
+      select.vm.$parent.value = [false]
       await nextTick()
-      expect(select.vm.iv).toStrictEqual([])
+      expect(select.vm.iv).toStrictEqual([false])
 
       select.vm.$parent.value = []
       await nextTick()

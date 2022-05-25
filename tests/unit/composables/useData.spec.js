@@ -21,6 +21,7 @@ describe('useData', () => {
   it('should update iv when single', () => {
     const select = createSelect({
       options: [
+        { value: false, label: false },
         { value: 0, label: 0 },
         { value: 1, label: 1 },
         { value: 2, label: 2 },
@@ -34,7 +35,7 @@ describe('useData', () => {
     expect(select.vm.iv).toStrictEqual({})
 
     select.vm.update(false)
-    expect(select.vm.iv).toStrictEqual({})
+    expect(select.vm.iv).toStrictEqual(false)
 
     select.vm.update({ value: 1, label: 2 })
     expect(select.vm.iv).toStrictEqual({ value: 1, label: 2 })
@@ -44,6 +45,7 @@ describe('useData', () => {
     const select = createSelect({
       mode: 'multiple',
       options: [
+        { value: false, label: false },
         { value: 0, label: 0 },
         { value: 1, label: 1 },
         { value: 2, label: 2 },
@@ -56,8 +58,10 @@ describe('useData', () => {
     select.vm.update(undefined)
     expect(select.vm.iv).toStrictEqual([])
 
-    select.vm.update(false)
-    expect(select.vm.iv).toStrictEqual([])
+    select.vm.update([false])
+    expect(select.vm.iv).toStrictEqual([
+      false
+    ])
 
     select.vm.update([{ value: 1, label: 2 }])
     expect(select.vm.iv).toStrictEqual([{ value: 1, label: 2 }])
