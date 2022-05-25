@@ -6,6 +6,7 @@ export default function useKeyboard (props, context, dep)
     mode, addTagOn, openDirection, searchable,
     showOptions, valueProp, groups: groupped,
     addOptionOn: addOptionOn_, createTag, createOption: createOption_,
+    reverse,
   } = toRefs(props)
 
   const $this = getCurrentInstance().proxy
@@ -131,8 +132,8 @@ export default function useKeyboard (props, context, dep)
         if (!showOptions.value) {
           return
         }
-
-        openDirection.value === 'top' ? forwardPointer() : backwardPointer()
+        
+        backwardPointer()
         break
 
       case 'ArrowDown':
@@ -142,7 +143,7 @@ export default function useKeyboard (props, context, dep)
           return
         }
 
-        openDirection.value === 'top' ? backwardPointer() : forwardPointer()
+        forwardPointer()
         break
     }
   }

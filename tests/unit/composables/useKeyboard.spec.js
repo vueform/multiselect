@@ -441,7 +441,7 @@ describe('useKeyboard', () => {
         expect(select.vm.pointer).toStrictEqual(select.vm.getOption(2))
       })
 
-      it('should should move to next pointer when openDirection=top', async () => {
+      it('should should move to last pointer when openDirection=top', async () => {
         let select = createSelect({
           value: 1,
           options: [1,2,3],
@@ -451,7 +451,7 @@ describe('useKeyboard', () => {
         select.vm.setPointer(select.vm.getOption(1))
 
         keydown(select, 'up')
-        expect(select.vm.pointer).toStrictEqual(select.vm.getOption(2))
+        expect(select.vm.pointer).toStrictEqual(select.vm.getOption(3))
       })
 
       it('should not should move to next pointer when showOptions=false', async () => {
@@ -481,14 +481,14 @@ describe('useKeyboard', () => {
         expect(select.vm.pointer).toStrictEqual(select.vm.getOption(2))
       })
 
-      it('should should move to previous pointer when openDirection=top', async () => {
+      it('should should move to next pointer when openDirection=top', async () => {
         let select = createSelect({
           value: 1,
           options: [1,2,3],
           openDirection: 'top',
         })
 
-        select.vm.setPointer(select.vm.getOption(3))
+        select.vm.setPointer(select.vm.getOption(1))
 
         keydown(select, 'down')
         expect(select.vm.pointer).toStrictEqual(select.vm.getOption(2))

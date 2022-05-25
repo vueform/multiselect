@@ -98,7 +98,7 @@
   @apply max-h-60 absolute -left-px -right-px bottom-0 transform translate-y-full border border-gray-300 -mt-px overflow-y-scroll z-50 bg-white flex flex-col rounded-b;
 
   &.is-top {
-    @apply -translate-y-full top-px bottom-auto flex-col-reverse rounded-b-none rounded-t;
+    @apply -translate-y-full top-px bottom-auto rounded-b-none rounded-t;
   }
 
   &.is-hidden {
@@ -108,10 +108,6 @@
 
 .multiselect-options {
   @apply flex flex-col p-0 m-0 list-none;
-
-  &.is-top {
-    @apply flex-col-reverse;
-  }
 }
 
 .multiselect-group {

@@ -289,7 +289,6 @@
     transform: translateY(-100%);
     top: var(--ms-border-width, 1px);
     bottom: auto;
-    flex-direction: column-reverse;
     border-radius: var(--ms-dropdown-radius, 4px) var(--ms-dropdown-radius, 4px) 0 0;
   }
 
@@ -304,10 +303,6 @@
   list-style: none;
   display: flex;
   flex-direction: column;
-
-  &.is-top {
-    flex-direction: column-reverse;
-  }
 }
 
 .multiselect-group {
