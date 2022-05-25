@@ -98,7 +98,7 @@
     </template>
 
     <!-- Spinner -->
-    <slot v-if="loading || (resolving && isActive)" name="spinner">
+    <slot v-if="loading || resolving" name="spinner">
       <span :class="classList.spinner"></span>
     </slot>
 
