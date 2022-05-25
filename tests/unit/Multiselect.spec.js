@@ -423,7 +423,7 @@ describe('Multiselect', () => {
           options: ['value1','value2','value3'],
         })
 
-        select.find('.multiselect-clear').trigger('mousedown')
+        select.find('.multiselect-clear').trigger('click')
 
         await nextTick()
 
@@ -609,7 +609,7 @@ describe('Multiselect', () => {
           options: ['value1','value2','value3'],
         })
 
-        select.find('.multiselect-clear').trigger('mousedown')
+        select.find('.multiselect-clear').trigger('click')
 
         await nextTick()
 

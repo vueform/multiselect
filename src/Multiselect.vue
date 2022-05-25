@@ -104,7 +104,7 @@
 
     <!-- Clear -->
     <slot v-if="hasSelected && !disabled && canClear && !busy" name="clear" :clear="clear">
-      <span :class="classList.clear" @mousedown="clear"><span :class="classList.clearIcon"></span></span>
+      <span :class="classList.clear" @click="clear"><span :class="classList.clearIcon"></span></span>
     </slot>
 
     <!-- Caret -->
