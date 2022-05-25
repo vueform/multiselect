@@ -9,6 +9,7 @@
     @keydown="handleKeydown"
     @keyup="handleKeyup"
     @focus="handleFocus"
+    @mousedown="handleMousedown"
   >
     <!-- Search -->
     <template v-if="mode !== 'tags' && searchable && !disabled">
@@ -48,7 +49,7 @@
           </span>
         </slot>
     
-        <div :class="classList.tagsSearchWrapper">
+        <div :class="classList.tagsSearchWrapper" ref="tags">
           <!-- Used for measuring search width -->
           <span :class="classList.tagsSearchCopy">{{ search }}</span>
 
@@ -495,6 +496,7 @@
         open: dropdown.open,
         close: dropdown.close,
         clearSearch: search.clearSearch,
+        isOpen: dropdown.isOpen,
       })
 
       const options = useOptions(props, context, {

@@ -10,10 +10,12 @@ export default function useMultiselect (props, context, dep)
   const open = dep.open
   const close = dep.close
   const clearSearch = dep.clearSearch
+  const isOpen = dep.isOpen
 
   // ================ DATA ================
 
   const multiselect = ref(null)
+  const tags = ref(null)
 
   const isActive = ref(false)
 
@@ -69,8 +71,20 @@ export default function useMultiselect (props, context, dep)
     blur()
   }
 
+  /* istanbul ignore next */
+  const handleMousedown = (e) => {
+    if (isOpen.value && (e.target.isEqualNode(multiselect.value) || e.target.isEqualNode(tags.value))) {
+      setTimeout(() => {
+        deactivate()
+      }, 0)
+    } else if (document.activeElement.isEqualNode(multiselect.value) && !isOpen.value) {
+      activate()    
+    }
+  }
+
   return {
     multiselect,
+    tags,
     tabindex,
     isActive,
     blur,
@@ -79,5 +93,6 @@ export default function useMultiselect (props, context, dep)
     activate,
     deactivate,
     handleCaretClick,
+    handleMousedown,
   }
 }
