@@ -10,7 +10,7 @@ export default function useOptions (props, context, dep)
     options, mode, trackBy: trackBy_, limit, hideSelected, createTag, createOption: createOption_, label,
     appendNewTag, appendNewOption: appendNewOption_, multipleLabel, object, loading, delay, resolveOnLoad,
     minChars, filterResults, clearOnSearch, clearOnSelect, valueProp,
-    canDeselect, max, strict, closeOnSelect, groups: groupped,
+    canDeselect, max, strict, closeOnSelect, groups: groupped, reverse,
     groupOptions, groupHideEmpty, groupSelect, onCreate, disabledProp, searchStart,
   } = toRefs(props)
 
@@ -109,6 +109,10 @@ export default function useOptions (props, context, dep)
   // filteredOptions
   const fo = computed(() => {
     let options = eo.value
+
+    if (reverse.value) {
+      options = options.reverse()
+    }
 
     if (createdOption.value.length) {
       options = createdOption.value.concat(options)
@@ -449,7 +453,9 @@ export default function useOptions (props, context, dep)
 
   // no export
   const getOptionByTrackBy = (val, norm = true) => {
-    return eo.value.map(o => o[trackBy.value]).indexOf(val)
+    return eo.value.map(o => parseInt(o[trackBy.value]) == o[trackBy.value] ? parseInt(o[trackBy.value]) : o[trackBy.value]).indexOf(
+      parseInt(val) == val ? parseInt(val) : val
+    )
   }
 
   // no export

@@ -63,6 +63,19 @@ describe('useOptions', () => {
       ])
     })
 
+    it('should reverse the options', () => {
+      let select = createSelect({
+        options: [1,2,3],
+        reverse: true,
+      })
+
+      expect(select.vm.fo).toStrictEqual([
+        { value: 3, label: 3 },
+        { value: 2, label: 2 },
+        { value: 1, label: 1 },
+      ])
+    })
+
     it('should append createdOption to `fo` when createTag true', () => {
       const select = createSelect({
         mode: 'tags',
@@ -76,7 +89,7 @@ describe('useOptions', () => {
       expect(select.vm.fo[0].v).toStrictEqual('new-tag')
     })
 
-    it('should not append createdOption to `fo` when if it already exists exists', () => {
+    it('should not append createdOption to `fo` when if it already exists', () => {
       const select = createSelect({
         mode: 'tags',
         createTag: true,
@@ -90,6 +103,23 @@ describe('useOptions', () => {
 
       expect(select.vm.fo).toStrictEqual([
         { value: 'tag2', label: 'tag2' }
+      ])
+    })
+
+    it('should not append createdOption to `fo` when if it already exists and it\'s a number', () => {
+      const select = createSelect({
+        mode: 'tags',
+        createTag: true,
+        options: [
+          1, 2, 3
+        ],
+        value: [],
+      })
+
+      select.vm.search = '1'
+
+      expect(select.vm.fo).toStrictEqual([
+        { value: 1, label: 1 }
       ])
     })
 
