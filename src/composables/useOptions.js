@@ -701,11 +701,7 @@ export default function useOptions (props, context, dep)
   watch(options, (n, o) => {
     if (typeof props.options === 'function') {
       if (resolveOnLoad.value) {
-        resolveOptions(() => {
-          if (Object.keys(iv.value).length) {
-            initInternalValue()
-          }
-        })
+        resolveOptions()
       }
     } else {
       ro.value = props.options
