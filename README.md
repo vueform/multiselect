@@ -843,13 +843,18 @@ In case you need to override the same type of utility you might use [@neojp/tail
     ]"
   >
       <template v-slot:tag="{ option, handleTagRemove, disabled }">
-        <div class="multiselect-tag is-user">
+        <div
+          class="multiselect-tag is-user"
+          :class="{
+            'is-disabled': disabled
+          }"
+        >
           <img :src="option.image">
           {{ option.name }}
           <span
             v-if="!disabled"
             class="multiselect-tag-remove"
-            @mousedown.prevent="handleTagRemove(option, $event)"
+            @click="handleTagRemove(option, $event)"
           >
             <span class="multiselect-tag-remove-icon"></span>
           </span>
