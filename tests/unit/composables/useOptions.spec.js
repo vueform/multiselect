@@ -161,6 +161,26 @@ describe('useOptions', () => {
       expect(select.vm.fo[0].name).toBe('Válué1')
     })
 
+    it('should contain only options with normalized trackBys that match normalized search start, strict=false, searchStart=trze', () => {
+      const select = createSelect({
+        options: [
+          { value: 0, name: 'aVálué0', },
+          { value: 1, name: 'bVálué1', },
+          { value: 2, name: 'aaVálué2', }
+        ],
+        trackBy: 'name',
+        label: 'name',
+        strict: false,
+        searchStart: true,
+      })
+
+      select.vm.search = 'a'
+
+      expect(select.vm.fo.length).toBe(2)
+      expect(select.vm.fo[0].name).toBe('aVálué0')
+      expect(select.vm.fo[1].name).toBe('aaVálué2')
+    })
+
     it('should hide selected tags when hideSelected is true', async () => {
       const select = createSelect({
         mode: 'tags',

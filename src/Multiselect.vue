@@ -466,6 +466,11 @@
         required: false,
         default: 'disabled',
       },
+      searchStart: {
+        type: Boolean,
+        required: false,
+        default: false,
+      },
     },
     setup(props, context)
     { 

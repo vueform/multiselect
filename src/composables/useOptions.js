@@ -10,8 +10,8 @@ export default function useOptions (props, context, dep)
     options, mode, trackBy: trackBy_, limit, hideSelected, createTag, createOption: createOption_, label,
     appendNewTag, appendNewOption: appendNewOption_, multipleLabel, object, loading, delay, resolveOnLoad,
     minChars, filterResults, clearOnSearch, clearOnSelect, valueProp,
-    canDeselect, max, strict, closeOnSelect, groups: groupped, groupLabel,
-    groupOptions, groupHideEmpty, groupSelect, onCreate, disabledProp,
+    canDeselect, max, strict, closeOnSelect, groups: groupped,
+    groupOptions, groupHideEmpty, groupSelect, onCreate, disabledProp, searchStart,
   } = toRefs(props)
 
   const $this = getCurrentInstance().proxy
@@ -482,7 +482,9 @@ export default function useOptions (props, context, dep)
     
     if (search.value && filterResults.value) {
       fo = fo.filter((option) => {
-        return normalize(option[trackBy.value], strict.value).indexOf(normalize(search.value, strict.value)) !== -1
+        return searchStart.value
+          ? normalize(option[trackBy.value], strict.value).startsWith(normalize(search.value, strict.value))
+          : normalize(option[trackBy.value], strict.value).indexOf(normalize(search.value, strict.value)) !== -1
       })
     }
 
