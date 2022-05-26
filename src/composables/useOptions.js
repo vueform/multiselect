@@ -25,9 +25,9 @@ export default function useOptions (props, context, dep)
   const update = dep.update
   const pointer = dep.pointer
   const clearPointer = dep.clearPointer
-  const blur = dep.blur
   const focus = dep.focus
   const deactivate = dep.deactivate
+  const close = dep.close
 
   // ================ DATA ================
 
@@ -318,7 +318,15 @@ export default function useOptions (props, context, dep)
           handleOptionAppend(option)
         }
 
-        blur()
+        /* istanbul ignore else */
+        if (clearOnSelect.value) {
+          clearSearch()
+        }
+
+        if (closeOnSelect.value) {
+          clearPointer()
+          close()
+        }
 
         if (option) {
           select(option)
@@ -348,11 +356,8 @@ export default function useOptions (props, context, dep)
           clearPointer()
         }
 
-        // If we need to close the dropdown on select we also need
-        // to blur the input, otherwise further searches will not
-        // display any options
         if (closeOnSelect.value) {
-          blur()
+          close()
         }
         break
 
@@ -382,18 +387,13 @@ export default function useOptions (props, context, dep)
           clearPointer()
         }
 
-        // If we need to close the dropdown on select we also need
-        // to blur the input, otherwise further searches will not
-        // display any options
         if (closeOnSelect.value) {
-          blur()
+          close()
         }
         break
     }
 
-    if (closeOnSelect.value) {
-      deactivate()
-    } else {
+    if (!closeOnSelect.value) {
       focus()
     }
   }

@@ -2080,7 +2080,7 @@ describe('useOptions', () => {
       ])
     })
 
-    it('should blur input after select if closeOnSelect=true && mode=multiple', async () => {
+    it('should close input after select if closeOnSelect=true && mode=multiple', async () => {
       let select = createSelect({
         mode: 'multiple',
         value: [],
@@ -2099,7 +2099,8 @@ describe('useOptions', () => {
 
       await nextTick()
 
-      expect(document.activeElement == select.vm.input).toBe(false)
+      expect(select.vm.isOpen).toBe(false)
+      expect(document.activeElement == select.vm.input).toBe(true)
 
       destroy(select)
     })
@@ -2318,7 +2319,7 @@ describe('useOptions', () => {
       ])
     })
 
-    it('should blur input after select if closeOnSelect=true && mode=tags', async () => {
+    it('should close input after select if closeOnSelect=true && mode=tags', async () => {
       let select = createSelect({
         mode: 'tags',
         value: [],
@@ -2337,7 +2338,8 @@ describe('useOptions', () => {
 
       await nextTick()
 
-      expect(document.activeElement == select.vm.input).toBe(false)
+      expect(select.vm.isOpen).toBe(false)
+      expect(document.activeElement == select.vm.input).toBe(true)
 
       destroy(select)
     })
