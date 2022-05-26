@@ -6,6 +6,11 @@ export default function useSearch (props, context, dep)
 
   const $this = getCurrentInstance().proxy
 
+  // ============ DEPENDENCIES ============
+
+  const isOpen = dep.isOpen
+  const open = dep.open
+
   // ================ DATA ================
 
   const search = ref(null)
@@ -58,6 +63,10 @@ export default function useSearch (props, context, dep)
   // ============== WATCHERS ==============
 
   watch(search, (val) => {
+    if (!isOpen.value && val) {
+      open()
+    }
+
     context.emit('search-change', val, $this)
   })
 

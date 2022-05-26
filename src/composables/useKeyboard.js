@@ -20,6 +20,8 @@ export default function useKeyboard (props, context, dep)
   const selectPointer = dep.selectPointer
   const backwardPointer = dep.backwardPointer
   const forwardPointer = dep.forwardPointer
+  const isOpen = dep.isOpen
+  const open = dep.open
   const blur = dep.blur
   const fo = dep.fo
 
@@ -132,6 +134,11 @@ export default function useKeyboard (props, context, dep)
         if (!showOptions.value) {
           return
         }
+
+        /* istanbul ignore else */
+        if (!isOpen.value) {
+          open()
+        }
         
         backwardPointer()
         break
@@ -141,6 +148,11 @@ export default function useKeyboard (props, context, dep)
 
         if (!showOptions.value) {
           return
+        }
+
+        /* istanbul ignore else */
+        if (!isOpen.value) {
+          open()
         }
 
         forwardPointer()
