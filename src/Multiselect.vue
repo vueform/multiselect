@@ -5,12 +5,18 @@
     :class="classList.container"
     :id="id"
     :dir="rtl ? 'rtl' : undefined"
+    :aria-owns="ariaOwns"
+    :aria-expanded="isOpen"
+    :aria-label="ariaLabel"
+    :aria-placeholder="ariaPlaceholder"
+    :aria-activedescendant="ariaActiveDescendant"
     @focusin="activate"
     @focusout="deactivate"
     @keydown="handleKeydown"
     @keyup="handleKeyup"
     @focus="handleFocus"
     @mousedown="handleMousedown"
+    role="combobox"
   >
     <!-- Search -->
     <template v-if="mode !== 'tags' && searchable && !disabled">
@@ -21,10 +27,16 @@
         :class="classList.search"
         :autocomplete="autocomplete"
         v-bind="attrs"
+        :aria-owns="ariaOwns"
+        :aria-expanded="isOpen"
+        :aria-label="ariaLabel"
+        :aria-placeholder="ariaPlaceholder"
+        :aria-activedescendant="ariaActiveDescendant"
         @input="handleSearchInput"
         @keypress="handleKeypress"
         @paste.stop="handlePaste"
         ref="input"
+        role="combobox"
       />
     </template>
 
@@ -64,10 +76,16 @@
             :class="classList.tagsSearch"
             :autocomplete="autocomplete"
             v-bind="attrs"
+            :aria-owns="ariaOwns"
+            :aria-expanded="isOpen"
+            :aria-label="ariaLabel"
+            :aria-placeholder="ariaPlaceholder"
+            :aria-activedescendant="ariaActiveDescendant"
             @input="handleSearchInput"
             @keypress="handleKeypress"
             @paste.stop="handlePaste"
             ref="input"
+            role="combobox"
           />
         </div>
       </div>
@@ -120,7 +138,7 @@
     >
       <slot name="beforelist" :options="fo"></slot>
 
-      <ul :class="classList.options">
+      <ul :class="classList.options" :id="ariaOwns" role="listbox">
         <template v-if="groups">
           <li
             v-for="(group, i, key) in fg"
@@ -132,21 +150,29 @@
               :data-pointed="isPointed(group)"
               @mouseenter="setPointer(group)"
               @click="handleGroupClick(group)"
+              role="none"
             >
               <slot name="grouplabel" :group="group" :is-selected="isSelected" :is-pointed="isPointed">
                 <span v-html="group[groupLabel]"></span>
               </slot>
             </div>
 
-            <ul :class="classList.groupOptions">
+            <ul
+              :class="classList.groupOptions"
+              :aria-label="ariaGroupLabel(group)"
+              role="group"
+            >
               <li
                 v-for="(option, i, key) in group.__VISIBLE__"
                 :class="classList.option(option, group)"
                 :key="key"
                 :data-pointed="isPointed(option)"
                 :data-selected="isSelected(option) || undefined"
+                :id="ariaOptionId(option)"
+                :aria-label="ariaOptionLabel(option)"
                 @mouseenter="setPointer(option)"
                 @click="handleOptionClick(option)"
+                role="option"
               >
                 <slot name="option" :option="option" :is-selected="isSelected" :is-pointed="isPointed" :search="search">
                   <span v-html="option[label]"></span>
@@ -158,12 +184,15 @@
         <template v-else>
           <li
             v-for="(option, i, key) in fo"
+            :id="ariaOptionId(option)"
+            :aria-label="ariaOptionLabel(option)"
             :class="classList.option(option)"
             :key="key"
             :data-pointed="isPointed(option)"
             :data-selected="isSelected(option) || undefined"
             @mouseenter="setPointer(option)"
             @click="handleOptionClick(option)"
+            role="option"
           >
             <slot name="option" :option="option" :isSelected="isSelected" :is-pointed="isPointed" :search="search">
               <span v-html="option[label]"></span>
@@ -218,6 +247,7 @@
   import useKeyboard from './composables/useKeyboard' 
   import useClasses from './composables/useClasses' 
   import useScroll from './composables/useScroll' 
+  import useA11y from './composables/useA11y' 
 
   export default {
     name: 'Multiselect',
@@ -510,7 +540,11 @@
       const value = useValue(props, context)
       const pointer = usePointer(props, context)
       const dropdown = useDropdown(props, context)
-      const search = useSearch(props, context)
+
+      const search = useSearch(props, context, {
+        isOpen: dropdown.isOpen,
+        open: dropdown.open,
+      })
 
       const data = useData(props, context, {
         iv: value.iv,
@@ -535,6 +569,7 @@
         blur: multiselect.blur,
         focus: multiselect.focus,
         deactivate: multiselect.deactivate,
+        close: dropdown.close,
       })
 
       const scroll = useScroll(props, context, {
@@ -567,6 +602,8 @@
         forwardPointer: pointerAction.forwardPointer,
         blur: multiselect.blur,
         fo: options.fo,
+        isOpen: dropdown.isOpen,
+        open: dropdown.open,
       })
 
       const classes = useClasses(props, context, {
@@ -578,6 +615,14 @@
         isActive: multiselect.isActive,
         resolving: options.resolving,
         fo: options.fo,
+      })
+
+      const a11y = useA11y(props, context, {
+        isSelected: options.isSelected,
+        hasSelected: options.hasSelected,
+        multipleLabelText: options.multipleLabelText,
+        pointer: pointer.pointer,
+        iv: value.iv,
       })
 
       return {
@@ -592,6 +637,7 @@
         ...keyboard,
         ...classes,
         ...scroll,
+        ...a11y,
       }
     }
   }
