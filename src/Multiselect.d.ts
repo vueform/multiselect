@@ -44,17 +44,18 @@ declare class Multiselect extends Vue {
   strict?: boolean;
   closeOnSelect?: boolean;
   autocomplete?: string;
-  groups: boolean;
-  groupLabel: string;
-  groupOptions: string;
-  groupHideEmpty: boolean;
-  groupSelect: boolean;
-  inputType: string;
+  groups?: boolean;
+  groupLabel?: string;
+  groupOptions?: string;
+  groupHideEmpty?: boolean;
+  groupSelect?: boolean;
+  inputType?: string;
   attrs?: object;
   onCreate?: Function;
-  searchStart: boolean;
-  reverse: boolean;
-  regex: string|object;
+  searchStart?: boolean;
+  reverse?: boolean;
+  regex?: string|object;
+  rtl?: boolean;
 
   $emit(eventName: 'change', e: {originalEvent: Event, value: any}): this;
   $emit(eventName: 'select', e: {originalEvent: Event, value: any, option: any}): this;

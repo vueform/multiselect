@@ -4,6 +4,7 @@
     :tabindex="tabindex"
     :class="classList.container"
     :id="id"
+    :dir="rtl ? 'rtl' : undefined"
     @focusin="activate"
     @focusout="deactivate"
     @keydown="handleKeydown"
@@ -459,12 +460,12 @@
       },
       attrs: {
         required: false,
-        type: [Object],
+        type: Object,
         default: () => ({}),
       },
       onCreate: {
         required: false,
-        type: [Function],
+        type: Function,
       },
       disabledProp: {
         type: String,
@@ -485,6 +486,11 @@
         type: [Object, String],
         required: false,
         default: undefined,
+      },
+      rtl: {
+        type: Boolean,
+        required: false,
+        default: false,
       },
     },
     setup(props, context)

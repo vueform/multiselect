@@ -19,7 +19,7 @@
 }
 
 .multiselect-single-label {
-  @apply flex items-center h-full max-w-full absolute left-0 top-0 pointer-events-none bg-transparent leading-snug pl-3.5 pr-16 box-border;
+  @apply flex items-center h-full max-w-full absolute left-0 top-0 pointer-events-none bg-transparent leading-snug pl-3.5 pr-16 box-border rtl:left-auto rtl:right-0 rtl:pl-0 rtl:pr-3.5;
 }
 
 .multiselect-single-label-text {
@@ -27,22 +27,22 @@
 }
 
 .multiselect-multiple-label {
-  @apply flex items-center h-full absolute left-0 top-0 pointer-events-none bg-transparent leading-snug pl-3.5;
+  @apply flex items-center h-full absolute left-0 top-0 pointer-events-none bg-transparent leading-snug pl-3.5 rtl:left-auto rtl:right-0 rtl:pl-0 rtl:pr-3.5;
 }
 
 .multiselect-search {
-  @apply w-full absolute inset-0 outline-none focus:ring-0 appearance-none box-border border-0 text-base font-sans bg-white rounded pl-3.5;
+  @apply w-full absolute inset-0 outline-none focus:ring-0 appearance-none box-border border-0 text-base font-sans bg-white rounded pl-3.5 rtl:pl-0 rtl:pr-3.5;
 }
 
 .multiselect-tags {
-  @apply flex-grow flex-shrink flex flex-wrap items-center mt-1 pl-2;
+  @apply flex-grow flex-shrink flex flex-wrap items-center mt-1 pl-2 rtl:pl-0 rtl:pr-2;
 }
 
 .multiselect-tag {
-  @apply bg-green-500 text-white text-sm font-semibold py-0.5 pl-2 rounded mr-1 mb-1 flex items-center whitespace-nowrap;
+  @apply bg-green-500 text-white text-sm font-semibold py-0.5 pl-2 rounded mr-1 mb-1 flex items-center whitespace-nowrap rtl:pl-0 rtl:pr-2 rtl:mr-0 rtl:ml-1;
 
   &.is-disabled {
-    @apply pr-2 opacity-50;
+    @apply pr-2 opacity-50 rtl:pl-2;
   }
 }
 
@@ -71,11 +71,11 @@
 }
 
 .multiselect-placeholder {
-  @apply flex items-center h-full absolute left-0 top-0 pointer-events-none bg-transparent leading-snug pl-3.5 text-gray-400;
+  @apply flex items-center h-full absolute left-0 top-0 pointer-events-none bg-transparent leading-snug pl-3.5 text-gray-400 rtl:left-auto rtl:right-0 rtl:pl-0 rtl:pr-3.5;
 }
 
 .multiselect-caret {
-  @apply bg-multiselect-caret bg-center bg-no-repeat w-2.5 h-4 py-px box-content mr-3.5 relative z-10 opacity-40 flex-shrink-0 flex-grow-0 transition-transform transform pointer-events-none;
+  @apply bg-multiselect-caret bg-center bg-no-repeat w-2.5 h-4 py-px box-content mr-3.5 relative z-10 opacity-40 flex-shrink-0 flex-grow-0 transition-transform transform pointer-events-none rtl:mr-0 rtl:ml-3.5;
 
   &.is-open {
     @apply rotate-180 pointer-events-auto;
@@ -83,7 +83,7 @@
 }
 
 .multiselect-clear {
-  @apply pr-3.5 relative z-10 opacity-40 transition duration-300 flex-shrink-0 flex-grow-0 flex hover:opacity-80;
+  @apply pr-3.5 relative z-10 opacity-40 transition duration-300 flex-shrink-0 flex-grow-0 flex hover:opacity-80 rtl:pr-0 rtl:pl-3.5;
 }
 
 .multiselect-clear-icon {
@@ -91,7 +91,7 @@
 }
 
 .multiselect-spinner {
-  @apply bg-multiselect-spinner bg-center bg-no-repeat w-4 h-4 z-10 mr-3.5 animate-spin flex-shrink-0 flex-grow-0;
+  @apply bg-multiselect-spinner bg-center bg-no-repeat w-4 h-4 z-10 mr-3.5 animate-spin flex-shrink-0 flex-grow-0 rtl:mr-0 rtl:ml-3.5;
 }
 
 .multiselect-dropdown {
@@ -171,11 +171,11 @@
 }
 
 .multiselect-no-options {
-  @apply py-2 px-3 text-gray-600 bg-white text-left;
+  @apply py-2 px-3 text-gray-600 bg-white text-left rtl:text-right;
 }
 
 .multiselect-no-results {
-  @apply py-2 px-3 text-gray-600 bg-white text-left;
+  @apply py-2 px-3 text-gray-600 bg-white text-left rtl:text-right;
 }
 
 .multiselect-fake-input {
