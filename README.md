@@ -241,6 +241,7 @@ Join our [Discord channel](https://discord.gg/WhX2nG6GTQ) or [open an issue](htt
 | **groupSelect** | `boolean` | `true` | Whether groups can be selected when using `multiple` or `tags` mode. |
 | **groupHideEmpty** | `boolean` | `false` | Whether groups that have no `options` by default should be hidden. |
 | **required** | `boolean` | `false` | Whether the HTML5 required attribute should be used for multiselect (using an invisible fake input). |
+| **infinite** | `boolean` | `false` | Whether the actual option nodes should only be loaded on scroll. The `limit` option defines how many options are loaded initially and in each new batch. |
 | **searchable** | `boolean` | `false` | Whether the options should be searchable. |
 | **valueProp** | `string` | `'value'` | If you provide an array of objects as `options` this property should be used as the value of the option. |
 | **trackBy** | `string` | `undefined` | The name of the property that should be searched when `searchable` is `true` and an array of objects are provided as `options`. If left `undefined` the `label` prop will be used instead. |
@@ -373,6 +374,7 @@ The `select$` param is each event is Multiselect component's instance.
 | **caret** | | Renders a small triangle on the right side of the multiselect. |
 | **clear** | `clear` | Renders a remove icon if the multiselect has any value. The `clear` method should be used on `mousedown` event. |
 | **spinner** | | Renders a loader icon when async options are being fetched. |
+| **infinite** | | Renders a loader icon when infinite scroll is in progress. |
 
 > Note: we don't use camelCase because they are [normalized back to lowercase](https://github.com/vuejs/vue/issues/9449#issuecomment-461170017) when written in DOM.
 
@@ -574,6 +576,8 @@ Alternatively you can define class names directly by passing them to the `Multis
   clear: 'pr-3.5 relative z-10 opacity-40 transition duration-300 flex-shrink-0 flex-grow-0 flex hover:opacity-80 rtl:pr-0 rtl:pl-3.5',
   clearIcon: 'bg-multiselect-remove bg-center bg-no-repeat w-2.5 h-4 py-px box-content inline-block',
   spinner: 'bg-multiselect-spinner bg-center bg-no-repeat w-4 h-4 z-10 mr-3.5 animate-spin flex-shrink-0 flex-grow-0 rtl:mr-0 rtl:ml-3.5',
+  inifite: 'flex items-center justify-center w-full',
+  inifiteSpinner: 'bg-multiselect-spinner bg-center bg-no-repeat w-4 h-4 z-10 animate-spin flex-shrink-0 flex-grow-0 m-3.5',
   dropdown: 'max-h-60 absolute -left-px -right-px bottom-0 transform translate-y-full border border-gray-300 -mt-px overflow-y-scroll z-50 bg-white flex flex-col rounded-b',
   dropdownTop: '-translate-y-full top-px bottom-auto flex-col-reverse rounded-b-none rounded-t',
   dropdownHidden: 'hidden',

@@ -10,7 +10,7 @@ export default function useOptions (props, context, dep)
     options, mode, trackBy: trackBy_, limit, hideSelected, createTag, createOption: createOption_, label,
     appendNewTag, appendNewOption: appendNewOption_, multipleLabel, object, loading, delay, resolveOnLoad,
     minChars, filterResults, clearOnSearch, clearOnSelect, valueProp,
-    canDeselect, max, strict, closeOnSelect, groups: groupped, reverse,
+    canDeselect, max, strict, closeOnSelect, groups: groupped, reverse, infinite,
     groupOptions, groupHideEmpty, groupSelect, onCreate, disabledProp, searchStart,
   } = toRefs(props)
 
@@ -43,6 +43,8 @@ export default function useOptions (props, context, dep)
 
   // no export
   const searchWatcher = ref(null)
+
+  const offset = ref(infinite.value && limit.value === -1 ? 10 : limit.value)
 
   // ============== COMPUTED ==============
 
@@ -106,8 +108,8 @@ export default function useOptions (props, context, dep)
     }))
   })
 
-  // filteredOptions
-  const fo = computed(() => {
+  // preFilteredOptions
+  const pfo = computed(() => {
     let options = eo.value
 
     if (reverse.value) {
@@ -118,10 +120,15 @@ export default function useOptions (props, context, dep)
       options = createdOption.value.concat(options)
     }
 
-    options = filterOptions(options)
+    return filterOptions(options)
+  })
 
-    if (limit.value > 0) {
-      options = options.slice(0, limit.value)
+  // filteredOptions
+  const fo = computed(() => {
+    let options = pfo.value
+
+    if (offset.value > 0) {
+      options = options.slice(0, offset.value)
     }
 
     return options
@@ -717,6 +724,7 @@ export default function useOptions (props, context, dep)
   watch(label, refreshLabels)
 
   return {
+    pfo,
     fo,
     filteredOptions: fo,
     hasSelected,
@@ -729,6 +737,7 @@ export default function useOptions (props, context, dep)
     noResults,
     resolving,
     busy,
+    offset,
     select,
     deselect,
     remove,

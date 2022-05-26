@@ -40,6 +40,8 @@ export default function useClasses (props, context, dependencies)
     clear: 'multiselect-clear',
     clearIcon: 'multiselect-clear-icon',
     spinner: 'multiselect-spinner',
+    inifinite: 'multiselect-inifite',
+    inifiniteSpinner: 'multiselect-inifite-spinner',
     dropdown: 'multiselect-dropdown',
     dropdownTop: 'is-top',
     dropdownHidden: 'is-hidden',
@@ -101,6 +103,8 @@ export default function useClasses (props, context, dependencies)
       clear: c.clear,
       clearIcon: c.clearIcon,
       spinner: c.spinner,
+      inifinite: c.inifinite,
+      inifiniteSpinner: c.inifiniteSpinner,
       dropdown: [c.dropdown]
         .concat(openDirection.value === 'top' ? c.dropdownTop : [])
         .concat(!isOpen.value || !showOptions.value || !showDropdown.value ? c.dropdownHidden : []),

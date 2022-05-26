@@ -56,6 +56,7 @@ declare class Multiselect extends Vue {
   reverse?: boolean;
   regex?: string|object;
   rtl?: boolean;
+  infinite?: boolean;
 
   $emit(eventName: 'change', e: {originalEvent: Event, value: any}): this;
   $emit(eventName: 'select', e: {originalEvent: Event, value: any, option: any}): this;
@@ -81,6 +82,7 @@ declare class Multiselect extends Vue {
     option: VNode[];
     groupLabel: VNode[];
     tag: VNode[];
+    infinite: VNode[];
   };
 }
 

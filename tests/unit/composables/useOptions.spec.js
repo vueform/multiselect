@@ -8,6 +8,27 @@ expect.extend({toBeVisible})
 jest.useFakeTimers()
 
 describe('useOptions', () => {
+  describe('offset', () => {
+    it('should be 10 if infinite=true & limit=udnefined', () => {
+      let select = createSelect({
+        value: null,
+        options: [1,2,3],
+        infinite: true,
+      })
+
+      expect(select.vm.offset).toStrictEqual(10)
+    })
+    it('should be limit if infinite=true & limit=20', () => {
+      let select = createSelect({
+        value: null,
+        options: [1,2,3],
+        infinite: true,
+        limit: 20,
+      })
+
+      expect(select.vm.offset).toStrictEqual(20)
+    })
+  })
   describe('fo', () => {
     it('should be an empty array of options not defined', () => {
       let select = createSelect()

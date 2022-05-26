@@ -180,6 +180,12 @@
         <div :class="classList.noResults" v-html="noResultsText"></div>
       </slot>
 
+      <div v-if="infinite && hasMore" :class="classList.inifinite" ref="infiniteLoader">
+        <slot name="infinite">
+          <span :class="classList.inifiniteSpinner"></span>
+        </slot>
+      </div>
+
       <slot name="afterlist" :options="fo"></slot>
     </div>
 
@@ -211,6 +217,7 @@
   import useMultiselect from './composables/useMultiselect'
   import useKeyboard from './composables/useKeyboard' 
   import useClasses from './composables/useClasses' 
+  import useScroll from './composables/useScroll' 
 
   export default {
     name: 'Multiselect',
@@ -492,6 +499,11 @@
         required: false,
         default: false,
       },
+      infinite: {
+        type: Boolean,
+        required: false,
+        default: false,
+      },
     },
     setup(props, context)
     { 
@@ -523,6 +535,13 @@
         blur: multiselect.blur,
         focus: multiselect.focus,
         deactivate: multiselect.deactivate,
+      })
+
+      const scroll = useScroll(props, context, {
+        pfo: options.pfo,
+        offset: options.offset,
+        isOpen: dropdown.isOpen,
+        search: search.search,
       })
 
       const pointerAction = usePointerAction(props, context, {
@@ -572,6 +591,7 @@
         ...pointerAction,
         ...keyboard,
         ...classes,
+        ...scroll,
       }
     }
   }
