@@ -54,6 +54,8 @@ export default function useScroll (props, context, dep)
     }
   }
 
+  // ============== WATCHERS ==============
+
   watch(isOpen, () => {
     if (!infinite.value) {
       return
@@ -71,6 +73,8 @@ export default function useScroll (props, context, dep)
 
     observe()
   }, { flush: 'post' })
+
+  // ================ HOOKS ===============
 
   onMounted(() => {
     /* istanbul ignore else */
