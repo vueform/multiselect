@@ -524,7 +524,7 @@
         default: false,
       },
       regex: {
-        type: [Object, String],
+        type: [Object, String, RegExp],
         required: false,
         default: undefined,
       },
