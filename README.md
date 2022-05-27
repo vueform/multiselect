@@ -80,10 +80,12 @@ Learn more: [https://vueform.com](https://vueform.com)
 * 100% coverage
 * TypeScript support
 * ESM support
+* Accessibility
 * Single select options
 * Multiple select options
 * Tags
 * Option groups
+* Infinite scroll
 * Async options
 * Search & filtering
 * Custom slots
@@ -529,7 +531,7 @@ module.exports = {
 }
 ```
 
-Then you need to import `themes/tailwind.scss` to you main component:
+Then you need to import `themes/tailwind.css` to you main component:
 
 ``` vue
 <template>
@@ -542,14 +544,14 @@ Then you need to import `themes/tailwind.scss` to you main component:
   // ...
 </script>
 
-<style lang="scss">
-  @import 'path/to/node_modules/@vueform/multiselect/themes/tailwind.scss'
+<style>
+  @import 'path/to/node_modules/@vueform/multiselect/themes/tailwind.css'
 </style>
 ```
 
 #### Using `:classes` prop
 
-Alternatively you can define class names directly by passing them to the `Multiselect` component via `classes` property. When using this approach you don't need to import `tailwind.scss`. Here's a default styling for Tailwind CSS (the same included in `tailwind.scss`):
+Alternatively you can define class names directly by passing them to the `Multiselect` component via `classes` property. When using this approach you don't need to import `tailwind.css`. Here's a default styling for Tailwind CSS (the same included in `tailwind.css`):
 
 ``` vue
 <Multiselect ... :classes="{
