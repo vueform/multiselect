@@ -251,6 +251,8 @@
   import useScroll from './composables/useScroll' 
   import useA11y from './composables/useA11y' 
 
+  import resolveDeps from './utils/resolveDeps'
+
   export default {
     name: 'Multiselect',
     emits: [
@@ -539,108 +541,20 @@
     },
     setup(props, context)
     { 
-      const value = useValue(props, context)
-      const pointer = usePointer(props, context)
-      const dropdown = useDropdown(props, context)
-
-      const search = useSearch(props, context, {
-        isOpen: dropdown.isOpen,
-        open: dropdown.open,
-      })
-
-      const data = useData(props, context, {
-        iv: value.iv,
-      })
-
-      const multiselect = useMultiselect(props, context, {
-        input: search.input,
-        open: dropdown.open,
-        close: dropdown.close,
-        clearSearch: search.clearSearch,
-        isOpen: dropdown.isOpen,
-      })
-
-      const options = useOptions(props, context, {
-        ev: value.ev,
-        iv: value.iv,
-        search: search.search,
-        clearSearch: search.clearSearch,
-        update: data.update,
-        pointer: pointer.pointer,
-        clearPointer: pointer.clearPointer,
-        blur: multiselect.blur,
-        focus: multiselect.focus,
-        deactivate: multiselect.deactivate,
-        close: dropdown.close,
-      })
-
-      const scroll = useScroll(props, context, {
-        pfo: options.pfo,
-        offset: options.offset,
-        isOpen: dropdown.isOpen,
-        search: search.search,
-      })
-
-      const pointerAction = usePointerAction(props, context, {
-        fo: options.fo,
-        fg: options.fg,
-        handleOptionClick: options.handleOptionClick,
-        handleGroupClick: options.handleGroupClick,
-        search: search.search,
-        pointer: pointer.pointer,
-        setPointer: pointer.setPointer,
-        clearPointer: pointer.clearPointer,
-        multiselect: multiselect.multiselect,
-        isOpen: dropdown.isOpen,
-      })
-
-      const keyboard = useKeyboard(props, context, {
-        iv: value.iv,
-        update: data.update,
-        search: search.search,
-        setPointer: pointer.setPointer,
-        selectPointer: pointerAction.selectPointer,
-        backwardPointer: pointerAction.backwardPointer,
-        forwardPointer: pointerAction.forwardPointer,
-        blur: multiselect.blur,
-        fo: options.fo,
-        isOpen: dropdown.isOpen,
-        open: dropdown.open,
-      })
-
-      const classes = useClasses(props, context, {
-        isOpen: dropdown.isOpen,
-        isPointed: pointerAction.isPointed,
-        canPointGroups: pointerAction.canPointGroups,
-        isSelected: options.isSelected,
-        isDisabled: options.isDisabled,
-        isActive: multiselect.isActive,
-        resolving: options.resolving,
-        fo: options.fo,
-      })
-
-      const a11y = useA11y(props, context, {
-        isSelected: options.isSelected,
-        hasSelected: options.hasSelected,
-        multipleLabelText: options.multipleLabelText,
-        pointer: pointer.pointer,
-        iv: value.iv,
-      })
-
-      return {
-        ...value,
-        ...dropdown,
-        ...multiselect,
-        ...pointer,
-        ...data,
-        ...search,
-        ...options,
-        ...pointerAction,
-        ...keyboard,
-        ...classes,
-        ...scroll,
-        ...a11y,
-      }
+      return resolveDeps(props, context, [
+        useValue,
+        usePointer,
+        useDropdown,
+        useSearch,
+        useData,
+        useMultiselect,
+        useOptions,
+        useScroll,
+        usePointerAction,
+        useKeyboard,
+        useClasses,
+        useA11y,
+      ])
     }
   }
 </script>
