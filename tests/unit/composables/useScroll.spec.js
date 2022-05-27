@@ -1,6 +1,5 @@
 import { nextTick } from 'vue'
-import { createSelect } from 'unit-test-helpers'
-import flushPromises from 'flush-promises'
+import { createSelect, setProp } from 'unit-test-helpers'
 
 jest.useFakeTimers()
 
@@ -88,6 +87,28 @@ describe('useScroll', () => {
 
       select.vm.search = '1'
       await nextTick()
+
+      expect(observe).toHaveBeenCalledTimes(2)
+    })
+
+    it('should observe if has infinite, eo changes && options is longer then limit', async () => {
+      let select = createSelect({
+        value: null,
+        options: [1,11,111],
+        infinite: true,
+        limit: 1,
+        searchable: true,
+      })
+
+      select.vm.open()
+      await nextTick()
+
+
+      expect(observe).toHaveBeenCalledTimes(1)
+
+      select.vm.$parent.props.options = [1,11,111,1111]
+      await nextTick()
+      await nextTick() // bc: { flush: 'post' }
 
       expect(observe).toHaveBeenCalledTimes(2)
     })
