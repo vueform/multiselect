@@ -12,6 +12,7 @@ export default function useScroll (props, context, dep)
   const offset = dep.offset
   const search = dep.search
   const pfo = dep.pfo
+  const eo = dep.eo
 
   // ================ DATA ================
 
@@ -30,7 +31,7 @@ export default function useScroll (props, context, dep)
 
   // no export
   /* istanbul ignore next */
-  const handleIntersectionObserver = async (entries) => {
+  const handleIntersectionObserver = (entries) => {
     const { isIntersecting, target } = entries[0]
 
     if (isIntersecting) {
@@ -39,9 +40,9 @@ export default function useScroll (props, context, dep)
 
       offset.value += limit.value == -1 ? 10 : limit.value
 
-      await nextTick()
-
-      parent.scrollTop = scrollTop
+      nextTick(() => {
+        parent.scrollTop = scrollTop
+      })
     }
   }
 
@@ -73,6 +74,14 @@ export default function useScroll (props, context, dep)
 
     observe()
   }, { flush: 'post' })
+
+  watch(eo, () => {
+    if (!infinite.value) {
+      return
+    }
+
+    observe()
+  }, { immediate: false, flush: 'post' })
 
   // ================ HOOKS ===============
 

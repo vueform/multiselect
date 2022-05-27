@@ -226,7 +226,7 @@ export default function usePointer (props, context, dep)
     }
   })
 
-  watch(isOpen, async (val) => {
+  watch(isOpen, (val) => {
     if (val) {
       let firstSelected = multiselect.value.querySelectorAll(`[data-selected]`)[0]
 
@@ -235,14 +235,15 @@ export default function usePointer (props, context, dep)
       }
 
       let wrapper = firstSelected.parentElement.parentElement
-      await nextTick()
+      
+      nextTick(() => {
+        /* istanbul ignore next */
+        if (wrapper.scrollTop > 0) {
+          return
+        }
 
-      /* istanbul ignore next */
-      if (wrapper.scrollTop > 0) {
-        return
-      }
-
-      wrapper.scrollTop = firstSelected.offsetTop
+        wrapper.scrollTop = firstSelected.offsetTop
+      })
     }
   })
 
