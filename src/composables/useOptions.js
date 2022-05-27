@@ -297,14 +297,29 @@ export default function useOptions (props, context, dep)
     if (onCreate && onCreate.value && !isSelected(option) && option.__CREATE__) {
       option = { ...option }
       delete option.__CREATE__
+
       option = onCreate.value(option, $this)
+      
+      if (option instanceof Promise) {
+        resolving.value = true
+        option.then((result) => {
+          resolving.value = false
+          handleOptionSelect(result)
+        })
+
+        return
+      } 
     }
-    
+
+    handleOptionSelect(option)
+  }
+
+  const handleOptionSelect = (option) => {
     if (option.__CREATE__) {
       option = { ...option }
       delete option.__CREATE__
     }
-
+    
     switch (mode.value) {
       case 'single':
         if (option && isSelected(option)) {

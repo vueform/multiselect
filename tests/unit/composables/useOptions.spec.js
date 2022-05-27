@@ -1716,6 +1716,47 @@ describe('useOptions', () => {
       select.vm.search = 'value'
       select.vm.handleOptionClick({ value: 'value', label: 'value', __CREATE__: true })
 
+      await flushPromises()
+      await nextTick()
+
+      select.vm.search = null
+
+      expect(select.vm.ev).toStrictEqual({ value: 'value', label: 'value', created_at: 'now' })
+      expect(select.vm.fo[3]).toStrictEqual({ value: 'value', label: 'value', created_at: 'now' })
+
+      destroy(select)
+    })
+
+    it('should resolve modified option with async onCreate', async () => {
+      let select = createSelect({
+        value: 0,
+        options: [
+          { value: 0, label: 0 },
+          { value: 1, label: 1 },
+          { value: 2, label: 2 },
+        ],
+        object: true,
+        createOption: true,
+        onCreate: (option) => {
+          return new Promise((resolve, reject) => {
+            setTimeout(() => {
+              resolve({
+                ...option,
+                created_at: 'now'
+              })
+            }, 1)
+          })
+        }
+      }, {
+        attach: true,
+      })
+
+      select.vm.search = 'value'
+      select.vm.handleOptionClick({ value: 'value', label: 'value', __CREATE__: true })
+
+      await flushPromises()
+      jest.advanceTimersByTime(1)
+      await flushPromises()
       await nextTick()
 
       select.vm.search = null
