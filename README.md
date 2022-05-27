@@ -129,11 +129,15 @@ Learn more: [https://vueform.com](https://vueform.com)
   - [Select with custom options slot](#select-with-custom-options-slot)
   - [Multiselect with custom label slot](#multiselect-with-custom-label-slot)
   - [Tags with custom tags slot](#tags-with-custom-tags-slot)
+  - [Async options with default values](#async-options-with-default-values)
+  - [Default values that are not among the options](#default-values-that-are-not-among-the-options)
+  - [Manage created tag asynchronously](#manage-created-tag-asynchronously)
+  - [Load async options from API on open with infinite scroll](#load-async-options-from-api-on-open-with-infinite-scroll)
 - [License](#license)
 
 ## Demo
 
-Check out our <a href="https://jsfiddle.net/xf0jzoct/" target="_blank">demo</a>.
+Check out our <a href="https://jsfiddle.net/Lhv9d5nj/" target="_blank">demo</a>.
 
 ## Installation
 
@@ -292,7 +296,7 @@ Join our [Discord channel](https://discord.gg/WhX2nG6GTQ) or [open an issue](htt
 | **appendNewOption** | `boolean` | `true` | Whether it should append new option automatically to option list when `searchable` and `createTag` are enabled. If set to `false` you need to take care of appending a new option to the provided `:options` list upon `@option` event. |
 | **createOption** | `boolean` | `false` | Whether it should allow creating new options based on search query when `searchable` is enabled. |
 | **addOptionOn** | `array` | `['enter']` | The list of keys that creates a new option while typing in the search field when having `createOption` enabled. Possible values: `'enter'\|'space'\|'tab'\|';'\|','`. |
-| **onCreate** | `function` | | Transforms the created tag before being added when `createOption` is enabled. It receives the original option as first param, which is the object that would be added to the option list (`{value: 'Value', label: 'Label'}`) and the Multiselect component as the second. It should return an object that contains at least the keys defined by `valueProp`, `label` & `trackBy` options. If defined and returns `false` the option will not be added (the add can be handled manually by updating `options` & `v-model`). |
+| **onCreate** | `function` | | Transforms the created tag before being added when `createOption` is enabled. It receives the original `option` as first param, which is the object that would be added to the option list (`{value: 'Value', label: 'Label'}`) and the Multiselect `component` as the second. It should return an object that contains at least the keys defined by `valueProp`, `label` & `trackBy` options. If defined and returns `false` the option will not be added (the add can be handled manually by updating `options` & `v-model`). |
 | **hideSelected** | `boolean` | `true` | Whether selected options should be excluded from the option list when using `multiple` or `tags` mode. |
 | **showOptions** | `boolean` | `true` | Whether option list should be displayed. Can be used to create free-typed tags. |
 | **object** | `boolean` | `false` | Whether the value should be stored as an object.<br>If **false**:<br>`value: ['js','jsx','ts']`<br>If **true**:<br> `value: [`<br>&nbsp;&nbsp;`{value:'js',label:'Javascript'},`<br>&nbsp;&nbsp;`{value:'jsx',label:'JSX'},`<br>&nbsp;&nbsp;`{value:'ts',label:'Typescript'}`<br>`]` |
@@ -648,6 +652,10 @@ In case you need to override the same type of utility you might use [@neojp/tail
   - [Select with custom options slot](#select-with-custom-options-slot)
   - [Multiselect with custom label slot](#multiselect-with-custom-label-slot)
   - [Tags with custom tags slot](#tags-with-custom-tags-slot)
+  - [Async options with default values](#async-options-with-default-values)
+  - [Default values that are not among the options](#default-values-that-are-not-among-the-options)
+  - [Manage created tag asynchronously](#manage-created-tag-asynchronously)
+  - [Load async options from API on open with infinite scroll](#load-async-options-from-api-on-open-with-infinite-scroll)
 - [License](#license)
 
 ### Single select
@@ -659,7 +667,7 @@ In case you need to override the same type of utility you might use [@neojp/tail
 />
 ```
 
-<a href="https://jsfiddle.net/xf0jzoct/" target="_blank">JSFiddle - Example #1</a>
+<a href="https://jsfiddle.net/Lhv9d5nj/" target="_blank">JSFiddle - Example #1</a>
 
 ### Multiselect with object options
 
@@ -676,7 +684,7 @@ In case you need to override the same type of utility you might use [@neojp/tail
 />
 ```
 
-<a href="https://jsfiddle.net/xf0jzoct/" target="_blank">JSFiddle - Example #2</a>
+<a href="https://jsfiddle.net/Lhv9d5nj/" target="_blank">JSFiddle - Example #2</a>
 
 ### Multiselect with disabled options
 
@@ -693,7 +701,7 @@ In case you need to override the same type of utility you might use [@neojp/tail
 />
 ```
 
-<a href="https://jsfiddle.net/xf0jzoct/" target="_blank">JSFiddle - Example #3</a>
+<a href="https://jsfiddle.net/Lhv9d5nj/" target="_blank">JSFiddle - Example #3</a>
 
 ### Multiselect with groups
 
@@ -716,7 +724,7 @@ In case you need to override the same type of utility you might use [@neojp/tail
 />
 ```
 
-<a href="https://jsfiddle.net/xf0jzoct/" target="_blank">JSFiddle - Example #4</a>
+<a href="https://jsfiddle.net/Lhv9d5nj/" target="_blank">JSFiddle - Example #4</a>
 
 ### Tags with search, create and array of objects options
 
@@ -735,7 +743,7 @@ In case you need to override the same type of utility you might use [@neojp/tail
 />
 ```
 
-<a href="https://jsfiddle.net/xf0jzoct/" target="_blank">JSFiddle - Example #5</a>
+<a href="https://jsfiddle.net/Lhv9d5nj/" target="_blank">JSFiddle - Example #5</a>
 
 ### Autocomplete with async options
 
@@ -754,7 +762,7 @@ In case you need to override the same type of utility you might use [@neojp/tail
 />
 ```
 
-<a href="https://jsfiddle.net/xf0jzoct/" target="_blank">JSFiddle - Example #6</a>
+<a href="https://jsfiddle.net/Lhv9d5nj/" target="_blank">JSFiddle - Example #6</a>
 
 ### Tags with async options
 
@@ -775,7 +783,7 @@ In case you need to override the same type of utility you might use [@neojp/tail
 />
 ```
 
-<a href="https://jsfiddle.net/xf0jzoct/" target="_blank">JSFiddle - Example #7</a>
+<a href="https://jsfiddle.net/Lhv9d5nj/" target="_blank">JSFiddle - Example #7</a>
 
 ### Select with custom options slot
 
@@ -803,7 +811,7 @@ In case you need to override the same type of utility you might use [@neojp/tail
 
 ```
 
-<a href="https://jsfiddle.net/xf0jzoct/" target="_blank">JSFiddle - Example #8</a>
+<a href="https://jsfiddle.net/Lhv9d5nj/" target="_blank">JSFiddle - Example #8</a>
 
 ### Multiselect with custom label slot
 
@@ -828,7 +836,7 @@ In case you need to override the same type of utility you might use [@neojp/tail
 
 ```
 
-<a href="https://jsfiddle.net/xf0jzoct/" target="_blank">JSFiddle - Example #9</a>
+<a href="https://jsfiddle.net/Lhv9d5nj/" target="_blank">JSFiddle - Example #9</a>
 
 ### Tags with custom tags slot
 
@@ -899,7 +907,160 @@ In case you need to override the same type of utility you might use [@neojp/tail
 </style>
 ```
 
-<a href="https://jsfiddle.net/xf0jzoct/" target="_blank">JSFiddle - Example #10</a>
+<a href="https://jsfiddle.net/Lhv9d5nj/" target="_blank">JSFiddle - Example #10</a>
+
+
+### Async options with default values
+
+When using `resolveOnLoad: false` we can add default values with `object: true` and providing options as objects, containing both `label` and `value` props. This is because option list is not resolved when the component is mounted so Multiselect has no idea of what option labels should be if only plain values were provided.
+
+``` vue
+<template>
+  <Multiselect
+    mode="tags"
+    v-model="value"
+    placeholder="Select options"
+    :close-on-select="false"
+    :searchable="true"
+    :object="true"
+    :resolve-on-load="false"
+    :delay="0"
+    :min-chars="1"
+    :options="async (query) => {
+      return await fetchLanguages(query)
+    }"
+  />
+</template>
+<script>
+export default {
+  data: () => ({
+    value: [
+      { value: 'Java', label: 'Java' },
+      { value: 'JavaScript', label: 'JavaScript' },
+    ]
+  })
+}
+</script>
+```
+
+<a href="https://jsfiddle.net/Lhv9d5nj/" target="_blank">JSFiddle - Example #11</a>
+
+
+### Default values that are not among the options
+
+If we want to add default values without having to add them to options list we can use `object: true` and provide them as objects, containing both `label` and `value` props. This is because if a plain value is not among Multiselect options it has no idea of what option label should be.
+
+``` vue
+<template>
+  <Multiselect
+    mode="tags"
+    v-model="value"
+    placeholder="Select options"
+    :close-on-select="false"
+    :searchable="true"
+    :object="true"
+    :resolve-on-load="false"
+    :delay="0"
+    :min-chars="1"
+    :options="async (query) => {
+      return await fetchLanguages(query)
+    }"
+  />
+</template>
+<script>
+export default {
+  data: () => ({
+    value: [
+      { value: 'Java', label: 'Java' },
+      { value: 'JavaScript', label: 'JavaScript' },
+    ]
+  })
+}
+</script>
+```
+
+<a href="https://jsfiddle.net/Lhv9d5nj/" target="_blank">JSFiddle - Example #12</a>
+
+
+### Manage created tag asynchronously
+
+Search is restricted by `regex` and tag creation is controlled by `onCreate(option, select$)`.
+
+``` vue
+<template>
+  <Multiselect
+    mode="tags"
+    v-model="value"
+    placeholder="Accepts numbers <= 67 (delay: 1000ms)"
+    :options="[]"
+    :create-option="true"
+    :searchable="true"
+    :regex="/\d/"
+    :on-create="handleTagCreate"
+  />
+</template>
+<script>
+export default {
+  methods: {
+    handleTagCreate: async (option, select$) => {
+      // Do not allow create tags above 67
+      if (parseInt(option.value) > 67) {
+        alert(`${option.value} is not allowed. Option must by <= 67.`)
+
+        // If returns `false` the tag will not be added
+        return false
+      }
+
+      // Async request (eg. for validating)
+      await new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve()
+        }, 1000)
+      })
+
+      // Modifying option label
+      option.label = option.label + ' - confirmed'
+
+      return option
+    }
+  }
+}
+</script>
+```
+
+<a href="https://jsfiddle.net/Lhv9d5nj/" target="_blank">JSFiddle - Example #13</a>
+
+
+### Load async options from API on open with infinite scroll
+
+Options are not loaded initially, only when the users clicks the dropdown the first time. It also virtualizes the option list with `infinite: true` even large list of options can be loaded.
+
+``` vue
+<Multiselect
+  v-model="value"
+  mode="tags"
+  placeholder="Choose your stack"
+  :close-on-select="false"
+  :filter-results="false"
+  :min-chars="0"
+  :resolve-on-load="false"
+  :infinite="true"
+  :limit="10"
+  :clear-on-search="true"
+  :delay="0"
+  :searchable="true"
+  :options="async (query) => {
+    return await fetchLanguages(query)
+  }"
+  @open="(select$) => {
+    if (select$.noOptions) {
+      select$.resolveOptions()
+    }
+  }"
+/>
+```
+
+<a href="https://jsfiddle.net/Lhv9d5nj/" target="_blank">JSFiddle - Example #14</a>
 
 ## License
 
