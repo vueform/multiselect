@@ -1,1 +1,2858 @@
-import{toRefs as e,ref as t,computed as u,watch as n,getCurrentInstance as a,nextTick as l}from"@vue/composition-api";function r(e){return-1!==[null,void 0,!1].indexOf(e)}function i(e){var t=!(arguments.length>1&&void 0!==arguments[1])||arguments[1];return t?String(e).toLowerCase().trim():String(e).normalize("NFD").replace(/(?:[\^`\xA8\xAF\xB4\xB7\xB8\u02B0-\u034E\u0350-\u0357\u035D-\u0362\u0374\u0375\u037A\u0384\u0385\u0483-\u0487\u0559\u0591-\u05A1\u05A3-\u05BD\u05BF\u05C1\u05C2\u05C4\u064B-\u0652\u0657\u0658\u06DF\u06E0\u06E5\u06E6\u06EA-\u06EC\u0730-\u074A\u07A6-\u07B0\u07EB-\u07F5\u0818\u0819\u08E3-\u08FE\u093C\u094D\u0951-\u0954\u0971\u09BC\u09CD\u0A3C\u0A4D\u0ABC\u0ACD\u0AFD-\u0AFF\u0B3C\u0B4D\u0B55\u0BCD\u0C4D\u0CBC\u0CCD\u0D3B\u0D3C\u0D4D\u0DCA\u0E47-\u0E4C\u0E4E\u0EBA\u0EC8-\u0ECC\u0F18\u0F19\u0F35\u0F37\u0F39\u0F3E\u0F3F\u0F82-\u0F84\u0F86\u0F87\u0FC6\u1037\u1039\u103A\u1063\u1064\u1069-\u106D\u1087-\u108D\u108F\u109A\u109B\u135D-\u135F\u17C9-\u17D3\u17DD\u1939-\u193B\u1A75-\u1A7C\u1A7F\u1AB0-\u1ABD\u1B34\u1B44\u1B6B-\u1B73\u1BAA\u1BAB\u1C36\u1C37\u1C78-\u1C7D\u1CD0-\u1CE8\u1CED\u1CF4\u1CF7-\u1CF9\u1D2C-\u1D6A\u1DC4-\u1DCF\u1DF5-\u1DF9\u1DFD-\u1DFF\u1FBD\u1FBF-\u1FC1\u1FCD-\u1FCF\u1FDD-\u1FDF\u1FED-\u1FEF\u1FFD\u1FFE\u2CEF-\u2CF1\u2E2F\u302A-\u302F\u3099-\u309C\u30FC\uA66F\uA67C\uA67D\uA67F\uA69C\uA69D\uA6F0\uA6F1\uA700-\uA721\uA788-\uA78A\uA7F8\uA7F9\uA8C4\uA8E0-\uA8F1\uA92B-\uA92E\uA953\uA9B3\uA9C0\uA9E5\uAA7B-\uAA7D\uAABF-\uAAC2\uAAF6\uAB5B-\uAB5F\uAB69-\uAB6B\uABEC\uABED\uFB1E\uFE20-\uFE2F\uFF3E\uFF40\uFF70\uFF9E\uFF9F\uFFE3]|\uD800\uDEE0|\uD802[\uDEE5\uDEE6]|\uD803[\uDD22-\uDD27\uDF46-\uDF50]|\uD804[\uDCB9\uDCBA\uDD33\uDD34\uDD73\uDDC0\uDDCA-\uDDCC\uDE35\uDE36\uDEE9\uDEEA\uDF3C\uDF4D\uDF66-\uDF6C\uDF70-\uDF74]|\uD805[\uDC42\uDC46\uDCC2\uDCC3\uDDBF\uDDC0\uDE3F\uDEB6\uDEB7\uDF2B]|\uD806[\uDC39\uDC3A\uDD3D\uDD3E\uDD43\uDDE0\uDE34\uDE47\uDE99]|\uD807[\uDC3F\uDD42\uDD44\uDD45\uDD97]|\uD81A[\uDEF0-\uDEF4\uDF30-\uDF36]|\uD81B[\uDF8F-\uDF9F\uDFF0\uDFF1]|\uD834[\uDD67-\uDD69\uDD6D-\uDD72\uDD7B-\uDD82\uDD85-\uDD8B\uDDAA-\uDDAD]|\uD838[\uDD30-\uDD36\uDEEC-\uDEEF]|\uD83A[\uDCD0-\uDCD6\uDD44-\uDD46\uDD48-\uDD4A])/g,"").toLowerCase().trim()}function o(e){return(o="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e})(e)}function s(e,t){var u=Object.keys(e);if(Object.getOwnPropertySymbols){var n=Object.getOwnPropertySymbols(e);t&&(n=n.filter((function(t){return Object.getOwnPropertyDescriptor(e,t).enumerable}))),u.push.apply(u,n)}return u}function c(e){for(var t=1;t<arguments.length;t++){var u=null!=arguments[t]?arguments[t]:{};t%2?s(Object(u),!0).forEach((function(t){v(e,t,u[t])})):Object.getOwnPropertyDescriptors?Object.defineProperties(e,Object.getOwnPropertyDescriptors(u)):s(Object(u)).forEach((function(t){Object.defineProperty(e,t,Object.getOwnPropertyDescriptor(u,t))}))}return e}function v(e,t,u){return t in e?Object.defineProperty(e,t,{value:u,enumerable:!0,configurable:!0,writable:!0}):e[t]=u,e}function p(l,s,p){var d=e(l),f=d.options,g=d.mode,b=d.trackBy,m=d.limit,D=d.hideSelected,h=d.createTag,y=d.createOption,O=d.label,_=d.appendNewTag,F=d.appendNewOption,A=d.multipleLabel,S=d.object,C=d.loading,E=d.delay,P=d.resolveOnLoad,B=d.minChars,L=d.filterResults,w=d.clearOnSearch,T=d.clearOnSelect,k=d.valueProp,q=d.canDeselect,x=d.max,j=d.strict,I=d.closeOnSelect,R=d.groups,V=(d.groupLabel,d.groupOptions),H=d.groupHideEmpty,N=d.groupSelect,M=a().proxy,G=p.iv,$=p.ev,U=p.search,W=p.clearSearch,K=p.update,X=p.pointer,z=p.clearPointer,J=p.blur,Q=p.focus,Y=p.deactivate,Z=t([]),ee=t([]),te=t(!1),ue=t(null),ne=u((function(){return h.value||y.value||!1})),ae=u((function(){return void 0!==_.value?_.value:void 0===F.value||F.value})),le=u((function(){if(R.value){var e=ee.value||[],t=[];return e.forEach((function(e){ke(e[V.value]).forEach((function(u){t.push(Object.assign({},u,e.disabled?{disabled:!0}:{}))}))})),t}var u=ke(ee.value||[]);return Z.value.length&&(u=u.concat(Z.value)),u})),re=u((function(){return R.value?we((ee.value||[]).map((function(e){var t,u=ke(e[V.value]);return c(c({},e),{},(v(t={group:!0},V.value,Te(u,!1).map((function(t){return Object.assign({},t,e.disabled?{disabled:!0}:{})}))),v(t,"__VISIBLE__",Te(u).map((function(t){return Object.assign({},t,e.disabled?{disabled:!0}:{})}))),t))}))):[]})),ie=u((function(){var e=le.value;return pe.value.length&&(e=pe.value.concat(e)),e=Te(e),m.value>0&&(e=e.slice(0,m.value)),e})),oe=u((function(){switch(g.value){case"single":return!r(G.value[k.value]);case"multiple":case"tags":return!r(G.value)&&G.value.length>0}})),se=u((function(){return void 0!==A&&void 0!==A.value?A.value(G.value,M):G.value&&G.value.length>1?"".concat(G.value.length," options selected"):"1 option selected"})),ce=u((function(){return!le.value.length&&!te.value&&!pe.value.length})),ve=u((function(){return le.value.length>0&&0==ie.value.length&&(U.value&&R.value||!R.value)})),pe=u((function(){var e;return!1!==ne.value&&U.value?-1!==Pe(U.value)?[]:[(e={},v(e,k.value,U.value),v(e,O.value,U.value),v(e,de.value,U.value),e)]:[]})),de=u((function(){return b.value||O.value})),fe=u((function(){switch(g.value){case"single":return null;case"multiple":case"tags":return[]}})),ge=u((function(){return C.value||te.value})),be=function(e){switch("object"!==o(e)&&(e=Ee(e)),g.value){case"single":K(e);break;case"multiple":case"tags":K(G.value.concat(e))}s.emit("select",De(e),e)},me=function(e){switch("object"!==o(e)&&(e=Ee(e)),g.value){case"single":ye();break;case"tags":case"multiple":K(Array.isArray(e)?G.value.filter((function(t){return-1===e.map((function(e){return e[k.value]})).indexOf(t[k.value])})):G.value.filter((function(t){return t[k.value]!=e[k.value]})))}s.emit("deselect",De(e),e)},De=function(e){return S.value?e:e[k.value]},he=function(e){me(e)},ye=function(){s.emit("clear"),K(fe.value)},Oe=function(e){if(void 0!==e.group)return"single"!==g.value&&(Ce(e[V.value])&&e[V.value].length);switch(g.value){case"single":return!r(G.value)&&G.value[k.value]==e[k.value];case"tags":case"multiple":return!r(G.value)&&-1!==G.value.map((function(e){return e[k.value]})).indexOf(e[k.value])}},_e=function(e){return!0===e.disabled},Fe=function(){return!(void 0===x||-1===x.value||!oe.value&&x.value>0)&&G.value.length>=x.value},Ae=function(e){void 0===Ee(e[k.value])&&ne.value&&(s.emit("tag",e[k.value]),s.emit("option",e[k.value]),ae.value&&Le(e),W())},Se=function(e){return void 0===e.find((function(e){return!Oe(e)&&!e.disabled}))},Ce=function(e){return void 0===e.find((function(e){return!Oe(e)}))},Ee=function(e){return le.value[le.value.map((function(e){return String(e[k.value])})).indexOf(String(e))]},Pe=function(e){return le.value.map((function(e){return e[de.value]})).indexOf(e)},Be=function(e){return-1!==["tags","multiple"].indexOf(g.value)&&D.value&&Oe(e)},Le=function(e){Z.value.push(e)},we=function(e){return H.value?e.filter((function(e){return U.value?e.__VISIBLE__.length:e[V.value].length})):e.filter((function(e){return!U.value||e.__VISIBLE__.length}))},Te=function(e){var t=!(arguments.length>1&&void 0!==arguments[1])||arguments[1],u=e;return U.value&&L.value&&(u=u.filter((function(e){return-1!==i(e[de.value],j.value).indexOf(i(U.value,j.value))}))),D.value&&t&&(u=u.filter((function(e){return!Be(e)}))),u},ke=function(e){var t,u=e;return t=u,"[object Object]"===Object.prototype.toString.call(t)&&(u=Object.keys(u).map((function(e){var t,n=u[e];return v(t={},k.value,e),v(t,de.value,n),v(t,O.value,n),t}))),u=u.map((function(e){var t;return"object"===o(e)?e:(v(t={},k.value,e),v(t,de.value,e),v(t,O.value,e),t)}))},qe=function(){r($.value)||(G.value=Ie($.value))},xe=function(e){return te.value=!0,new Promise((function(t,u){f.value(U.value,M).then((function(t){ee.value=t||[],"function"==typeof e&&e(t),te.value=!1})).catch((function(e){console.error(e),ee.value=[],te.value=!1})).finally((function(){t()}))}))},je=function(){if(oe.value)if("single"===g.value){var e=Ee(G.value[k.value]);if(void 0!==e){var t=e[O.value];G.value[O.value]=t,S.value&&($.value[O.value]=t)}}else G.value.forEach((function(e,t){var u=Ee(G.value[t][k.value]);if(void 0!==u){var n=u[O.value];G.value[t][O.value]=n,S.value&&($.value[t][O.value]=n)}}))},Ie=function(e){return r(e)?"single"===g.value?{}:[]:S.value?e:"single"===g.value?Ee(e)||{}:e.filter((function(e){return!!Ee(e)})).map((function(e){return Ee(e)}))},Re=function(){ue.value=n(U,(function(e){e.length<B.value||!e||(te.value=!0,w.value&&(ee.value=[]),setTimeout((function(){e==U.value&&f.value(U.value,M).then((function(t){e!=U.value&&U.value||(ee.value=t,X.value=ie.value.filter((function(e){return!0!==e.disabled}))[0]||null,te.value=!1)})).catch((function(e){console.error(e)}))}),E.value))}),{flush:"sync"})};if("single"!==g.value&&!r($.value)&&!Array.isArray($.value))throw new Error('v-model must be an array when using "'.concat(g.value,'" mode'));return f&&"function"==typeof f.value?P.value?xe(qe):1==S.value&&qe():(ee.value=f.value,qe()),E.value>-1&&Re(),n(E,(function(e,t){ue.value&&ue.value(),e>=0&&Re()})),n($,(function(e){var t,u,n;if(r(e))G.value=Ie(e);else switch(g.value){case"single":(S.value?e[k.value]!=G.value[k.value]:e!=G.value[k.value])&&(G.value=Ie(e));break;case"multiple":case"tags":t=S.value?e.map((function(e){return e[k.value]})):e,u=G.value.map((function(e){return e[k.value]})),n=u.slice().sort(),t.length===u.length&&t.slice().sort().every((function(e,t){return e===n[t]}))||(G.value=Ie(e))}}),{deep:!0}),n(f,(function(e,t){"function"==typeof l.options?P.value&&xe((function(){Object.keys(G.value).length&&qe()})):(ee.value=l.options,Object.keys(G.value).length||qe(),je())})),n(O,je),{fo:ie,filteredOptions:ie,hasSelected:oe,multipleLabelText:se,eo:le,extendedOptions:le,fg:re,filteredGroups:re,noOptions:ce,noResults:ve,resolving:te,busy:ge,select:be,deselect:me,remove:he,selectAll:function(){"single"!==g.value&&be(ie.value)},clear:ye,isSelected:Oe,isDisabled:_e,isMax:Fe,getOption:Ee,handleOptionClick:function(e){if(!_e(e)){switch(g.value){case"single":if(Oe(e))return void(q.value&&me(e));Ae(e),J(),be(e);break;case"multiple":if(Oe(e))return void me(e);if(Fe())return;Ae(e),be(e),T.value&&W(),D.value&&z(),I.value&&J();break;case"tags":if(Oe(e))return void me(e);if(Fe())return;Ae(e),T.value&&W(),be(e),D.value&&z(),I.value&&J()}I.value?Y():Q()}},handleGroupClick:function(e){if(!_e(e)&&"single"!==g.value&&N.value){switch(g.value){case"multiple":case"tags":Se(e[V.value])?me(e[V.value]):be(e[V.value].filter((function(e){return-1===G.value.map((function(e){return e[k.value]})).indexOf(e[k.value])})).filter((function(e){return!e.disabled})).filter((function(e,t){return G.value.length+1+t<=x.value||-1===x.value})))}I.value&&Y()}},handleTagRemove:function(e,t){0===t.button?he(e):t.preventDefault()},refreshOptions:function(e){xe(e)},resolveOptions:xe,refreshLabels:je}}function d(e){return function(e){if(Array.isArray(e))return f(e)}(e)||function(e){if("undefined"!=typeof Symbol&&Symbol.iterator in Object(e))return Array.from(e)}(e)||function(e,t){if(!e)return;if("string"==typeof e)return f(e,t);var u=Object.prototype.toString.call(e).slice(8,-1);"Object"===u&&e.constructor&&(u=e.constructor.name);if("Map"===u||"Set"===u)return Array.from(e);if("Arguments"===u||/^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(u))return f(e,t)}(e)||function(){throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.")}()}function f(e,t){(null==t||t>e.length)&&(t=e.length);for(var u=0,n=new Array(t);u<t;u++)n[u]=e[u];return n}function g(e){return function(e){if(Array.isArray(e))return b(e)}(e)||function(e){if("undefined"!=typeof Symbol&&Symbol.iterator in Object(e))return Array.from(e)}(e)||function(e,t){if(!e)return;if("string"==typeof e)return b(e,t);var u=Object.prototype.toString.call(e).slice(8,-1);"Object"===u&&e.constructor&&(u=e.constructor.name);if("Map"===u||"Set"===u)return Array.from(e);if("Arguments"===u||/^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(u))return b(e,t)}(e)||function(){throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.")}()}function b(e,t){(null==t||t>e.length)&&(t=e.length);for(var u=0,n=new Array(t);u<t;u++)n[u]=e[u];return n}function m(e,t){var u=Object.keys(e);if(Object.getOwnPropertySymbols){var n=Object.getOwnPropertySymbols(e);t&&(n=n.filter((function(t){return Object.getOwnPropertyDescriptor(e,t).enumerable}))),u.push.apply(u,n)}return u}function D(e,t,u){return t in e?Object.defineProperty(e,t,{value:u,enumerable:!0,configurable:!0,writable:!0}):e[t]=u,e}function h(t,n,a){var l=e(t),r=l.classes,i=l.disabled,o=l.openDirection,s=l.showOptions,c=a.isOpen,v=a.isPointed,p=a.isSelected,d=a.isDisabled,f=a.isActive,g=a.canPointGroups,b=a.resolving,h=a.fo,y=u((function(){return function(e){for(var t=1;t<arguments.length;t++){var u=null!=arguments[t]?arguments[t]:{};t%2?m(Object(u),!0).forEach((function(t){D(e,t,u[t])})):Object.getOwnPropertyDescriptors?Object.defineProperties(e,Object.getOwnPropertyDescriptors(u)):m(Object(u)).forEach((function(t){Object.defineProperty(e,t,Object.getOwnPropertyDescriptor(u,t))}))}return e}({container:"multiselect",containerDisabled:"is-disabled",containerOpen:"is-open",containerOpenTop:"is-open-top",containerActive:"is-active",singleLabel:"multiselect-single-label",singleLabelText:"multiselect-single-label-text",multipleLabel:"multiselect-multiple-label",search:"multiselect-search",tags:"multiselect-tags",tag:"multiselect-tag",tagDisabled:"is-disabled",tagRemove:"multiselect-tag-remove",tagRemoveIcon:"multiselect-tag-remove-icon",tagsSearchWrapper:"multiselect-tags-search-wrapper",tagsSearch:"multiselect-tags-search",tagsSearchCopy:"multiselect-tags-search-copy",placeholder:"multiselect-placeholder",caret:"multiselect-caret",caretOpen:"is-open",clear:"multiselect-clear",clearIcon:"multiselect-clear-icon",spinner:"multiselect-spinner",dropdown:"multiselect-dropdown",dropdownTop:"is-top",dropdownHidden:"is-hidden",options:"multiselect-options",optionsTop:"is-top",group:"multiselect-group",groupLabel:"multiselect-group-label",groupLabelPointable:"is-pointable",groupLabelPointed:"is-pointed",groupLabelSelected:"is-selected",groupLabelDisabled:"is-disabled",groupLabelSelectedPointed:"is-selected is-pointed",groupLabelSelectedDisabled:"is-selected is-disabled",groupOptions:"multiselect-group-options",option:"multiselect-option",optionPointed:"is-pointed",optionSelected:"is-selected",optionDisabled:"is-disabled",optionSelectedPointed:"is-selected is-pointed",optionSelectedDisabled:"is-selected is-disabled",noOptions:"multiselect-no-options",noResults:"multiselect-no-results",fakeInput:"multiselect-fake-input",spacer:"multiselect-spacer"},r.value)})),O=u((function(){return!!(c.value&&s.value&&(!b.value||b.value&&h.value.length))}));return{classList:u((function(){var e=y.value;return{container:[e.container].concat(i.value?e.containerDisabled:[]).concat(O.value&&"top"===o.value?e.containerOpenTop:[]).concat(O.value&&"top"!==o.value?e.containerOpen:[]).concat(f.value?e.containerActive:[]),spacer:e.spacer,singleLabel:e.singleLabel,singleLabelText:e.singleLabelText,multipleLabel:e.multipleLabel,search:e.search,tags:e.tags,tag:[e.tag].concat(i.value?e.tagDisabled:[]),tagRemove:e.tagRemove,tagRemoveIcon:e.tagRemoveIcon,tagsSearchWrapper:e.tagsSearchWrapper,tagsSearch:e.tagsSearch,tagsSearchCopy:e.tagsSearchCopy,placeholder:e.placeholder,caret:[e.caret].concat(c.value?e.caretOpen:[]),clear:e.clear,clearIcon:e.clearIcon,spinner:e.spinner,dropdown:[e.dropdown].concat("top"===o.value?e.dropdownTop:[]).concat(c.value&&s.value&&O.value?[]:e.dropdownHidden),options:[e.options].concat("top"===o.value?e.optionsTop:[]),group:e.group,groupLabel:function(t){var u=[e.groupLabel];return v(t)?u.push(p(t)?e.groupLabelSelectedPointed:e.groupLabelPointed):p(t)&&g.value?u.push(d(t)?e.groupLabelSelectedDisabled:e.groupLabelSelected):d(t)&&u.push(e.groupLabelDisabled),g.value&&u.push(e.groupLabelPointable),u},groupOptions:e.groupOptions,option:function(t,u){var n=[e.option];return v(t)?n.push(p(t)?e.optionSelectedPointed:e.optionPointed):p(t)?n.push(d(t)?e.optionSelectedDisabled:e.optionSelected):(d(t)||u&&d(u))&&n.push(e.optionDisabled),n},noOptions:e.noOptions,noResults:e.noResults,fakeInput:e.fakeInput}})),showDropdown:O}}function y(e,t,u,n,a,l,r,i,o,s){"boolean"!=typeof r&&(o=i,i=r,r=!1);var c,v="function"==typeof u?u.options:u;if(e&&e.render&&(v.render=e.render,v.staticRenderFns=e.staticRenderFns,v._compiled=!0,a&&(v.functional=!0)),n&&(v._scopeId=n),l?(c=function(e){(e=e||this.$vnode&&this.$vnode.ssrContext||this.parent&&this.parent.$vnode&&this.parent.$vnode.ssrContext)||"undefined"==typeof __VUE_SSR_CONTEXT__||(e=__VUE_SSR_CONTEXT__),t&&t.call(this,o(e)),e&&e._registeredComponents&&e._registeredComponents.add(l)},v._ssrRegister=c):t&&(c=r?function(e){t.call(this,s(e,this.$root.$options.shadowRoot))}:function(e){t.call(this,i(e))}),c)if(v.functional){var p=v.render;v.render=function(e,t){return c.call(t),p(e,t)}}else{var d=v.beforeCreate;v.beforeCreate=d?[].concat(d,c):[c]}return u}const O={name:"Multiselect",emits:["open","close","select","deselect","input","search-change","tag","option","update:modelValue","change","clear"],props:{value:{required:!1},modelValue:{required:!1},options:{type:[Array,Object,Function],required:!1,default:()=>[]},id:{type:[String,Number],required:!1},name:{type:[String,Number],required:!1,default:"multiselect"},disabled:{type:Boolean,required:!1,default:!1},label:{type:String,required:!1,default:"label"},trackBy:{type:String,required:!1,default:void 0},valueProp:{type:String,required:!1,default:"value"},placeholder:{type:String,required:!1,default:null},mode:{type:String,required:!1,default:"single"},searchable:{type:Boolean,required:!1,default:!1},limit:{type:Number,required:!1,default:-1},hideSelected:{type:Boolean,required:!1,default:!0},createTag:{type:Boolean,required:!1,default:void 0},createOption:{type:Boolean,required:!1,default:void 0},appendNewTag:{type:Boolean,required:!1,default:void 0},appendNewOption:{type:Boolean,required:!1,default:void 0},addTagOn:{type:Array,required:!1,default:void 0},addOptionOn:{type:Array,required:!1,default:void 0},caret:{type:Boolean,required:!1,default:!0},loading:{type:Boolean,required:!1,default:!1},noOptionsText:{type:String,required:!1,default:"The list is empty"},noResultsText:{type:String,required:!1,default:"No results found"},multipleLabel:{type:Function,required:!1},object:{type:Boolean,required:!1,default:!1},delay:{type:Number,required:!1,default:-1},minChars:{type:Number,required:!1,default:0},resolveOnLoad:{type:Boolean,required:!1,default:!0},filterResults:{type:Boolean,required:!1,default:!0},clearOnSearch:{type:Boolean,required:!1,default:!1},clearOnSelect:{type:Boolean,required:!1,default:!0},canDeselect:{type:Boolean,required:!1,default:!0},canClear:{type:Boolean,required:!1,default:!0},max:{type:Number,required:!1,default:-1},showOptions:{type:Boolean,required:!1,default:!0},required:{type:Boolean,required:!1,default:!1},openDirection:{type:String,required:!1,default:"bottom"},nativeSupport:{type:Boolean,required:!1,default:!1},classes:{type:Object,required:!1,default:()=>({})},strict:{type:Boolean,required:!1,default:!0},closeOnSelect:{type:Boolean,required:!1,default:!0},autocomplete:{type:String,required:!1},groups:{type:Boolean,required:!1,default:!1},groupLabel:{type:String,required:!1,default:"label"},groupOptions:{type:String,required:!1,default:"options"},groupHideEmpty:{type:Boolean,required:!1,default:!1},groupSelect:{type:Boolean,required:!1,default:!0},inputType:{type:String,required:!1,default:"text"},attrs:{required:!1,type:[Object],default:()=>({})}},setup(a,i){const o=function(n,a){var l=e(n),r=l.value,i=l.modelValue,o=l.mode,s=l.valueProp,c=t("single"!==o.value?[]:{}),v=void 0!==a.expose?i:r,p=u((function(){return"single"===o.value?c.value[s.value]:c.value.map((function(e){return e[s.value]}))})),d=u((function(){return"single"!==o.value?c.value.map((function(e){return e[s.value]})).join(","):c.value[s.value]}));return{iv:c,internalValue:c,ev:v,externalValue:v,textValue:d,plainValue:p}}(a,i),s=function(u,n,a){var l=e(u),r=l.groupSelect,i=l.mode,o=l.groups,s=t(null),c=function(e){void 0===e||null!==e&&e.disabled||o.value&&e&&e.group&&("single"===i.value||!r.value)||(s.value=e)};return{pointer:s,setPointer:c,clearPointer:function(){c(null)}}}(a),c=function(u,n,a){var l=e(u).disabled,r=t(!1);return{isOpen:r,open:function(){r.value||l.value||(r.value=!0,n.emit("open"))},close:function(){r.value&&(r.value=!1,n.emit("close"))}}}(a,i),v=function(e,u,a){var l=t(null),r=t(null);return n(l,(function(e){u.emit("search-change",e)})),{search:l,input:r,clearSearch:function(){l.value=""},handleSearchInput:function(e){l.value=e.target.value},handlePaste:function(e){u.emit("paste",e)}}}(0,i),f=function(t,u,n){var a=e(t),l=a.object,i=a.valueProp,o=a.mode,s=n.iv,c=function(e){return l.value||r(e)?e:Array.isArray(e)?e.map((function(e){return e[i.value]})):e[i.value]},v=function(e){return r(e)?"single"===o.value?{}:[]:e};return{update:function(e){s.value=v(e);var t=c(e);u.emit("change",t),u.emit("input",t),u.emit("update:modelValue",t)}}}(a,i,{iv:o.iv}),b=function(n,a,l){var r=e(n),i=r.searchable,o=r.disabled,s=l.input,c=l.open,v=l.close,p=l.clearSearch,d=t(null),f=t(!1),g=u((function(){return i.value||o.value?-1:0})),b=function(){i.value&&s.value.blur(),d.value.blur()},m=function(){i.value&&!o.value&&s.value.focus()},D=function(){f.value=!1,setTimeout((function(){f.value||(v(),p())}),1)};return{multiselect:d,tabindex:g,isActive:f,blur:b,focus:m,handleFocus:function(){m()},activate:function(){o.value||(f.value=!0,c())},deactivate:D,handleCaretClick:function(){D(),b()}}}(a,0,{input:v.input,open:c.open,close:c.close,clearSearch:v.clearSearch}),m=p(a,i,{ev:o.ev,iv:o.iv,search:v.search,clearSearch:v.clearSearch,update:f.update,pointer:s.pointer,clearPointer:s.clearPointer,blur:b.blur,focus:b.focus,deactivate:b.deactivate}),D=function(t,a,r){var i=e(t),o=i.valueProp,s=i.showOptions,c=i.searchable,v=i.groupLabel,p=i.groups,f=i.mode,g=i.groupSelect,b=r.fo,m=r.fg,D=r.handleOptionClick,h=r.handleGroupClick,y=r.search,O=r.pointer,_=r.setPointer,F=r.clearPointer,A=r.multiselect,S=u((function(){return b.value.filter((function(e){return!e.disabled}))})),C=u((function(){return m.value.filter((function(e){return!e.disabled}))})),E=u((function(){return"single"!==f.value&&g.value})),P=u((function(){return O.value&&O.value.group})),B=u((function(){return V(O.value)})),L=u((function(){var e=P.value?O.value:V(O.value),t=C.value.map((function(e){return e[v.value]})).indexOf(e[v.value]),u=C.value[t-1];return void 0===u&&(u=T.value),u})),w=u((function(){var e=C.value.map((function(e){return e.label})).indexOf(P.value?O.value[v.value]:V(O.value)[v.value])+1;return C.value.length<=e&&(e=0),C.value[e]})),T=u((function(){return d(C.value).slice(-1)[0]})),k=u((function(){return O.value.__VISIBLE__.filter((function(e){return!e.disabled}))[0]})),q=u((function(){var e=B.value.__VISIBLE__.filter((function(e){return!e.disabled}));return e[e.map((function(e){return e[o.value]})).indexOf(O.value[o.value])-1]})),x=u((function(){var e=V(O.value).__VISIBLE__.filter((function(e){return!e.disabled}));return e[e.map((function(e){return e[o.value]})).indexOf(O.value[o.value])+1]})),j=u((function(){return d(L.value.__VISIBLE__.filter((function(e){return!e.disabled}))).slice(-1)[0]})),I=u((function(){return d(T.value.__VISIBLE__.filter((function(e){return!e.disabled}))).slice(-1)[0]})),R=function(){_(S.value[0]||null)},V=function(e){return C.value.find((function(t){return-1!==t.__VISIBLE__.map((function(e){return e[o.value]})).indexOf(e[o.value])}))},H=function(){var e=A.value.querySelector("[data-pointed]");if(e){var t=e.parentElement.parentElement;p.value&&(t=P.value?e.parentElement.parentElement.parentElement:e.parentElement.parentElement.parentElement.parentElement),e.offsetTop+e.offsetHeight>t.clientHeight+t.scrollTop&&(t.scrollTop=e.offsetTop+e.offsetHeight-t.clientHeight),e.offsetTop<t.scrollTop&&(t.scrollTop=e.offsetTop)}};return n(y,(function(e){c.value&&(e.length&&s.value?R():F())})),{pointer:O,canPointGroups:E,isPointed:function(e){return!(!O.value||!(!e.group&&O.value[o.value]==e[o.value]||void 0!==e.group&&O.value[v.value]==e[v.value]))||void 0},setPointerFirst:R,selectPointer:function(){O.value&&!0!==O.value.disabled&&(P.value?h(O.value):D(O.value))},forwardPointer:function(){if(null===O.value)_((p.value&&E.value?C.value[0]:S.value[0])||null);else if(p.value&&E.value){var e=P.value?k.value:x.value;void 0===e&&(e=w.value),_(e||null)}else{var t=S.value.map((function(e){return e[o.value]})).indexOf(O.value[o.value])+1;S.value.length<=t&&(t=0),_(S.value[t]||null)}l((function(){H()}))},backwardPointer:function(){if(null===O.value){var e=S.value[S.value.length-1];p.value&&E.value&&void 0===(e=I.value)&&(e=T.value),_(e||null)}else if(p.value&&E.value){var t=P.value?j.value:q.value;void 0===t&&(t=P.value?L.value:B.value),_(t||null)}else{var u=S.value.map((function(e){return e[o.value]})).indexOf(O.value[o.value])-1;u<0&&(u=S.value.length-1),_(S.value[u]||null)}l((function(){H()}))}}}(a,0,{fo:m.fo,fg:m.fg,handleOptionClick:m.handleOptionClick,handleGroupClick:m.handleGroupClick,search:v.search,pointer:s.pointer,setPointer:s.setPointer,clearPointer:s.clearPointer,multiselect:b.multiselect}),y=function(t,n,a){var l=e(t),r=l.mode,i=l.addTagOn,o=l.openDirection,s=l.searchable,c=l.showOptions,v=l.valueProp,p=l.groups,d=l.addOptionOn,f=l.createTag,b=l.createOption,m=a.iv,D=a.update,h=a.search,y=a.setPointer,O=a.selectPointer,_=a.backwardPointer,F=a.forwardPointer,A=a.blur,S=a.fo,C=u((function(){return f.value||b.value||!1})),E=u((function(){return void 0!==i.value?i.value:void 0!==d.value?d.value:["enter"]})),P=function(){"tags"===r.value&&!c.value&&C.value&&s.value&&!p.value&&y(S.value[S.value.map((function(e){return e[v.value]})).indexOf(h.value)])};return{handleKeydown:function(e){switch(e.key){case"Backspace":if("single"===r.value)return;if(s.value&&-1===[null,""].indexOf(h.value))return;if(0===m.value.length)return;D(g(m.value).slice(0,-1));break;case"Enter":if(e.preventDefault(),-1===E.value.indexOf("enter")&&C.value)return;P(),O();break;case" ":if(!C.value&&!s.value)return e.preventDefault(),P(),void O();if(!C.value)return!1;if(-1===E.value.indexOf("space")&&C.value)return;e.preventDefault(),P(),O();break;case"Tab":case";":case",":if(-1===E.value.indexOf(e.key.toLowerCase())||!C.value)return;P(),O(),e.preventDefault();break;case"Escape":A();break;case"ArrowUp":if(e.preventDefault(),!c.value)return;"top"===o.value?F():_();break;case"ArrowDown":if(e.preventDefault(),!c.value)return;"top"===o.value?_():F()}},preparePointer:P}}(a,0,{iv:o.iv,update:f.update,search:v.search,setPointer:s.setPointer,selectPointer:D.selectPointer,backwardPointer:D.backwardPointer,forwardPointer:D.forwardPointer,blur:b.blur,fo:m.fo}),O=h(a,0,{isOpen:c.isOpen,isPointed:D.isPointed,canPointGroups:D.canPointGroups,isSelected:m.isSelected,isDisabled:m.isDisabled,isActive:b.isActive,resolving:m.resolving,fo:m.fo});return{...o,...c,...b,...s,...f,...v,...m,...D,...y,...O}}};var _=function(){var e=this,t=e.$createElement,u=e._self._c||t;return u("div",{ref:"multiselect",class:e.classList.container,attrs:{tabindex:e.tabindex,id:e.id},on:{focusin:e.activate,focusout:e.deactivate,keydown:e.handleKeydown,focus:e.handleFocus}},["tags"!==e.mode&&e.searchable&&!e.disabled?[u("input",e._b({ref:"input",class:e.classList.search,attrs:{type:e.inputType,modelValue:e.search,autocomplete:e.autocomplete},domProps:{value:e.search},on:{input:e.handleSearchInput,paste:function(t){return t.stopPropagation(),e.handlePaste(t)}}},"input",e.attrs,!1))]:e._e(),e._v(" "),"tags"==e.mode?[u("div",{class:e.classList.tags},[e._l(e.iv,(function(t,n,a){return e._t("tag",[u("span",{key:a,class:e.classList.tag},[e._v("\n          "+e._s(t[e.label])+"\n          "),e.disabled?e._e():u("span",{class:e.classList.tagRemove,on:{click:function(u){return e.handleTagRemove(t,u)}}},[u("span",{class:e.classList.tagRemoveIcon})])])],{option:t,handleTagRemove:e.handleTagRemove,disabled:e.disabled})})),e._v(" "),u("div",{class:e.classList.tagsSearchWrapper},[u("span",{class:e.classList.tagsSearchCopy},[e._v(e._s(e.search))]),e._v(" "),e.searchable&&!e.disabled?u("input",e._b({ref:"input",class:e.classList.tagsSearch,attrs:{type:e.inputType,modelValue:e.search,autocomplete:e.autocomplete},domProps:{value:e.search},on:{input:e.handleSearchInput,paste:function(t){return t.stopPropagation(),e.handlePaste(t)}}},"input",e.attrs,!1)):e._e()])],2)]:e._e(),e._v(" "),"single"==e.mode&&e.hasSelected&&!e.search&&e.iv?[e._t("singlelabel",[u("div",{class:e.classList.singleLabel},[u("span",{class:e.classList.singleLabelText,domProps:{innerHTML:e._s(e.iv[e.label])}})])],{value:e.iv})]:e._e(),e._v(" "),"multiple"==e.mode&&e.hasSelected&&!e.search?[e._t("multiplelabel",[u("div",{class:e.classList.multipleLabel,domProps:{innerHTML:e._s(e.multipleLabelText)}})],{values:e.iv})]:e._e(),e._v(" "),!e.placeholder||e.hasSelected||e.search?e._e():[e._t("placeholder",[u("div",{class:e.classList.placeholder},[e._v("\n        "+e._s(e.placeholder)+"\n      ")])])],e._v(" "),e.busy&&e.isActive?e._t("spinner",[u("span",{class:e.classList.spinner})]):e._e(),e._v(" "),e.hasSelected&&!e.disabled&&e.canClear&&!e.busy?e._t("clear",[u("span",{class:e.classList.clear,on:{mousedown:e.clear}},[u("span",{class:e.classList.clearIcon})])],{clear:e.clear}):e._e(),e._v(" "),e.caret&&e.showOptions?e._t("caret",[u("span",{class:e.classList.caret,on:{click:e.handleCaretClick}})]):e._e(),e._v(" "),u("div",{class:e.classList.dropdown,attrs:{tabindex:"-1"}},[e._t("beforelist",null,{options:e.fo}),e._v(" "),u("ul",{class:e.classList.options},[e.groups?e._l(e.fg,(function(t,n,a){return u("li",{key:a,class:e.classList.group},[u("div",{class:e.classList.groupLabel(t),attrs:{"data-pointed":e.isPointed(t)},on:{mouseenter:function(u){return e.setPointer(t)},click:function(u){return e.handleGroupClick(t)}}},[e._t("grouplabel",[u("span",{domProps:{innerHTML:e._s(t[e.groupLabel])}})],{group:t})],2),e._v(" "),u("ul",{class:e.classList.groupOptions},e._l(t.__VISIBLE__,(function(n,a,l){return u("li",{key:l,class:e.classList.option(n,t),attrs:{"data-pointed":e.isPointed(n)},on:{mouseenter:function(t){return e.setPointer(n)},click:function(t){return e.handleOptionClick(n)}}},[e._t("option",[u("span",{domProps:{innerHTML:e._s(n[e.label])}})],{option:n,search:e.search})],2)})),0)])})):e._l(e.fo,(function(t,n,a){return u("li",{key:a,class:e.classList.option(t),attrs:{"data-pointed":e.isPointed(t)},on:{mouseenter:function(u){return e.setPointer(t)},click:function(u){return e.handleOptionClick(t)}}},[e._t("option",[u("span",{domProps:{innerHTML:e._s(t[e.label])}})],{option:t,search:e.search})],2)}))],2),e._v(" "),e.noOptions?e._t("nooptions",[u("div",{class:e.classList.noOptions,domProps:{innerHTML:e._s(e.noOptionsText)}})]):e._e(),e._v(" "),e.noResults?e._t("noresults",[u("div",{class:e.classList.noResults,domProps:{innerHTML:e._s(e.noResultsText)}})]):e._e(),e._v(" "),e._t("afterlist",null,{options:e.fo})],2),e._v(" "),e.required?u("input",{class:e.classList.fakeInput,attrs:{tabindex:"-1",required:""},domProps:{value:e.textValue}}):e._e(),e._v(" "),e.nativeSupport?["single"==e.mode?u("input",{attrs:{type:"hidden",name:e.name},domProps:{value:void 0!==e.plainValue?e.plainValue:""}}):e._l(e.plainValue,(function(t,n){return u("input",{key:n,attrs:{type:"hidden",name:e.name+"[]"},domProps:{value:t}})}))]:e._e(),e._v(" "),u("div",{class:e.classList.spacer})],2)};_._withStripped=!0;const F=y({render:_,staticRenderFns:[]},undefined,O,undefined,false,undefined,!1,void 0,void 0,void 0);export default F;
+import { toRefs, getCurrentInstance, ref, computed, watch, nextTick, onMounted } from '@vue/composition-api';
+
+function isNullish (val) {
+  return [null, undefined].indexOf(val) !== -1
+}
+
+function useData (props, context, dep)
+{
+  const { object, valueProp, mode } = toRefs(props);
+
+  const $this = getCurrentInstance().proxy;
+
+  // ============ DEPENDENCIES ============
+
+  const iv = dep.iv;
+
+  // =============== METHODS ==============
+
+  const update = (val) => {
+    // Setting object(s) as internal value
+    iv.value = makeInternal(val);
+
+    // Setting object(s) or plain value as external 
+    // value based on `option` setting
+    const externalVal = makeExternal(val);
+
+    context.emit('change', externalVal, $this);
+    context.emit('input', externalVal);
+    context.emit('update:modelValue', externalVal);
+  }; 
+
+  // no export
+  const makeExternal = (val) => {
+    // If external value should be object
+    // no transformation is required
+    if (object.value) {
+      return val
+    }
+
+    // No need to transform if empty value
+    if (isNullish(val)) {
+      return val
+    }
+
+    // If external should be plain transform
+    // value object to plain values
+    return !Array.isArray(val) ? val[valueProp.value] : val.map(v => v[valueProp.value])
+  };
+
+  // no export
+  const makeInternal = (val) => {
+    if (isNullish(val)) {
+      return mode.value === 'single' ? {} : []
+    }
+
+    return val
+  };
+
+  return {
+    update,
+  }
+}
+
+function useValue (props, context)
+{
+  const { value, modelValue, mode, valueProp } = toRefs(props);
+
+  // ================ DATA ================
+
+  // internalValue
+  const iv = ref(mode.value !== 'single' ? [] : {});
+
+  // ============== COMPUTED ==============
+
+  /* istanbul ignore next */
+  // externalValue
+  const ev = context.expose !== undefined ? modelValue : value;
+
+  const plainValue = computed(() => {
+    return mode.value === 'single' ? iv.value[valueProp.value] : iv.value.map(v=>v[valueProp.value])
+  });
+
+  const textValue = computed(() => {
+    return mode.value !== 'single' ? iv.value.map(v=>v[valueProp.value]).join(',') : iv.value[valueProp.value]
+  });
+
+  return {
+    iv,
+    internalValue: iv,
+    ev,
+    externalValue: ev,
+    textValue,
+    plainValue,
+  }
+}
+
+function useSearch (props, context, dep)
+{  const { regex } = toRefs(props);
+
+  const $this = getCurrentInstance().proxy;
+
+  // ============ DEPENDENCIES ============
+
+  const isOpen = dep.isOpen;
+  const open = dep.open;
+
+  // ================ DATA ================
+
+  const search = ref(null);
+
+  const input = ref(null);
+
+  // =============== METHODS ==============
+
+  const clearSearch = () => {
+    search.value = '';
+  };
+
+  const handleSearchInput = (e) => {
+    search.value = e.target.value;
+  };
+
+  const handleKeypress = (e) => {
+    if (regex && regex.value) {
+      let regexp = regex.value;
+
+      if (typeof regexp === 'string') {
+        regexp = new RegExp(regexp);
+      }
+
+      if (!e.key.match(regexp)) {
+        e.preventDefault();
+      }
+    }
+  };
+
+  const handlePaste = (e) => {
+    if (regex && regex.value) {
+      let clipboardData = e.clipboardData || /* istanbul ignore next */ window.clipboardData;
+      let pastedData = clipboardData.getData('Text');
+
+      let regexp = regex.value;
+
+      if (typeof regexp === 'string') {
+        regexp = new RegExp(regexp);
+      }
+      
+      if (!pastedData.split('').every(c => !!c.match(regexp))) {
+        e.preventDefault();
+      }
+    }
+
+    context.emit('paste', e, $this);
+  };
+
+  // ============== WATCHERS ==============
+
+  watch(search, (val) => {
+    if (!isOpen.value && val) {
+      open();
+    }
+
+    context.emit('search-change', val, $this);
+  });
+
+  return {
+    search,
+    input,
+    clearSearch,
+    handleSearchInput,
+    handleKeypress,
+    handlePaste,
+  }
+}
+
+function usePointer$1 (props, context, dep)
+{
+  const { groupSelect, mode, groups, disabledProp } = toRefs(props);
+
+  // ================ DATA ================
+
+  const pointer = ref(null);
+
+  // =============== METHODS ==============
+
+  const setPointer = (option) => {
+    if (option === undefined || (option !== null && option[disabledProp.value])) {
+      return
+    }
+
+    if (groups.value && option && option.group && (mode.value === 'single' || !groupSelect.value)) {
+      return
+    }
+
+    pointer.value = option;
+  };
+
+  const clearPointer = () => {
+    setPointer(null);
+  };
+
+  return {
+    pointer,
+    setPointer,
+    clearPointer,
+  }
+}
+
+function normalize (str, strict = true) {
+  return strict
+    ? String(str).toLowerCase().trim()
+    : String(str).normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase().trim()
+}
+
+function isObject (variable) {
+  return Object.prototype.toString.call(variable) === '[object Object]'
+}
+
+function arraysEqual (array1, array2) {
+  const array2Sorted = array2.slice().sort();
+
+  return array1.length === array2.length && array1.slice().sort().every(function(value, index) {
+      return value === array2Sorted[index];
+  })
+}
+
+function useOptions (props, context, dep)
+{
+  const { 
+    options, mode, trackBy: trackBy_, limit, hideSelected, createTag, createOption: createOption_, label,
+    appendNewTag, appendNewOption: appendNewOption_, multipleLabel, object, loading, delay, resolveOnLoad,
+    minChars, filterResults, clearOnSearch, clearOnSelect, valueProp,
+    canDeselect, max, strict, closeOnSelect, groups: groupped, reverse, infinite,
+    groupOptions, groupHideEmpty, groupSelect, onCreate, disabledProp, searchStart,
+  } = toRefs(props);
+
+  const $this = getCurrentInstance().proxy;
+
+  // ============ DEPENDENCIES ============
+
+  const iv = dep.iv;
+  const ev = dep.ev;
+  const search = dep.search;
+  const clearSearch = dep.clearSearch;
+  const update = dep.update;
+  const pointer = dep.pointer;
+  const clearPointer = dep.clearPointer;
+  const focus = dep.focus;
+  const deactivate = dep.deactivate;
+  const close = dep.close;
+
+  // ================ DATA ================
+
+  // no export
+  // appendedOptions
+  const ap = ref([]);
+
+  // no export
+  // resolvedOptions
+  const ro = ref([]);
+
+  const resolving = ref(false);
+
+  // no export
+  const searchWatcher = ref(null);
+
+  const offset = ref(infinite.value && limit.value === -1 ? 10 : limit.value);
+
+  // ============== COMPUTED ==============
+
+  // no export
+  const createOption = computed(() => {
+    return createTag.value || createOption_.value || false
+  });
+
+  // no export
+  const appendNewOption = computed(() => {
+    if (appendNewTag.value !== undefined) {
+      return appendNewTag.value
+    } else if (appendNewOption_.value !== undefined) {
+      return appendNewOption_.value
+    }
+
+    return true
+  });
+
+  // no export
+  // extendedOptions
+  const eo = computed(() => {
+    if (groupped.value) {
+      let groups = ro.value || /* istanbul ignore next */ [];
+
+      let eo = [];
+
+      groups.forEach((group) => {
+        optionsToArray(group[groupOptions.value]).forEach((option) => {
+          eo.push(Object.assign({}, option, group[disabledProp.value] ? { [disabledProp.value]: true } : {}));
+        });
+      });
+
+      return eo
+    } else {
+      let eo = optionsToArray(ro.value || /* istanbul ignore next */ []);
+
+      if (ap.value.length) {
+        eo = eo.concat(ap.value);
+      }
+
+      return eo
+    }
+  });
+
+  const fg = computed(() => {
+    if (!groupped.value) {
+      return []
+    }
+
+    return filterGroups((ro.value || /* istanbul ignore next */ []).map((group) => {
+      const arrayOptions = optionsToArray(group[groupOptions.value]);
+
+      return {
+        ...group,
+        group: true,
+        [groupOptions.value]: filterOptions(arrayOptions, false).map(o => Object.assign({}, o, group[disabledProp.value] ? { [disabledProp.value]: true } : {})),
+        __VISIBLE__: filterOptions(arrayOptions).map(o => Object.assign({}, o, group[disabledProp.value] ? { [disabledProp.value]: true } : {})),
+      }
+      // Difference between __VISIBLE__ and {groupOptions}: visible does not contain selected options when hideSelected=true
+    }))
+  });
+
+  // preFilteredOptions
+  const pfo = computed(() => {
+    let options = eo.value;
+
+    if (reverse.value) {
+      options = options.reverse();
+    }
+
+    if (createdOption.value.length) {
+      options = createdOption.value.concat(options);
+    }
+
+    return filterOptions(options)
+  });
+
+  // filteredOptions
+  const fo = computed(() => {
+    let options = pfo.value;
+
+    if (offset.value > 0) {
+      options = options.slice(0, offset.value);
+    }
+
+    return options
+  });
+
+  const hasSelected = computed(() => {
+    switch (mode.value) {
+      case 'single':
+        return !isNullish(iv.value[valueProp.value])
+
+      case 'multiple':
+      case 'tags':
+        return !isNullish(iv.value) && iv.value.length > 0
+    }
+  });
+
+  const multipleLabelText = computed(() => {
+    return multipleLabel !== undefined && multipleLabel.value !== undefined
+      ? multipleLabel.value(iv.value, $this)
+      : (iv.value && iv.value.length > 1 ? `${iv.value.length} options selected` : `1 option selected`)
+  });
+
+  const noOptions = computed(() => {
+    return !eo.value.length && !resolving.value && !createdOption.value.length
+  });
+
+
+  const noResults = computed(() => {
+    return eo.value.length > 0 && fo.value.length == 0 && ((search.value && groupped.value) || !groupped.value)
+  });
+
+  // no export
+  const createdOption = computed(() => {
+    if (createOption.value === false || !search.value) {
+      return []
+    }
+
+    return getOptionByTrackBy(search.value) !== -1 ? [] : [{
+      [valueProp.value]: search.value,
+      [label.value]: search.value,
+      [trackBy.value]: search.value,
+      __CREATE__: true,
+    }]
+  });
+
+  const trackBy = computed(() => {
+    return trackBy_.value || label.value
+  });
+
+  // no export
+  const nullValue = computed(() => {
+    switch (mode.value) {
+      case 'single':
+        return null
+
+      case 'multiple':
+      case 'tags':
+        return []
+    }
+  });
+
+  const busy = computed(() => {
+    return loading.value || resolving.value
+  });
+
+  // =============== METHODS ==============
+
+  /**
+   * @param {array|object|string|number} option 
+   */
+  const select = (option) => {
+    if (typeof option !== 'object') {
+      option = getOption(option);
+    }
+
+    switch (mode.value) {
+      case 'single':
+        update(option);
+        break
+
+      case 'multiple':
+      case 'tags':
+        update((iv.value).concat(option));
+        break
+    }
+
+    context.emit('select', finalValue(option), option, $this);
+  };
+
+  const deselect = (option) => {
+    if (typeof option !== 'object') {
+      option = getOption(option);
+    }
+
+    switch (mode.value) {
+      case 'single':
+        clear();
+        break
+
+      case 'tags':
+      case 'multiple':
+        update(Array.isArray(option)
+          ? iv.value.filter(v => option.map(o => o[valueProp.value]).indexOf(v[valueProp.value]) === -1)
+          : iv.value.filter(v => v[valueProp.value] != option[valueProp.value]));
+        break
+    }
+
+    context.emit('deselect', finalValue(option), option, $this);
+  };
+
+  // no export
+  const finalValue = (option) => {
+    return object.value ? option : option[valueProp.value]
+  };
+
+  const remove = (option) => {
+    deselect(option);
+  };
+
+  const handleTagRemove = (option, e) => {
+    if (e.button !== 0) {
+      e.preventDefault();
+      return
+    }
+
+    remove(option);
+  };
+
+  const clear = () => {
+    context.emit('clear', $this);
+    update(nullValue.value);
+  };
+
+  const isSelected = (option) => {
+    if (option.group !== undefined) {
+      return mode.value === 'single' ? false : areAllSelected(option[groupOptions.value]) && option[groupOptions.value].length
+    }
+
+    switch (mode.value) {
+      case 'single':
+        return !isNullish(iv.value) && iv.value[valueProp.value] == option[valueProp.value]
+
+      case 'tags':
+      case 'multiple':
+        return !isNullish(iv.value) && iv.value.map(o => o[valueProp.value]).indexOf(option[valueProp.value]) !== -1
+    }
+  };
+
+  const isDisabled = (option) => {
+    return option[disabledProp.value] === true
+  };
+
+  const isMax = () => {
+    if (max === undefined || max.value === -1 || (!hasSelected.value && max.value > 0)) {
+      return false
+    }
+    
+    return iv.value.length >= max.value
+  };
+
+  const handleOptionClick = (option) => {
+    if (isDisabled(option)) {
+      return
+    }
+
+    if (onCreate && onCreate.value && !isSelected(option) && option.__CREATE__) {
+      option = { ...option };
+      delete option.__CREATE__;
+
+      option = onCreate.value(option, $this);
+      
+      if (option instanceof Promise) {
+        resolving.value = true;
+        option.then((result) => {
+          resolving.value = false;
+          handleOptionSelect(result);
+        });
+
+        return
+      } 
+    }
+
+    handleOptionSelect(option);
+  };
+
+  const handleOptionSelect = (option) => {
+    if (option.__CREATE__) {
+      option = { ...option };
+      delete option.__CREATE__;
+    }
+    
+    switch (mode.value) {
+      case 'single':
+        if (option && isSelected(option)) {
+          if (canDeselect.value) {
+            deselect(option);
+          }
+          return
+        }
+
+        if (option) {
+          handleOptionAppend(option);
+        }
+
+        /* istanbul ignore else */
+        if (clearOnSelect.value) {
+          clearSearch();
+        }
+
+        if (closeOnSelect.value) {
+          clearPointer();
+          close();
+        }
+
+        if (option) {
+          select(option);
+        }
+        break
+
+      case 'multiple':
+        if (option && isSelected(option)) {
+          deselect(option);
+          return
+        }
+
+        if (isMax()) {
+          return
+        }
+
+        if (option) {
+          handleOptionAppend(option);
+          select(option);
+        }
+
+        if (clearOnSelect.value) {
+          clearSearch();
+        }
+
+        if (hideSelected.value) {
+          clearPointer();
+        }
+
+        if (closeOnSelect.value) {
+          close();
+        }
+        break
+
+      case 'tags':
+        if (option && isSelected(option)) {
+          deselect(option);
+          return
+        }
+
+        if (isMax()) {
+          return
+        }
+
+        if (option) {
+          handleOptionAppend(option);
+        }
+
+        if (clearOnSelect.value) {
+          clearSearch();
+        }
+
+        if (option) {
+          select(option);
+        }
+
+        if (hideSelected.value) {
+          clearPointer();
+        }
+
+        if (closeOnSelect.value) {
+          close();
+        }
+        break
+    }
+
+    if (!closeOnSelect.value) {
+      focus();
+    }
+  };
+
+  const handleGroupClick = (group) => {
+    if (isDisabled(group) || mode.value === 'single' || !groupSelect.value) {
+      return
+    }
+
+    switch (mode.value) {
+      case 'multiple':
+      case 'tags':
+        if (areAllEnabledSelected(group[groupOptions.value])) {
+          deselect(group[groupOptions.value]);
+        } else {
+          select(group[groupOptions.value]
+            .filter(o => iv.value.map(v => v[valueProp.value]).indexOf(o[valueProp.value]) === -1)
+            .filter(o => !o[disabledProp.value])
+            .filter((o, k) => iv.value.length + 1 + k <= max.value || max.value === -1)
+          );
+        }
+        break
+    }
+
+    if (closeOnSelect.value) {
+      deactivate();
+    }
+  };
+
+  const handleOptionAppend = (option) => {
+    if (getOption(option[valueProp.value]) === undefined && createOption.value) {
+      context.emit('tag', option[valueProp.value], $this);
+      context.emit('option', option[valueProp.value], $this);
+
+      if (appendNewOption.value) {
+        appendOption(option);
+      }
+
+      clearSearch();
+    }
+  };
+
+  const selectAll = () => {
+    if (mode.value === 'single') {
+      return
+    }
+
+    select(fo.value);
+  };
+
+  // no export
+  const areAllEnabledSelected = (options) => {
+    return options.find(o => !isSelected(o) && !o[disabledProp.value]) === undefined
+  };
+
+  // no export
+  const areAllSelected = (options) => {
+    return options.find(o => !isSelected(o)) === undefined
+  };
+
+  const getOption = (val) => {
+    return eo.value[eo.value.map(o => String(o[valueProp.value])).indexOf(String(val))]
+  };
+
+  // no export
+  const getOptionByTrackBy = (val, norm) => {
+    return eo.value.map(o => parseInt(o[trackBy.value]) == o[trackBy.value] ? parseInt(o[trackBy.value]) : o[trackBy.value]).indexOf(
+      parseInt(val) == val ? parseInt(val) : val
+    )
+  };
+
+  // no export
+  const shouldHideOption = (option) => {
+    return ['tags', 'multiple'].indexOf(mode.value) !== -1 && hideSelected.value && isSelected(option)
+  };
+
+  // no export
+  const appendOption = (option) => {
+    ap.value.push(option);
+  };
+
+  // no export
+  const filterGroups = (groups) => {
+    // If the search has value we need to filter among 
+    // he ones that are visible to the user to avoid
+    // displaying groups which technically have options
+    // based on search but that option is already selected.
+    return groupHideEmpty.value
+      ? groups.filter(g => search.value
+          ? g.__VISIBLE__.length
+          : g[groupOptions.value].length
+        )
+      : groups.filter(g => search.value ? g.__VISIBLE__.length : true)
+  };
+
+  // no export
+  const filterOptions = (options, excludeHideSelected = true) => {
+    let fo = options;
+    
+    if (search.value && filterResults.value) {
+      fo = fo.filter((option) => {
+        return searchStart.value
+          ? normalize(option[trackBy.value], strict.value).startsWith(normalize(search.value, strict.value))
+          : normalize(option[trackBy.value], strict.value).indexOf(normalize(search.value, strict.value)) !== -1
+      });
+    }
+
+    if (hideSelected.value && excludeHideSelected) {
+      fo = fo.filter((option) => !shouldHideOption(option));
+    }
+
+    return fo
+  };
+
+  // no export
+  const optionsToArray = (options) => {
+    let uo = options;
+    
+    // Transforming an object to an array of objects
+    if (isObject(uo)) {
+      uo = Object.keys(uo).map((key) => {
+        let val = uo[key];
+
+        return { [valueProp.value]: key, [trackBy.value]: val, [label.value]: val}
+      });
+    }
+
+    // Transforming an plain arrays to an array of objects
+    uo = uo.map((val) => {
+      return typeof val === 'object' ? val : { [valueProp.value]: val, [trackBy.value]: val, [label.value]: val}
+    });
+
+    return uo
+  };
+
+  // no export
+  const initInternalValue = () => {
+    if (!isNullish(ev.value)) {
+      iv.value = makeInternal(ev.value);
+    }
+  };
+
+  const resolveOptions = (callback) => {
+    resolving.value = true;
+
+    return new Promise((resolve, reject) => {
+      options.value(search.value, $this).then((response) => {
+        ro.value = response || [];
+
+        if (typeof callback == 'function') {
+          callback(response);
+        }
+
+        resolving.value = false;
+      }).catch((e) => {
+        console.error(e);
+
+        ro.value = [];
+
+        resolving.value = false;
+      }).finally(() => {
+        resolve();
+      });
+    })
+  };
+
+  // no export
+  const refreshLabels = () => {
+    if (!hasSelected.value) {
+      return
+    }
+
+    if (mode.value === 'single') {
+      let option = getOption(iv.value[valueProp.value]);
+
+      /* istanbul ignore else */
+      if (option !== undefined) {
+        let newLabel = option[label.value];
+
+        iv.value[label.value] = newLabel;
+
+        if (object.value) {
+          ev.value[label.value] = newLabel;
+        }
+      }
+    } else {
+      iv.value.forEach((val, i) => {
+        let option = getOption(iv.value[i][valueProp.value]);
+
+        /* istanbul ignore else */
+        if (option !== undefined) {
+          let newLabel = option[label.value];
+
+          iv.value[i][label.value] = newLabel;
+
+          if (object.value) {
+            ev.value[i][label.value] = newLabel;
+          }
+        }
+      });
+    }
+  };
+
+  const refreshOptions = (callback) => {
+    resolveOptions(callback);
+  };
+
+  // no export
+  const makeInternal = (val) => {
+    if (isNullish(val)) {
+      return mode.value === 'single' ? {} : []
+    }
+
+    if (object.value) {
+      return val
+    }
+
+    // If external should be plain transform
+    // value object to plain values
+    return mode.value === 'single' ? getOption(val) || {} : val.filter(v => !! getOption(v)).map(v => getOption(v))
+  };
+
+  // no export
+  const initSearchWatcher = () => {
+    searchWatcher.value = watch(search, (query) => {
+      if (query.length < minChars.value || (!query && minChars.value !== 0)) {
+        return
+      }
+
+      resolving.value = true;
+
+      if (clearOnSearch.value) {
+        ro.value = [];
+      }
+      setTimeout(() => {
+        if (query != search.value) {
+          return
+        }
+
+        options.value(search.value, $this).then((response) => {
+          if (query == search.value || !search.value) {
+            ro.value = response;
+            pointer.value = fo.value.filter(o => o[disabledProp.value] !== true)[0] || null;
+            resolving.value = false;
+          }
+        }).catch( /* istanbul ignore next */ (e) => {
+          console.error(e);
+        });
+      }, delay.value);
+
+    }, { flush: 'sync' });
+  };
+
+  // ================ HOOKS ===============
+
+  if (mode.value !== 'single' && !isNullish(ev.value) && !Array.isArray(ev.value)) {
+    throw new Error(`v-model must be an array when using "${mode.value}" mode`)
+  }
+
+  if (options && typeof options.value == 'function') {
+    if (resolveOnLoad.value) {
+      resolveOptions(initInternalValue);
+    } else if (object.value == true) {
+      initInternalValue();
+    }
+  }
+  else {
+    ro.value = options.value;
+
+    initInternalValue();
+  }
+  
+  // ============== WATCHERS ==============
+
+  if (delay.value > -1) {
+    initSearchWatcher();
+  }
+
+  watch(delay, (value, old) => {
+    /* istanbul ignore else */
+    if (searchWatcher.value) {
+      searchWatcher.value();
+    }
+
+    if (value >= 0) {
+      initSearchWatcher();
+    }
+  });
+
+  watch(ev, (newValue) => {
+    if (isNullish(newValue)) {
+      iv.value = makeInternal(newValue);
+      return
+    }
+
+    switch (mode.value) {
+      case 'single':
+        if (object.value ? newValue[valueProp.value] != iv.value[valueProp.value] : newValue != iv.value[valueProp.value]) {
+          iv.value = makeInternal(newValue);
+        }
+        break
+
+      case 'multiple':
+      case 'tags':
+        if (!arraysEqual(object.value ? newValue.map(o => o[valueProp.value]) : newValue, iv.value.map(o => o[valueProp.value]))) {
+          iv.value = makeInternal(newValue);
+        }
+        break
+    }
+  }, { deep: true });
+
+  watch(options, (n, o) => {
+    if (typeof props.options === 'function') {
+      if (resolveOnLoad.value) {
+        resolveOptions();
+      }
+    } else {
+      ro.value = props.options;
+
+      if (!Object.keys(iv.value).length) {
+        initInternalValue();
+      }
+
+      refreshLabels();
+    }
+  });
+
+  watch(label, refreshLabels);
+
+  return {
+    pfo,
+    fo,
+    filteredOptions: fo,
+    hasSelected,
+    multipleLabelText,
+    eo,
+    extendedOptions: eo,
+    fg,
+    filteredGroups: fg,
+    noOptions,
+    noResults,
+    resolving,
+    busy,
+    offset,
+    select,
+    deselect,
+    remove,
+    selectAll,
+    clear,
+    isSelected,
+    isDisabled,
+    isMax,
+    getOption,
+    handleOptionClick,
+    handleGroupClick,
+    handleTagRemove,
+    refreshOptions,
+    resolveOptions,
+    refreshLabels,
+  }
+}
+
+function usePointer (props, context, dep)
+{
+  const {
+    valueProp, showOptions, searchable, groupLabel,
+    groups: groupped, mode, groupSelect, disabledProp,
+  } = toRefs(props);
+
+  // ============ DEPENDENCIES ============
+
+  const fo = dep.fo;
+  const fg = dep.fg;
+  const handleOptionClick = dep.handleOptionClick;
+  const handleGroupClick = dep.handleGroupClick;
+  const search = dep.search;
+  const pointer = dep.pointer;
+  const setPointer = dep.setPointer;
+  const clearPointer = dep.clearPointer;
+  const multiselect = dep.multiselect;
+  const isOpen = dep.isOpen;
+
+  // ============== COMPUTED ==============
+
+  // no export
+  const options = computed(() => {
+    return fo.value.filter(o => !o[disabledProp.value])
+  });
+
+  const groups = computed(() => {
+    return fg.value.filter(o => !o[disabledProp.value])
+  });
+
+  const canPointGroups = computed(() => {
+    return mode.value !== 'single' && groupSelect.value
+  });
+
+  const isPointerGroup = computed(() => {
+    return pointer.value && pointer.value.group
+  });
+
+  const currentGroup = computed(() => {
+    return getParentGroup(pointer.value)
+  });
+
+  const prevGroup = computed(() => {
+    const group = isPointerGroup.value ? pointer.value : /* istanbul ignore next */ getParentGroup(pointer.value);
+    const groupIndex = groups.value.map(g => g[groupLabel.value]).indexOf(group[groupLabel.value]);
+    let prevGroup = groups.value[groupIndex - 1];
+
+    if (prevGroup === undefined) {
+      prevGroup = lastGroup.value;
+    }
+
+    return prevGroup
+  });
+  
+  const nextGroup = computed(() => {
+    let nextIndex = groups.value.map(g => g.label).indexOf(isPointerGroup.value
+      ? pointer.value[groupLabel.value]
+      : getParentGroup(pointer.value)[groupLabel.value]) + 1;
+
+    if (groups.value.length <= nextIndex) {
+      nextIndex = 0;
+    }
+
+    return groups.value[nextIndex]
+  });
+
+  const lastGroup = computed(() => {
+    return [...groups.value].slice(-1)[0]
+  });
+  
+  const currentGroupFirstEnabledOption = computed(() => {
+    return pointer.value.__VISIBLE__.filter(o => !o[disabledProp.value])[0]
+  });
+
+  const currentGroupPrevEnabledOption = computed(() => {
+    const options = currentGroup.value.__VISIBLE__.filter(o => !o[disabledProp.value]);
+    return options[options.map(o => o[valueProp.value]).indexOf(pointer.value[valueProp.value]) - 1]
+  });
+  
+  const currentGroupNextEnabledOption = computed(() => {
+    const options = getParentGroup(pointer.value).__VISIBLE__.filter(o => !o[disabledProp.value]);
+    return options[options.map(o => o[valueProp.value]).indexOf(pointer.value[valueProp.value]) + 1]
+  });
+
+  const prevGroupLastEnabledOption = computed(() => {
+    return [...prevGroup.value.__VISIBLE__.filter(o => !o[disabledProp.value])].slice(-1)[0]
+  });
+
+  const lastGroupLastEnabledOption = computed(() => {
+    return [...lastGroup.value.__VISIBLE__.filter(o => !o[disabledProp.value])].slice(-1)[0]
+  });
+
+  // =============== METHODS ==============
+
+  const isPointed = (option) => {
+    return (!!pointer.value && (
+      (!option.group && pointer.value[valueProp.value] == option[valueProp.value]) ||
+      (option.group !== undefined && pointer.value[groupLabel.value] == option[groupLabel.value])
+    )) ? true : undefined
+  };
+
+  const setPointerFirst = () => {
+    setPointer(options.value[0] || null);
+  };
+
+  const selectPointer = () => {
+    if (!pointer.value || pointer.value[disabledProp.value] === true) {
+      return
+    }
+
+    if (isPointerGroup.value) {
+      handleGroupClick(pointer.value);
+    } else {
+      handleOptionClick(pointer.value);
+    }
+  };
+
+  const forwardPointer = () => {
+    if (pointer.value === null) {
+      setPointer((groupped.value && canPointGroups.value ? groups.value[0] : options.value[0]) || null);
+    }
+    else if (groupped.value && canPointGroups.value) {
+      let nextPointer = isPointerGroup.value ? currentGroupFirstEnabledOption.value : currentGroupNextEnabledOption.value;
+
+      if (nextPointer === undefined) {
+        nextPointer = nextGroup.value;
+      }
+
+      setPointer(nextPointer || /* istanbul ignore next */ null);
+    } else {
+      let next = options.value.map(o => o[valueProp.value]).indexOf(pointer.value[valueProp.value]) + 1;
+
+      if (options.value.length <= next) {
+        next = 0;
+      }
+
+      setPointer(options.value[next] || null);
+    }
+
+    nextTick(() => {
+      adjustWrapperScrollToPointer();
+    });
+  };
+
+  const backwardPointer = () => {
+    if (pointer.value === null) {
+      let prevPointer = options.value[options.value.length - 1];
+
+      if (groupped.value && canPointGroups.value) {
+        prevPointer = lastGroupLastEnabledOption.value;
+
+        if (prevPointer === undefined) {
+          prevPointer = lastGroup.value;
+        }
+      }
+
+      setPointer(prevPointer  || null);
+    }
+    else if (groupped.value && canPointGroups.value) {
+      let prevPointer = isPointerGroup.value ? prevGroupLastEnabledOption.value : currentGroupPrevEnabledOption.value;
+
+      if (prevPointer === undefined) {
+        prevPointer = isPointerGroup.value ? prevGroup.value : currentGroup.value;
+      }
+
+      setPointer(prevPointer || /* istanbul ignore next */ null);
+    } else {
+      let prevIndex = options.value.map(o => o[valueProp.value]).indexOf(pointer.value[valueProp.value]) - 1;
+
+      if (prevIndex < 0) {
+        prevIndex = options.value.length - 1;
+      }
+
+      setPointer(options.value[prevIndex] || null);
+    }
+
+    nextTick(() => {
+      adjustWrapperScrollToPointer();
+    });
+  };
+
+  const getParentGroup = (option) => {
+    return groups.value.find((group) => {
+      return group.__VISIBLE__.map(o => o[valueProp.value]).indexOf(option[valueProp.value]) !== -1
+    })
+  };
+
+  // no export
+  /* istanbul ignore next */
+  const adjustWrapperScrollToPointer = () => {
+    let pointedOption = multiselect.value.querySelector(`[data-pointed]`);
+
+    if (!pointedOption) {
+      return
+    }
+
+    let wrapper = pointedOption.parentElement.parentElement;
+
+    if (groupped.value) {
+      wrapper = isPointerGroup.value
+        ? pointedOption.parentElement.parentElement.parentElement
+        : pointedOption.parentElement.parentElement.parentElement.parentElement;
+    }
+
+    if (pointedOption.offsetTop + pointedOption.offsetHeight > wrapper.clientHeight + wrapper.scrollTop) {
+      wrapper.scrollTop = pointedOption.offsetTop + pointedOption.offsetHeight - wrapper.clientHeight;
+    }
+    
+    if (pointedOption.offsetTop < wrapper.scrollTop) {
+      wrapper.scrollTop = pointedOption.offsetTop;
+    }
+  };
+
+  // ============== WATCHERS ==============
+
+  watch(search, (val) => {
+    if (searchable.value) {
+      if (val.length && showOptions.value) {
+        setPointerFirst();
+      } else {
+        clearPointer();
+      }
+    }
+  });
+
+  watch(isOpen, (val) => {
+    if (val) {
+      let firstSelected = multiselect.value.querySelectorAll(`[data-selected]`)[0];
+
+      if (!firstSelected) {
+        return
+      }
+
+      let wrapper = firstSelected.parentElement.parentElement;
+      
+      nextTick(() => {
+        /* istanbul ignore next */
+        if (wrapper.scrollTop > 0) {
+          return
+        }
+
+        wrapper.scrollTop = firstSelected.offsetTop;
+      });
+    }
+  });
+
+  return {
+    pointer,
+    canPointGroups,
+    isPointed,
+    setPointerFirst,
+    selectPointer,
+    forwardPointer,
+    backwardPointer,
+  }
+}
+
+function useDropdown (props, context, dep)
+{
+  const { disabled } = toRefs(props);
+
+  const $this = getCurrentInstance().proxy;
+
+  // ================ DATA ================
+
+  const isOpen = ref(false);
+
+  // =============== METHODS ==============
+
+  const open = () => {
+    if (isOpen.value || disabled.value) {
+      return
+    }
+
+    isOpen.value = true;
+    context.emit('open', $this);
+  };
+
+  const close = () => {
+    if (!isOpen.value) {
+      return
+    }
+
+    isOpen.value = false;
+    context.emit('close', $this);
+  };
+
+  return {
+    isOpen,
+    open,
+    close,
+  }
+}
+
+function useMultiselect (props, context, dep)
+{
+  const { searchable, disabled } = toRefs(props);
+
+  // ============ DEPENDENCIES ============
+
+  const input = dep.input;
+  const open = dep.open;
+  const close = dep.close;
+  const clearSearch = dep.clearSearch;
+  const isOpen = dep.isOpen;
+
+  // ================ DATA ================
+
+  const multiselect = ref(null);
+  const tags = ref(null);
+
+  const isActive = ref(false);
+
+  // ============== COMPUTED ==============
+
+  const tabindex = computed(() => {
+    return searchable.value || disabled.value ? -1 : 0
+  });
+
+  // =============== METHODS ==============
+
+  const blur = () => {
+    if (searchable.value) {
+      input.value.blur();
+    }
+
+    multiselect.value.blur();
+  };
+
+  const focus = () => {
+    if (searchable.value && !disabled.value) {
+      input.value.focus();
+    }
+  };
+
+  const handleFocus = () => {
+    focus();
+  };
+
+  const activate = () => {
+    if (disabled.value) {
+      return
+    }
+
+    isActive.value = true;
+
+    open();
+  };
+
+  const deactivate = () => {
+    isActive.value = false;
+
+    setTimeout(() => {
+      if (!isActive.value) {
+        close();
+        clearSearch();
+      }
+    }, 1);
+  };
+
+  const handleCaretClick = () => {
+    deactivate();
+    blur();
+  };
+
+  /* istanbul ignore next */
+  const handleMousedown = (e) => {
+    if (isOpen.value && (e.target.isEqualNode(multiselect.value) || e.target.isEqualNode(tags.value))) {
+      setTimeout(() => {
+        deactivate();
+      }, 0);
+    } else if (document.activeElement.isEqualNode(multiselect.value) && !isOpen.value) {
+      activate();    
+    }
+  };
+
+  return {
+    multiselect,
+    tags,
+    tabindex,
+    isActive,
+    blur,
+    focus,
+    handleFocus,
+    activate,
+    deactivate,
+    handleCaretClick,
+    handleMousedown,
+  }
+}
+
+function useKeyboard (props, context, dep)
+{
+  const {
+    mode, addTagOn, openDirection, searchable,
+    showOptions, valueProp, groups: groupped,
+    addOptionOn: addOptionOn_, createTag, createOption: createOption_,
+    reverse,
+  } = toRefs(props);
+
+  const $this = getCurrentInstance().proxy;
+
+  // ============ DEPENDENCIES ============
+
+  const iv = dep.iv;
+  const update = dep.update;
+  const search = dep.search;
+  const setPointer = dep.setPointer;
+  const selectPointer = dep.selectPointer;
+  const backwardPointer = dep.backwardPointer;
+  const forwardPointer = dep.forwardPointer;
+  const isOpen = dep.isOpen;
+  const open = dep.open;
+  const blur = dep.blur;
+  const fo = dep.fo;
+
+  // ============== COMPUTED ==============
+
+  // no export
+  const createOption = computed(() => {
+    return createTag.value || createOption_.value || false
+  });
+
+  // no export
+  const addOptionOn = computed(() => {
+    if (addTagOn.value !== undefined) {
+      return addTagOn.value
+    }
+    else if (addOptionOn_.value !== undefined) {
+      return addOptionOn_.value
+    }
+
+    return ['enter']
+  });
+
+  // =============== METHODS ==============
+
+  // no export
+  const preparePointer = () => {
+    // When options are hidden and creating tags is allowed
+    // no pointer will be set (because options are hidden).
+    // In such case we need to set the pointer manually to the 
+    // first option, which equals to the option created from
+    // the search value.
+    if (mode.value === 'tags' && !showOptions.value && createOption.value && searchable.value && !groupped.value) {
+      setPointer(fo.value[fo.value.map(o => o[valueProp.value]).indexOf(search.value)]);
+    }
+  };
+
+  const handleKeydown = (e) => {
+    context.emit('keydown', e, $this);
+
+    switch (e.key) {
+      case 'Backspace':
+        if (mode.value === 'single') {
+          return
+        }
+
+        if (searchable.value && [null, ''].indexOf(search.value) === -1) {
+          return
+        }
+
+        if (iv.value.length === 0) {
+          return
+        }
+        
+        update([...iv.value].slice(0,-1));
+        break
+
+      case 'Enter':
+        e.preventDefault();
+
+        if (addOptionOn.value.indexOf('enter') === -1 && createOption.value) {
+          return
+        }
+        
+        preparePointer();
+        selectPointer();
+        break
+
+      case ' ':
+        if (!createOption.value && !searchable.value) {
+          e.preventDefault();
+          
+          preparePointer();
+          selectPointer();
+          return
+        }
+
+        if (!createOption.value) {
+          return false
+        } 
+
+        if (addOptionOn.value.indexOf('space') === -1 && createOption.value) {
+          return
+        }
+
+        e.preventDefault();
+        
+        preparePointer();
+        selectPointer();
+        break
+      
+      case 'Tab':
+      case ';':
+      case ',':
+        if (addOptionOn.value.indexOf(e.key.toLowerCase()) === -1 || !createOption.value) {
+          return
+        }
+
+        preparePointer();
+        selectPointer();
+        e.preventDefault();
+        break
+
+      case 'Escape':
+        blur();
+        break
+
+      case 'ArrowUp':
+        e.preventDefault();
+
+        if (!showOptions.value) {
+          return
+        }
+
+        /* istanbul ignore else */
+        if (!isOpen.value) {
+          open();
+        }
+        
+        backwardPointer();
+        break
+
+      case 'ArrowDown':
+        e.preventDefault();
+
+        if (!showOptions.value) {
+          return
+        }
+
+        /* istanbul ignore else */
+        if (!isOpen.value) {
+          open();
+        }
+
+        forwardPointer();
+        break
+    }
+  };
+
+  const handleKeyup = (e) => {
+    context.emit('keyup', e, $this);
+  };
+
+  return {
+    handleKeydown,
+    handleKeyup,
+    preparePointer,
+  }
+}
+
+function useClasses (props, context, dependencies)
+{const { 
+    classes: classes_, disabled, openDirection, showOptions
+  } = toRefs(props);
+
+  // ============ DEPENDENCIES ============
+
+  const isOpen = dependencies.isOpen;
+  const isPointed = dependencies.isPointed;
+  const isSelected = dependencies.isSelected;
+  const isDisabled = dependencies.isDisabled;
+  const isActive = dependencies.isActive;
+  const canPointGroups = dependencies.canPointGroups;
+  const resolving = dependencies.resolving;
+  const fo = dependencies.fo;
+
+  const classes = computed(() => ({
+    container: 'multiselect',
+    containerDisabled: 'is-disabled',
+    containerOpen: 'is-open',
+    containerOpenTop: 'is-open-top',
+    containerActive: 'is-active',
+    singleLabel: 'multiselect-single-label',
+    singleLabelText: 'multiselect-single-label-text',
+    multipleLabel: 'multiselect-multiple-label',
+    search: 'multiselect-search',
+    tags: 'multiselect-tags',
+    tag: 'multiselect-tag',
+    tagDisabled: 'is-disabled',
+    tagRemove: 'multiselect-tag-remove',
+    tagRemoveIcon: 'multiselect-tag-remove-icon',
+    tagsSearchWrapper: 'multiselect-tags-search-wrapper',
+    tagsSearch: 'multiselect-tags-search',
+    tagsSearchCopy: 'multiselect-tags-search-copy',
+    placeholder: 'multiselect-placeholder',
+    caret: 'multiselect-caret',
+    caretOpen: 'is-open',
+    clear: 'multiselect-clear',
+    clearIcon: 'multiselect-clear-icon',
+    spinner: 'multiselect-spinner',
+    inifinite: 'multiselect-inifite',
+    inifiniteSpinner: 'multiselect-inifite-spinner',
+    dropdown: 'multiselect-dropdown',
+    dropdownTop: 'is-top',
+    dropdownHidden: 'is-hidden',
+    options: 'multiselect-options',
+    optionsTop: 'is-top',
+    group: 'multiselect-group',
+    groupLabel: 'multiselect-group-label',
+    groupLabelPointable: 'is-pointable',
+    groupLabelPointed: 'is-pointed',
+    groupLabelSelected: 'is-selected',
+    groupLabelDisabled: 'is-disabled',
+    groupLabelSelectedPointed: 'is-selected is-pointed',
+    groupLabelSelectedDisabled: 'is-selected is-disabled',
+    groupOptions: 'multiselect-group-options',
+    option: 'multiselect-option',
+    optionPointed: 'is-pointed',
+    optionSelected: 'is-selected',
+    optionDisabled: 'is-disabled',
+    optionSelectedPointed: 'is-selected is-pointed',
+    optionSelectedDisabled: 'is-selected is-disabled',
+    noOptions: 'multiselect-no-options',
+    noResults: 'multiselect-no-results',
+    fakeInput: 'multiselect-fake-input',
+    spacer: 'multiselect-spacer',
+    ...classes_.value,
+  }));
+
+  // ============== COMPUTED ==============
+
+  const showDropdown = computed(() => {
+    return !!(isOpen.value && showOptions.value && (!resolving.value || (resolving.value && fo.value.length)))
+  });
+
+  const classList = computed(() => {
+    const c = classes.value;
+
+    return {
+      container: [c.container]
+        .concat(disabled.value ? c.containerDisabled : [])
+        .concat(showDropdown.value && openDirection.value === 'top'  ? c.containerOpenTop : [])
+        .concat(showDropdown.value && openDirection.value !== 'top' ? c.containerOpen : [])
+        .concat(isActive.value ? c.containerActive : []),
+      spacer: c.spacer,
+      singleLabel: c.singleLabel,
+      singleLabelText: c.singleLabelText,
+      multipleLabel: c.multipleLabel,
+      search: c.search,
+      tags: c.tags,
+      tag: [c.tag]
+        .concat(disabled.value ? c.tagDisabled : []),
+      tagRemove: c.tagRemove,
+      tagRemoveIcon: c.tagRemoveIcon,
+      tagsSearchWrapper: c.tagsSearchWrapper,
+      tagsSearch: c.tagsSearch,
+      tagsSearchCopy: c.tagsSearchCopy,
+      placeholder: c.placeholder,
+      caret: [c.caret]
+        .concat(isOpen.value ? c.caretOpen : []),
+      clear: c.clear,
+      clearIcon: c.clearIcon,
+      spinner: c.spinner,
+      inifinite: c.inifinite,
+      inifiniteSpinner: c.inifiniteSpinner,
+      dropdown: [c.dropdown]
+        .concat(openDirection.value === 'top' ? c.dropdownTop : [])
+        .concat(!isOpen.value || !showOptions.value || !showDropdown.value ? c.dropdownHidden : []),
+      options: [c.options]
+        .concat(openDirection.value === 'top' ? c.optionsTop : []),
+      group: c.group,
+      groupLabel: (g) => {
+        let groupLabel = [c.groupLabel];
+
+        if (isPointed(g)) {
+          groupLabel.push(isSelected(g) ? c.groupLabelSelectedPointed : c.groupLabelPointed);
+        } else if (isSelected(g) && canPointGroups.value) {
+          groupLabel.push(isDisabled(g) ? c.groupLabelSelectedDisabled : c.groupLabelSelected);
+        } else if (isDisabled(g)) {
+          groupLabel.push(c.groupLabelDisabled);
+        }
+
+        if (canPointGroups.value) {
+          groupLabel.push(c.groupLabelPointable);
+        }
+
+        return groupLabel
+      },
+      groupOptions: c.groupOptions,
+      option: (o, g) => {
+        let option = [c.option];
+
+        if (isPointed(o)) {
+          option.push(isSelected(o) ? c.optionSelectedPointed : c.optionPointed);
+        } else if (isSelected(o)) {
+          option.push(isDisabled(o) ? c.optionSelectedDisabled : c.optionSelected);
+        } else if (isDisabled(o) || (g && isDisabled(g))) {
+          option.push(c.optionDisabled);
+        }
+
+        return option
+      },
+      noOptions: c.noOptions,
+      noResults: c.noResults,
+      fakeInput: c.fakeInput,
+    }
+  });
+
+  return {
+    classList,
+    showDropdown,
+  }
+}
+
+function useScroll$1 (props, context, dep)
+{
+  const {
+    limit, infinite,
+  } = toRefs(props);
+
+  // ============ DEPENDENCIES ============
+
+  const isOpen = dep.isOpen;
+  const offset = dep.offset;
+  const search = dep.search;
+  const pfo = dep.pfo;
+  const eo = dep.eo;
+
+  // ================ DATA ================
+
+  // no export
+  const observer = ref(null);
+
+  const infiniteLoader = ref(null);
+
+  // ============== COMPUTED ==============
+
+  const hasMore = computed(() => {
+    return offset.value < pfo.value.length
+  });
+
+  // =============== METHODS ==============
+
+  // no export
+  /* istanbul ignore next */
+  const handleIntersectionObserver = (entries) => {
+    const { isIntersecting, target } = entries[0];
+
+    if (isIntersecting) {
+      const parent = target.offsetParent;
+      const scrollTop = parent.scrollTop;
+
+      offset.value += limit.value == -1 ? 10 : limit.value;
+
+      nextTick(() => {
+        parent.scrollTop = scrollTop;
+      });
+    }
+  };
+
+  const observe = () => {
+    /* istanbul ignore else */
+    if (isOpen.value && offset.value < pfo.value.length) {
+      observer.value.observe(infiniteLoader.value);
+    } else if (!isOpen.value && observer.value) {
+      observer.value.disconnect();
+    }
+  };
+
+  // ============== WATCHERS ==============
+
+  watch(isOpen, () => {
+    if (!infinite.value) {
+      return
+    }
+
+    observe();
+  });
+
+  watch(search, () => {
+    if (!infinite.value) {
+      return
+    }
+
+    offset.value = limit.value;
+
+    observe();
+  }, { flush: 'post' });
+
+  watch(eo, () => {
+    if (!infinite.value) {
+      return
+    }
+
+    observe();
+  }, { immediate: false, flush: 'post' });
+
+  // ================ HOOKS ===============
+
+  onMounted(() => {
+    /* istanbul ignore else */
+    if (window && window.IntersectionObserver) {
+      observer.value = new IntersectionObserver(handleIntersectionObserver);
+    }
+  });
+
+  return {
+    hasMore,
+    infiniteLoader,
+  }
+}
+
+function useScroll (props, context, dep)
+{
+  const { placeholder, id, valueProp, label: labelProp, mode, groupLabel } = toRefs(props);
+
+  // ============ DEPENDENCIES ============
+
+  const pointer = dep.pointer;
+  const iv = dep.iv;
+  const isSelected = dep.isSelected;
+  const hasSelected = dep.hasSelected;
+  const multipleLabelText = dep.multipleLabelText;
+
+  // ================ DATA ================
+
+  const label = ref(null);
+
+  // ============== COMPUTED ==============
+
+  const ariaOwns = computed(() => {
+    let texts = [];
+
+    if (id && id.value) {
+      texts.push(id.value);
+    }
+
+    texts.push('multiselect-options');
+
+    return texts.join('-')
+  });
+
+  const ariaActiveDescendant = computed(() => {
+    let texts = [];
+
+    if (id && id.value) {
+      texts.push(id.value);
+    }
+
+    texts.push('multiselect-option');
+
+    if (pointer.value && pointer.value[valueProp.value] !== undefined) {
+      texts.push(pointer.value[valueProp.value]);
+
+      return texts.join('-')
+    }
+  });
+
+  const ariaLabel = computed(() => {
+    let texts = [];
+
+    /* istanbul ignore next */
+    if (label.value) {
+      texts.push(label.value);
+    }
+
+    if (placeholder.value && !hasSelected.value) {
+      texts.push(placeholder.value);
+    }
+
+    if (mode.value === 'single' && iv.value && iv.value[labelProp.value] !== undefined) {
+      texts.push(iv.value[labelProp.value]);
+    }
+
+    if (mode.value === 'multiple' && hasSelected.value) {
+      texts.push(multipleLabelText.value);
+    }
+
+    if (mode.value === 'tags' && hasSelected.value) {
+      texts.push(...iv.value.map(v => v[labelProp.value]));
+    }
+
+    return texts.join(', ')
+  });
+
+  const ariaPlaceholder = computed(() => {
+    return ariaLabel.value
+  });
+
+  // =============== METHODS ==============
+
+  const ariaOptionId = (option) => {
+    let texts = [];
+
+    if (id && id.value) {
+      texts.push(id.value);
+    }
+
+    texts.push('multiselect-option');
+
+    texts.push(option[valueProp.value]);
+
+    return texts.join('-')
+  };
+
+  const ariaOptionLabel = (option) => {
+    let texts = [];
+
+    if (isSelected(option)) {
+      texts.push('✓');
+    }
+
+    texts.push(option[labelProp.value]);
+
+    return texts.join(' ')
+  };
+
+  const ariaGroupLabel = (group) => {
+    let texts = [];
+
+    texts.push(group[groupLabel.value]);
+
+    return texts.join(' ')
+  };
+
+  // =============== HOOKS ================
+
+  onMounted(() => {
+    if (id && id.value) {
+      label.value = document.querySelector(`[for="${id.value}"]`)?.innerText || null;
+    }
+  });
+
+  return {
+    ariaOwns,
+    ariaLabel,
+    ariaPlaceholder,
+    ariaActiveDescendant,
+    ariaOptionId,
+    ariaOptionLabel,
+    ariaGroupLabel,
+  }
+}
+
+function resolveDeps (props, context, features, deps = {}) {
+  features.forEach((composable) => {
+    /* istanbul ignore else */
+    if (composable) {
+      deps = {
+        ...deps,
+        ...composable(props, context, deps)
+      };
+    }
+
+  });
+  
+  return deps
+}
+
+//
+
+var script = {
+  name: 'Multiselect',
+  emits: [
+    'open', 'close', 'select', 'deselect', 
+    'input', 'search-change', 'tag', 'option', 'update:modelValue',
+    'change', 'clear', 'keydown', 'keyup'
+  ],
+  props: {
+    value: {
+      required: false,
+    },
+    modelValue: {
+      required: false,
+    },
+    options: {
+      type: [Array, Object, Function],
+      required: false,
+      default: () => ([])
+    },
+    id: {
+      type: [String, Number],
+      required: false,
+    },
+    name: {
+      type: [String, Number],
+      required: false,
+      default: 'multiselect',
+    },
+    disabled: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+    label: {
+      type: String,
+      required: false,
+      default: 'label',
+    },
+    trackBy: {
+      type: String,
+      required: false,
+      default: undefined,
+    },
+    valueProp: {
+      type: String,
+      required: false,
+      default: 'value',
+    },
+    placeholder: {
+      type: String,
+      required: false,
+      default: null,
+    },
+    mode: {
+      type: String,
+      required: false,
+      default: 'single', // single|multiple|tags
+    },
+    searchable: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+    limit: {
+      type: Number,
+      required: false,
+      default: -1,
+    },
+    hideSelected: {
+      type: Boolean,
+      required: false,
+      default: true,
+    },
+    createTag: {
+      type: Boolean,
+      required: false,
+      default: undefined,
+    },
+    createOption: {
+      type: Boolean,
+      required: false,
+      default: undefined,
+    },
+    appendNewTag: {
+      type: Boolean,
+      required: false,
+      default: undefined,
+    },
+    appendNewOption: {
+      type: Boolean,
+      required: false,
+      default: undefined,
+    },
+    addTagOn: {
+      type: Array,
+      required: false,
+      default: undefined,
+    },
+    addOptionOn: {
+      type: Array,
+      required: false,
+      default: undefined,
+    },
+    caret: {
+      type: Boolean,
+      required: false,
+      default: true,
+    },
+    loading: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+    noOptionsText: {
+      type: String,
+      required: false,
+      default: 'The list is empty',
+    },
+    noResultsText: {
+      type: String,
+      required: false,
+      default: 'No results found',
+    },
+    multipleLabel: {
+      type: Function,
+      required: false,
+    },
+    object: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+    delay: {
+      type: Number,
+      required: false,
+      default: -1,
+    },
+    minChars: {
+      type: Number,
+      required: false,
+      default: 0,
+    },
+    resolveOnLoad: {
+      type: Boolean,
+      required: false,
+      default: true,
+    },
+    filterResults: {
+      type: Boolean,
+      required: false,
+      default: true,
+    },
+    clearOnSearch: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+    clearOnSelect: {
+      type: Boolean,
+      required: false,
+      default: true,
+    },
+    canDeselect: {
+      type: Boolean,
+      required: false,
+      default: true,
+    },
+    canClear: {
+      type: Boolean,
+      required: false,
+      default: true,
+    },
+    max: {
+      type: Number,
+      required: false,
+      default: -1,
+    },
+    showOptions: {
+      type: Boolean,
+      required: false,
+      default: true,
+    },
+    required: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+    openDirection: {
+      type: String,
+      required: false,
+      default: 'bottom',
+    },
+    nativeSupport: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+    classes: {
+      type: Object,
+      required: false,
+      default: () => ({})
+    },
+    strict: {
+      type: Boolean,
+      required: false,
+      default: true,
+    },
+    closeOnSelect: {
+      type: Boolean,
+      required: false,
+      default: true,
+    },
+    autocomplete: {
+      type: String,
+      required: false,
+    },
+    groups: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+    groupLabel: {
+      type: String,
+      required: false,
+      default: 'label',
+    },
+    groupOptions: {
+      type: String,
+      required: false,
+      default: 'options',
+    },
+    groupHideEmpty: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+    groupSelect: {
+      type: Boolean,
+      required: false,
+      default: true,
+    },
+    inputType: {
+      type: String,
+      required: false,
+      default: 'text',
+    },
+    attrs: {
+      required: false,
+      type: Object,
+      default: () => ({}),
+    },
+    onCreate: {
+      required: false,
+      type: Function,
+    },
+    disabledProp: {
+      type: String,
+      required: false,
+      default: 'disabled',
+    },
+    searchStart: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+    reverse: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+    regex: {
+      type: [Object, String, RegExp],
+      required: false,
+      default: undefined,
+    },
+    rtl: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+    infinite: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+  },
+  setup(props, context)
+  { 
+    return resolveDeps(props, context, [
+      useValue,
+      usePointer$1,
+      useDropdown,
+      useSearch,
+      useData,
+      useMultiselect,
+      useOptions,
+      useScroll$1,
+      usePointer,
+      useKeyboard,
+      useClasses,
+      useScroll,
+    ])
+  }
+};
+
+function normalizeComponent(template, style, script, scopeId, isFunctionalTemplate, moduleIdentifier /* server only */, shadowMode, createInjector, createInjectorSSR, createInjectorShadow) {
+    if (typeof shadowMode !== 'boolean') {
+        createInjectorSSR = createInjector;
+        createInjector = shadowMode;
+        shadowMode = false;
+    }
+    // Vue.extend constructor export interop.
+    const options = typeof script === 'function' ? script.options : script;
+    // render functions
+    if (template && template.render) {
+        options.render = template.render;
+        options.staticRenderFns = template.staticRenderFns;
+        options._compiled = true;
+        // functional template
+        if (isFunctionalTemplate) {
+            options.functional = true;
+        }
+    }
+    // scopedId
+    if (scopeId) {
+        options._scopeId = scopeId;
+    }
+    let hook;
+    if (moduleIdentifier) {
+        // server build
+        hook = function (context) {
+            // 2.3 injection
+            context =
+                context || // cached call
+                    (this.$vnode && this.$vnode.ssrContext) || // stateful
+                    (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext); // functional
+            // 2.2 with runInNewContext: true
+            if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
+                context = __VUE_SSR_CONTEXT__;
+            }
+            // inject component styles
+            if (style) {
+                style.call(this, createInjectorSSR(context));
+            }
+            // register component module identifier for async chunk inference
+            if (context && context._registeredComponents) {
+                context._registeredComponents.add(moduleIdentifier);
+            }
+        };
+        // used by ssr in case component is cached and beforeCreate
+        // never gets called
+        options._ssrRegister = hook;
+    }
+    else if (style) {
+        hook = shadowMode
+            ? function (context) {
+                style.call(this, createInjectorShadow(context, this.$root.$options.shadowRoot));
+            }
+            : function (context) {
+                style.call(this, createInjector(context));
+            };
+    }
+    if (hook) {
+        if (options.functional) {
+            // register for functional component in vue file
+            const originalRender = options.render;
+            options.render = function renderWithStyleInjection(h, context) {
+                hook.call(context);
+                return originalRender(h, context);
+            };
+        }
+        else {
+            // inject component registration as beforeCreate hook
+            const existing = options.beforeCreate;
+            options.beforeCreate = existing ? [].concat(existing, hook) : [hook];
+        }
+    }
+    return script;
+}
+
+/* script */
+const __vue_script__ = script;
+
+/* template */
+var __vue_render__ = function () {
+  var _vm = this;
+  var _h = _vm.$createElement;
+  var _c = _vm._self._c || _h;
+  return _c(
+    "div",
+    {
+      ref: "multiselect",
+      class: _vm.classList.container,
+      attrs: {
+        tabindex: _vm.tabindex,
+        id: _vm.searchable ? undefined : _vm.id,
+        dir: _vm.rtl ? "rtl" : undefined,
+        "aria-owns": _vm.ariaOwns,
+        "aria-expanded": _vm.isOpen,
+        "aria-label": _vm.ariaLabel,
+        "aria-placeholder": _vm.ariaPlaceholder,
+        "aria-activedescendant": _vm.ariaActiveDescendant,
+        role: "combobox",
+      },
+      on: {
+        focusin: _vm.activate,
+        focusout: _vm.deactivate,
+        keydown: _vm.handleKeydown,
+        keyup: _vm.handleKeyup,
+        focus: _vm.handleFocus,
+        mousedown: _vm.handleMousedown,
+      },
+    },
+    [
+      _vm.mode !== "tags" && _vm.searchable && !_vm.disabled
+        ? [
+            _c(
+              "input",
+              _vm._b(
+                {
+                  ref: "input",
+                  class: _vm.classList.search,
+                  attrs: {
+                    type: _vm.inputType,
+                    modelValue: _vm.search,
+                    autocomplete: _vm.autocomplete,
+                    id: _vm.searchable ? _vm.id : undefined,
+                    "aria-owns": _vm.ariaOwns,
+                    "aria-expanded": _vm.isOpen,
+                    "aria-label": _vm.ariaLabel,
+                    "aria-placeholder": _vm.ariaPlaceholder,
+                    "aria-activedescendant": _vm.ariaActiveDescendant,
+                    role: "combobox",
+                  },
+                  domProps: { value: _vm.search },
+                  on: {
+                    input: _vm.handleSearchInput,
+                    keypress: _vm.handleKeypress,
+                    paste: function ($event) {
+                      $event.stopPropagation();
+                      return _vm.handlePaste.apply(null, arguments)
+                    },
+                  },
+                },
+                "input",
+                _vm.attrs,
+                false
+              )
+            ),
+          ]
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.mode == "tags"
+        ? [
+            _c(
+              "div",
+              { class: _vm.classList.tags },
+              [
+                _vm._l(_vm.iv, function (option, i, key) {
+                  return _vm._t(
+                    "tag",
+                    function () {
+                      return [
+                        _c("span", { key: key, class: _vm.classList.tag }, [
+                          _vm._v(
+                            "\n          " +
+                              _vm._s(option[_vm.label]) +
+                              "\n          "
+                          ),
+                          !_vm.disabled
+                            ? _c(
+                                "span",
+                                {
+                                  class: _vm.classList.tagRemove,
+                                  on: {
+                                    click: function ($event) {
+                                      return _vm.handleTagRemove(option, $event)
+                                    },
+                                  },
+                                },
+                                [
+                                  _c("span", {
+                                    class: _vm.classList.tagRemoveIcon,
+                                  }),
+                                ]
+                              )
+                            : _vm._e(),
+                        ]),
+                      ]
+                    },
+                    {
+                      option: option,
+                      handleTagRemove: _vm.handleTagRemove,
+                      disabled: _vm.disabled,
+                    }
+                  )
+                }),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { ref: "tags", class: _vm.classList.tagsSearchWrapper },
+                  [
+                    _c("span", { class: _vm.classList.tagsSearchCopy }, [
+                      _vm._v(_vm._s(_vm.search)),
+                    ]),
+                    _vm._v(" "),
+                    _vm.searchable && !_vm.disabled
+                      ? _c(
+                          "input",
+                          _vm._b(
+                            {
+                              ref: "input",
+                              class: _vm.classList.tagsSearch,
+                              attrs: {
+                                type: _vm.inputType,
+                                modelValue: _vm.search,
+                                id: _vm.searchable ? _vm.id : undefined,
+                                autocomplete: _vm.autocomplete,
+                                "aria-owns": _vm.ariaOwns,
+                                "aria-expanded": _vm.isOpen,
+                                "aria-label": _vm.ariaLabel,
+                                "aria-placeholder": _vm.ariaPlaceholder,
+                                "aria-activedescendant":
+                                  _vm.ariaActiveDescendant,
+                                role: "combobox",
+                              },
+                              domProps: { value: _vm.search },
+                              on: {
+                                input: _vm.handleSearchInput,
+                                keypress: _vm.handleKeypress,
+                                paste: function ($event) {
+                                  $event.stopPropagation();
+                                  return _vm.handlePaste.apply(null, arguments)
+                                },
+                              },
+                            },
+                            "input",
+                            _vm.attrs,
+                            false
+                          )
+                        )
+                      : _vm._e(),
+                  ]
+                ),
+              ],
+              2
+            ),
+          ]
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.mode == "single" && _vm.hasSelected && !_vm.search && _vm.iv
+        ? [
+            _vm._t(
+              "singlelabel",
+              function () {
+                return [
+                  _c("div", { class: _vm.classList.singleLabel }, [
+                    _c("span", {
+                      class: _vm.classList.singleLabelText,
+                      domProps: { innerHTML: _vm._s(_vm.iv[_vm.label]) },
+                    }),
+                  ]),
+                ]
+              },
+              { value: _vm.iv }
+            ),
+          ]
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.mode == "multiple" && _vm.hasSelected && !_vm.search
+        ? [
+            _vm._t(
+              "multiplelabel",
+              function () {
+                return [
+                  _c("div", {
+                    class: _vm.classList.multipleLabel,
+                    domProps: { innerHTML: _vm._s(_vm.multipleLabelText) },
+                  }),
+                ]
+              },
+              { values: _vm.iv }
+            ),
+          ]
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.placeholder && !_vm.hasSelected && !_vm.search
+        ? [
+            _vm._t("placeholder", function () {
+              return [
+                _c("div", { class: _vm.classList.placeholder }, [
+                  _vm._v("\n        " + _vm._s(_vm.placeholder) + "\n      "),
+                ]),
+              ]
+            }),
+          ]
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.loading || _vm.resolving
+        ? _vm._t("spinner", function () {
+            return [_c("span", { class: _vm.classList.spinner })]
+          })
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.hasSelected && !_vm.disabled && _vm.canClear && !_vm.busy
+        ? _vm._t(
+            "clear",
+            function () {
+              return [
+                _c(
+                  "span",
+                  { class: _vm.classList.clear, on: { click: _vm.clear } },
+                  [_c("span", { class: _vm.classList.clearIcon })]
+                ),
+              ]
+            },
+            { clear: _vm.clear }
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.caret && _vm.showOptions
+        ? _vm._t("caret", function () {
+            return [
+              _c("span", {
+                class: _vm.classList.caret,
+                on: { click: _vm.handleCaretClick },
+              }),
+            ]
+          })
+        : _vm._e(),
+      _vm._v(" "),
+      _c(
+        "div",
+        { class: _vm.classList.dropdown, attrs: { tabindex: "-1" } },
+        [
+          _vm._t("beforelist", null, { options: _vm.fo }),
+          _vm._v(" "),
+          _c(
+            "ul",
+            {
+              class: _vm.classList.options,
+              attrs: { id: _vm.ariaOwns, role: "listbox" },
+            },
+            [
+              _vm.groups
+                ? _vm._l(_vm.fg, function (group, i, key) {
+                    return _c("li", { key: key, class: _vm.classList.group }, [
+                      _c(
+                        "div",
+                        {
+                          class: _vm.classList.groupLabel(group),
+                          attrs: {
+                            "data-pointed": _vm.isPointed(group),
+                            role: "none",
+                          },
+                          on: {
+                            mouseenter: function ($event) {
+                              return _vm.setPointer(group)
+                            },
+                            click: function ($event) {
+                              return _vm.handleGroupClick(group)
+                            },
+                          },
+                        },
+                        [
+                          _vm._t(
+                            "grouplabel",
+                            function () {
+                              return [
+                                _c("span", {
+                                  domProps: {
+                                    innerHTML: _vm._s(group[_vm.groupLabel]),
+                                  },
+                                }),
+                              ]
+                            },
+                            {
+                              group: group,
+                              isSelected: _vm.isSelected,
+                              isPointed: _vm.isPointed,
+                            }
+                          ),
+                        ],
+                        2
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "ul",
+                        {
+                          class: _vm.classList.groupOptions,
+                          attrs: {
+                            "aria-label": _vm.ariaGroupLabel(group),
+                            role: "group",
+                          },
+                        },
+                        _vm._l(group.__VISIBLE__, function (option, i, key) {
+                          return _c(
+                            "li",
+                            {
+                              key: key,
+                              class: _vm.classList.option(option, group),
+                              attrs: {
+                                "data-pointed": _vm.isPointed(option),
+                                "data-selected":
+                                  _vm.isSelected(option) || undefined,
+                                id: _vm.ariaOptionId(option),
+                                "aria-label": _vm.ariaOptionLabel(option),
+                                role: "option",
+                              },
+                              on: {
+                                mouseenter: function ($event) {
+                                  return _vm.setPointer(option)
+                                },
+                                click: function ($event) {
+                                  return _vm.handleOptionClick(option)
+                                },
+                              },
+                            },
+                            [
+                              _vm._t(
+                                "option",
+                                function () {
+                                  return [
+                                    _c("span", {
+                                      domProps: {
+                                        innerHTML: _vm._s(option[_vm.label]),
+                                      },
+                                    }),
+                                  ]
+                                },
+                                {
+                                  option: option,
+                                  isSelected: _vm.isSelected,
+                                  isPointed: _vm.isPointed,
+                                  search: _vm.search,
+                                }
+                              ),
+                            ],
+                            2
+                          )
+                        }),
+                        0
+                      ),
+                    ])
+                  })
+                : _vm._l(_vm.fo, function (option, i, key) {
+                    return _c(
+                      "li",
+                      {
+                        key: key,
+                        class: _vm.classList.option(option),
+                        attrs: {
+                          id: _vm.ariaOptionId(option),
+                          "aria-label": _vm.ariaOptionLabel(option),
+                          "data-pointed": _vm.isPointed(option),
+                          "data-selected": _vm.isSelected(option) || undefined,
+                          role: "option",
+                        },
+                        on: {
+                          mouseenter: function ($event) {
+                            return _vm.setPointer(option)
+                          },
+                          click: function ($event) {
+                            return _vm.handleOptionClick(option)
+                          },
+                        },
+                      },
+                      [
+                        _vm._t(
+                          "option",
+                          function () {
+                            return [
+                              _c("span", {
+                                domProps: {
+                                  innerHTML: _vm._s(option[_vm.label]),
+                                },
+                              }),
+                            ]
+                          },
+                          {
+                            option: option,
+                            isSelected: _vm.isSelected,
+                            isPointed: _vm.isPointed,
+                            search: _vm.search,
+                          }
+                        ),
+                      ],
+                      2
+                    )
+                  }),
+            ],
+            2
+          ),
+          _vm._v(" "),
+          _vm.noOptions
+            ? _vm._t("nooptions", function () {
+                return [
+                  _c("div", {
+                    class: _vm.classList.noOptions,
+                    domProps: { innerHTML: _vm._s(_vm.noOptionsText) },
+                  }),
+                ]
+              })
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.noResults
+            ? _vm._t("noresults", function () {
+                return [
+                  _c("div", {
+                    class: _vm.classList.noResults,
+                    domProps: { innerHTML: _vm._s(_vm.noResultsText) },
+                  }),
+                ]
+              })
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.infinite && _vm.hasMore
+            ? _c(
+                "div",
+                { ref: "infiniteLoader", class: _vm.classList.inifinite },
+                [
+                  _vm._t("infinite", function () {
+                    return [
+                      _c("span", { class: _vm.classList.inifiniteSpinner }),
+                    ]
+                  }),
+                ],
+                2
+              )
+            : _vm._e(),
+          _vm._v(" "),
+          _vm._t("afterlist", null, { options: _vm.fo }),
+        ],
+        2
+      ),
+      _vm._v(" "),
+      _vm.required
+        ? _c("input", {
+            class: _vm.classList.fakeInput,
+            attrs: { tabindex: "-1", required: "" },
+            domProps: { value: _vm.textValue },
+          })
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.nativeSupport
+        ? [
+            _vm.mode == "single"
+              ? _c("input", {
+                  attrs: { type: "hidden", name: _vm.name },
+                  domProps: {
+                    value: _vm.plainValue !== undefined ? _vm.plainValue : "",
+                  },
+                })
+              : _vm._l(_vm.plainValue, function (v, i) {
+                  return _c("input", {
+                    key: i,
+                    attrs: { type: "hidden", name: _vm.name + "[]" },
+                    domProps: { value: v },
+                  })
+                }),
+          ]
+        : _vm._e(),
+      _vm._v(" "),
+      _c("div", { class: _vm.classList.spacer }),
+    ],
+    2
+  )
+};
+var __vue_staticRenderFns__ = [];
+__vue_render__._withStripped = true;
+
+  /* style */
+  const __vue_inject_styles__ = undefined;
+  /* scoped */
+  const __vue_scope_id__ = undefined;
+  /* module identifier */
+  const __vue_module_identifier__ = undefined;
+  /* functional template */
+  const __vue_is_functional_template__ = false;
+  /* style inject */
+  
+  /* style inject SSR */
+  
+  /* style inject shadow dom */
+  
+
+  
+  const __vue_component__ = /*#__PURE__*/normalizeComponent(
+    { render: __vue_render__, staticRenderFns: __vue_staticRenderFns__ },
+    __vue_inject_styles__,
+    __vue_script__,
+    __vue_scope_id__,
+    __vue_is_functional_template__,
+    __vue_module_identifier__,
+    false,
+    undefined,
+    undefined,
+    undefined
+  );
+
+export { __vue_component__ as default };
