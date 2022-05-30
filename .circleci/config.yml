@@ -26,9 +26,9 @@ jobs:
           key: v1-dependencies-{{ checksum "package-lock.json" }}
           
       - run: |
-        pwd
-        ls -la
-        npm run test:vue3
+          pwd
+          ls -la
+          npm run test:vue3
 
       - codecov/upload:
           file: './coverage/coverage-final.json'
