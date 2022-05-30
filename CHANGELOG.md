@@ -1,3 +1,38 @@
+## v2.4.0
+
+> `2021-05-30`
+
+### 🎉 Feature
+  - 🎉 Added accessibility (a11y) support [#22](https://github.com/vueform/multiselect/issues/22), [#179](https://github.com/vueform/multiselect/issues/179).
+  - 🎉 Added infinite scroll [#76](https://github.com/vueform/multiselect/issues/76), [#165](https://github.com/vueform/multiselect/issues/165), [#198](https://github.com/vueform/multiselect/issues/198).
+  - 🎉 Added RTL support [#206](https://github.com/vueform/multiselect/issues/206).
+  - 🎉 Close on click if opened [#162](https://github.com/vueform/multiselect/issues/162).
+  - Added `id` to input when searchable.
+  - Re-open input on arrows & search type if closed.
+  - Close dropdown instead of blur on select.
+  - Added `regex` option [#138](https://github.com/vueform/multiselect/issues/138).
+  - Scroll to first selected on open [#168](https://github.com/vueform/multiselect/issues/168).
+  - Options are not reversed when `openPosition: true`.
+  - Added `reverse` option.
+  - Added `searchStart` option [#169](https://github.com/vueform/multiselect/issues/169).
+  - Added `disabledProp` option [#202](https://github.com/vueform/multiselect/issues/202).
+  - Added `onCreate` option [#204](https://github.com/vueform/multiselect/issues/204).
+  - Added `select$` as second param to events and async options.
+  - Added `isSelected` & `isPointed` to `option` slot scope [#195](https://github.com/vueform/multiselect/issues/195).
+
+### 🐞 Bug Fixes
+  - Headless UI conflict resolved [#182](https://github.com/vueform/multiselect/issues/182).
+  - Keep selected options when async [#228](https://github.com/vueform/multiselect/issues/228).
+  - Show spinner even when not active [#223](https://github.com/vueform/multiselect/issues/223).
+  - Allow `false` value [#222](https://github.com/vueform/multiselect/issues/222).
+  - Resolve options on `minChars: 0` too [#230](https://github.com/vueform/multiselect/issues/230).
+  - Added `keyup`, `keydown` events.
+  - Resolved number tag creation duplicate bug.
+  - Input height fix when `searchable` for FF.
+  - CSS: moved max height to dropdown container from wrapper.
+  - Vite & Nuxt 3 build warn fixes.
+
+
 ## v2.3.4
 
 > `2021-05-11`
