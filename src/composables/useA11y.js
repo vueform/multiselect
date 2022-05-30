@@ -1,4 +1,4 @@
-import { toRefs, onMounted, ref, computed } from 'vue'
+import { toRefs, onMounted, ref, computed } from 'composition-api'
 
 export default function useScroll (props, context, dep)
 {

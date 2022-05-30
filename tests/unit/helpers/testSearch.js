@@ -7,6 +7,8 @@ export default function (mode = 'single') {
       let select = createSelect({
         mode: mode,
         searchable: true,
+      }, {
+        attach: true,
       })
 
       expect(select.find('input').element).toBeVisible()
@@ -27,9 +29,13 @@ export default function (mode = 'single') {
         value: mode == 'single' ? 1 : [1],
         options: [1,2,3],
         searchable: true,
+      }, {
+        attach: true,
       })
 
       expect(select.find('input').element).toBeVisible()
+
+      destroy(select)
     })
   })
 }

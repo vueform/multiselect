@@ -1,4 +1,4 @@
-import { ref, getCurrentInstance, watch, toRefs } from 'vue'
+import { ref, getCurrentInstance, watch, toRefs } from 'composition-api'
 
 export default function useSearch (props, context, dep)
 {7

@@ -1,4 +1,4 @@
-import { toRefs, computed, getCurrentInstance } from 'vue'
+import { toRefs, computed, getCurrentInstance } from 'composition-api'
 
 export default function useKeyboard (props, context, dep)
 {

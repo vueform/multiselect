@@ -1,4 +1,4 @@
-import { toRefs, getCurrentInstance } from 'vue'
+import { toRefs, getCurrentInstance } from 'composition-api'
 import isNullish from './../utils/isNullish'
 
 export default function useData (props, context, dep)

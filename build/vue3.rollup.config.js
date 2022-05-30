@@ -1,4 +1,5 @@
 import vue from 'vue-next-rollup-plugin-vue'
+import alias from '@rollup/plugin-alias'
 import { terser } from 'rollup-plugin-terser'
 
 export default [
@@ -9,6 +10,11 @@ export default [
       format: 'esm',
     },
     plugins: [
+      alias({
+        entries: [
+          { find: 'composition-api', replacement: 'vue' },
+        ]
+      }),
       vue(),
     ],
     external: ['vue'],
@@ -24,6 +30,11 @@ export default [
       }
     },
     plugins: [
+      alias({
+        entries: [
+          { find: 'composition-api', replacement: 'vue' },
+        ]
+      }),
       vue(),
       terser(),
     ],

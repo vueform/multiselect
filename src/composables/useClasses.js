@@ -1,4 +1,4 @@
-import { computed, toRefs } from 'vue'
+import { computed, toRefs } from 'composition-api'
 
 export default function useClasses (props, context, dependencies)
 {const { 

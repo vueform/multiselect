@@ -210,10 +210,14 @@ describe('Multiselect', () => {
         let select = createSelect({
           options: [1,2,3],
           placeholder: 'Select option'
+        }, {
+          attach: true,
         })
 
         expect(select.find('.multiselect-placeholder').element).toBeVisible()
         expect(select.find('.multiselect-placeholder').html()).toContain('Select option')
+
+        destroy(select)
       })
 
       it('should render placeholder even if it has search', () => {
@@ -221,9 +225,13 @@ describe('Multiselect', () => {
           options: [1,2,3],
           placeholder: 'Select option',
           searchable: true,
+        }, {
+          attach: true,
         })
 
         expect(select.find('.multiselect-placeholder').element).toBeVisible()
+
+        destroy(select)
       })
 
       it('should not render placeholder if search has value', async () => {
@@ -256,10 +264,14 @@ describe('Multiselect', () => {
         let select = createSelect({
           value: 'value2',
           options: ['value1','value2','value3'],
+        }, {
+          attach: true,
         })
 
         expect(select.find('.multiselect-single-label').element).toBeVisible()
         expect(select.find('.multiselect-single-label').html()).toContain('value2')
+
+        destroy(select)
       })
 
       it('should not render label if has value', () => {
@@ -294,10 +306,14 @@ describe('Multiselect', () => {
         let select = createSelect({
           mode: 'multiple',
           placeholder: 'Select option'
+        }, {
+          attach: true,
         })
 
         expect(select.find('.multiselect-placeholder').element).toBeVisible()
         expect(select.find('.multiselect-placeholder').html()).toContain('Select option')
+
+        destroy(select)
       })
 
       it('should render placeholder even if it has search', () => {
@@ -305,9 +321,13 @@ describe('Multiselect', () => {
           mode: 'multiple',
           placeholder: 'Select option',
           searchable: true,
+        }, {
+          attach: true,
         })
 
         expect(select.find('.multiselect-placeholder').element).toBeVisible()
+
+        destroy(select)
       })
 
       it('should not render placeholder if search has value', async () => {
@@ -333,6 +353,8 @@ describe('Multiselect', () => {
         })
 
         expect(select.find('.multiselect-placeholder').exists()).toBe(false)
+
+        destroy(select)
       })
     })
 
@@ -342,6 +364,8 @@ describe('Multiselect', () => {
           mode: 'multiple',
           value: ['value2'],
           options: ['value1','value2','value3'],
+        }, {
+          attach: true,
         })
 
         expect(select.find('.multiselect-multiple-label').element).toBeVisible()
@@ -440,10 +464,14 @@ describe('Multiselect', () => {
         let select = createSelect({
           mode: 'tags',
           placeholder: 'Select option'
+        }, {
+          attach: true,
         })
 
         expect(select.find('.multiselect-placeholder').element).toBeVisible()
         expect(select.find('.multiselect-placeholder').html()).toContain('Select option')
+
+        destroy(select)
       })
 
       it('should render placeholder even if it has search', () => {
@@ -451,9 +479,13 @@ describe('Multiselect', () => {
           mode: 'tags',
           placeholder: 'Select option',
           searchable: true,
+        }, {
+          attach: true,
         })
 
         expect(select.find('.multiselect-placeholder').element).toBeVisible()
+
+        destroy(select)
       })
 
       it('should not render placeholder if search has value', async () => {

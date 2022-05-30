@@ -256,9 +256,9 @@
   export default {
     name: 'Multiselect',
     emits: [
-      'open', 'close', 'select', 'deselect', 
+      'paste', 'open', 'close', 'select', 'deselect', 
       'input', 'search-change', 'tag', 'option', 'update:modelValue',
-      'change', 'clear', 'keydown', 'keyup'
+      'change', 'clear', 'keydown', 'keyup',
     ],
     props: {
       value: {

@@ -1,4 +1,4 @@
-import { ref, toRefs, getCurrentInstance } from 'vue'
+import { ref, toRefs, getCurrentInstance } from 'composition-api'
 
 export default function useDropdown (props, context, dep)
 {

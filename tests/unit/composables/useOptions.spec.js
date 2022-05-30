@@ -298,6 +298,8 @@ describe('useOptions', () => {
         label: 'name',
         valueProp: 'code',
         options: [{ code: 'au', name: 'Australia' }, { code: 'ru', name: 'Russia' }, { code: 'us', name: 'USA' }],
+      }, {
+        attach: true,
       })
 
       select.vm.$parent.props.options = [{ code: 'au', name: 'Австралия' }, { code: 'ru', name: 'Россия' }, { code: 'us', name: 'США' }]
@@ -307,6 +309,8 @@ describe('useOptions', () => {
 
       expect(select.find('.multiselect-single-label').element).toBeVisible()
       expect(select.find('.multiselect-single-label').html()).toContain('Россия')
+
+      destroy(select)
     })
 
     it('should not update value when options changed but did not affect value mode=single, object=false', async () => {
@@ -315,6 +319,8 @@ describe('useOptions', () => {
         label: 'name',
         valueProp: 'code',
         options: [{ code: 'au', name: 'Australia' }, { code: 'ru', name: 'Russia' }, { code: 'us', name: 'USA' }],
+      }, {
+        attach: true,
       })
 
       select.vm.$parent.props.options = [{ code: 'au', name: 'Australia' }, { code: 'ru', name: 'Russia' }]
@@ -324,6 +330,8 @@ describe('useOptions', () => {
 
       expect(select.find('.multiselect-single-label').element).toBeVisible()
       expect(select.find('.multiselect-single-label').html()).toContain('Russia')
+
+      destroy(select)
     })
 
     it('should reactively changes label when options has been changed mode=tags, object=false', async () => {
@@ -333,6 +341,8 @@ describe('useOptions', () => {
         label: 'name',
         valueProp: 'code',
         options: [{ code: 'au', name: 'Australia' }, { code: 'ru', name: 'Russia' }, { code: 'us', name: 'USA' }],
+      }, {
+        attach: true,
       })
 
       select.vm.$parent.props.options = [{ code: 'au', name: 'Австралия' }, { code: 'ru', name: 'Россия' }, { code: 'us', name: 'США' }]
@@ -344,6 +354,8 @@ describe('useOptions', () => {
       expect(findAll(select, '.multiselect-tag').at(0).html()).toContain('Россия')
       expect(findAll(select, '.multiselect-tag').at(1).element).toBeVisible()
       expect(findAll(select, '.multiselect-tag').at(1).html()).toContain('Австралия')
+
+      destroy(select)
     })
 
     it('should reactively changes external value when options has been changed mode=single, object=true', async () => {

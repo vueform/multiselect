@@ -10,12 +10,12 @@ export default [
       format: 'esm',
     },
     plugins: [
-      vue(),
       alias({
         entries: [
-          { find: 'vue', replacement: '@vue/composition-api' },
+          { find: 'composition-api', replacement: '@vue/composition-api' },
         ]
       }),
+      vue(),
     ],
     external: ['@vue/composition-api'],
   },
@@ -33,7 +33,7 @@ export default [
     plugins: [
       alias({
         entries: [
-          { find: 'vue', replacement: '@vue/composition-api' },
+          { find: 'composition-api', replacement: '@vue/composition-api' },
         ]
       }),
       vue(),

@@ -1,4 +1,4 @@
-import { ref, toRefs, computed, watch, getCurrentInstance } from 'vue'
+import { ref, toRefs, computed, watch, getCurrentInstance } from 'composition-api'
 import normalize from './../utils/normalize'
 import isObject from './../utils/isObject'
 import isNullish from './../utils/isNullish'
