@@ -1,4 +1,4 @@
-import { ref, toRefs } from 'composition-api'
+import { ref, toRefs } from 'vue'
 
 export default function usePointer (props, context, dep)
 {

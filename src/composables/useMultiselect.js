@@ -1,4 +1,4 @@
-import { ref, toRefs, computed } from 'composition-api'
+import { ref, toRefs, computed } from 'vue'
 
 export default function useMultiselect (props, context, dep)
 {

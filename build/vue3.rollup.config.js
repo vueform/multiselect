@@ -1,6 +1,4 @@
 import vue from 'vue-next-rollup-plugin-vue'
-import alias from '@rollup/plugin-alias'
-import babel from '@rollup/plugin-babel'
 import { terser } from 'rollup-plugin-terser'
 
 export default [
@@ -12,18 +10,8 @@ export default [
     },
     plugins: [
       vue(),
-      babel({
-        babelHelpers: 'runtime',
-        skipPreflightCheck: true,
-      }),
-      alias({
-        entries: [
-          { find: 'composition-api', replacement: 'vue' },
-        ]
-      }),
-      terser(),
     ],
-    external: 'vue',
+    external: ['vue'],
   },
   {
     input: 'src/Multiselect.vue',
@@ -32,17 +20,13 @@ export default [
       format: 'iife',
       name: 'VueformMultiselect',
       globals: {
-        'composition-api': 'Vue',
         'vue': 'Vue',
       }
     },
     plugins: [
       vue(),
-      babel({
-        babelHelpers: 'bundled',
-      }),
-      terser()
+      terser(),
     ],
-    external: ['composition-api', 'vue'],
+    external: ['vue'],
   }
 ]

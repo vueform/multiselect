@@ -1,4 +1,4 @@
-import { toRefs, watch, nextTick, onMounted, ref, computed } from 'composition-api'
+import { toRefs, watch, nextTick, onMounted, ref, computed } from 'vue'
 
 export default function useScroll (props, context, dep)
 {

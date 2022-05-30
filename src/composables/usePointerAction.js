@@ -1,4 +1,4 @@
-import { toRefs, watch, nextTick, computed } from 'composition-api'
+import { toRefs, watch, nextTick, computed } from 'vue'
 
 export default function usePointer (props, context, dep)
 {
