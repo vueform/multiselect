@@ -81,12 +81,13 @@ Learn more: [https://vueform.com](https://vueform.com)
 * TypeScript support
 * ESM support
 * Accessibility
+* RTL support
 * Single select options
 * Multiple select options
 * Tags
 * Option groups
-* Infinite scroll
 * Async options
+* Infinite scroll
 * Search & filtering
 * Custom slots
 * Events
@@ -137,7 +138,7 @@ Learn more: [https://vueform.com](https://vueform.com)
 
 ## Demo
 
-Check out our <a href="https://jsfiddle.net/Lhv9d5nj/" target="_blank">demo</a>.
+Check out our <a href="https://jsfiddle.net/t421d7cg/" target="_blank">demo</a>.
 
 ## Installation
 
@@ -667,7 +668,7 @@ In case you need to override the same type of utility you might use [@neojp/tail
 />
 ```
 
-<a href="https://jsfiddle.net/Lhv9d5nj/" target="_blank">JSFiddle - Example #1</a>
+<a href="https://jsfiddle.net/t421d7cg/" target="_blank">JSFiddle - Example #1</a>
 
 ### Multiselect with object options
 
@@ -684,7 +685,7 @@ In case you need to override the same type of utility you might use [@neojp/tail
 />
 ```
 
-<a href="https://jsfiddle.net/Lhv9d5nj/" target="_blank">JSFiddle - Example #2</a>
+<a href="https://jsfiddle.net/t421d7cg/" target="_blank">JSFiddle - Example #2</a>
 
 ### Multiselect with disabled options
 
@@ -701,7 +702,7 @@ In case you need to override the same type of utility you might use [@neojp/tail
 />
 ```
 
-<a href="https://jsfiddle.net/Lhv9d5nj/" target="_blank">JSFiddle - Example #3</a>
+<a href="https://jsfiddle.net/t421d7cg/" target="_blank">JSFiddle - Example #3</a>
 
 ### Multiselect with groups
 
@@ -724,7 +725,7 @@ In case you need to override the same type of utility you might use [@neojp/tail
 />
 ```
 
-<a href="https://jsfiddle.net/Lhv9d5nj/" target="_blank">JSFiddle - Example #4</a>
+<a href="https://jsfiddle.net/t421d7cg/" target="_blank">JSFiddle - Example #4</a>
 
 ### Tags with search, create and array of objects options
 
@@ -743,7 +744,7 @@ In case you need to override the same type of utility you might use [@neojp/tail
 />
 ```
 
-<a href="https://jsfiddle.net/Lhv9d5nj/" target="_blank">JSFiddle - Example #5</a>
+<a href="https://jsfiddle.net/t421d7cg/" target="_blank">JSFiddle - Example #5</a>
 
 ### Autocomplete with async options
 
@@ -762,7 +763,7 @@ In case you need to override the same type of utility you might use [@neojp/tail
 />
 ```
 
-<a href="https://jsfiddle.net/Lhv9d5nj/" target="_blank">JSFiddle - Example #6</a>
+<a href="https://jsfiddle.net/t421d7cg/" target="_blank">JSFiddle - Example #6</a>
 
 ### Tags with async options
 
@@ -783,7 +784,7 @@ In case you need to override the same type of utility you might use [@neojp/tail
 />
 ```
 
-<a href="https://jsfiddle.net/Lhv9d5nj/" target="_blank">JSFiddle - Example #7</a>
+<a href="https://jsfiddle.net/t421d7cg/" target="_blank">JSFiddle - Example #7</a>
 
 ### Select with custom options slot
 
@@ -811,7 +812,7 @@ In case you need to override the same type of utility you might use [@neojp/tail
 
 ```
 
-<a href="https://jsfiddle.net/Lhv9d5nj/" target="_blank">JSFiddle - Example #8</a>
+<a href="https://jsfiddle.net/t421d7cg/" target="_blank">JSFiddle - Example #8</a>
 
 ### Multiselect with custom label slot
 
@@ -836,7 +837,7 @@ In case you need to override the same type of utility you might use [@neojp/tail
 
 ```
 
-<a href="https://jsfiddle.net/Lhv9d5nj/" target="_blank">JSFiddle - Example #9</a>
+<a href="https://jsfiddle.net/t421d7cg/" target="_blank">JSFiddle - Example #9</a>
 
 ### Tags with custom tags slot
 
@@ -907,7 +908,7 @@ In case you need to override the same type of utility you might use [@neojp/tail
 </style>
 ```
 
-<a href="https://jsfiddle.net/Lhv9d5nj/" target="_blank">JSFiddle - Example #10</a>
+<a href="https://jsfiddle.net/t421d7cg/" target="_blank">JSFiddle - Example #10</a>
 
 
 ### Async options with default values
@@ -943,7 +944,7 @@ export default {
 </script>
 ```
 
-<a href="https://jsfiddle.net/Lhv9d5nj/" target="_blank">JSFiddle - Example #11</a>
+<a href="https://jsfiddle.net/t421d7cg/" target="_blank">JSFiddle - Example #11</a>
 
 
 ### Default values that are not among the options
@@ -979,7 +980,7 @@ export default {
 </script>
 ```
 
-<a href="https://jsfiddle.net/Lhv9d5nj/" target="_blank">JSFiddle - Example #12</a>
+<a href="https://jsfiddle.net/t421d7cg/" target="_blank">JSFiddle - Example #12</a>
 
 
 ### Manage created tag asynchronously
@@ -1028,7 +1029,7 @@ export default {
 </script>
 ```
 
-<a href="https://jsfiddle.net/Lhv9d5nj/" target="_blank">JSFiddle - Example #13</a>
+<a href="https://jsfiddle.net/t421d7cg/" target="_blank">JSFiddle - Example #13</a>
 
 
 ### Load async options from API on open with infinite scroll
@@ -1060,7 +1061,7 @@ Options are not loaded initially, only when the users clicks the dropdown the fi
 />
 ```
 
-<a href="https://jsfiddle.net/Lhv9d5nj/" target="_blank">JSFiddle - Example #14</a>
+<a href="https://jsfiddle.net/t421d7cg/" target="_blank">JSFiddle - Example #14</a>
 
 ## License
 
