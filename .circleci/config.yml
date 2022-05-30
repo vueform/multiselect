@@ -25,10 +25,7 @@ jobs:
             - node_modules
           key: v2-dependencies-{{ checksum "package.json" }}
           
-      - run: |
-          pwd
-          ls -la
-          npm run test:vue3
+      - run: npm run test:vue3
 
       - codecov/upload:
           file: './coverage/coverage-final.json'
