@@ -850,7 +850,7 @@ In case you need to override the same type of utility you might use [@neojp/tail
     track-by="name"
     label="name"
     :close-on-select="false"
-    :search="true"
+    :searchable="true"
     :options="[
       { value: 'judy', name: 'Judy', image: 'https://randomuser.me/api/portraits/med/women/1.jpg' },
       { value: 'jane', name: 'Jane', image: 'https://randomuser.me/api/portraits/med/women/2.jpg' },
