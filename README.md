@@ -586,10 +586,10 @@ Alternatively you can define class names directly by passing them to the `Multis
   inifite: 'flex items-center justify-center w-full',
   inifiteSpinner: 'bg-multiselect-spinner bg-center bg-no-repeat w-4 h-4 z-10 animate-spin flex-shrink-0 flex-grow-0 m-3.5',
   dropdown: 'max-h-60 absolute -left-px -right-px bottom-0 transform translate-y-full border border-gray-300 -mt-px overflow-y-scroll z-50 bg-white flex flex-col rounded-b',
-  dropdownTop: '-translate-y-full top-px bottom-auto flex-col-reverse rounded-b-none rounded-t',
+  dropdownTop: '-translate-y-full top-px bottom-auto rounded-b-none rounded-t',
   dropdownHidden: 'hidden',
   options: 'flex flex-col p-0 m-0 list-none',
-  optionsTop: 'flex-col-reverse',
+  optionsTop: '',
   group: 'p-0 m-0',
   groupLabel: 'flex text-sm box-border items-center justify-start text-left py-1 px-3 font-semibold bg-gray-200 cursor-default leading-normal',
   groupLabelPointable: 'cursor-pointer',
@@ -613,7 +613,7 @@ Alternatively you can define class names directly by passing them to the `Multis
 ```
 
 Certain classes has different states which are merged to the base class when the state is active. For example `dropdown` will be merged with `dropdownTop` when `open-direction: 'top'` resulting in the following classes:
-```absolute -left-px -right-px bottom-0 transform translate-y-full border border-gray-300 -mt-px overflow-y-scroll z-50 bg-white flex flex-col rounded-b -translate-y-full top-px bottom-auto flex-col-reverse rounded-b-none rounded-t```
+```absolute -left-px -right-px bottom-0 transform translate-y-full border border-gray-300 -mt-px overflow-y-scroll z-50 bg-white flex flex-col rounded-b -translate-y-full top-px bottom-auto rounded-b-none rounded-t```
 
 The same is true for `container`, `tag`, `options`, `groupLabel` and `option` classes.
 
