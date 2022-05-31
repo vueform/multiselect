@@ -1,9 +1,16 @@
+## v2.4.2
+
+> `2021-05-31`
+
+### 🐞 Bug Fixes
+  - Hotfix for ES6 [#235](https://github.com/vueform/multiselect/issues/235)
+  - 
 ## v2.4.1
 
 > `2021-05-31`
 
 ### 🐞 Bug Fixes
-  - Hotfix for SSR [#235](https://github.com/vueform/multiselect/issues/235
+  - Hotfix for SSR [#235](https://github.com/vueform/multiselect/issues/235)
 
 ## v2.4.0
 
