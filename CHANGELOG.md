@@ -1,20 +1,20 @@
 ## v2.4.2
 
-> `2021-05-31`
+> `2022-05-31`
 
 ### 🐞 Bug Fixes
   - Hotfix for ES6 [#235](https://github.com/vueform/multiselect/issues/235)
   - 
 ## v2.4.1
 
-> `2021-05-31`
+> `2022-05-31`
 
 ### 🐞 Bug Fixes
   - Hotfix for SSR [#235](https://github.com/vueform/multiselect/issues/235)
 
 ## v2.4.0
 
-> `2021-05-30`
+> `2022-05-30`
 
 ### 🎉 Feature
   - 🎉 Added accessibility (a11y) support [#22](https://github.com/vueform/multiselect/issues/22), [#179](https://github.com/vueform/multiselect/issues/179).
@@ -48,7 +48,7 @@
 
 ## v2.3.4
 
-> `2021-05-11`
+> `2022-05-11`
 
 ### 🎉 Feature
   - Async options change detectiion.
@@ -57,14 +57,14 @@
 
 ## v2.3.3
 
-> `2021-02-26`
+> `2022-02-26`
 
 ### 🎉 Feature
   - Added `attrs` prop.
 
 ## v2.3.2
 
-> `2021-02-06`
+> `2022-02-06`
 
 ### 🐞 Bug Fixes
   - Removed `@apply` from default theme.
