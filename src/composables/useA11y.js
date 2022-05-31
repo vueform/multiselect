@@ -116,7 +116,7 @@ export default function useScroll (props, context, dep)
   // =============== HOOKS ================
 
   onMounted(() => {
-    if (id && id.value) {
+    if (id && id.value && document && document.querySelector) {
       label.value = document.querySelector(`[for="${id.value}"]`)?.innerText || null
     }
   })

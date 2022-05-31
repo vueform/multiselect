@@ -1,3 +1,10 @@
+## v2.4.1
+
+> `2021-05-31`
+
+### 🐞 Bug Fixes
+  - Hotfix for SSR [#235](https://github.com/vueform/multiselect/issues/235
+
 ## v2.4.0
 
 > `2021-05-30`
@@ -30,8 +37,7 @@
   - Resolved number tag creation duplicate bug.
   - Input height fix when `searchable` for FF.
   - CSS: moved max height to dropdown container from wrapper.
-  - Vite & Nuxt 3 build warn fixes.
-
+  - Vite & Nuxt 3 build warn fixes.).
 
 ## v2.3.4
 
