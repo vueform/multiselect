@@ -131,11 +131,8 @@ Learn more: [https://vueform.com](https://vueform.com)
 *Disclaimer: based on docs, Github issues and code discovery.*
 
 
-## Sections
+## Docs
 
-- [Sponsors](#sponsors)
-- [Comparison with other libraries](#comparison-with-other-libraries)
-- [Sections](#sections)
 - [Demo](#demo)
 - [Installation](#installation)
 - [Using with Vue 3](#using-with-vue-3)
