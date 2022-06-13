@@ -45,7 +45,7 @@
   <a href="https://vueform.com?ref=github"><img src="https://github.com/vueform/multiselect/raw/main/assets/logo-horizontal.svg" width="200"></a>
 </div>
 
-## About Vueform
+<hr>
 
 <a href="https://vueform.com?ref=ghb">
   <img align="center" src="https://github.com/vueform/multiselect/raw/main/assets/vueform-banner.png" alt="Vueform" title="Vueform">
@@ -68,7 +68,7 @@ Vueform [pre-release](https://vueform.com) is open for registration for the **fi
 
 Learn more: [https://vueform.com](https://vueform.com)
 
-**Check out other Vueform libraries:**
+**Other Vueform libraries:**
 
 * [@vueform/slider](https://github.com/vueform/slider) - Vue 3 slider component with multihandles, tooltips merging and formatting.
 * [@vueform/toggle](https://github.com/vueform/toggle) - Vue 3 toggle component with labels, custom slots and styling options.
@@ -134,7 +134,6 @@ Learn more: [https://vueform.com](https://vueform.com)
 ## Sections
 
 - [Sponsors](#sponsors)
-- [About Vueform](#about-vueform)
 - [Comparison with other libraries](#comparison-with-other-libraries)
 - [Sections](#sections)
 - [Demo](#demo)
