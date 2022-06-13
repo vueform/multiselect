@@ -68,40 +68,74 @@ Vueform [pre-release](https://vueform.com) is open for registration for the **fi
 
 Learn more: [https://vueform.com](https://vueform.com)
 
-## Other libraries
+**Check out other Vueform libraries:**
 
 * [@vueform/slider](https://github.com/vueform/slider) - Vue 3 slider component with multihandles, tooltips merging and formatting.
 * [@vueform/toggle](https://github.com/vueform/toggle) - Vue 3 toggle component with labels, custom slots and styling options.
 
-## Multiselect features
+## Comparison with other libraries
 
-* Vue 2 & 3 support
-* No dependencies
-* 100% coverage
-* TypeScript support
-* ESM support
-* Accessibility
-* RTL support
-* Single select options
-* Multiple select options
-* Tags
-* Option groups
-* Async options
-* Infinite scroll
-* Search & filtering
-* Custom slots
-* Events
-* CSS vars support
-* **Tailwind** & utility class support
-* Fully configurable
-* CSP compilant
+| Feature | vue-multiselect | vue-select | @vueform/multiselect |
+| --- | :-: | :-: | :-: |
+| <b>Basic Features<b> |
+| Vue.js 2 support | ✓ | ✓ | ✓ |
+| Vue.js 3 support | ~ | ~ | ✓ |
+| Single select | ✓ | ✓ | ✓ |
+| Multiselect (without tags) | ✓ | - | ✓ |
+| Tags | ✓ | ✓ | ✓ |
+| Search & filtering | ✓ | ✓ | ✓ |
+| Option groups | ✓ | - | ✓ |
+| <b>Advanced features<b> |
+| Async search | ~ | ~ | ✓ |
+| New option when using tags | ~ | ✓ | ✓ |
+| New option when not using tags | - | ✓ | ✓ |
+| New option validation | ~ | - | ✓ |
+| Infinite scroll | ~ | ~ | ✓ |
+| Object value support | ✓ | - | ✓ |
+| Accents/diacritics sensitivity | ~ | ~ | ✓ |
+| Search regex | - | ~ | ✓ |
+| Native select support (required) | - | ~ | ✓ |
+| <b>Options definition<b> |
+| Array | ✓ | ✓ | ✓ |
+| Object | - | - | ✓ |
+| Array of objects | ✓ | ✓ | ✓ |
+| Function (async) | - | - | ✓ |
+| Endpoint (string) | - | - | ✓ |
+| <b>Styling<b> |
+| Override class names | - | - | ✓ |
+| CSS vars support | - | ✓ | ✓ |
+| <div><img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Tailwind_CSS_logo.svg" width="160" alt="Tailwind CSS" title="Tailwind CSS" /> support</div> | - | - | ✓ |
+| <b>Support<b> |
+| Accessibility (a11y) | ~ | ~ | ✓ |
+| Internationalization (i18n) | ~ | ~ | ✓ |
+| RTL support | ✓ | ✓ | ✓ |
+| Typescript support | ✓ | ✓ | ✓ |
+| SSR support | ✓ | ✓ | ✓ |
+| ES Module support (ESM) | - | - | ✓ |
+| CSP compilant | - | - | ✓ |
+| <b>API<b> |
+| Events | 7 | 11 | <b>12</b> |
+| Slots | 12 | 11 | <b>14</b> |
+| Documented API methods | 0 | 0 | <b>10</b> |
+| <b>Stats*<b> |
+| Minizipped size | 14.2 KB | 20.4 KB | <b>9 KB</b> |
+| Open issues | 296 | 180 | <b>6</b> |
+| Monthly downloads | <b>1M</b> | 818k | 110k |
+| Dependencies | 0 | 0 | 0 |
+| Coverage | unknown | 96% | <b>100%</b> |
+| Last realease | 2019. 04. 27. | 2022. 02. 19. | <b>2022. 06. 01.</b> |
+
+**~** \- requires manual extension or doesn't have complete support
+**\*** \- as of June 13, 2022 - reviewed periodically
+
+*Disclaimer: based on docs, Github issues and code discovery.*
+
 
 ## Sections
 
 - [Sponsors](#sponsors)
 - [About Vueform](#about-vueform)
-- [Other libraries](#other-libraries)
-- [Multiselect features](#multiselect-features)
+- [Comparison with other libraries](#comparison-with-other-libraries)
 - [Sections](#sections)
 - [Demo](#demo)
 - [Installation](#installation)
