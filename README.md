@@ -392,7 +392,7 @@ mounted() {
 | **@keydown** | `Event, select$` | Emitted on `keydown`. |
 | **@keyup** | `Event, select$` | Emitted on `keyup`. |
 
-The `select$` param is each event is Multiselect component's instance.
+The `select$` param in each event is the Multiselect component's instance.
 
 ## Slots
 
