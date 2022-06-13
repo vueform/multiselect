@@ -123,7 +123,7 @@ Learn more: [https://vueform.com](https://vueform.com)
 | Monthly downloads | <b>1M</b> | 818k | 110k |
 | Dependencies | 0 | 0 | 0 |
 | Coverage | unknown | 96% | <b>100%</b> |
-| Last realease | 2019. 04. 27. | 2022. 02. 19. | <b>2022. 06. 01.</b> |
+| Latest realease | 2019. 04. 27. | 2022. 02. 19. | <b>2022. 06. 01.</b> |
 
 **~** \- requires manual extension or doesn't have complete support<br>**\*** \- as of June 13, 2022 - reviewed periodically
 
