@@ -45,7 +45,7 @@
   <a href="https://vueform.com?ref=github"><img src="https://github.com/vueform/multiselect/raw/main/assets/logo-horizontal.svg" width="200"></a>
 </div>
 
-<hr>
+<br>
 
 <a href="https://vueform.com?ref=ghb">
   <img align="center" src="https://github.com/vueform/multiselect/raw/main/assets/vueform-banner.png" alt="Vueform" title="Vueform">
