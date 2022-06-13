@@ -104,6 +104,7 @@ Learn more: [https://vueform.com](https://vueform.com)
 | <b>Styling<b> |
 | Override class names | - | - | ✓ |
 | CSS vars support | - | ✓ | ✓ |
+| Class based CSS support | ✓ | ✓ | ✓ |
 | <div><img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Tailwind_CSS_logo.svg" width="160" alt="Tailwind CSS" title="Tailwind CSS" /> support</div> | - | - | ✓ |
 | <b>Support<b> |
 | Accessibility (a11y) | ~ | ~ | ✓ |
