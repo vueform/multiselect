@@ -75,58 +75,58 @@ Learn more: [https://vueform.com](https://vueform.com)
 
 ## Comparison with other libraries
 
-| Feature | vue-multiselect | vue-select | @vueform/multiselect |
+| Feature | @vueform/multiselect | vue-multiselect | vue-select |
 | --- | :-: | :-: | :-: |
 | <b>Basic Features<b> |
 | Vue.js 2 support | ✓ | ✓ | ✓ |
-| Vue.js 3 support | ~ | ~ | ✓ |
+| Vue.js 3 support | ✓ | ~ | ~ |
 | Single select | ✓ | ✓ | ✓ |
-| Multiselect (without tags) | ✓ | - | ✓ |
+| Multiselect (without tags) | ✓ | ✓ | - |
 | Tags | ✓ | ✓ | ✓ |
 | Search & filtering | ✓ | ✓ | ✓ |
-| Option groups | ✓ | - | ✓ |
+| Option groups | ✓ | ✓ | - |
 | <b>Advanced features<b> |
-| Async search | ~ | ~ | ✓ |
-| New option when using tags | ~ | ✓ | ✓ |
-| New option when not using tags | - | ✓ | ✓ |
-| New option validation | ~ | - | ✓ |
-| Infinite scroll | ~ | ~ | ✓ |
-| Object value support | ✓ | - | ✓ |
-| Accents/diacritics sensitivity | ~ | ~ | ✓ |
-| Search regex | - | ~ | ✓ |
-| Native select support (required) | - | ~ | ✓ |
+| Async search | ✓ | ~ | ~ |
+| New option when using tags | ✓ | ~ | ✓ |
+| New option when not using tags | ✓ | - | ✓ |
+| New option validation | ✓ | ~ | - |
+| Infinite scroll | ✓ | ~ | ~ |
+| Object value support | ✓ | ✓ | - |
+| Accents/diacritics sensitivity | ✓ | ~ | ~ |
+| Search regex | ✓ | - | ~ |
+| Native select support (required) | ✓ | - | ~ |
 | <b>Options definition<b> |
 | Array | ✓ | ✓ | ✓ |
-| Object | - | - | ✓ |
+| Object | ✓ | - | - |
 | Array of objects | ✓ | ✓ | ✓ |
-| Function (async) | - | - | ✓ |
-| Endpoint (string) | - | - | ✓ |
+| Function (async) | ✓ | - | - |
+| Endpoint (string) | ✓ | - | - |
 | <b>Styling<b> |
-| Override class names | - | - | ✓ |
-| CSS vars support | - | ✓ | ✓ |
+| Override class names | ✓ | - | - |
+| CSS vars support | ✓ | - | ✓ |
 | Class based CSS support | ✓ | ✓ | ✓ |
-| <div><img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Tailwind_CSS_logo.svg" width="160" alt="Tailwind CSS" title="Tailwind CSS" /> support</div> | - | - | ✓ |
+| <div><img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Tailwind_CSS_logo.svg" width="160" alt="Tailwind CSS" title="Tailwind CSS" /> support</div> | ✓ | - | - |
 | <b>Support<b> |
-| Accessibility (a11y) | ~ | ~ | ✓ |
-| Internationalization (i18n) | ~ | ~ | ✓ |
+| Accessibility (a11y) | ✓ | ~ | ~ |
+| Internationalization (i18n) | ✓ | ~ | ~ |
 | RTL support | ✓ | ✓ | ✓ |
 | Typescript support | ✓ | ✓ | ✓ |
 | SSR support | ✓ | ✓ | ✓ |
-| ES Module support (ESM) | - | - | ✓ |
-| CSP compilant | - | - | ✓ |
+| ES Module support (ESM) | ✓ | - | - |
+| CSP compilant | ✓ | - | - |
 | <b>API<b> |
-| Events | 7 | 11 | <b>12</b> |
-| Slots | 12 | 11 | <b>14</b> |
-| Documented API methods | 0 | 0 | <b>10</b> |
+| Events | <b>12</b> | 7 | 11 |
+| Slots | <b>14</b> | 12 | 11 |
+| Documented API methods | <b>10</b> | 0 | 0 |
 | <b>Stats*<b> |
-| Minzipped size | 14.2 KB | 20.4 KB | <b>9 KB</b> |
-| Open issues | 296 | 180 | <b>6</b> |
-| Monthly downloads | <b>1M</b> | 818k | 110k |
+| Minzipped size | <b>9 KB</b> | 14.2 KB | 20.4 KB |
+| Open issues | <b>6</b> | 296 | 180 |
+| Monthly downloads | 110k | <b>1M</b> | 818k |
 | Dependencies | 0 | 0 | 0 |
-| Coverage | unknown | 96% | <b>100%</b> |
-| Latest realease | 2019. 04. 27. | 2022. 02. 19. | <b>2022. 06. 01.</b> |
+| Coverage | <b>100%</b> | unknown | 96% |
+| Latest realease | <b>2022. 06. 01.</b> | 2019. 04. 27. | 2022. 02. 19. |
 
-**~** \- requires manual extension or doesn't have complete support<br>**\*** \- as of June 13, 2022 - reviewed periodically
+**~** \- partial support / requires manual extension or official support is in progress<br>**\*** \- as of June 13, 2022 - reviewed periodically
 
 *Disclaimer: based on docs, Github issues and code discovery.*
 
