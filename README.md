@@ -119,7 +119,7 @@ Learn more: [https://vueform.com](https://vueform.com)
 | Slots | 12 | 11 | <b>14</b> |
 | Documented API methods | 0 | 0 | <b>10</b> |
 | <b>Stats*<b> |
-| Minizipped size | 14.2 KB | 20.4 KB | <b>9 KB</b> |
+| Minzipped size | 14.2 KB | 20.4 KB | <b>9 KB</b> |
 | Open issues | 296 | 180 | <b>6</b> |
 | Monthly downloads | <b>1M</b> | 818k | 110k |
 | Dependencies | 0 | 0 | 0 |
