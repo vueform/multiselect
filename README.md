@@ -125,8 +125,7 @@ Learn more: [https://vueform.com](https://vueform.com)
 | Coverage | unknown | 96% | <b>100%</b> |
 | Last realease | 2019. 04. 27. | 2022. 02. 19. | <b>2022. 06. 01.</b> |
 
-**~** \- requires manual extension or doesn't have complete support
-**\*** \- as of June 13, 2022 - reviewed periodically
+**~** \- requires manual extension or doesn't have complete support<br>**\*** \- as of June 13, 2022 - reviewed periodically
 
 *Disclaimer: based on docs, Github issues and code discovery.*
 
