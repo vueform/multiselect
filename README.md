@@ -142,7 +142,7 @@ Learn more: [https://vueform.com](https://vueform.com)
 - [Configuration](#configuration)
   - [Basic props](#basic-props)
   - [Advanced Props](#advanced-props)
-- [API](#api)
+- [API methods](#api-methods)
 - [Events](#events)
 - [Slots](#slots)
 - [Styling](#styling)
@@ -334,7 +334,7 @@ Join our [Discord channel](https://discord.gg/WhX2nG6GTQ) or [open an issue](htt
 | **attrs** | `object` | `{}` | HTML attributes to add to the `input` field when `search` is enabled. |
 | **nativeSupport** | `boolean` | `false` | Whether hidden input fields should be appended to achieve native data handling. |
 
-## API
+## API methods
 
 | Name | Params | Description |
 | --- | --- | --- |
