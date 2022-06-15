@@ -100,7 +100,6 @@ Learn more: [https://vueform.com](https://vueform.com)
 | Object | ✓ | - | - |
 | Array of objects | ✓ | ✓ | ✓ |
 | Function (async) | ✓ | - | - |
-| Endpoint (string) | ✓ | - | - |
 | <b>Styling<b> |
 | Override class names | ✓ | - | - |
 | CSS vars support | ✓ | - | ✓ |
