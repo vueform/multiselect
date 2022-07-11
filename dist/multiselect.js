@@ -74,7 +74,7 @@ function useValue (props, context)
 
   /* istanbul ignore next */
   // externalValue
-  const ev = context.expose !== undefined ? modelValue : value;
+  const ev = modelValue && modelValue.value !== undefined ? modelValue : value;
 
   const plainValue = computed(() => {
     return mode.value === 'single' ? iv.value[valueProp.value] : iv.value.map(v=>v[valueProp.value])

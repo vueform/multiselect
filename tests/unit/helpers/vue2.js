@@ -1,10 +1,8 @@
 import { mount, createLocalVue } from '@vue/test-utils'
-import CompositionApi from 'composition-api'
 import Multiselect from './../../../src/Multiselect'
 
 export const createSelect = (props = {}, options = {}) => {
   const localVue = createLocalVue()
-  localVue.use(CompositionApi)
 
   let config = {
     localVue,

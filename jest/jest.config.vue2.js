@@ -15,7 +15,7 @@ module.exports = {
       "/node_modules/"
   ],
   "moduleNameMapper": {
-      "^composition-api$": "<rootDir>/node_modules/vue-prev-composition-api",
+      "^composition-api$": "<rootDir>/node_modules/vue-prev",
       "^@vue/test-utils$": "<rootDir>/node_modules/vue-prev-test-utils",
       "^vue$": "<rootDir>/node_modules/vue-prev",
       '^vue-jest$': "<rootDir>/node_modules/vue-prev-jest",

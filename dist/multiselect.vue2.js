@@ -1,4 +1,4 @@
-import { toRefs, getCurrentInstance, ref, computed, watch, nextTick, onMounted } from '@vue/composition-api';
+import { toRefs, getCurrentInstance, ref, computed, watch, nextTick, onMounted } from 'vue';
 
 function isNullish (val) {
   return [null, undefined].indexOf(val) !== -1
@@ -74,7 +74,7 @@ function useValue (props, context)
 
   /* istanbul ignore next */
   // externalValue
-  const ev = context.expose !== undefined ? modelValue : value;
+  const ev = modelValue && modelValue.value !== undefined ? modelValue : value;
 
   const plainValue = computed(() => {
     return mode.value === 'single' ? iv.value[valueProp.value] : iv.value.map(v=>v[valueProp.value])
