@@ -1,5 +1,5 @@
 import { createSelect, destroy, getValue } from 'unit-test-helpers'
-import { nextTick } from 'composition-api'
+import { nextTick } from 'vue'
 
 describe('usePointer Action', () => {
   describe('isPointed', () => {

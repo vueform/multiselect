@@ -694,7 +694,7 @@ function useOptions (props, context, dep)
   };
 
   // no export
-  const getOptionByTrackBy = (val, norm) => {
+  const getOptionByTrackBy = (val, norm = true) => {
     return eo.value.map(o => parseInt(o[trackBy.value]) == o[trackBy.value] ? parseInt(o[trackBy.value]) : o[trackBy.value]).indexOf(
       parseInt(val) == val ? parseInt(val) : val
     )

@@ -1,5 +1,5 @@
 import { createSelect } from 'unit-test-helpers'
-import { nextTick } from 'composition-api'
+import { nextTick } from 'vue'
 
 describe('useSearch', () => {
   describe('search', () => {

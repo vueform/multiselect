@@ -1,6 +1,6 @@
 import { createSelect, getValue, destroy, $set, findAll } from 'unit-test-helpers'
 import { toBeVisible } from '@testing-library/jest-dom/matchers'
-import { nextTick } from 'composition-api'
+import { nextTick } from 'vue'
 import flushPromises from 'flush-promises'
 
 expect.extend({toBeVisible})

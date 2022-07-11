@@ -694,7 +694,7 @@ function useOptions (props, context, dep)
   };
 
   // no export
-  const getOptionByTrackBy = (val, norm) => {
+  const getOptionByTrackBy = (val, norm = true) => {
     return eo.value.map(o => parseInt(o[trackBy.value]) == o[trackBy.value] ? parseInt(o[trackBy.value]) : o[trackBy.value]).indexOf(
       parseInt(val) == val ? parseInt(val) : val
     )
@@ -1957,310 +1957,310 @@ function resolveDeps (props, context, features, deps = {}) {
 
 //
 
-var script = {
-  name: 'Multiselect',
-  emits: [
-    'paste', 'open', 'close', 'select', 'deselect', 
-    'input', 'search-change', 'tag', 'option', 'update:modelValue',
-    'change', 'clear', 'keydown', 'keyup',
-  ],
-  props: {
-    value: {
-      required: false,
+  var script = {
+    name: 'Multiselect',
+    emits: [
+      'paste', 'open', 'close', 'select', 'deselect', 
+      'input', 'search-change', 'tag', 'option', 'update:modelValue',
+      'change', 'clear', 'keydown', 'keyup',
+    ],
+    props: {
+      value: {
+        required: false,
+      },
+      modelValue: {
+        required: false,
+      },
+      options: {
+        type: [Array, Object, Function],
+        required: false,
+        default: () => ([])
+      },
+      id: {
+        type: [String, Number],
+        required: false,
+      },
+      name: {
+        type: [String, Number],
+        required: false,
+        default: 'multiselect',
+      },
+      disabled: {
+        type: Boolean,
+        required: false,
+        default: false,
+      },
+      label: {
+        type: String,
+        required: false,
+        default: 'label',
+      },
+      trackBy: {
+        type: String,
+        required: false,
+        default: undefined,
+      },
+      valueProp: {
+        type: String,
+        required: false,
+        default: 'value',
+      },
+      placeholder: {
+        type: String,
+        required: false,
+        default: null,
+      },
+      mode: {
+        type: String,
+        required: false,
+        default: 'single', // single|multiple|tags
+      },
+      searchable: {
+        type: Boolean,
+        required: false,
+        default: false,
+      },
+      limit: {
+        type: Number,
+        required: false,
+        default: -1,
+      },
+      hideSelected: {
+        type: Boolean,
+        required: false,
+        default: true,
+      },
+      createTag: {
+        type: Boolean,
+        required: false,
+        default: undefined,
+      },
+      createOption: {
+        type: Boolean,
+        required: false,
+        default: undefined,
+      },
+      appendNewTag: {
+        type: Boolean,
+        required: false,
+        default: undefined,
+      },
+      appendNewOption: {
+        type: Boolean,
+        required: false,
+        default: undefined,
+      },
+      addTagOn: {
+        type: Array,
+        required: false,
+        default: undefined,
+      },
+      addOptionOn: {
+        type: Array,
+        required: false,
+        default: undefined,
+      },
+      caret: {
+        type: Boolean,
+        required: false,
+        default: true,
+      },
+      loading: {
+        type: Boolean,
+        required: false,
+        default: false,
+      },
+      noOptionsText: {
+        type: String,
+        required: false,
+        default: 'The list is empty',
+      },
+      noResultsText: {
+        type: String,
+        required: false,
+        default: 'No results found',
+      },
+      multipleLabel: {
+        type: Function,
+        required: false,
+      },
+      object: {
+        type: Boolean,
+        required: false,
+        default: false,
+      },
+      delay: {
+        type: Number,
+        required: false,
+        default: -1,
+      },
+      minChars: {
+        type: Number,
+        required: false,
+        default: 0,
+      },
+      resolveOnLoad: {
+        type: Boolean,
+        required: false,
+        default: true,
+      },
+      filterResults: {
+        type: Boolean,
+        required: false,
+        default: true,
+      },
+      clearOnSearch: {
+        type: Boolean,
+        required: false,
+        default: false,
+      },
+      clearOnSelect: {
+        type: Boolean,
+        required: false,
+        default: true,
+      },
+      canDeselect: {
+        type: Boolean,
+        required: false,
+        default: true,
+      },
+      canClear: {
+        type: Boolean,
+        required: false,
+        default: true,
+      },
+      max: {
+        type: Number,
+        required: false,
+        default: -1,
+      },
+      showOptions: {
+        type: Boolean,
+        required: false,
+        default: true,
+      },
+      required: {
+        type: Boolean,
+        required: false,
+        default: false,
+      },
+      openDirection: {
+        type: String,
+        required: false,
+        default: 'bottom',
+      },
+      nativeSupport: {
+        type: Boolean,
+        required: false,
+        default: false,
+      },
+      classes: {
+        type: Object,
+        required: false,
+        default: () => ({})
+      },
+      strict: {
+        type: Boolean,
+        required: false,
+        default: true,
+      },
+      closeOnSelect: {
+        type: Boolean,
+        required: false,
+        default: true,
+      },
+      autocomplete: {
+        type: String,
+        required: false,
+      },
+      groups: {
+        type: Boolean,
+        required: false,
+        default: false,
+      },
+      groupLabel: {
+        type: String,
+        required: false,
+        default: 'label',
+      },
+      groupOptions: {
+        type: String,
+        required: false,
+        default: 'options',
+      },
+      groupHideEmpty: {
+        type: Boolean,
+        required: false,
+        default: false,
+      },
+      groupSelect: {
+        type: Boolean,
+        required: false,
+        default: true,
+      },
+      inputType: {
+        type: String,
+        required: false,
+        default: 'text',
+      },
+      attrs: {
+        required: false,
+        type: Object,
+        default: () => ({}),
+      },
+      onCreate: {
+        required: false,
+        type: Function,
+      },
+      disabledProp: {
+        type: String,
+        required: false,
+        default: 'disabled',
+      },
+      searchStart: {
+        type: Boolean,
+        required: false,
+        default: false,
+      },
+      reverse: {
+        type: Boolean,
+        required: false,
+        default: false,
+      },
+      regex: {
+        type: [Object, String, RegExp],
+        required: false,
+        default: undefined,
+      },
+      rtl: {
+        type: Boolean,
+        required: false,
+        default: false,
+      },
+      infinite: {
+        type: Boolean,
+        required: false,
+        default: false,
+      },
     },
-    modelValue: {
-      required: false,
-    },
-    options: {
-      type: [Array, Object, Function],
-      required: false,
-      default: () => ([])
-    },
-    id: {
-      type: [String, Number],
-      required: false,
-    },
-    name: {
-      type: [String, Number],
-      required: false,
-      default: 'multiselect',
-    },
-    disabled: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
-    label: {
-      type: String,
-      required: false,
-      default: 'label',
-    },
-    trackBy: {
-      type: String,
-      required: false,
-      default: undefined,
-    },
-    valueProp: {
-      type: String,
-      required: false,
-      default: 'value',
-    },
-    placeholder: {
-      type: String,
-      required: false,
-      default: null,
-    },
-    mode: {
-      type: String,
-      required: false,
-      default: 'single', // single|multiple|tags
-    },
-    searchable: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
-    limit: {
-      type: Number,
-      required: false,
-      default: -1,
-    },
-    hideSelected: {
-      type: Boolean,
-      required: false,
-      default: true,
-    },
-    createTag: {
-      type: Boolean,
-      required: false,
-      default: undefined,
-    },
-    createOption: {
-      type: Boolean,
-      required: false,
-      default: undefined,
-    },
-    appendNewTag: {
-      type: Boolean,
-      required: false,
-      default: undefined,
-    },
-    appendNewOption: {
-      type: Boolean,
-      required: false,
-      default: undefined,
-    },
-    addTagOn: {
-      type: Array,
-      required: false,
-      default: undefined,
-    },
-    addOptionOn: {
-      type: Array,
-      required: false,
-      default: undefined,
-    },
-    caret: {
-      type: Boolean,
-      required: false,
-      default: true,
-    },
-    loading: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
-    noOptionsText: {
-      type: String,
-      required: false,
-      default: 'The list is empty',
-    },
-    noResultsText: {
-      type: String,
-      required: false,
-      default: 'No results found',
-    },
-    multipleLabel: {
-      type: Function,
-      required: false,
-    },
-    object: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
-    delay: {
-      type: Number,
-      required: false,
-      default: -1,
-    },
-    minChars: {
-      type: Number,
-      required: false,
-      default: 0,
-    },
-    resolveOnLoad: {
-      type: Boolean,
-      required: false,
-      default: true,
-    },
-    filterResults: {
-      type: Boolean,
-      required: false,
-      default: true,
-    },
-    clearOnSearch: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
-    clearOnSelect: {
-      type: Boolean,
-      required: false,
-      default: true,
-    },
-    canDeselect: {
-      type: Boolean,
-      required: false,
-      default: true,
-    },
-    canClear: {
-      type: Boolean,
-      required: false,
-      default: true,
-    },
-    max: {
-      type: Number,
-      required: false,
-      default: -1,
-    },
-    showOptions: {
-      type: Boolean,
-      required: false,
-      default: true,
-    },
-    required: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
-    openDirection: {
-      type: String,
-      required: false,
-      default: 'bottom',
-    },
-    nativeSupport: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
-    classes: {
-      type: Object,
-      required: false,
-      default: () => ({})
-    },
-    strict: {
-      type: Boolean,
-      required: false,
-      default: true,
-    },
-    closeOnSelect: {
-      type: Boolean,
-      required: false,
-      default: true,
-    },
-    autocomplete: {
-      type: String,
-      required: false,
-    },
-    groups: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
-    groupLabel: {
-      type: String,
-      required: false,
-      default: 'label',
-    },
-    groupOptions: {
-      type: String,
-      required: false,
-      default: 'options',
-    },
-    groupHideEmpty: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
-    groupSelect: {
-      type: Boolean,
-      required: false,
-      default: true,
-    },
-    inputType: {
-      type: String,
-      required: false,
-      default: 'text',
-    },
-    attrs: {
-      required: false,
-      type: Object,
-      default: () => ({}),
-    },
-    onCreate: {
-      required: false,
-      type: Function,
-    },
-    disabledProp: {
-      type: String,
-      required: false,
-      default: 'disabled',
-    },
-    searchStart: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
-    reverse: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
-    regex: {
-      type: [Object, String, RegExp],
-      required: false,
-      default: undefined,
-    },
-    rtl: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
-    infinite: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
-  },
-  setup(props, context)
-  { 
-    return resolveDeps(props, context, [
-      useValue,
-      usePointer$1,
-      useDropdown,
-      useSearch,
-      useData,
-      useMultiselect,
-      useOptions,
-      useScroll$1,
-      usePointer,
-      useKeyboard,
-      useClasses,
-      useScroll,
-    ])
-  }
-};
+    setup(props, context)
+    { 
+      return resolveDeps(props, context, [
+        useValue,
+        usePointer$1,
+        useDropdown,
+        useSearch,
+        useData,
+        useMultiselect,
+        useOptions,
+        useScroll$1,
+        usePointer,
+        useKeyboard,
+        useClasses,
+        useScroll,
+      ])
+    }
+  };
 
 function normalizeComponent(template, style, script, scopeId, isFunctionalTemplate, moduleIdentifier /* server only */, shadowMode, createInjector, createInjectorSSR, createInjectorShadow) {
     if (typeof shadowMode !== 'boolean') {

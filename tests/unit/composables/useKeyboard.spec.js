@@ -1,5 +1,5 @@
 import { createSelect, getValue, keydown, keyup, destroy } from 'unit-test-helpers'
-import { nextTick } from 'composition-api'
+import { nextTick } from 'vue'
 
 jest.useFakeTimers()
 
