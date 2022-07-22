@@ -52,12 +52,12 @@
     "vue-next-jest": "npm:@vue/vue3-jest@^27.0.0-alpha.1",
     "vue-next-rollup-plugin-vue": "npm:rollup-plugin-vue@^6.0.0",
     "vue-next-test-utils": "npm:@vue/test-utils@2.0.0-rc.16",
-    "vue-prev": "npm:vue@^2.7.0",
+    "vue-prev": "npm:vue@^2.7.8",
     "vue-prev-composition-api": "npm:@vue/composition-api@^1.2.4",
     "vue-prev-jest": "npm:@vue/vue2-jest@^27.0.0-alpha.2",
     "vue-prev-rollup-plugin-vue": "npm:rollup-plugin-vue@^5.1.9",
     "vue-prev-test-utils": "npm:@vue/test-utils@1.2.2",
-    "vue-template-compiler": "^2.6.14"
+    "vue-template-compiler": "^2.7.8"
   },
   "browserslist": [
     "> 1%",
