@@ -2,7 +2,7 @@
 
 > `2022-07-22`
 
-### 🎉 Feature
+### 🐞 Bug Fixes
   - Fix for `tailwind.css`.
 
 ## v2.5.1
