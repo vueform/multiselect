@@ -1,10 +1,6 @@
 module.exports = {
   "rootDir": "../",
-  "moduleFileExtensions": [
-      "js",
-      "json",
-      "vue"
-  ],
+  "moduleFileExtensions": ["js", "vue"],
   "testTimeout": 1000,
   "testEnvironment": "jsdom",
   "transform": {

@@ -1,5 +1,5 @@
 import { mount, createLocalVue } from '@vue/test-utils'
-import Multiselect from './../../../src/Multiselect'
+import Multiselect from './../../../src/Multiselect.vue'
 
 export const createSelect = (props = {}, options = {}) => {
   const localVue = createLocalVue()
