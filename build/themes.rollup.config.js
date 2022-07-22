@@ -15,7 +15,7 @@ export default themes.map((theme) => {
     plugins: [
       postcss({
         extract: true,
-        minimize: true,
+        minimize: theme === 'tailwind' ? false : true,
         plugins: [
           autoprefixer(),
         ]
