@@ -721,19 +721,16 @@ export default function useOptions (props, context, dep)
   }, { deep: true })
 
   watch(options, (n, o) => {
-    if (typeof props.options === 'function') {
-      if (resolveOnLoad.value) {
-        resolveOptions()
-      }
-    } else {
-      ro.value = props.options
-
+    if (typeof options.value !== 'function') {
+      
+      ro.value = options.value
+      
       if (!Object.keys(iv.value).length) {
         initInternalValue()
       }
 
       refreshLabels()
-    }
+    } 
   })
 
   watch(label, refreshLabels)
