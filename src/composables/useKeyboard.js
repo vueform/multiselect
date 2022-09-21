@@ -20,6 +20,8 @@ export default function useKeyboard (props, context, dep)
   const selectPointer = dep.selectPointer
   const backwardPointer = dep.backwardPointer
   const forwardPointer = dep.forwardPointer
+  const multiselect = dep.multiselect
+  const tags = dep.tags
   const isOpen = dep.isOpen
   const open = dep.open
   const blur = dep.blur
@@ -61,6 +63,14 @@ export default function useKeyboard (props, context, dep)
   const handleKeydown = (e) => {
     context.emit('keydown', e, $this)
 
+    let tagList
+    let activeIndex
+
+    if (['ArrowLeft', 'ArrowRight', 'Enter'].indexOf(e.key) !== -1 && mode.value === 'tags') {
+      tagList = [...(multiselect.value.querySelectorAll(`[data-tags] > *`)||[])].filter(e => e !== tags.value)
+      activeIndex = tagList.findIndex(e => e === document.activeElement)
+    }
+
     switch (e.key) {
       case 'Backspace':
         if (mode.value === 'single') {
@@ -80,6 +90,21 @@ export default function useKeyboard (props, context, dep)
 
       case 'Enter':
         e.preventDefault()
+
+        if (activeIndex !== -1) {
+          update([...iv.value].filter((v, k) => k !== activeIndex))
+
+          if (activeIndex === tagList.length - 1) {
+            if (tagList.length - 1) {
+              tagList[tagList.length - 2].focus()
+            } else if (searchable.value) {
+              tags.value.querySelector('input').focus()
+            } else {
+              multiselect.value.focus()
+            }
+          }
+          return
+        }
 
         if (addOptionOn.value.indexOf('enter') === -1 && createOption.value) {
           return
@@ -156,6 +181,44 @@ export default function useKeyboard (props, context, dep)
         }
 
         forwardPointer()
+        break
+
+      case 'ArrowLeft':
+        if ((searchable.value && tags.value.querySelector('input').selectionStart) || e.shiftKey) {
+          return
+        }
+
+        e.preventDefault()
+
+        if (mode.value !== 'tags') {
+          return
+        }
+
+        if (activeIndex === -1) {
+          tagList[tagList.length-1].focus()
+        }
+        else if (activeIndex > 0) {
+          tagList[activeIndex-1].focus()
+        }
+        break
+
+      case 'ArrowRight':
+        if (activeIndex === -1 || e.shiftKey) {
+          return
+        }
+
+        e.preventDefault()
+        
+        if (tagList.length > activeIndex + 1) {
+          tagList[activeIndex+1].focus()
+        }
+        else if (searchable.value) {
+          tags.value.querySelector('input').focus()
+        }
+        else if (!searchable.value) {
+          multiselect.value.focus()
+        }
+        
         break
     }
   }

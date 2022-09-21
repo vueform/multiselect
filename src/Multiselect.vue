@@ -43,8 +43,7 @@
 
     <!-- Tags (with search) -->
     <template v-if="mode == 'tags'">
-      <div :class="classList.tags">
-
+      <div :class="classList.tags" data-tags>
         <slot
           v-for="(option, i, key) in iv"
           name="tag"
@@ -52,7 +51,12 @@
           :handleTagRemove="handleTagRemove"
           :disabled="disabled"
         >
-          <span :class="classList.tag" :key="key">
+          <span
+            :class="classList.tag"
+            tabindex="-1"
+            @keyup.enter="handleTagRemove(option, $event)"
+            :key="key"
+          >
             {{ option[label] }}
             <span
               v-if="!disabled"
