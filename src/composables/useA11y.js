@@ -18,10 +18,6 @@ export default function useScroll (props, context, dep)
 
   // ============== COMPUTED ==============
 
-  const mainRole = computed(() => {
-    return mode.value === 'single' ? 'select' : 'combobox'
-  })
-
   const ariaOwns = computed(() => {
     let texts = []
 
@@ -103,7 +99,7 @@ export default function useScroll (props, context, dep)
     return texts.join('-')
   }
 
-  const ariaGroupId = (option, index) => {
+  const ariaGroupId = (option) => {
     let texts = []
 
     if (id && id.value) {
@@ -112,7 +108,7 @@ export default function useScroll (props, context, dep)
 
     texts.push('multiselect-group')
 
-    texts.push(index)
+    texts.push(option.index)
 
     return texts.join('-')
   }
@@ -148,7 +144,6 @@ export default function useScroll (props, context, dep)
   })
 
   return {
-    mainRole,
     ariaOwns,
     ariaLabel,
     ariaPlaceholder,

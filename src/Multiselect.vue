@@ -165,7 +165,7 @@
             :class="classList.group"
             :key="key"
 
-            :id="ariaGroupId(group, i)"
+            :id="ariaGroupId(group)"
             :aria-label="ariaGroupLabel(group)"
             :aria-selected="isSelected(group)"
             role="option"

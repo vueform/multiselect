@@ -102,6 +102,7 @@ export default function useMultiselect (props, context, dep)
     tags,
     tabindex,
     isActive,
+    mouseClicked,
     blur,
     focus,
     activate,

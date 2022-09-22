@@ -95,11 +95,12 @@ export default function useOptions (props, context, dep)
       return []
     }
 
-    return filterGroups((ro.value || /* istanbul ignore next */ []).map((group) => {
+    return filterGroups((ro.value || /* istanbul ignore next */ []).map((group, index) => {
       const arrayOptions = optionsToArray(group[groupOptions.value])
 
       return {
         ...group,
+        index,
         group: true,
         [groupOptions.value]: filterOptions(arrayOptions, false).map(o => Object.assign({}, o, group[disabledProp.value] ? { [disabledProp.value]: true } : {})),
         __VISIBLE__: filterOptions(arrayOptions).map(o => Object.assign({}, o, group[disabledProp.value] ? { [disabledProp.value]: true } : {})),

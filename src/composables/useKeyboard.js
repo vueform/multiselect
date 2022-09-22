@@ -67,7 +67,7 @@ export default function useKeyboard (props, context, dep)
     let activeIndex
 
     if (['ArrowLeft', 'ArrowRight', 'Enter'].indexOf(e.key) !== -1 && mode.value === 'tags') {
-      tagList = [...(multiselect.value.querySelectorAll(`[data-tags] > *`)||[])].filter(e => e !== tags.value)
+      tagList = [...(multiselect.value.querySelectorAll(`[data-tags] > *`))].filter(e => e !== tags.value)
       activeIndex = tagList.findIndex(e => e === document.activeElement)
     }
 
@@ -184,15 +184,11 @@ export default function useKeyboard (props, context, dep)
         break
 
       case 'ArrowLeft':
-        if ((searchable.value && tags.value.querySelector('input').selectionStart) || e.shiftKey) {
+        if ((searchable.value && tags.value.querySelector('input').selectionStart) || e.shiftKey || mode.value !== 'tags' || !iv.value?.length) {
           return
         }
 
         e.preventDefault()
-
-        if (mode.value !== 'tags') {
-          return
-        }
 
         if (activeIndex === -1) {
           tagList[tagList.length-1].focus()
@@ -203,12 +199,13 @@ export default function useKeyboard (props, context, dep)
         break
 
       case 'ArrowRight':
-        if (activeIndex === -1 || e.shiftKey) {
+        if (activeIndex === -1 || e.shiftKey || mode.value !== 'tags' || !iv.value?.length) {
           return
         }
 
         e.preventDefault()
         
+        /* istanbul ignore else */
         if (tagList.length > activeIndex + 1) {
           tagList[activeIndex+1].focus()
         }
