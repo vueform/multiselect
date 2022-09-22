@@ -1,4 +1,4 @@
-import { toRefs, getCurrentInstance, ref, computed, watch, nextTick, onMounted, openBlock, createElementBlock, normalizeClass, createCommentVNode, mergeProps, withModifiers, Fragment, renderList, renderSlot, createTextVNode, toDisplayString, createElementVNode } from 'vue';
+import { toRefs, getCurrentInstance, ref, computed, watch, nextTick, onMounted, openBlock, createElementBlock, normalizeClass, createCommentVNode, mergeProps, withModifiers, Fragment, renderList, renderSlot, withKeys, createTextVNode, toDisplayString, createElementVNode } from 'vue';
 
 function isNullish (val) {
   return [null, undefined].indexOf(val) !== -1
@@ -315,11 +315,12 @@ function useOptions (props, context, dep)
       return []
     }
 
-    return filterGroups((ro.value || /* istanbul ignore next */ []).map((group) => {
+    return filterGroups((ro.value || /* istanbul ignore next */ []).map((group, index) => {
       const arrayOptions = optionsToArray(group[groupOptions.value]);
 
       return {
         ...group,
+        index,
         group: true,
         [groupOptions.value]: filterOptions(arrayOptions, false).map(o => Object.assign({}, o, group[disabledProp.value] ? { [disabledProp.value]: true } : {})),
         __VISIBLE__: filterOptions(arrayOptions).map(o => Object.assign({}, o, group[disabledProp.value] ? { [disabledProp.value]: true } : {})),
@@ -1088,8 +1089,8 @@ function usePointer (props, context, dep)
 
   const isPointed = (option) => {
     return (!!pointer.value && (
-      (!option.group && pointer.value[valueProp.value] == option[valueProp.value]) ||
-      (option.group !== undefined && pointer.value[groupLabel.value] == option[groupLabel.value])
+      (!option.group && pointer.value[valueProp.value] == option[valueProp.value]) ||
+      (option.group !== undefined && pointer.value[groupLabel.value] == option[groupLabel.value])
     )) ? true : undefined
   };
 
@@ -1301,9 +1302,12 @@ function useMultiselect (props, context, dep)
   // ================ DATA ================
 
   const multiselect = ref(null);
+
   const tags = ref(null);
 
   const isActive = ref(false);
+
+  const mouseClicked = ref(false);
 
   // ============== COMPUTED ==============
 
@@ -1327,18 +1331,16 @@ function useMultiselect (props, context, dep)
     }
   };
 
-  const handleFocus = () => {
-    focus();
-  };
-
-  const activate = () => {
+  const activate = (shouldOpen = true) => {
     if (disabled.value) {
       return
     }
 
     isActive.value = true;
 
-    open();
+    if (shouldOpen) {
+      open();
+    }
   };
 
   const deactivate = () => {
@@ -1352,6 +1354,14 @@ function useMultiselect (props, context, dep)
     }, 1);
   };
 
+  const handleFocusIn = () => {
+    activate(mouseClicked.value);
+  };
+
+  const handleFocusOut = () => {
+    deactivate();
+  };
+
   const handleCaretClick = () => {
     deactivate();
     blur();
@@ -1359,6 +1369,8 @@ function useMultiselect (props, context, dep)
 
   /* istanbul ignore next */
   const handleMousedown = (e) => {
+    mouseClicked.value = true;
+
     if (isOpen.value && (e.target.isEqualNode(multiselect.value) || e.target.isEqualNode(tags.value))) {
       setTimeout(() => {
         deactivate();
@@ -1366,6 +1378,10 @@ function useMultiselect (props, context, dep)
     } else if (document.activeElement.isEqualNode(multiselect.value) && !isOpen.value) {
       activate();    
     }
+
+    setTimeout(() => {
+      mouseClicked.value = false;
+    }, 0);
   };
 
   return {
@@ -1373,11 +1389,13 @@ function useMultiselect (props, context, dep)
     tags,
     tabindex,
     isActive,
+    mouseClicked,
     blur,
     focus,
-    handleFocus,
     activate,
     deactivate,
+    handleFocusIn,
+    handleFocusOut,
     handleCaretClick,
     handleMousedown,
   }
@@ -1403,6 +1421,8 @@ function useKeyboard (props, context, dep)
   const selectPointer = dep.selectPointer;
   const backwardPointer = dep.backwardPointer;
   const forwardPointer = dep.forwardPointer;
+  const multiselect = dep.multiselect;
+  const tags = dep.tags;
   const isOpen = dep.isOpen;
   const open = dep.open;
   const blur = dep.blur;
@@ -1444,6 +1464,14 @@ function useKeyboard (props, context, dep)
   const handleKeydown = (e) => {
     context.emit('keydown', e, $this);
 
+    let tagList;
+    let activeIndex;
+
+    if (['ArrowLeft', 'ArrowRight', 'Enter'].indexOf(e.key) !== -1 && mode.value === 'tags') {
+      tagList = [...(multiselect.value.querySelectorAll(`[data-tags] > *`))].filter(e => e !== tags.value);
+      activeIndex = tagList.findIndex(e => e === document.activeElement);
+    }
+
     switch (e.key) {
       case 'Backspace':
         if (mode.value === 'single') {
@@ -1463,6 +1491,21 @@ function useKeyboard (props, context, dep)
 
       case 'Enter':
         e.preventDefault();
+
+        if (activeIndex !== -1 && activeIndex !== undefined) {
+          update([...iv.value].filter((v, k) => k !== activeIndex));
+
+          if (activeIndex === tagList.length - 1) {
+            if (tagList.length - 1) {
+              tagList[tagList.length - 2].focus();
+            } else if (searchable.value) {
+              tags.value.querySelector('input').focus();
+            } else {
+              multiselect.value.focus();
+            }
+          }
+          return
+        }
 
         if (addOptionOn.value.indexOf('enter') === -1 && createOption.value) {
           return
@@ -1539,6 +1582,41 @@ function useKeyboard (props, context, dep)
         }
 
         forwardPointer();
+        break
+
+      case 'ArrowLeft':
+        if ((searchable.value && tags.value.querySelector('input').selectionStart) || e.shiftKey || mode.value !== 'tags' || !iv.value?.length) {
+          return
+        }
+
+        e.preventDefault();
+
+        if (activeIndex === -1) {
+          tagList[tagList.length-1].focus();
+        }
+        else if (activeIndex > 0) {
+          tagList[activeIndex-1].focus();
+        }
+        break
+
+      case 'ArrowRight':
+        if (activeIndex === -1 || e.shiftKey || mode.value !== 'tags' || !iv.value?.length) {
+          return
+        }
+
+        e.preventDefault();
+        
+        /* istanbul ignore else */
+        if (tagList.length > activeIndex + 1) {
+          tagList[activeIndex+1].focus();
+        }
+        else if (searchable.value) {
+          tags.value.querySelector('input').focus();
+        }
+        else if (!searchable.value) {
+          multiselect.value.focus();
+        }
+        
         break
     }
   };
@@ -1814,9 +1892,9 @@ function useScroll (props, context, dep)
 
   const pointer = dep.pointer;
   const iv = dep.iv;
-  const isSelected = dep.isSelected;
   const hasSelected = dep.hasSelected;
   const multipleLabelText = dep.multipleLabelText;
+  const isOpen = dep.isOpen;
 
   // ================ DATA ================
 
@@ -1843,10 +1921,10 @@ function useScroll (props, context, dep)
       texts.push(id.value);
     }
 
-    texts.push('multiselect-option');
+    if (pointer.value) {
+      texts.push(pointer.value.group ? 'multiselect-group' : 'multiselect-option');
 
-    if (pointer.value && pointer.value[valueProp.value] !== undefined) {
-      texts.push(pointer.value[valueProp.value]);
+      texts.push(pointer.value.group ? pointer.value.index : pointer.value[valueProp.value]);
 
       return texts.join('-')
     }
@@ -1860,20 +1938,22 @@ function useScroll (props, context, dep)
       texts.push(label.value);
     }
 
-    if (placeholder.value && !hasSelected.value) {
-      texts.push(placeholder.value);
-    }
+    if (!pointer.value || !isOpen.value) {
+      if (placeholder.value && !hasSelected.value) {
+        texts.push(placeholder.value);
+      }
 
-    if (mode.value === 'single' && iv.value && iv.value[labelProp.value] !== undefined) {
-      texts.push(iv.value[labelProp.value]);
-    }
+      if (mode.value === 'single' && iv.value && iv.value[labelProp.value] !== undefined) {
+        texts.push(iv.value[labelProp.value]);
+      }
 
-    if (mode.value === 'multiple' && hasSelected.value) {
-      texts.push(multipleLabelText.value);
-    }
+      if (mode.value === 'multiple' && hasSelected.value) {
+        texts.push(multipleLabelText.value);
+      }
 
-    if (mode.value === 'tags' && hasSelected.value) {
-      texts.push(...iv.value.map(v => v[labelProp.value]));
+      if (mode.value === 'tags' && hasSelected.value) {
+        texts.push(...iv.value.map(v => v[labelProp.value]));
+      }
     }
 
     return texts.join(', ')
@@ -1881,6 +1961,10 @@ function useScroll (props, context, dep)
 
   const ariaPlaceholder = computed(() => {
     return ariaLabel.value
+  });
+
+  const ariaMultiselectable = computed(() => {
+    return mode.value !== 'single'
   });
 
   // =============== METHODS ==============
@@ -1899,12 +1983,22 @@ function useScroll (props, context, dep)
     return texts.join('-')
   };
 
-  const ariaOptionLabel = (option) => {
+  const ariaGroupId = (option) => {
     let texts = [];
 
-    if (isSelected(option)) {
-      texts.push('✓');
+    if (id && id.value) {
+      texts.push(id.value);
     }
+
+    texts.push('multiselect-group');
+
+    texts.push(option.index);
+
+    return texts.join('-')
+  };
+
+  const ariaOptionLabel = (option) => {
+    let texts = [];
 
     texts.push(option[labelProp.value]);
 
@@ -1917,6 +2011,10 @@ function useScroll (props, context, dep)
     texts.push(group[groupLabel.value]);
 
     return texts.join(' ')
+  };
+
+  const ariaTagLabel = (label) => {
+    return `${label} ❎`
   };
 
   // =============== HOOKS ================
@@ -1933,10 +2031,13 @@ function useScroll (props, context, dep)
     ariaOwns,
     ariaLabel,
     ariaPlaceholder,
+    ariaMultiselectable,
     ariaActiveDescendant,
     ariaOptionId,
     ariaOptionLabel,
+    ariaGroupId,
     ariaGroupLabel,
+    ariaTagLabel,
   }
 }
 
@@ -2260,25 +2361,27 @@ var script = {
     }
   };
 
-const _hoisted_1 = ["tabindex", "id", "dir", "aria-owns", "aria-expanded", "aria-label", "aria-placeholder", "aria-activedescendant"];
-const _hoisted_2 = ["type", "modelValue", "value", "autocomplete", "id", "aria-owns", "aria-expanded", "aria-label", "aria-placeholder", "aria-activedescendant"];
-const _hoisted_3 = ["onClick"];
-const _hoisted_4 = ["type", "modelValue", "value", "id", "autocomplete", "aria-owns", "aria-expanded", "aria-label", "aria-placeholder", "aria-activedescendant"];
-const _hoisted_5 = ["innerHTML"];
+const _hoisted_1 = ["tabindex", "id", "dir", "aria-owns", "aria-label", "aria-placeholder", "aria-expanded", "aria-activedescendant", "aria-multiselectable"];
+const _hoisted_2 = ["type", "modelValue", "value", "autocomplete", "id", "aria-owns", "aria-label", "aria-placeholder", "aria-expanded", "aria-activedescendant", "aria-multiselectable"];
+const _hoisted_3 = ["onKeyup", "aria-label"];
+const _hoisted_4 = ["onClick"];
+const _hoisted_5 = ["type", "modelValue", "value", "id", "autocomplete", "aria-owns", "aria-label", "aria-placeholder", "aria-expanded", "aria-activedescendant", "aria-multiselectable"];
 const _hoisted_6 = ["innerHTML"];
-const _hoisted_7 = ["id"];
-const _hoisted_8 = ["data-pointed", "onMouseenter", "onClick"];
-const _hoisted_9 = ["innerHTML"];
-const _hoisted_10 = ["aria-label"];
-const _hoisted_11 = ["data-pointed", "data-selected", "id", "aria-label", "onMouseenter", "onClick"];
-const _hoisted_12 = ["innerHTML"];
-const _hoisted_13 = ["id", "aria-label", "data-pointed", "data-selected", "onMouseenter", "onClick"];
+const _hoisted_7 = ["innerHTML"];
+const _hoisted_8 = ["id"];
+const _hoisted_9 = ["id", "aria-label", "aria-selected"];
+const _hoisted_10 = ["data-pointed", "onMouseenter", "onClick"];
+const _hoisted_11 = ["innerHTML"];
+const _hoisted_12 = ["aria-label"];
+const _hoisted_13 = ["data-pointed", "data-selected", "onMouseenter", "onClick", "id", "aria-selected", "aria-label"];
 const _hoisted_14 = ["innerHTML"];
-const _hoisted_15 = ["innerHTML"];
+const _hoisted_15 = ["data-pointed", "data-selected", "onMouseenter", "onClick", "id", "aria-selected", "aria-label"];
 const _hoisted_16 = ["innerHTML"];
-const _hoisted_17 = ["value"];
-const _hoisted_18 = ["name", "value"];
-const _hoisted_19 = ["name", "value"];
+const _hoisted_17 = ["innerHTML"];
+const _hoisted_18 = ["innerHTML"];
+const _hoisted_19 = ["value"];
+const _hoisted_20 = ["name", "value"];
+const _hoisted_21 = ["name", "value"];
 
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (openBlock(), createElementBlock("div", {
@@ -2287,18 +2390,18 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     class: normalizeClass(_ctx.classList.container),
     id: $props.searchable ? undefined : $props.id,
     dir: $props.rtl ? 'rtl' : undefined,
+    onFocusin: _cache[9] || (_cache[9] = (...args) => (_ctx.handleFocusIn && _ctx.handleFocusIn(...args))),
+    onFocusout: _cache[10] || (_cache[10] = (...args) => (_ctx.handleFocusOut && _ctx.handleFocusOut(...args))),
+    onKeydown: _cache[11] || (_cache[11] = (...args) => (_ctx.handleKeydown && _ctx.handleKeydown(...args))),
+    onKeyup: _cache[12] || (_cache[12] = (...args) => (_ctx.handleKeyup && _ctx.handleKeyup(...args))),
+    onMousedown: _cache[13] || (_cache[13] = (...args) => (_ctx.handleMousedown && _ctx.handleMousedown(...args))),
     "aria-owns": _ctx.ariaOwns,
-    "aria-expanded": _ctx.isOpen,
     "aria-label": _ctx.ariaLabel,
     "aria-placeholder": _ctx.ariaPlaceholder,
+    "aria-expanded": _ctx.isOpen,
     "aria-activedescendant": _ctx.ariaActiveDescendant,
-    onFocusin: _cache[8] || (_cache[8] = (...args) => (_ctx.activate && _ctx.activate(...args))),
-    onFocusout: _cache[9] || (_cache[9] = (...args) => (_ctx.deactivate && _ctx.deactivate(...args))),
-    onKeydown: _cache[10] || (_cache[10] = (...args) => (_ctx.handleKeydown && _ctx.handleKeydown(...args))),
-    onKeyup: _cache[11] || (_cache[11] = (...args) => (_ctx.handleKeyup && _ctx.handleKeyup(...args))),
-    onFocus: _cache[12] || (_cache[12] = (...args) => (_ctx.handleFocus && _ctx.handleFocus(...args))),
-    onMousedown: _cache[13] || (_cache[13] = (...args) => (_ctx.handleMousedown && _ctx.handleMousedown(...args))),
-    role: "combobox"
+    "aria-multiselectable": _ctx.ariaMultiselectable,
+    role: "listbox"
   }, [
     createCommentVNode(" Search "),
     ($props.mode !== 'tags' && $props.searchable && !$props.disabled)
@@ -2311,23 +2414,25 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           autocomplete: $props.autocomplete,
           id: $props.searchable ? $props.id : undefined
         }, $props.attrs, {
-          "aria-owns": _ctx.ariaOwns,
-          "aria-expanded": _ctx.isOpen,
-          "aria-label": _ctx.ariaLabel,
-          "aria-placeholder": _ctx.ariaPlaceholder,
-          "aria-activedescendant": _ctx.ariaActiveDescendant,
           onInput: _cache[0] || (_cache[0] = (...args) => (_ctx.handleSearchInput && _ctx.handleSearchInput(...args))),
           onKeypress: _cache[1] || (_cache[1] = (...args) => (_ctx.handleKeypress && _ctx.handleKeypress(...args))),
           onPaste: _cache[2] || (_cache[2] = withModifiers((...args) => (_ctx.handlePaste && _ctx.handlePaste(...args)), ["stop"])),
           ref: "input",
-          role: "combobox"
+          "aria-owns": _ctx.ariaOwns,
+          "aria-label": _ctx.ariaLabel,
+          "aria-placeholder": _ctx.ariaPlaceholder,
+          "aria-expanded": _ctx.isOpen,
+          "aria-activedescendant": _ctx.ariaActiveDescendant,
+          "aria-multiselectable": _ctx.ariaMultiselectable,
+          role: "listbox"
         }), null, 16 /* FULL_PROPS */, _hoisted_2))
       : createCommentVNode("v-if", true),
     createCommentVNode(" Tags (with search) "),
     ($props.mode == 'tags')
       ? (openBlock(), createElementBlock("div", {
           key: 1,
-          class: normalizeClass(_ctx.classList.tags)
+          class: normalizeClass(_ctx.classList.tags),
+          "data-tags": ""
         }, [
           (openBlock(true), createElementBlock(Fragment, null, renderList(_ctx.iv, (option, i, key) => {
             return renderSlot(_ctx.$slots, "tag", {
@@ -2337,7 +2442,10 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
             }, () => [
               (openBlock(), createElementBlock("span", {
                 class: normalizeClass(_ctx.classList.tag),
-                key: key
+                tabindex: "-1",
+                onKeyup: withKeys($event => (_ctx.handleTagRemove(option, $event)), ["enter"]),
+                key: key,
+                "aria-label": _ctx.ariaTagLabel(option[$props.label])
               }, [
                 createTextVNode(toDisplayString(option[$props.label]) + " ", 1 /* TEXT */),
                 (!$props.disabled)
@@ -2349,9 +2457,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
                       createElementVNode("span", {
                         class: normalizeClass(_ctx.classList.tagRemoveIcon)
                       }, null, 2 /* CLASS */)
-                    ], 10 /* CLASS, PROPS */, _hoisted_3))
+                    ], 10 /* CLASS, PROPS */, _hoisted_4))
                   : createCommentVNode("v-if", true)
-              ], 2 /* CLASS */))
+              ], 42 /* CLASS, PROPS, HYDRATE_EVENTS */, _hoisted_3))
             ])
           }), 256 /* UNKEYED_FRAGMENT */)),
           createElementVNode("div", {
@@ -2373,17 +2481,18 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
                   id: $props.searchable ? $props.id : undefined,
                   autocomplete: $props.autocomplete
                 }, $props.attrs, {
-                  "aria-owns": _ctx.ariaOwns,
-                  "aria-expanded": _ctx.isOpen,
-                  "aria-label": _ctx.ariaLabel,
-                  "aria-placeholder": _ctx.ariaPlaceholder,
-                  "aria-activedescendant": _ctx.ariaActiveDescendant,
                   onInput: _cache[3] || (_cache[3] = (...args) => (_ctx.handleSearchInput && _ctx.handleSearchInput(...args))),
                   onKeypress: _cache[4] || (_cache[4] = (...args) => (_ctx.handleKeypress && _ctx.handleKeypress(...args))),
                   onPaste: _cache[5] || (_cache[5] = withModifiers((...args) => (_ctx.handlePaste && _ctx.handlePaste(...args)), ["stop"])),
                   ref: "input",
-                  role: "combobox"
-                }), null, 16 /* FULL_PROPS */, _hoisted_4))
+                  "aria-owns": _ctx.ariaOwns,
+                  "aria-label": _ctx.ariaLabel,
+                  "aria-placeholder": _ctx.ariaPlaceholder,
+                  "aria-expanded": _ctx.isOpen,
+                  "aria-activedescendant": _ctx.ariaActiveDescendant,
+                  "aria-multiselectable": _ctx.ariaMultiselectable,
+                  role: "listbox"
+                }), null, 16 /* FULL_PROPS */, _hoisted_5))
               : createCommentVNode("v-if", true)
           ], 2 /* CLASS */)
         ], 2 /* CLASS */))
@@ -2395,12 +2504,13 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           value: _ctx.iv
         }, () => [
           createElementVNode("div", {
-            class: normalizeClass(_ctx.classList.singleLabel)
+            class: normalizeClass(_ctx.classList.singleLabel),
+            "aria-hidden": "true"
           }, [
             createElementVNode("span", {
               class: normalizeClass(_ctx.classList.singleLabelText),
               innerHTML: _ctx.iv[$props.label]
-            }, null, 10 /* CLASS, PROPS */, _hoisted_5)
+            }, null, 10 /* CLASS, PROPS */, _hoisted_6)
           ], 2 /* CLASS */)
         ])
       : createCommentVNode("v-if", true),
@@ -2412,15 +2522,17 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         }, () => [
           createElementVNode("div", {
             class: normalizeClass(_ctx.classList.multipleLabel),
-            innerHTML: _ctx.multipleLabelText
-          }, null, 10 /* CLASS, PROPS */, _hoisted_6)
+            innerHTML: _ctx.multipleLabelText,
+            "aria-hidden": "true"
+          }, null, 10 /* CLASS, PROPS */, _hoisted_7)
         ])
       : createCommentVNode("v-if", true),
     createCommentVNode(" Placeholder "),
     ($props.placeholder && !_ctx.hasSelected && !_ctx.search)
       ? renderSlot(_ctx.$slots, "placeholder", { key: 4 }, () => [
           createElementVNode("div", {
-            class: normalizeClass(_ctx.classList.placeholder)
+            class: normalizeClass(_ctx.classList.placeholder),
+            "aria-hidden": "true"
           }, toDisplayString($props.placeholder), 3 /* TEXT, CLASS */)
         ])
       : createCommentVNode("v-if", true),
@@ -2428,7 +2540,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     ($props.loading || _ctx.resolving)
       ? renderSlot(_ctx.$slots, "spinner", { key: 5 }, () => [
           createElementVNode("span", {
-            class: normalizeClass(_ctx.classList.spinner)
+            class: normalizeClass(_ctx.classList.spinner),
+            "aria-hidden": "true"
           }, null, 2 /* CLASS */)
         ])
       : createCommentVNode("v-if", true),
@@ -2439,13 +2552,17 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           clear: _ctx.clear
         }, () => [
           createElementVNode("span", {
+            tabindex: "0",
+            role: "button",
+            "aria-label": "❎",
             class: normalizeClass(_ctx.classList.clear),
-            onClick: _cache[6] || (_cache[6] = (...args) => (_ctx.clear && _ctx.clear(...args)))
+            onClick: _cache[6] || (_cache[6] = (...args) => (_ctx.clear && _ctx.clear(...args))),
+            onKeyup: _cache[7] || (_cache[7] = withKeys((...args) => (_ctx.clear && _ctx.clear(...args)), ["enter"]))
           }, [
             createElementVNode("span", {
               class: normalizeClass(_ctx.classList.clearIcon)
             }, null, 2 /* CLASS */)
-          ], 2 /* CLASS */)
+          ], 34 /* CLASS, HYDRATE_EVENTS */)
         ])
       : createCommentVNode("v-if", true),
     createCommentVNode(" Caret "),
@@ -2453,7 +2570,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       ? renderSlot(_ctx.$slots, "caret", { key: 7 }, () => [
           createElementVNode("span", {
             class: normalizeClass(_ctx.classList.caret),
-            onClick: _cache[7] || (_cache[7] = (...args) => (_ctx.handleCaretClick && _ctx.handleCaretClick(...args)))
+            onClick: _cache[8] || (_cache[8] = (...args) => (_ctx.handleCaretClick && _ctx.handleCaretClick(...args))),
+            "aria-hidden": "true"
           }, null, 2 /* CLASS */)
         ])
       : createCommentVNode("v-if", true),
@@ -2465,21 +2583,23 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       renderSlot(_ctx.$slots, "beforelist", { options: _ctx.fo }),
       createElementVNode("ul", {
         class: normalizeClass(_ctx.classList.options),
-        id: _ctx.ariaOwns,
-        role: "listbox"
+        id: _ctx.ariaOwns
       }, [
         ($props.groups)
           ? (openBlock(true), createElementBlock(Fragment, { key: 0 }, renderList(_ctx.fg, (group, i, key) => {
               return (openBlock(), createElementBlock("li", {
                 class: normalizeClass(_ctx.classList.group),
-                key: key
+                key: key,
+                id: _ctx.ariaGroupId(group),
+                "aria-label": _ctx.ariaGroupLabel(group),
+                "aria-selected": _ctx.isSelected(group),
+                role: "option"
               }, [
                 createElementVNode("div", {
                   class: normalizeClass(_ctx.classList.groupLabel(group)),
                   "data-pointed": _ctx.isPointed(group),
-                  onMouseenter: $event => (_ctx.setPointer(group)),
-                  onClick: $event => (_ctx.handleGroupClick(group)),
-                  role: "none"
+                  onMouseenter: $event => (_ctx.setPointer(group, i)),
+                  onClick: $event => (_ctx.handleGroupClick(group))
                 }, [
                   renderSlot(_ctx.$slots, "grouplabel", {
                     group: group,
@@ -2488,9 +2608,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
                   }, () => [
                     createElementVNode("span", {
                       innerHTML: group[$props.groupLabel]
-                    }, null, 8 /* PROPS */, _hoisted_9)
+                    }, null, 8 /* PROPS */, _hoisted_11)
                   ])
-                ], 42 /* CLASS, PROPS, HYDRATE_EVENTS */, _hoisted_8),
+                ], 42 /* CLASS, PROPS, HYDRATE_EVENTS */, _hoisted_10),
                 createElementVNode("ul", {
                   class: normalizeClass(_ctx.classList.groupOptions),
                   "aria-label": _ctx.ariaGroupLabel(group),
@@ -2499,13 +2619,14 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
                   (openBlock(true), createElementBlock(Fragment, null, renderList(group.__VISIBLE__, (option, i, key) => {
                     return (openBlock(), createElementBlock("li", {
                       class: normalizeClass(_ctx.classList.option(option, group)),
-                      key: key,
                       "data-pointed": _ctx.isPointed(option),
                       "data-selected": _ctx.isSelected(option) || undefined,
-                      id: _ctx.ariaOptionId(option),
-                      "aria-label": _ctx.ariaOptionLabel(option),
+                      key: key,
                       onMouseenter: $event => (_ctx.setPointer(option)),
                       onClick: $event => (_ctx.handleOptionClick(option)),
+                      id: _ctx.ariaOptionId(option),
+                      "aria-selected": _ctx.isSelected(option),
+                      "aria-label": _ctx.ariaOptionLabel(option),
                       role: "option"
                     }, [
                       renderSlot(_ctx.$slots, "option", {
@@ -2516,23 +2637,24 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
                       }, () => [
                         createElementVNode("span", {
                           innerHTML: option[$props.label]
-                        }, null, 8 /* PROPS */, _hoisted_12)
+                        }, null, 8 /* PROPS */, _hoisted_14)
                       ])
-                    ], 42 /* CLASS, PROPS, HYDRATE_EVENTS */, _hoisted_11))
+                    ], 42 /* CLASS, PROPS, HYDRATE_EVENTS */, _hoisted_13))
                   }), 128 /* KEYED_FRAGMENT */))
-                ], 10 /* CLASS, PROPS */, _hoisted_10)
-              ], 2 /* CLASS */))
+                ], 10 /* CLASS, PROPS */, _hoisted_12)
+              ], 10 /* CLASS, PROPS */, _hoisted_9))
             }), 128 /* KEYED_FRAGMENT */))
           : (openBlock(true), createElementBlock(Fragment, { key: 1 }, renderList(_ctx.fo, (option, i, key) => {
               return (openBlock(), createElementBlock("li", {
-                id: _ctx.ariaOptionId(option),
-                "aria-label": _ctx.ariaOptionLabel(option),
                 class: normalizeClass(_ctx.classList.option(option)),
-                key: key,
                 "data-pointed": _ctx.isPointed(option),
                 "data-selected": _ctx.isSelected(option) || undefined,
+                key: key,
                 onMouseenter: $event => (_ctx.setPointer(option)),
                 onClick: $event => (_ctx.handleOptionClick(option)),
+                id: _ctx.ariaOptionId(option),
+                "aria-selected": _ctx.isSelected(option),
+                "aria-label": _ctx.ariaOptionLabel(option),
                 role: "option"
               }, [
                 renderSlot(_ctx.$slots, "option", {
@@ -2543,17 +2665,17 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
                 }, () => [
                   createElementVNode("span", {
                     innerHTML: option[$props.label]
-                  }, null, 8 /* PROPS */, _hoisted_14)
+                  }, null, 8 /* PROPS */, _hoisted_16)
                 ])
-              ], 42 /* CLASS, PROPS, HYDRATE_EVENTS */, _hoisted_13))
+              ], 42 /* CLASS, PROPS, HYDRATE_EVENTS */, _hoisted_15))
             }), 128 /* KEYED_FRAGMENT */))
-      ], 10 /* CLASS, PROPS */, _hoisted_7),
+      ], 10 /* CLASS, PROPS */, _hoisted_8),
       (_ctx.noOptions)
         ? renderSlot(_ctx.$slots, "nooptions", { key: 0 }, () => [
             createElementVNode("div", {
               class: normalizeClass(_ctx.classList.noOptions),
               innerHTML: $props.noOptionsText
-            }, null, 10 /* CLASS, PROPS */, _hoisted_15)
+            }, null, 10 /* CLASS, PROPS */, _hoisted_17)
           ])
         : createCommentVNode("v-if", true),
       (_ctx.noResults)
@@ -2561,7 +2683,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
             createElementVNode("div", {
               class: normalizeClass(_ctx.classList.noResults),
               innerHTML: $props.noResultsText
-            }, null, 10 /* CLASS, PROPS */, _hoisted_16)
+            }, null, 10 /* CLASS, PROPS */, _hoisted_18)
           ])
         : createCommentVNode("v-if", true),
       ($props.infinite && _ctx.hasMore)
@@ -2587,7 +2709,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           tabindex: "-1",
           value: _ctx.textValue,
           required: ""
-        }, null, 10 /* CLASS, PROPS */, _hoisted_17))
+        }, null, 10 /* CLASS, PROPS */, _hoisted_19))
       : createCommentVNode("v-if", true),
     createCommentVNode(" Native input support "),
     ($props.nativeSupport)
@@ -2598,14 +2720,14 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
                 type: "hidden",
                 name: $props.name,
                 value: _ctx.plainValue !== undefined ? _ctx.plainValue : ''
-              }, null, 8 /* PROPS */, _hoisted_18))
+              }, null, 8 /* PROPS */, _hoisted_20))
             : (openBlock(true), createElementBlock(Fragment, { key: 1 }, renderList(_ctx.plainValue, (v, i) => {
                 return (openBlock(), createElementBlock("input", {
                   type: "hidden",
                   name: `${$props.name}[]`,
                   value: v,
                   key: i
-                }, null, 8 /* PROPS */, _hoisted_19))
+                }, null, 8 /* PROPS */, _hoisted_21))
               }), 128 /* KEYED_FRAGMENT */))
         ], 64 /* STABLE_FRAGMENT */))
       : createCommentVNode("v-if", true),
