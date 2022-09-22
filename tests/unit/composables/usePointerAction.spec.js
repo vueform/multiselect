@@ -163,7 +163,10 @@ describe('usePointer Action', () => {
 
       await nextTick()
 
-      expect(select.vm.pointer).toStrictEqual(select.vm.fg[0])
+      expect(select.vm.pointer).toStrictEqual({
+        ...select.vm.fg[0],
+        index: 0,
+      })
     })
 
     it('should not do anything if has no enabled options and pointer is null', async () => {
@@ -309,7 +312,10 @@ describe('usePointer Action', () => {
 
       await nextTick()
 
-      expect(select.vm.pointer).toStrictEqual(select.vm.fg[2])
+      expect(select.vm.pointer).toStrictEqual({
+        ...select.vm.fg[2],
+        index: 2,
+      })
     })
 
     it('should set first enabled group label if pointer is group and has not enabled options and has no enabled next group groups=true', async () => {
@@ -344,7 +350,10 @@ describe('usePointer Action', () => {
 
       await nextTick()
 
-      expect(select.vm.pointer).toStrictEqual(select.vm.fg[0])
+      expect(select.vm.pointer).toStrictEqual({
+        ...select.vm.fg[0],
+        index: 0,
+      })
     })
 
     it('should set next enabled option in group groups=true', async () => {
@@ -417,7 +426,10 @@ describe('usePointer Action', () => {
 
       await nextTick()
 
-      expect(select.vm.pointer).toStrictEqual(select.vm.fg[2])
+      expect(select.vm.pointer).toStrictEqual({
+        ...select.vm.fg[2],
+        index: 2,
+      })
     })
 
     it('should set first enabled group if has no enabled next option nor next group groups=true', async () => {
@@ -459,7 +471,10 @@ describe('usePointer Action', () => {
 
       await nextTick()
 
-      expect(select.vm.pointer).toStrictEqual(select.vm.fg[0])
+      expect(select.vm.pointer).toStrictEqual({
+        ...select.vm.fg[0],
+        index: 0,
+      })
     })
   })
 
@@ -543,7 +558,10 @@ describe('usePointer Action', () => {
 
       await nextTick()
 
-      expect(select.vm.pointer).toStrictEqual(select.vm.fg[1])
+      expect(select.vm.pointer).toStrictEqual({
+        ...select.vm.fg[1],
+        index: 1,
+      })
     })
 
     it('should not do anything if has no enabled options and pointer is null', async () => {
@@ -662,7 +680,10 @@ describe('usePointer Action', () => {
 
       await nextTick()
 
-      expect(select.vm.pointer).toStrictEqual(select.vm.fg[0])
+      expect(select.vm.pointer).toStrictEqual({
+        ...select.vm.fg[0],
+        index: 0,
+      })
     })
 
     it('should set last group last enabled option if has no prev option nor group and pointer is group groups=true', async () => {
@@ -736,7 +757,10 @@ describe('usePointer Action', () => {
 
       await nextTick()
 
-      expect(select.vm.pointer).toStrictEqual(select.vm.fg[1])
+      expect(select.vm.pointer).toStrictEqual({
+        ...select.vm.fg[1],
+        index: 1,
+      })
     })
 
     it('should set prev enabled option if pointer is not group groups=true', async () => {
@@ -800,7 +824,10 @@ describe('usePointer Action', () => {
 
       await nextTick()
 
-      expect(select.vm.pointer).toStrictEqual(select.vm.fg[0])
+      expect(select.vm.pointer).toStrictEqual({
+        ...select.vm.fg[0],
+        index: 0,
+      })
     })
   })
 

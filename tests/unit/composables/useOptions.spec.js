@@ -439,6 +439,7 @@ describe('useOptions', () => {
         {
           label: 'First',
           group: true,
+          index: 0,
           options: [
             { value: 1, label: 1 },
             { value: 2, label: 2 },
@@ -453,6 +454,7 @@ describe('useOptions', () => {
         {
           label: 'Second',
           group: true,
+          index: 1,
           options: [
             { value: 4, label: 4 },
             { value: 5, label: 5 },
@@ -490,6 +492,7 @@ describe('useOptions', () => {
         {
           label: 'First',
           group: true,
+          index: 0,
           options: [
             { value: 'value1', label: 'value1' },
             { value: 'value2', label: 'value2' },
@@ -502,6 +505,7 @@ describe('useOptions', () => {
         {
           label: 'Second',
           group: true,
+          index: 1,
           options: [
             { value: 'value4', label: 'value4' },
           ],
@@ -537,6 +541,7 @@ describe('useOptions', () => {
         {
           label: 'First',
           group: true,
+          index: 0,
           options: [
             { value: 'value1', label: 'value1' },
             { value: 'value2', label: 'value2' },
@@ -549,6 +554,7 @@ describe('useOptions', () => {
         {
           label: 'Second',
           group: true,
+          index: 1,
           options: [
             { value: 'value4', label: 'value4' },
           ],
@@ -584,6 +590,7 @@ describe('useOptions', () => {
         {
           label: 'First',
           group: true,
+          index: 0,
           options: [
             { value: 'value1', label: 'value1' },
             { value: 'value2', label: 'value2' },
@@ -595,6 +602,7 @@ describe('useOptions', () => {
         {
           label: 'Second',
           group: true,
+          index: 1,
           options: [
             { value: 'value4', label: 'value4' },
           ],
@@ -630,6 +638,7 @@ describe('useOptions', () => {
         {
           label: 'First',
           group: true,
+          index: 0,
           options: [
             { value: 'value1', label: 'value1' },
             { value: 'value2', label: 'value2' },
@@ -642,6 +651,7 @@ describe('useOptions', () => {
         {
           label: 'Second',
           group: true,
+          index: 1,
           options: [
             { value: 'value4', label: 'value4' },
           ],
@@ -677,6 +687,7 @@ describe('useOptions', () => {
         {
           label: 'First',
           group: true,
+          index: 0,
           options: [
             { value: 'value1', label: 'value1' },
             { value: 'value2', label: 'value2' },
@@ -714,6 +725,7 @@ describe('useOptions', () => {
         {
           label: 'First',
           group: true,
+          index: 0,
           options: [
             { value: 'value1', label: 'value1' },
             { value: 'value2', label: 'value2' },
@@ -726,6 +738,7 @@ describe('useOptions', () => {
         {
           label: 'Second',
           group: true,
+          index: 1,
           options: [
             { value: 'value4', label: 'value4' },
           ],
@@ -760,6 +773,7 @@ describe('useOptions', () => {
         {
           label: 'First',
           group: true,
+          index: 0,
           options: [
             { value: 'value1', label: 'value1' },
             { value: 'value2', label: 'value2' },
@@ -774,6 +788,7 @@ describe('useOptions', () => {
         {
           label: 'Second',
           group: true,
+          index: 1,
           options: [
             { value: 'value4', label: 'value4' },
             { value: 5, label: 5 },
@@ -807,6 +822,7 @@ describe('useOptions', () => {
         {
           label: 'First',
           group: true,
+          index: 0,
           options: [
             { value: 'value1', label: 'value1' },
             { value: 'value2', label: 'value2' },
@@ -843,6 +859,7 @@ describe('useOptions', () => {
         {
           label: 'First',
           group: true,
+          index: 0,
           options: [
             { value: 'value1', label: 'value1' },
             { value: 'value2', label: 'value2' },
@@ -856,6 +873,7 @@ describe('useOptions', () => {
         },
         {
           label: 'Second',
+          index: 1,
           group: true,
           options: [],
           __VISIBLE__: []
@@ -888,6 +906,7 @@ describe('useOptions', () => {
         {
           label: 'First',
           group: true,
+          index: 0,
           options: [
             { value: 'value1', label: 'value1' },
             { value: 'value2', label: 'value2' },
@@ -900,6 +919,7 @@ describe('useOptions', () => {
         {
           label: 'Second',
           group: true,
+          index: 1,
           options: [
             { value: 'value4', label: 'value4' },
             { value: 'value5', label: 'value5' },

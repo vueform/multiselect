@@ -58,6 +58,12 @@ const keyEvent = (event, wrapper, key) => {
     case 'down':
       wrapper.trigger(event, { key: 'ArrowDown' })
       break
+    case 'left':
+      wrapper.trigger(event, { key: 'ArrowLeft' })
+      break
+    case 'right':
+      wrapper.trigger(event, { key: 'ArrowRight' })
+      break
     case 'enter':
       wrapper.trigger(event, { key: 'Enter' })
       break

@@ -104,6 +104,221 @@ describe('useKeyboard', () => {
         expect(preventMock).toHaveBeenCalled()
       })
 
+      it('should remove last tag if focused on enter', async () => {
+        let select = createSelect({
+          mode: 'tags',
+          options: [1,2,3],
+          value: [1,2,3],
+        }, {
+          attach: true,
+        })
+
+        keydown(select, 'left')
+        keydown(select, 'enter')
+
+        await nextTick()
+
+        expect(getValue(select)).toEqual([1,2])
+
+        destroy(select)
+      })
+
+      it('should put focus to multiselect when last tag removed on enter', async () => {
+        let select = createSelect({
+          mode: 'tags',
+          options: [1,2,3],
+          value: [1],
+        }, {
+          attach: true,
+        })
+
+        keydown(select, 'left')
+        keydown(select, 'enter')
+
+        await nextTick()
+
+        expect(getValue(select)).toEqual([])
+        expect(document.activeElement).toEqual(select.vm.$el)
+
+        destroy(select)
+      })
+
+      it('should put focus to input when last tag removed when searchable on enter', async () => {
+        let select = createSelect({
+          mode: 'tags',
+          options: [1,2,3],
+          value: [1],
+          searchable: true,
+        }, {
+          attach: true,
+        })
+
+        keydown(select, 'left')
+        keydown(select, 'enter')
+
+        await nextTick()
+
+        expect(getValue(select)).toEqual([])
+        expect(document.activeElement).toEqual(select.vm.input)
+
+        destroy(select)
+      })
+
+      it('should remove middle tag if focused on enter', async () => {
+        let select = createSelect({
+          mode: 'tags',
+          options: [1,2,3],
+          value: [1,2,3],
+        }, {
+          attach: true,
+        })
+
+        keydown(select, 'left')
+        keydown(select, 'left')
+        keydown(select, 'enter')
+
+        await nextTick()
+
+        expect(getValue(select)).toEqual([1,3])
+
+        destroy(select)
+      })
+
+      it('should remove first tag if focused on enter', async () => {
+        let select = createSelect({
+          mode: 'tags',
+          options: [1,2,3],
+          value: [1,2,3],
+        }, {
+          attach: true,
+        })
+
+        keydown(select, 'left')
+        keydown(select, 'left')
+        keydown(select, 'left')
+        keydown(select, 'enter')
+
+        await nextTick()
+
+        expect(getValue(select)).toEqual([2,3])
+
+        destroy(select)
+      })
+
+
+      it('should select pointer if there are no tags', async () => {
+        let select = createSelect({
+          mode: 'tags',
+          options: [1,2,3],
+          value: [],
+        }, {
+          attach: true,
+        })
+
+        select.vm.setPointer(select.vm.getOption(1))
+
+        keydown(select, 'left')
+        keydown(select, 'enter')
+
+        await nextTick()
+
+        expect(getValue(select)).toEqual([1])
+
+        destroy(select)
+      })
+
+      it('should select pointer if right is pressed', async () => {
+        let select = createSelect({
+          mode: 'tags',
+          options: [1,2,3],
+          value: [],
+        }, {
+          attach: true,
+        })
+
+        select.vm.setPointer(select.vm.getOption(1))
+
+        keydown(select, 'left')
+        keydown(select, 'enter')
+
+        await nextTick()
+
+        expect(getValue(select)).toEqual([1])
+
+        destroy(select)
+      })
+
+      it('should remove middle tag if navigated with right on enter', async () => {
+        let select = createSelect({
+          mode: 'tags',
+          options: [1,2,3],
+          value: [1,2,3],
+        }, {
+          attach: true,
+        })
+
+        keydown(select, 'left')
+        keydown(select, 'left')
+        keydown(select, 'left')
+        keydown(select, 'right')
+        keydown(select, 'enter')
+
+        await nextTick()
+
+        expect(getValue(select)).toEqual([1,3])
+
+        destroy(select)
+      })
+
+      it('should remove last tag if navigated with right on enter', async () => {
+        let select = createSelect({
+          mode: 'tags',
+          options: [1,2,3],
+          value: [1,2,3],
+        }, {
+          attach: true,
+        })
+
+        keydown(select, 'left')
+        keydown(select, 'left')
+        keydown(select, 'left')
+        keydown(select, 'right')
+        keydown(select, 'right')
+        keydown(select, 'enter')
+
+        await nextTick()
+
+        expect(getValue(select)).toEqual([1,2])
+
+        destroy(select)
+      })
+
+      it('should not remove anything and select pointer if navigated with right', async () => {
+        let select = createSelect({
+          mode: 'tags',
+          options: [1,2,3],
+          value: [],
+        }, {
+          attach: true,
+        })
+
+        select.vm.setPointer(select.vm.getOption(1))
+
+        keydown(select, 'left')
+        keydown(select, 'left')
+        keydown(select, 'left')
+        keydown(select, 'right')
+        keydown(select, 'right')
+        keydown(select, 'right')
+        keydown(select, 'enter')
+
+        await nextTick()
+
+        expect(getValue(select)).toEqual([1])
+
+        destroy(select)
+      })
+
       it('should select pointer', async () => {
         let select = createSelect({
           value: 1,
@@ -201,6 +416,7 @@ describe('useKeyboard', () => {
           attach: true,
         })
 
+        select.vm.mouseClicked = true
         select.element.focus()
         expect(select.vm.isOpen).toBe(true)
 
@@ -896,6 +1112,87 @@ describe('useKeyboard', () => {
 
         expect(select.emitted('keydown').length).toBe(1)
       })
+    })
+  })
+
+  describe('left', () => {
+    it('should stay at the first item when first is selected and left is pressed', async () => {
+      let select = createSelect({
+        mode: 'tags',
+        options: [1,2,3],
+        value: [1],
+      }, {
+        attach: true,
+      })
+
+      keydown(select, 'left')
+      keydown(select, 'left')
+
+      await nextTick()
+
+      expect(document.activeElement).toEqual(select.vm.$el.querySelector('[data-tags] > *:first-of-type'))
+
+      destroy(select)
+    })
+  })
+
+  describe('right', () => {
+    it('should focus input when searchable and right is pressed on last element', async () => {
+      let select = createSelect({
+        mode: 'tags',
+        options: [1,2,3],
+        value: [1],
+        searchable: true,
+      }, {
+        attach: true,
+      })
+
+      keydown(select, 'left')
+      keydown(select, 'right')
+
+      await nextTick()
+
+      expect(document.activeElement).toEqual(select.vm.input)
+
+      destroy(select)
+    })
+
+    it('should focus multiselect when right is pressed on last element', async () => {
+      let select = createSelect({
+        mode: 'tags',
+        options: [1,2,3],
+        value: [1],
+      }, {
+        attach: true,
+      })
+
+      keydown(select, 'left')
+      keydown(select, 'right')
+
+      await nextTick()
+
+      expect(document.activeElement).toEqual(select.vm.$el)
+
+      destroy(select)
+    })
+
+    it('should keep focus on multiselect when right is pressed', async () => {
+      let select = createSelect({
+        mode: 'tags',
+        options: [1,2,3],
+        value: [1],
+      }, {
+        attach: true,
+      })
+
+      select.vm.$el.focus()
+      keydown(select, 'right')
+
+      await nextTick()
+
+      expect(document.activeElement).toEqual(select.vm.$el)
+
+      destroy(select)
     })
   })
 

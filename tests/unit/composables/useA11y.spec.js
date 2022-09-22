@@ -141,6 +141,49 @@ describe('useA11y', () => {
     })
   })
 
+  describe('ariaGroupId', () => {
+    it('should return value', () => {
+      const select = createSelect({
+        mode: 'multiple',
+        value: [1],
+        groups: true,
+        options: [
+          {
+            label: 'First',
+            options: [1,2,3]
+          },
+          {
+            label: 'Second',
+            options: [4,5,6]
+          },
+        ],
+      })
+
+      expect(select.vm.ariaGroupId(select.vm.fg[1])).toBe('multiselect-group-1')
+    })
+    
+    it('should return value with id', () => {
+      const select = createSelect({
+        mode: 'multiple',
+        value: [1],
+        groups: true,
+        options: [
+          {
+            label: 'First',
+            options: [1,2,3]
+          },
+          {
+            label: 'Second',
+            options: [4,5,6]
+          },
+        ],
+        id: 'id'
+      })
+
+      expect(select.vm.ariaGroupId(select.vm.fg[1])).toBe('id-multiselect-group-1')
+    })
+  })
+
   describe('ariaOptionLabel', () => {
     it('should return option label', () => {
       const select = createSelect({
@@ -151,17 +194,6 @@ describe('useA11y', () => {
       expect(select.vm.ariaOptionLabel({
         value: 1, label: 1
       })).toBe('1')
-    })
-    
-    it('should return option label with tick if selected', () => {
-      const select = createSelect({
-        value: 1,
-        options: [1,2,3],
-      })
-
-      expect(select.vm.ariaOptionLabel({
-        value: 1, label: 1
-      })).toBe('✓ 1')
     })
   })
 
