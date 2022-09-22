@@ -10,7 +10,7 @@ export default function usePointer (props, context, dep)
 
   // =============== METHODS ==============
 
-  const setPointer = (option) => {
+  const setPointer = (option, groupIndex = null) => {
     if (option === undefined || (option !== null && option[disabledProp.value])) {
       return
     }
@@ -19,7 +19,15 @@ export default function usePointer (props, context, dep)
       return
     }
 
-    pointer.value = option
+    let p = option ? {
+      ...option
+    } : option
+
+    if (p && p.group) {
+      p.index = groupIndex
+    }
+
+    pointer.value = p
   }
 
   const clearPointer = () => {

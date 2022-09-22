@@ -8,15 +8,19 @@ export default function useScroll (props, context, dep)
 
   const pointer = dep.pointer
   const iv = dep.iv
-  const isSelected = dep.isSelected
   const hasSelected = dep.hasSelected
   const multipleLabelText = dep.multipleLabelText
+  const isOpen = dep.isOpen
 
   // ================ DATA ================
 
   const label = ref(null)
 
   // ============== COMPUTED ==============
+
+  const mainRole = computed(() => {
+    return mode.value === 'single' ? 'select' : 'combobox'
+  })
 
   const ariaOwns = computed(() => {
     let texts = []
@@ -37,10 +41,10 @@ export default function useScroll (props, context, dep)
       texts.push(id.value)
     }
 
-    texts.push('multiselect-option')
+    if (pointer.value) {
+      texts.push(pointer.value.group ? 'multiselect-group' : 'multiselect-option')
 
-    if (pointer.value && pointer.value[valueProp.value] !== undefined) {
-      texts.push(pointer.value[valueProp.value])
+      texts.push(pointer.value.group ? pointer.value.index : pointer.value[valueProp.value])
 
       return texts.join('-')
     }
@@ -54,20 +58,22 @@ export default function useScroll (props, context, dep)
       texts.push(label.value)
     }
 
-    if (placeholder.value && !hasSelected.value) {
-      texts.push(placeholder.value)
-    }
+    if (!pointer.value || !isOpen.value) {
+      if (placeholder.value && !hasSelected.value) {
+        texts.push(placeholder.value)
+      }
 
-    if (mode.value === 'single' && iv.value && iv.value[labelProp.value] !== undefined) {
-      texts.push(iv.value[labelProp.value])
-    }
+      if (mode.value === 'single' && iv.value && iv.value[labelProp.value] !== undefined) {
+        texts.push(iv.value[labelProp.value])
+      }
 
-    if (mode.value === 'multiple' && hasSelected.value) {
-      texts.push(multipleLabelText.value)
-    }
+      if (mode.value === 'multiple' && hasSelected.value) {
+        texts.push(multipleLabelText.value)
+      }
 
-    if (mode.value === 'tags' && hasSelected.value) {
-      texts.push(...iv.value.map(v => v[labelProp.value]))
+      if (mode.value === 'tags' && hasSelected.value) {
+        texts.push(...iv.value.map(v => v[labelProp.value]))
+      }
     }
 
     return texts.join(', ')
@@ -75,6 +81,10 @@ export default function useScroll (props, context, dep)
 
   const ariaPlaceholder = computed(() => {
     return ariaLabel.value
+  })
+
+  const ariaMultiselectable = computed(() => {
+    return mode.value !== 'single'
   })
 
   // =============== METHODS ==============
@@ -93,12 +103,22 @@ export default function useScroll (props, context, dep)
     return texts.join('-')
   }
 
-  const ariaOptionLabel = (option) => {
+  const ariaGroupId = (option, index) => {
     let texts = []
 
-    if (isSelected(option)) {
-      texts.push('✓')
+    if (id && id.value) {
+      texts.push(id.value)
     }
+
+    texts.push('multiselect-group')
+
+    texts.push(index)
+
+    return texts.join('-')
+  }
+
+  const ariaOptionLabel = (option) => {
+    let texts = []
 
     texts.push(option[labelProp.value])
 
@@ -113,6 +133,10 @@ export default function useScroll (props, context, dep)
     return texts.join(' ')
   }
 
+  const ariaTagLabel = (label) => {
+    return `${label} ❎`
+  }
+
   // =============== HOOKS ================
 
   onMounted(() => {
@@ -124,12 +148,16 @@ export default function useScroll (props, context, dep)
   })
 
   return {
+    mainRole,
     ariaOwns,
     ariaLabel,
     ariaPlaceholder,
+    ariaMultiselectable,
     ariaActiveDescendant,
     ariaOptionId,
     ariaOptionLabel,
+    ariaGroupId,
     ariaGroupLabel,
+    ariaTagLabel,
   }
 }

@@ -39,23 +39,33 @@ export default function usePointer (props, context, dep)
     return pointer.value && pointer.value.group
   })
 
+  const currentGroupIndex = computed(() => {
+    return getParentGroupIndex(pointer.value)
+  })
+
   const currentGroup = computed(() => {
-    return getParentGroup(pointer.value)
+    return groups.value[currentGroupIndex.value]
+  })
+
+  const prevGroupIndex = computed(() => {
+    let group = isPointerGroup.value ? pointer.value : /* istanbul ignore next */ getParentGroup(pointer.value)
+    let groupIndex = groups.value.map(g => g[groupLabel.value]).indexOf(group[groupLabel.value])
+    let prevGroupIndex = groupIndex - 1
+
+    let prevGroup = groups.value[prevGroupIndex]
+
+    if (prevGroup === undefined) {
+      prevGroupIndex = lastGroupIndex.value
+    }
+
+    return prevGroupIndex
   })
 
   const prevGroup = computed(() => {
-    const group = isPointerGroup.value ? pointer.value : /* istanbul ignore next */ getParentGroup(pointer.value)
-    const groupIndex = groups.value.map(g => g[groupLabel.value]).indexOf(group[groupLabel.value])
-    let prevGroup = groups.value[groupIndex - 1]
-
-    if (prevGroup === undefined) {
-      prevGroup = lastGroup.value
-    }
-
-    return prevGroup
+    return groups.value[prevGroupIndex.value]
   })
   
-  const nextGroup = computed(() => {
+  const nextGroupIndex = computed(() => {
     let nextIndex = groups.value.map(g => g.label).indexOf(isPointerGroup.value
       ? pointer.value[groupLabel.value]
       : getParentGroup(pointer.value)[groupLabel.value]) + 1
@@ -64,11 +74,19 @@ export default function usePointer (props, context, dep)
       nextIndex = 0
     }
 
-    return groups.value[nextIndex]
+    return nextIndex
+  })
+  
+  const nextGroup = computed(() => {
+    return groups.value[nextGroupIndex.value]
+  })
+
+  const lastGroupIndex = computed(() => {
+    return groups.value.length - 1
   })
 
   const lastGroup = computed(() => {
-    return [...groups.value].slice(-1)[0]
+    return groups.value[lastGroupIndex.value]
   })
   
   const currentGroupFirstEnabledOption = computed(() => {
@@ -120,16 +138,18 @@ export default function usePointer (props, context, dep)
 
   const forwardPointer = () => {
     if (pointer.value === null) {
-      setPointer((groupped.value && canPointGroups.value ? groups.value[0] : options.value[0]) || null)
+      setPointer((groupped.value && canPointGroups.value ? groups.value[0] : options.value[0]) || null, 0)
     }
     else if (groupped.value && canPointGroups.value) {
       let nextPointer = isPointerGroup.value ? currentGroupFirstEnabledOption.value : currentGroupNextEnabledOption.value
+      let nGroupIndex = null
 
       if (nextPointer === undefined) {
         nextPointer = nextGroup.value
+        nGroupIndex = nextGroupIndex.value
       }
 
-      setPointer(nextPointer || /* istanbul ignore next */ null)
+      setPointer(nextPointer || /* istanbul ignore next */ null, nGroupIndex)
     } else {
       let next = options.value.map(o => o[valueProp.value]).indexOf(pointer.value[valueProp.value]) + 1
 
@@ -148,25 +168,29 @@ export default function usePointer (props, context, dep)
   const backwardPointer = () => {
     if (pointer.value === null) {
       let prevPointer = options.value[options.value.length - 1]
+      let pGroupIndex = null
 
       if (groupped.value && canPointGroups.value) {
         prevPointer = lastGroupLastEnabledOption.value
 
         if (prevPointer === undefined) {
-          prevPointer = lastGroup.value
+          prevPointer = groups.value[lastGroupIndex.value]
+          pGroupIndex = lastGroupIndex.value
         }
       }
 
-      setPointer(prevPointer  || null)
+      setPointer(prevPointer  || null, pGroupIndex)
     }
     else if (groupped.value && canPointGroups.value) {
       let prevPointer = isPointerGroup.value ? prevGroupLastEnabledOption.value : currentGroupPrevEnabledOption.value
+      let pGroupIndex = null
 
       if (prevPointer === undefined) {
         prevPointer = isPointerGroup.value ? prevGroup.value : currentGroup.value
+        pGroupIndex = isPointerGroup.value ? prevGroupIndex.value : currentGroupIndex.value
       }
 
-      setPointer(prevPointer || /* istanbul ignore next */ null)
+      setPointer(prevPointer || /* istanbul ignore next */ null, pGroupIndex)
     } else {
       let prevIndex = options.value.map(o => o[valueProp.value]).indexOf(pointer.value[valueProp.value]) - 1
 
@@ -184,6 +208,12 @@ export default function usePointer (props, context, dep)
 
   const getParentGroup = (option) => {
     return groups.value.find((group) => {
+      return group.__VISIBLE__.map(o => o[valueProp.value]).indexOf(option[valueProp.value]) !== -1
+    })
+  }
+
+  const getParentGroupIndex = (option) => {
+    return groups.value.findIndex((group) => {
       return group.__VISIBLE__.map(o => o[valueProp.value]).indexOf(option[valueProp.value]) !== -1
     })
   }

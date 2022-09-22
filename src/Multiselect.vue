@@ -5,18 +5,19 @@
     :class="classList.container"
     :id="searchable ? undefined : id"
     :dir="rtl ? 'rtl' : undefined"
-    :aria-owns="ariaOwns"
-    :aria-expanded="isOpen"
-    :aria-label="ariaLabel"
-    :aria-placeholder="ariaPlaceholder"
-    :aria-activedescendant="ariaActiveDescendant"
-    @focusin="activate"
-    @focusout="deactivate"
+    @focusin="handleFocusIn"
+    @focusout="handleFocusOut"
     @keydown="handleKeydown"
     @keyup="handleKeyup"
-    @focus="handleFocus"
     @mousedown="handleMousedown"
-    role="combobox"
+
+    :aria-owns="ariaOwns"
+    :aria-label="ariaLabel"
+    :aria-placeholder="ariaPlaceholder"
+    :aria-expanded="isOpen"
+    :aria-activedescendant="ariaActiveDescendant"
+    :aria-multiselectable="ariaMultiselectable"
+    role="listbox"
   >
     <!-- Search -->
     <template v-if="mode !== 'tags' && searchable && !disabled">
@@ -28,16 +29,18 @@
         :autocomplete="autocomplete"
         :id="searchable ? id : undefined"
         v-bind="attrs"
-        :aria-owns="ariaOwns"
-        :aria-expanded="isOpen"
-        :aria-label="ariaLabel"
-        :aria-placeholder="ariaPlaceholder"
-        :aria-activedescendant="ariaActiveDescendant"
         @input="handleSearchInput"
         @keypress="handleKeypress"
         @paste.stop="handlePaste"
         ref="input"
-        role="combobox"
+
+        :aria-owns="ariaOwns"
+        :aria-label="ariaLabel"
+        :aria-placeholder="ariaPlaceholder"
+        :aria-expanded="isOpen"
+        :aria-activedescendant="ariaActiveDescendant"
+        :aria-multiselectable="ariaMultiselectable"
+        role="listbox"
       />
     </template>
 
@@ -56,6 +59,8 @@
             tabindex="-1"
             @keyup.enter="handleTagRemove(option, $event)"
             :key="key"
+
+            :aria-label="ariaTagLabel(option[label])"
           >
             {{ option[label] }}
             <span
@@ -82,16 +87,18 @@
             :id="searchable ? id : undefined"
             :autocomplete="autocomplete"
             v-bind="attrs"
-            :aria-owns="ariaOwns"
-            :aria-expanded="isOpen"
-            :aria-label="ariaLabel"
-            :aria-placeholder="ariaPlaceholder"
-            :aria-activedescendant="ariaActiveDescendant"
             @input="handleSearchInput"
             @keypress="handleKeypress"
             @paste.stop="handlePaste"
             ref="input"
-            role="combobox"
+            
+            :aria-owns="ariaOwns"
+            :aria-label="ariaLabel"
+            :aria-placeholder="ariaPlaceholder"
+            :aria-expanded="isOpen"
+            :aria-activedescendant="ariaActiveDescendant"
+            :aria-multiselectable="ariaMultiselectable"
+            role="listbox"
           />
         </div>
       </div>
@@ -100,7 +107,7 @@
     <!-- Single label -->
     <template v-if="mode == 'single' && hasSelected && !search && iv">
       <slot name="singlelabel" :value="iv">
-        <div :class="classList.singleLabel">
+        <div :class="classList.singleLabel" aria-hidden="true">
           <span :class="classList.singleLabelText" v-html="iv[label]"></span>
         </div>
       </slot>
@@ -109,14 +116,14 @@
     <!-- Multiple label -->
     <template v-if="mode == 'multiple' && hasSelected && !search">
       <slot name="multiplelabel" :values="iv">
-        <div :class="classList.multipleLabel" v-html="multipleLabelText"></div>
+        <div :class="classList.multipleLabel" v-html="multipleLabelText" aria-hidden="true"></div>
       </slot>
     </template>
 
     <!-- Placeholder -->
     <template v-if="placeholder && !hasSelected && !search">
       <slot name="placeholder">
-        <div :class="classList.placeholder">
+        <div :class="classList.placeholder" aria-hidden="true">
           {{ placeholder }}
         </div>
       </slot>
@@ -124,13 +131,15 @@
 
     <!-- Spinner -->
     <slot v-if="loading || resolving" name="spinner">
-      <span :class="classList.spinner"></span>
+      <span :class="classList.spinner" aria-hidden="true"></span>
     </slot>
 
     <!-- Clear -->
     <slot v-if="hasSelected && !disabled && canClear && !busy" name="clear" :clear="clear">
       <span
         tabindex="0"
+        role="button"
+        aria-label="❎"
         :class="classList.clear"
         @click="clear"
         @keyup.enter="clear"
@@ -139,7 +148,7 @@
 
     <!-- Caret -->
     <slot v-if="caret && showOptions" name="caret">
-      <span :class="classList.caret" @click="handleCaretClick"></span>
+      <span :class="classList.caret" @click="handleCaretClick" aria-hidden="true"></span>
     </slot>
 
     <!-- Options -->
@@ -149,19 +158,23 @@
     >
       <slot name="beforelist" :options="fo"></slot>
 
-      <ul :class="classList.options" :id="ariaOwns" role="listbox">
+      <ul :class="classList.options" :id="ariaOwns">
         <template v-if="groups">
           <li
             v-for="(group, i, key) in fg"
             :class="classList.group"
             :key="key"
+
+            :id="ariaGroupId(group, i)"
+            :aria-label="ariaGroupLabel(group)"
+            :aria-selected="isSelected(group)"
+            role="option"
           >
             <div
               :class="classList.groupLabel(group)"
               :data-pointed="isPointed(group)"
-              @mouseenter="setPointer(group)"
+              @mouseenter="setPointer(group, i)"
               @click="handleGroupClick(group)"
-              role="none"
             >
               <slot name="grouplabel" :group="group" :is-selected="isSelected" :is-pointed="isPointed">
                 <span v-html="group[groupLabel]"></span>
@@ -170,19 +183,22 @@
 
             <ul
               :class="classList.groupOptions"
+              
               :aria-label="ariaGroupLabel(group)"
               role="group"
             >
               <li
                 v-for="(option, i, key) in group.__VISIBLE__"
                 :class="classList.option(option, group)"
-                :key="key"
                 :data-pointed="isPointed(option)"
                 :data-selected="isSelected(option) || undefined"
-                :id="ariaOptionId(option)"
-                :aria-label="ariaOptionLabel(option)"
+                :key="key"
                 @mouseenter="setPointer(option)"
                 @click="handleOptionClick(option)"
+
+                :id="ariaOptionId(option)"
+                :aria-selected="isSelected(option)"
+                :aria-label="ariaOptionLabel(option)"
                 role="option"
               >
                 <slot name="option" :option="option" :is-selected="isSelected" :is-pointed="isPointed" :search="search">
@@ -195,14 +211,16 @@
         <template v-else>
           <li
             v-for="(option, i, key) in fo"
-            :id="ariaOptionId(option)"
-            :aria-label="ariaOptionLabel(option)"
             :class="classList.option(option)"
-            :key="key"
             :data-pointed="isPointed(option)"
             :data-selected="isSelected(option) || undefined"
+            :key="key"
             @mouseenter="setPointer(option)"
             @click="handleOptionClick(option)"
+
+            :id="ariaOptionId(option)"
+            :aria-selected="isSelected(option)"
+            :aria-label="ariaOptionLabel(option)"
             role="option"
           >
             <slot name="option" :option="option" :isSelected="isSelected" :is-pointed="isPointed" :search="search">

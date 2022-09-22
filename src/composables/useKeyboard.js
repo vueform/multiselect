@@ -91,7 +91,7 @@ export default function useKeyboard (props, context, dep)
       case 'Enter':
         e.preventDefault()
 
-        if (activeIndex !== -1) {
+        if (activeIndex !== -1 && activeIndex !== undefined) {
           update([...iv.value].filter((v, k) => k !== activeIndex))
 
           if (activeIndex === tagList.length - 1) {

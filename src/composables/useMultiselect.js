@@ -1,4 +1,4 @@
-import { ref, toRefs, computed } from 'vue'
+import { ref, toRefs, computed, nextTick } from 'vue'
 
 export default function useMultiselect (props, context, dep)
 {
@@ -15,9 +15,12 @@ export default function useMultiselect (props, context, dep)
   // ================ DATA ================
 
   const multiselect = ref(null)
+
   const tags = ref(null)
 
   const isActive = ref(false)
+
+  const mouseClicked = ref(false)
 
   // ============== COMPUTED ==============
 
@@ -41,18 +44,16 @@ export default function useMultiselect (props, context, dep)
     }
   }
 
-  const handleFocus = () => {
-    focus()
-  }
-
-  const activate = () => {
+  const activate = (shouldOpen = true) => {
     if (disabled.value) {
       return
     }
 
     isActive.value = true
 
-    open()
+    if (shouldOpen) {
+      open()
+    }
   }
 
   const deactivate = () => {
@@ -66,6 +67,14 @@ export default function useMultiselect (props, context, dep)
     }, 1)
   }
 
+  const handleFocusIn = () => {
+    activate(mouseClicked.value)
+  }
+
+  const handleFocusOut = () => {
+    deactivate()
+  }
+
   const handleCaretClick = () => {
     deactivate()
     blur()
@@ -73,6 +82,8 @@ export default function useMultiselect (props, context, dep)
 
   /* istanbul ignore next */
   const handleMousedown = (e) => {
+    mouseClicked.value = true
+
     if (isOpen.value && (e.target.isEqualNode(multiselect.value) || e.target.isEqualNode(tags.value))) {
       setTimeout(() => {
         deactivate()
@@ -80,6 +91,10 @@ export default function useMultiselect (props, context, dep)
     } else if (document.activeElement.isEqualNode(multiselect.value) && !isOpen.value) {
       activate()    
     }
+
+    setTimeout(() => {
+      mouseClicked.value = false
+    }, 0)
   }
 
   return {
@@ -89,9 +104,10 @@ export default function useMultiselect (props, context, dep)
     isActive,
     blur,
     focus,
-    handleFocus,
     activate,
     deactivate,
+    handleFocusIn,
+    handleFocusOut,
     handleCaretClick,
     handleMousedown,
   }
