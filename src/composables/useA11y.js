@@ -46,37 +46,10 @@ export default function useScroll (props, context, dep)
     }
   })
 
-  const ariaLabel = computed(() => {
-    let texts = []
 
-    /* istanbul ignore next */
-    if (label.value) {
-      texts.push(label.value)
-    }
-
-    if (!pointer.value || !isOpen.value) {
-      if (placeholder.value && !hasSelected.value) {
-        texts.push(placeholder.value)
-      }
-
-      if (mode.value === 'single' && iv.value && iv.value[labelProp.value] !== undefined) {
-        texts.push(iv.value[labelProp.value])
-      }
-
-      if (mode.value === 'multiple' && hasSelected.value) {
-        texts.push(multipleLabelText.value)
-      }
-
-      if (mode.value === 'tags' && hasSelected.value) {
-        texts.push(...iv.value.map(v => v[labelProp.value]))
-      }
-    }
-
-    return texts.join(', ')
-  })
 
   const ariaPlaceholder = computed(() => {
-    return ariaLabel.value
+    return placeholder.value
   })
 
   const ariaMultiselectable = computed(() => {
@@ -145,7 +118,6 @@ export default function useScroll (props, context, dep)
 
   return {
     ariaOwns,
-    ariaLabel,
     ariaPlaceholder,
     ariaMultiselectable,
     ariaActiveDescendant,

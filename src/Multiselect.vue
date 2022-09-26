@@ -11,13 +11,14 @@
     @keyup="handleKeyup"
     @mousedown="handleMousedown"
 
-    :aria-owns="ariaOwns"
-    :aria-label="ariaLabel"
-    :aria-placeholder="ariaPlaceholder"
-    :aria-expanded="isOpen"
-    :aria-activedescendant="ariaActiveDescendant"
-    :aria-multiselectable="ariaMultiselectable"
-    role="listbox"
+    :aria-owns="!searchable ? ariaOwns : undefined"
+    :aria-placeholder="!searchable ? ariaPlaceholder : undefined"
+    :aria-expanded="!searchable ? isOpen : undefined"
+    :aria-activedescendant="!searchable ? ariaActiveDescendant : undefined"
+    :aria-multiselectable="!searchable ? ariaMultiselectable : undefined"
+    :role="!searchable ? 'listbox' : undefined"
+
+    v-bind="!searchable ? aria : {}"
   >
     <!-- Search -->
     <template v-if="mode !== 'tags' && searchable && !disabled">
@@ -28,19 +29,22 @@
         :class="classList.search"
         :autocomplete="autocomplete"
         :id="searchable ? id : undefined"
-        v-bind="attrs"
         @input="handleSearchInput"
         @keypress="handleKeypress"
         @paste.stop="handlePaste"
         ref="input"
 
         :aria-owns="ariaOwns"
-        :aria-label="ariaLabel"
         :aria-placeholder="ariaPlaceholder"
         :aria-expanded="isOpen"
         :aria-activedescendant="ariaActiveDescendant"
         :aria-multiselectable="ariaMultiselectable"
         role="listbox"
+
+        v-bind="{
+          ...attrs,
+          ...aria,
+        }"
       />
     </template>
 
@@ -86,19 +90,22 @@
             :class="classList.tagsSearch"
             :id="searchable ? id : undefined"
             :autocomplete="autocomplete"
-            v-bind="attrs"
             @input="handleSearchInput"
             @keypress="handleKeypress"
             @paste.stop="handlePaste"
             ref="input"
             
             :aria-owns="ariaOwns"
-            :aria-label="ariaLabel"
             :aria-placeholder="ariaPlaceholder"
             :aria-expanded="isOpen"
             :aria-activedescendant="ariaActiveDescendant"
             :aria-multiselectable="ariaMultiselectable"
             role="listbox"
+
+            v-bind="{
+              ...attrs,
+              ...aria,
+            }"
           />
         </div>
       </div>
@@ -564,6 +571,11 @@
         type: Boolean,
         required: false,
         default: false,
+      },
+      aria: {
+        required: false,
+        type: Object,
+        default: () => ({}),
       },
     },
     setup(props, context)

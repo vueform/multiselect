@@ -60,52 +60,8 @@ describe('useA11y', () => {
     })
   })
 
-  describe('ariaLabel', () => {
-    it('should contain placeholder if has no selected', () => {
-      const select = createSelect({
-        value: null,
-        options: [1,2,3],
-        placeholder: 'Placeholder'
-      })
-
-      expect(select.vm.ariaLabel).toBe('Placeholder')
-    })
-
-    it('should contain option label if has selected, mode=single', () => {
-      const select = createSelect({
-        value: 1,
-        options: [1,2,3],
-        placeholder: 'Placeholder'
-      })
-
-      expect(select.vm.ariaLabel).toBe('1')
-    })
-
-    it('should contain multipleLabelText if has selected, mode=multiple', () => {
-      const select = createSelect({
-        mode: 'multiple',
-        value: [1,2,3],
-        options: [1,2,3],
-        placeholder: 'Placeholder'
-      })
-
-      expect(select.vm.ariaLabel).toBe(select.vm.multipleLabelText)
-    })
-
-    it('should contain option labels if has selected, mode=tags', () => {
-      const select = createSelect({
-        mode: 'tags',
-        value: [1,2,3],
-        options: [1,2,3],
-        placeholder: 'Placeholder'
-      })
-
-      expect(select.vm.ariaLabel).toBe('1, 2, 3')
-    })
-  })
-
   describe('ariaPlaceholder', () => {
-    it('should equal to ariaLabel', () => {
+    it('should contain placeholder', () => {
       const select = createSelect({
         value: null,
         options: [1,2,3],
