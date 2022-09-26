@@ -1891,10 +1891,10 @@ function useScroll (props, context, dep)
   // ============ DEPENDENCIES ============
 
   const pointer = dep.pointer;
-  const iv = dep.iv;
-  const hasSelected = dep.hasSelected;
-  const multipleLabelText = dep.multipleLabelText;
-  const isOpen = dep.isOpen;
+  dep.iv;
+  dep.hasSelected;
+  dep.multipleLabelText;
+  dep.isOpen;
 
   // ================ DATA ================
 
@@ -1930,37 +1930,10 @@ function useScroll (props, context, dep)
     }
   });
 
-  const ariaLabel = computed(() => {
-    let texts = [];
 
-    /* istanbul ignore next */
-    if (label.value) {
-      texts.push(label.value);
-    }
-
-    if (!pointer.value || !isOpen.value) {
-      if (placeholder.value && !hasSelected.value) {
-        texts.push(placeholder.value);
-      }
-
-      if (mode.value === 'single' && iv.value && iv.value[labelProp.value] !== undefined) {
-        texts.push(iv.value[labelProp.value]);
-      }
-
-      if (mode.value === 'multiple' && hasSelected.value) {
-        texts.push(multipleLabelText.value);
-      }
-
-      if (mode.value === 'tags' && hasSelected.value) {
-        texts.push(...iv.value.map(v => v[labelProp.value]));
-      }
-    }
-
-    return texts.join(', ')
-  });
 
   const ariaPlaceholder = computed(() => {
-    return ariaLabel.value
+    return placeholder.value
   });
 
   const ariaMultiselectable = computed(() => {
@@ -2029,7 +2002,6 @@ function useScroll (props, context, dep)
 
   return {
     ariaOwns,
-    ariaLabel,
     ariaPlaceholder,
     ariaMultiselectable,
     ariaActiveDescendant,
@@ -2343,6 +2315,11 @@ function resolveDeps (props, context, features, deps = {}) {
         required: false,
         default: false,
       },
+      aria: {
+        required: false,
+        type: Object,
+        default: () => ({}),
+      },
     },
     setup(props, context)
     { 
@@ -2448,29 +2425,37 @@ var __vue_render__ = function () {
   var _c = _vm._self._c || _h;
   return _c(
     "div",
-    {
-      ref: "multiselect",
-      class: _vm.classList.container,
-      attrs: {
-        tabindex: _vm.tabindex,
-        id: _vm.searchable ? undefined : _vm.id,
-        dir: _vm.rtl ? "rtl" : undefined,
-        "aria-owns": _vm.ariaOwns,
-        "aria-label": _vm.ariaLabel,
-        "aria-placeholder": _vm.ariaPlaceholder,
-        "aria-expanded": _vm.isOpen,
-        "aria-activedescendant": _vm.ariaActiveDescendant,
-        "aria-multiselectable": _vm.ariaMultiselectable,
-        role: "listbox",
+    _vm._b(
+      {
+        ref: "multiselect",
+        class: _vm.classList.container,
+        attrs: {
+          tabindex: _vm.tabindex,
+          id: _vm.searchable ? undefined : _vm.id,
+          dir: _vm.rtl ? "rtl" : undefined,
+          "aria-owns": !_vm.searchable ? _vm.ariaOwns : undefined,
+          "aria-placeholder": !_vm.searchable ? _vm.ariaPlaceholder : undefined,
+          "aria-expanded": !_vm.searchable ? _vm.isOpen : undefined,
+          "aria-activedescendant": !_vm.searchable
+            ? _vm.ariaActiveDescendant
+            : undefined,
+          "aria-multiselectable": !_vm.searchable
+            ? _vm.ariaMultiselectable
+            : undefined,
+          role: !_vm.searchable ? "listbox" : undefined,
+        },
+        on: {
+          focusin: _vm.handleFocusIn,
+          focusout: _vm.handleFocusOut,
+          keydown: _vm.handleKeydown,
+          keyup: _vm.handleKeyup,
+          mousedown: _vm.handleMousedown,
+        },
       },
-      on: {
-        focusin: _vm.handleFocusIn,
-        focusout: _vm.handleFocusOut,
-        keydown: _vm.handleKeydown,
-        keyup: _vm.handleKeyup,
-        mousedown: _vm.handleMousedown,
-      },
-    },
+      "div",
+      !_vm.searchable ? _vm.aria : {},
+      false
+    ),
     [
       _vm.mode !== "tags" && _vm.searchable && !_vm.disabled
         ? [
@@ -2486,7 +2471,6 @@ var __vue_render__ = function () {
                     autocomplete: _vm.autocomplete,
                     id: _vm.searchable ? _vm.id : undefined,
                     "aria-owns": _vm.ariaOwns,
-                    "aria-label": _vm.ariaLabel,
                     "aria-placeholder": _vm.ariaPlaceholder,
                     "aria-expanded": _vm.isOpen,
                     "aria-activedescendant": _vm.ariaActiveDescendant,
@@ -2504,7 +2488,7 @@ var __vue_render__ = function () {
                   },
                 },
                 "input",
-                _vm.attrs,
+                Object.assign({}, _vm.attrs, _vm.aria),
                 false
               )
             ),
@@ -2609,7 +2593,6 @@ var __vue_render__ = function () {
                                 id: _vm.searchable ? _vm.id : undefined,
                                 autocomplete: _vm.autocomplete,
                                 "aria-owns": _vm.ariaOwns,
-                                "aria-label": _vm.ariaLabel,
                                 "aria-placeholder": _vm.ariaPlaceholder,
                                 "aria-expanded": _vm.isOpen,
                                 "aria-activedescendant":
@@ -2628,7 +2611,7 @@ var __vue_render__ = function () {
                               },
                             },
                             "input",
-                            _vm.attrs,
+                            Object.assign({}, _vm.attrs, _vm.aria),
                             false
                           )
                         )

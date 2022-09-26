@@ -1,4 +1,4 @@
-import { toRefs, getCurrentInstance, ref, computed, watch, nextTick, onMounted, openBlock, createElementBlock, normalizeClass, createCommentVNode, mergeProps, withModifiers, Fragment, renderList, renderSlot, withKeys, createTextVNode, toDisplayString, createElementVNode } from 'vue';
+import { toRefs, getCurrentInstance, ref, computed, watch, nextTick, onMounted, openBlock, createElementBlock, mergeProps, createCommentVNode, withModifiers, normalizeClass, Fragment, renderList, renderSlot, withKeys, createTextVNode, toDisplayString, createElementVNode } from 'vue';
 
 function isNullish (val) {
   return [null, undefined].indexOf(val) !== -1
@@ -1891,10 +1891,10 @@ function useScroll (props, context, dep)
   // ============ DEPENDENCIES ============
 
   const pointer = dep.pointer;
-  const iv = dep.iv;
-  const hasSelected = dep.hasSelected;
-  const multipleLabelText = dep.multipleLabelText;
-  const isOpen = dep.isOpen;
+  dep.iv;
+  dep.hasSelected;
+  dep.multipleLabelText;
+  dep.isOpen;
 
   // ================ DATA ================
 
@@ -1930,37 +1930,10 @@ function useScroll (props, context, dep)
     }
   });
 
-  const ariaLabel = computed(() => {
-    let texts = [];
 
-    /* istanbul ignore next */
-    if (label.value) {
-      texts.push(label.value);
-    }
-
-    if (!pointer.value || !isOpen.value) {
-      if (placeholder.value && !hasSelected.value) {
-        texts.push(placeholder.value);
-      }
-
-      if (mode.value === 'single' && iv.value && iv.value[labelProp.value] !== undefined) {
-        texts.push(iv.value[labelProp.value]);
-      }
-
-      if (mode.value === 'multiple' && hasSelected.value) {
-        texts.push(multipleLabelText.value);
-      }
-
-      if (mode.value === 'tags' && hasSelected.value) {
-        texts.push(...iv.value.map(v => v[labelProp.value]));
-      }
-    }
-
-    return texts.join(', ')
-  });
 
   const ariaPlaceholder = computed(() => {
-    return ariaLabel.value
+    return placeholder.value
   });
 
   const ariaMultiselectable = computed(() => {
@@ -2029,7 +2002,6 @@ function useScroll (props, context, dep)
 
   return {
     ariaOwns,
-    ariaLabel,
     ariaPlaceholder,
     ariaMultiselectable,
     ariaActiveDescendant,
@@ -2341,6 +2313,11 @@ var script = {
         required: false,
         default: false,
       },
+      aria: {
+        required: false,
+        type: Object,
+        default: () => ({}),
+      },
     },
     setup(props, context)
     { 
@@ -2361,11 +2338,11 @@ var script = {
     }
   };
 
-const _hoisted_1 = ["tabindex", "id", "dir", "aria-owns", "aria-label", "aria-placeholder", "aria-expanded", "aria-activedescendant", "aria-multiselectable"];
-const _hoisted_2 = ["type", "modelValue", "value", "autocomplete", "id", "aria-owns", "aria-label", "aria-placeholder", "aria-expanded", "aria-activedescendant", "aria-multiselectable"];
+const _hoisted_1 = ["tabindex", "id", "dir", "aria-owns", "aria-placeholder", "aria-expanded", "aria-activedescendant", "aria-multiselectable", "role"];
+const _hoisted_2 = ["type", "modelValue", "value", "autocomplete", "id", "aria-owns", "aria-placeholder", "aria-expanded", "aria-activedescendant", "aria-multiselectable"];
 const _hoisted_3 = ["onKeyup", "aria-label"];
 const _hoisted_4 = ["onClick"];
-const _hoisted_5 = ["type", "modelValue", "value", "id", "autocomplete", "aria-owns", "aria-label", "aria-placeholder", "aria-expanded", "aria-activedescendant", "aria-multiselectable"];
+const _hoisted_5 = ["type", "modelValue", "value", "id", "autocomplete", "aria-owns", "aria-placeholder", "aria-expanded", "aria-activedescendant", "aria-multiselectable"];
 const _hoisted_6 = ["innerHTML"];
 const _hoisted_7 = ["innerHTML"];
 const _hoisted_8 = ["id"];
@@ -2384,10 +2361,10 @@ const _hoisted_20 = ["name", "value"];
 const _hoisted_21 = ["name", "value"];
 
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  return (openBlock(), createElementBlock("div", {
+  return (openBlock(), createElementBlock("div", mergeProps({
     ref: "multiselect",
     tabindex: _ctx.tabindex,
-    class: normalizeClass(_ctx.classList.container),
+    class: _ctx.classList.container,
     id: $props.searchable ? undefined : $props.id,
     dir: $props.rtl ? 'rtl' : undefined,
     onFocusin: _cache[9] || (_cache[9] = (...args) => (_ctx.handleFocusIn && _ctx.handleFocusIn(...args))),
@@ -2395,14 +2372,13 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onKeydown: _cache[11] || (_cache[11] = (...args) => (_ctx.handleKeydown && _ctx.handleKeydown(...args))),
     onKeyup: _cache[12] || (_cache[12] = (...args) => (_ctx.handleKeyup && _ctx.handleKeyup(...args))),
     onMousedown: _cache[13] || (_cache[13] = (...args) => (_ctx.handleMousedown && _ctx.handleMousedown(...args))),
-    "aria-owns": _ctx.ariaOwns,
-    "aria-label": _ctx.ariaLabel,
-    "aria-placeholder": _ctx.ariaPlaceholder,
-    "aria-expanded": _ctx.isOpen,
-    "aria-activedescendant": _ctx.ariaActiveDescendant,
-    "aria-multiselectable": _ctx.ariaMultiselectable,
-    role: "listbox"
-  }, [
+    "aria-owns": !$props.searchable ? _ctx.ariaOwns : undefined,
+    "aria-placeholder": !$props.searchable ? _ctx.ariaPlaceholder : undefined,
+    "aria-expanded": !$props.searchable ? _ctx.isOpen : undefined,
+    "aria-activedescendant": !$props.searchable ? _ctx.ariaActiveDescendant : undefined,
+    "aria-multiselectable": !$props.searchable ? _ctx.ariaMultiselectable : undefined,
+    role: !$props.searchable ? 'listbox' : undefined
+  }, !$props.searchable ? $props.aria : {}), [
     createCommentVNode(" Search "),
     ($props.mode !== 'tags' && $props.searchable && !$props.disabled)
       ? (openBlock(), createElementBlock("input", mergeProps({
@@ -2412,19 +2388,20 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           value: _ctx.search,
           class: _ctx.classList.search,
           autocomplete: $props.autocomplete,
-          id: $props.searchable ? $props.id : undefined
-        }, $props.attrs, {
+          id: $props.searchable ? $props.id : undefined,
           onInput: _cache[0] || (_cache[0] = (...args) => (_ctx.handleSearchInput && _ctx.handleSearchInput(...args))),
           onKeypress: _cache[1] || (_cache[1] = (...args) => (_ctx.handleKeypress && _ctx.handleKeypress(...args))),
           onPaste: _cache[2] || (_cache[2] = withModifiers((...args) => (_ctx.handlePaste && _ctx.handlePaste(...args)), ["stop"])),
           ref: "input",
           "aria-owns": _ctx.ariaOwns,
-          "aria-label": _ctx.ariaLabel,
           "aria-placeholder": _ctx.ariaPlaceholder,
           "aria-expanded": _ctx.isOpen,
           "aria-activedescendant": _ctx.ariaActiveDescendant,
           "aria-multiselectable": _ctx.ariaMultiselectable,
           role: "listbox"
+        }, {
+          ...$props.attrs,
+          ...$props.aria,
         }), null, 16 /* FULL_PROPS */, _hoisted_2))
       : createCommentVNode("v-if", true),
     createCommentVNode(" Tags (with search) "),
@@ -2479,20 +2456,21 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
                   value: _ctx.search,
                   class: _ctx.classList.tagsSearch,
                   id: $props.searchable ? $props.id : undefined,
-                  autocomplete: $props.autocomplete
-                }, $props.attrs, {
+                  autocomplete: $props.autocomplete,
                   onInput: _cache[3] || (_cache[3] = (...args) => (_ctx.handleSearchInput && _ctx.handleSearchInput(...args))),
                   onKeypress: _cache[4] || (_cache[4] = (...args) => (_ctx.handleKeypress && _ctx.handleKeypress(...args))),
                   onPaste: _cache[5] || (_cache[5] = withModifiers((...args) => (_ctx.handlePaste && _ctx.handlePaste(...args)), ["stop"])),
                   ref: "input",
                   "aria-owns": _ctx.ariaOwns,
-                  "aria-label": _ctx.ariaLabel,
                   "aria-placeholder": _ctx.ariaPlaceholder,
                   "aria-expanded": _ctx.isOpen,
                   "aria-activedescendant": _ctx.ariaActiveDescendant,
                   "aria-multiselectable": _ctx.ariaMultiselectable,
                   role: "listbox"
-                }), null, 16 /* FULL_PROPS */, _hoisted_5))
+                }, {
+              ...$props.attrs,
+              ...$props.aria,
+            }), null, 16 /* FULL_PROPS */, _hoisted_5))
               : createCommentVNode("v-if", true)
           ], 2 /* CLASS */)
         ], 2 /* CLASS */))
@@ -2735,7 +2713,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     createElementVNode("div", {
       class: normalizeClass(_ctx.classList.spacer)
     }, null, 2 /* CLASS */)
-  ], 42 /* CLASS, PROPS, HYDRATE_EVENTS */, _hoisted_1))
+  ], 16 /* FULL_PROPS */, _hoisted_1))
 }
 
 script.render = render;
