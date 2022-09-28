@@ -1,3 +1,10 @@
+## v2.5.6
+
+> `2022-09-28`
+
+### 🐞 Bug Fixes
+  - Async options resolve fix [#266](https://github.com/vueform/multiselect/issues/266).
+
 ## v2.5.5
 
 > `2022-09-26`
