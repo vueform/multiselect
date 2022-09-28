@@ -723,7 +723,7 @@ export default function useOptions (props, context, dep)
 
   watch(options, (n, o) => {
     if (typeof props.options === 'function') {
-      if (resolveOnLoad.value) {
+      if (resolveOnLoad.value && (!o || (n && n.toString() !== o.toString()))) {
         resolveOptions()
       }
     } else {

@@ -3055,6 +3055,39 @@ describe('useOptions', () => {
       expect(asyncOptionsMock2).toHaveBeenCalledTimes(1)
     })
 
+    it('should not resolve options when async options does not change & resolveOnLoad=true', async () => {
+      let asyncOptionsMock = jest.fn()
+
+      const fn1 = async () => {
+        return await new Promise((resolve, reject) => {
+          asyncOptionsMock()
+          resolve([1,2,3])
+        })
+      }
+
+      const fn2 = async () => {
+        return await new Promise((resolve, reject) => {
+          asyncOptionsMock()
+          resolve([1,2,3])
+        })
+      }
+
+      let select = createSelect({
+        resolveOnLoad: true,
+        options: fn1,
+      })
+
+      await flushPromises()
+
+      expect(asyncOptionsMock).toHaveBeenCalledTimes(1)
+
+      select.vm.$parent.props.options = fn2
+
+      await flushPromises()
+
+      expect(asyncOptionsMock).toHaveBeenCalledTimes(1)
+    })
+
     it('should not resolve options when async options change & resolveOnLoad=false', async () => {
       let asyncOptionsMock = jest.fn()
       let asyncOptionsMock2 = jest.fn()
