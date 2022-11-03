@@ -287,7 +287,7 @@ Join our [Discord channel](https://discord.gg/WhX2nG6GTQ) or [open an issue](htt
 | **noResultsText** | `string` | `'No results found'` | The text that should be displayed when there are no search results. |
 | **openDirection** | `string` | `bottom` | Whether the option list should be displayed above or below the multiselect. Possible values: `top\|bottom` |
 | **reverse** | `boolean` | `false` | Whether the option list should be reversed. |
-| **regex** | `regex|string` | `undefined` | The regex that search input should be tested against when `searchable: true`. |
+| **regex** | `regex\|string` | `undefined` | The regex that search input should be tested against when `searchable: true`. |
 | **strict** | `boolean` | `true` | Whether should regard accents/diacritics in search. |
 | **searchStart** | `boolean` | `false` | Whether the search should match the start of the options' `trackBy`s. |
 | **aria** | `object` | | An object containing aria attributes to be added for the multiselect. |
