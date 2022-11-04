@@ -84,6 +84,11 @@ declare class Multiselect extends Vue {
     groupLabel: VNode[];
     tag: VNode[];
     infinite: VNode[];
+    nooptions: VNode[];
+    noresults: VNode[];
+    caret: VNode[];
+    clear: VNode[];
+    spinner: VNode[];
   };
 }
 
