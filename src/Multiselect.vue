@@ -118,7 +118,7 @@
       <template v-if="mode == 'single' && hasSelected && !search && iv">
         <slot name="singlelabel" :value="iv">
           <div :class="classList.singleLabel">
-            <span :class="classList.singleLabelText" v-html="iv[label]"></span>
+            <span :class="classList.singleLabelText">{{ iv[label] }}</span>
           </div>
         </slot>
       </template>
@@ -215,7 +215,7 @@
                 role="option"
               >
                 <slot name="option" :option="option" :is-selected="isSelected" :is-pointed="isPointed" :search="search">
-                  <span v-html="option[label]"></span>
+                  <span>{{ option[label] }}</span>
                 </slot>
               </li>
             </ul>
@@ -237,7 +237,7 @@
             role="option"
           >
             <slot name="option" :option="option" :isSelected="isSelected" :is-pointed="isPointed" :search="search">
-              <span v-html="option[label]"></span>
+              <span>{{ option[label] }}</span>
             </slot>
           </li>
         </template>
