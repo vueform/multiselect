@@ -2,7 +2,9 @@ import { toRefs, onMounted, ref, computed } from 'vue'
 
 export default function useScroll (props, context, dep)
 {
-  const { placeholder, id, valueProp, label: labelProp, mode, groupLabel } = toRefs(props)
+  const {
+    placeholder, id, valueProp, label: labelProp, mode, groupLabel, aria, searchable ,
+  } = toRefs(props)
 
   // ============ DEPENDENCIES ============
 
@@ -10,7 +12,6 @@ export default function useScroll (props, context, dep)
   const iv = dep.iv
   const hasSelected = dep.hasSelected
   const multipleLabelText = dep.multipleLabelText
-  const isOpen = dep.isOpen
 
   // ================ DATA ================
 
@@ -18,7 +19,19 @@ export default function useScroll (props, context, dep)
 
   // ============== COMPUTED ==============
 
-  const ariaOwns = computed(() => {
+  const ariaAssist = computed(() => {
+    let texts = []
+
+    if (id && id.value) {
+      texts.push(id.value)
+    }
+
+    texts.push('assist')
+
+    return texts.join('-')
+  })
+
+  const ariaControls = computed(() => {
     let texts = []
 
     if (id && id.value) {
@@ -54,6 +67,46 @@ export default function useScroll (props, context, dep)
 
   const ariaMultiselectable = computed(() => {
     return mode.value !== 'single'
+  })
+
+  const ariaLabel = computed(() => {
+    let ariaLabel = ''
+
+    if (mode.value === 'single' && hasSelected.value) {
+      ariaLabel += iv.value[labelProp.value]
+    }
+
+    if (mode.value === 'multiple' && hasSelected.value) {
+      ariaLabel += multipleLabelText.value
+    }
+
+    if (mode.value === 'tags' && hasSelected.value) {
+      ariaLabel += iv.value.map(v => v[labelProp.value]).join(', ')
+    }
+
+    if (ariaLabel) {
+      ariaLabel += ', '
+    }
+
+    return ariaLabel
+  })
+
+  const arias = computed(() => {
+    let arias = { ...aria.value }
+    
+    // Need to add manually because focusing
+    // the input won't read the selected value
+    if (searchable.value) {
+      if (arias['aria-labelledby']) {
+        arias['aria-labelledby'] = `${ariaAssist.value} ${arias['aria-labelledby']}`
+      }
+      
+      if (arias['aria-label'] && ariaLabel.value) {
+        arias['aria-label'] = `${ariaLabel.value} ${arias['aria-label']}`
+      }
+    }
+
+    return arias
   })
 
   // =============== METHODS ==============
@@ -117,7 +170,10 @@ export default function useScroll (props, context, dep)
   })
 
   return {
-    ariaOwns,
+    arias,
+    ariaLabel,
+    ariaAssist,
+    ariaControls,
     ariaPlaceholder,
     ariaMultiselectable,
     ariaActiveDescendant,

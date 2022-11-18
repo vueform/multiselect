@@ -12,15 +12,14 @@
 
       :tabindex="tabindex"
 
-      :aria-controls="!searchable ? ariaOwns : undefined"
+      :aria-controls="!searchable ? ariaControls : undefined"
       :aria-placeholder="!searchable ? ariaPlaceholder : undefined"
       :aria-expanded="!searchable ? isOpen : undefined"
       :aria-activedescendant="!searchable ? ariaActiveDescendant : undefined"
       :aria-multiselectable="!searchable ? ariaMultiselectable : undefined"
-      :aria-haspopup="!searchable ? 'listbox' : undefined"
       :role="!searchable ? 'combobox' : undefined"
 
-      v-bind="!searchable ? aria : {}"
+      v-bind="!searchable ? arias : {}"
 
       @keydown="handleKeydown"
       @keyup="handleKeyup"
@@ -42,17 +41,16 @@
           @paste.stop="handlePaste"
           ref="input"
 
-          :aria-controls="ariaOwns"
+          :aria-controls="ariaControls"
           :aria-placeholder="ariaPlaceholder"
           :aria-expanded="isOpen"
           :aria-activedescendant="ariaActiveDescendant"
           :aria-multiselectable="ariaMultiselectable"
-          aria-haspopup="listbox"
           role="combobox"
 
           v-bind="{
             ...attrs,
-            ...aria,
+            ...arias,
           }"
         />
       </template>
@@ -104,16 +102,16 @@
               @paste.stop="handlePaste"
               ref="input"
               
-              :aria-owns="ariaOwns"
+              :aria-controls="ariaControls"
               :aria-placeholder="ariaPlaceholder"
               :aria-expanded="isOpen"
               :aria-activedescendant="ariaActiveDescendant"
               :aria-multiselectable="ariaMultiselectable"
-              role="listbox"
+              role="combobox"
 
               v-bind="{
                 ...attrs,
-                ...aria,
+                ...arias,
               }"
             />
           </div>
@@ -177,7 +175,7 @@
     >
       <slot name="beforelist" :options="fo"></slot>
 
-      <ul :class="classList.options" :id="ariaOwns" role="listbox">
+      <ul :class="classList.options" :id="ariaControls" role="listbox">
         <template v-if="groups">
           <li
             v-for="(group, i, key) in fg"
@@ -276,6 +274,11 @@
         <input v-for="(v, i) in plainValue" type="hidden" :name="`${name}[]`" :value="v" :key="i" />
       </template>
     </template>
+
+    <!-- Screen reader assistive text -->
+    <div v-if="searchable && hasSelected" class="vf-assistive-text" :id="ariaAssist" aria-hidden="true">
+      {{ ariaLabel }}
+    </div>
 
     <!-- Create height for empty input -->
     <div :class="classList.spacer"></div>
