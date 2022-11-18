@@ -22,6 +22,7 @@ export default function useClasses (props, context, dependencies)
     containerOpen: 'is-open',
     containerOpenTop: 'is-open-top',
     containerActive: 'is-active',
+    wrapper: 'multiselect-wrapper',
     singleLabel: 'multiselect-single-label',
     singleLabelText: 'multiselect-single-label-text',
     multipleLabel: 'multiselect-multiple-label',
@@ -84,6 +85,7 @@ export default function useClasses (props, context, dependencies)
         .concat(showDropdown.value && openDirection.value === 'top'  ? c.containerOpenTop : [])
         .concat(showDropdown.value && openDirection.value !== 'top' ? c.containerOpen : [])
         .concat(isActive.value ? c.containerActive : []),
+      wrapper: c.wrapper,
       spacer: c.spacer,
       singleLabel: c.singleLabel,
       singleLabelText: c.singleLabelText,

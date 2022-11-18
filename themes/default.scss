@@ -32,6 +32,19 @@
   }
 }
 
+.multiselect-wrapper {
+  position: relative;
+  margin: 0 auto;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  box-sizing: border-box;
+  cursor: pointer;
+  outline: none;
+  min-height: calc(2 * var(--ms-border-width, 1px) + var(--ms-font-size, 1rem) * var(--ms-line-height, 1.375) + 2 * var(--ms-py, 0.5rem));
+}
+
 .multiselect-multiple-label,
 .multiselect-single-label,
 .multiselect-placeholder {

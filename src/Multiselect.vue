@@ -1,162 +1,169 @@
 <template>
   <div
     ref="multiselect"
-    :tabindex="tabindex"
     :class="classList.container"
     :id="searchable ? undefined : id"
     :dir="rtl ? 'rtl' : undefined"
     @focusin="handleFocusIn"
     @focusout="handleFocusOut"
-    @keydown="handleKeydown"
-    @keyup="handleKeyup"
-    @mousedown="handleMousedown"
-
-    :aria-owns="!searchable ? ariaOwns : undefined"
-    :aria-placeholder="!searchable ? ariaPlaceholder : undefined"
-    :aria-expanded="!searchable ? isOpen : undefined"
-    :aria-activedescendant="!searchable ? ariaActiveDescendant : undefined"
-    :aria-multiselectable="!searchable ? ariaMultiselectable : undefined"
-    :role="!searchable ? 'listbox' : undefined"
-
-    v-bind="!searchable ? aria : {}"
   >
-    <!-- Search -->
-    <template v-if="mode !== 'tags' && searchable && !disabled">
-      <input
-        :type="inputType"
-        :modelValue="search"
-        :value="search"
-        :class="classList.search"
-        :autocomplete="autocomplete"
-        :id="searchable ? id : undefined"
-        @input="handleSearchInput"
-        @keypress="handleKeypress"
-        @paste.stop="handlePaste"
-        ref="input"
+    <div
+      :class="classList.wrapper"
 
-        :aria-owns="ariaOwns"
-        :aria-placeholder="ariaPlaceholder"
-        :aria-expanded="isOpen"
-        :aria-activedescendant="ariaActiveDescendant"
-        :aria-multiselectable="ariaMultiselectable"
-        role="listbox"
+      :tabindex="tabindex"
 
-        v-bind="{
-          ...attrs,
-          ...aria,
-        }"
-      />
-    </template>
+      :aria-controls="!searchable ? ariaOwns : undefined"
+      :aria-placeholder="!searchable ? ariaPlaceholder : undefined"
+      :aria-expanded="!searchable ? isOpen : undefined"
+      :aria-activedescendant="!searchable ? ariaActiveDescendant : undefined"
+      :_aria-multiselectable="!searchable ? ariaMultiselectable : undefined"
+      :role="!searchable ? 'combobox' : undefined"
 
-    <!-- Tags (with search) -->
-    <template v-if="mode == 'tags'">
-      <div :class="classList.tags" data-tags>
-        <slot
-          v-for="(option, i, key) in iv"
-          name="tag"
-          :option="option"
-          :handleTagRemove="handleTagRemove"
-          :disabled="disabled"
-        >
-          <span
-            :class="classList.tag"
-            tabindex="-1"
-            @keyup.enter="handleTagRemove(option, $event)"
-            :key="key"
+      v-bind="!searchable ? aria : {}"
 
-            :aria-label="ariaTagLabel(option[label])"
+      @keydown="handleKeydown"
+      @keyup="handleKeyup"
+      @mousedown="handleMousedown"
+    >
+      <!-- Search -->
+      <template v-if="mode !== 'tags' && searchable && !disabled">
+        <input
+          :type="inputType"
+          :modelValue="search"
+          :value="search"
+          :class="classList.search"
+          :autocomplete="autocomplete"
+          :id="searchable ? id : undefined"
+          @input="handleSearchInput"
+          @keypress="handleKeypress"
+          @paste.stop="handlePaste"
+          ref="input"
+
+          :aria-owns="ariaOwns"
+          :aria-placeholder="ariaPlaceholder"
+          :aria-expanded="isOpen"
+          :aria-activedescendant="ariaActiveDescendant"
+          :aria-multiselectable="ariaMultiselectable"
+          role="listbox"
+
+          v-bind="{
+            ...attrs,
+            ...aria,
+          }"
+        />
+      </template>
+
+      <!-- Tags (with search) -->
+      <template v-if="mode == 'tags'">
+        <div :class="classList.tags" data-tags>
+          <slot
+            v-for="(option, i, key) in iv"
+            name="tag"
+            :option="option"
+            :handleTagRemove="handleTagRemove"
+            :disabled="disabled"
           >
-            {{ option[label] }}
             <span
-              v-if="!disabled"
-              :class="classList.tagRemove"
-              @click="handleTagRemove(option, $event)"
+              :class="classList.tag"
+              tabindex="-1"
+              @keyup.enter="handleTagRemove(option, $event)"
+              :key="key"
+
+              :aria-label="ariaTagLabel(option[label])"
             >
-              <span :class="classList.tagRemoveIcon"></span>
+              {{ option[label] }}
+              <span
+                v-if="!disabled"
+                :class="classList.tagRemove"
+                @click="handleTagRemove(option, $event)"
+              >
+                <span :class="classList.tagRemoveIcon"></span>
+              </span>
             </span>
-          </span>
+          </slot>
+      
+          <div :class="classList.tagsSearchWrapper" ref="tags">
+            <!-- Used for measuring search width -->
+            <span :class="classList.tagsSearchCopy">{{ search }}</span>
+
+            <!-- Actual search input -->
+            <input    
+              v-if="searchable && !disabled"
+              :type="inputType"
+              :modelValue="search"
+              :value="search"
+              :class="classList.tagsSearch"
+              :id="searchable ? id : undefined"
+              :autocomplete="autocomplete"
+              @input="handleSearchInput"
+              @keypress="handleKeypress"
+              @paste.stop="handlePaste"
+              ref="input"
+              
+              :aria-owns="ariaOwns"
+              :aria-placeholder="ariaPlaceholder"
+              :aria-expanded="isOpen"
+              :aria-activedescendant="ariaActiveDescendant"
+              :aria-multiselectable="ariaMultiselectable"
+              role="listbox"
+
+              v-bind="{
+                ...attrs,
+                ...aria,
+              }"
+            />
+          </div>
+        </div>
+      </template>
+
+      <!-- Single label -->
+      <template v-if="mode == 'single' && hasSelected && !search && iv">
+        <slot name="singlelabel" :value="iv">
+          <div :class="classList.singleLabel">
+            <span :class="classList.singleLabelText" v-html="iv[label]"></span>
+          </div>
         </slot>
-    
-        <div :class="classList.tagsSearchWrapper" ref="tags">
-          <!-- Used for measuring search width -->
-          <span :class="classList.tagsSearchCopy">{{ search }}</span>
+      </template>
 
-          <!-- Actual search input -->
-          <input    
-            v-if="searchable && !disabled"
-            :type="inputType"
-            :modelValue="search"
-            :value="search"
-            :class="classList.tagsSearch"
-            :id="searchable ? id : undefined"
-            :autocomplete="autocomplete"
-            @input="handleSearchInput"
-            @keypress="handleKeypress"
-            @paste.stop="handlePaste"
-            ref="input"
-            
-            :aria-owns="ariaOwns"
-            :aria-placeholder="ariaPlaceholder"
-            :aria-expanded="isOpen"
-            :aria-activedescendant="ariaActiveDescendant"
-            :aria-multiselectable="ariaMultiselectable"
-            role="listbox"
+      <!-- Multiple label -->
+      <template v-if="mode == 'multiple' && hasSelected && !search">
+        <slot name="multiplelabel" :values="iv">
+          <div :class="classList.multipleLabel" v-html="multipleLabelText"></div>
+        </slot>
+      </template>
 
-            v-bind="{
-              ...attrs,
-              ...aria,
-            }"
-          />
-        </div>
-      </div>
-    </template>
+      <!-- Placeholder -->
+      <template v-if="placeholder && !hasSelected && !search">
+        <slot name="placeholder">
+          <div :class="classList.placeholder" aria-hidden="true">
+            {{ placeholder }}
+          </div>
+        </slot>
+      </template>
 
-    <!-- Single label -->
-    <template v-if="mode == 'single' && hasSelected && !search && iv">
-      <slot name="singlelabel" :value="iv">
-        <div :class="classList.singleLabel" aria-hidden="true">
-          <span :class="classList.singleLabelText" v-html="iv[label]"></span>
-        </div>
+      <!-- Spinner -->
+      <slot v-if="loading || resolving" name="spinner">
+        <span :class="classList.spinner" aria-hidden="true"></span>
       </slot>
-    </template>
 
-    <!-- Multiple label -->
-    <template v-if="mode == 'multiple' && hasSelected && !search">
-      <slot name="multiplelabel" :values="iv">
-        <div :class="classList.multipleLabel" v-html="multipleLabelText" aria-hidden="true"></div>
+      <!-- Clear -->
+      <slot v-if="hasSelected && !disabled && canClear && !busy" name="clear" :clear="clear">
+        <span
+          aria-hidden="true"
+          tabindex="0"
+          role="button"
+          aria-label="❎"
+          :class="classList.clear"
+          @click="clear"
+          @keyup.enter="clear"
+        ><span :class="classList.clearIcon"></span></span>
       </slot>
-    </template>
 
-    <!-- Placeholder -->
-    <template v-if="placeholder && !hasSelected && !search">
-      <slot name="placeholder">
-        <div :class="classList.placeholder" aria-hidden="true">
-          {{ placeholder }}
-        </div>
+      <!-- Caret -->
+      <slot v-if="caret && showOptions" name="caret">
+        <span :class="classList.caret" @click="handleCaretClick" aria-hidden="true"></span>
       </slot>
-    </template>
-
-    <!-- Spinner -->
-    <slot v-if="loading || resolving" name="spinner">
-      <span :class="classList.spinner" aria-hidden="true"></span>
-    </slot>
-
-    <!-- Clear -->
-    <slot v-if="hasSelected && !disabled && canClear && !busy" name="clear" :clear="clear">
-      <span
-        tabindex="0"
-        role="button"
-        aria-label="❎"
-        :class="classList.clear"
-        @click="clear"
-        @keyup.enter="clear"
-      ><span :class="classList.clearIcon"></span></span>
-    </slot>
-
-    <!-- Caret -->
-    <slot v-if="caret && showOptions" name="caret">
-      <span :class="classList.caret" @click="handleCaretClick" aria-hidden="true"></span>
-    </slot>
+    </div>
 
     <!-- Options -->
     <div
@@ -165,7 +172,7 @@
     >
       <slot name="beforelist" :options="fo"></slot>
 
-      <ul :class="classList.options" :id="ariaOwns">
+      <ul :class="classList.options" :id="ariaOwns" role="listbox">
         <template v-if="groups">
           <li
             v-for="(group, i, key) in fg"
