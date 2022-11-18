@@ -15,6 +15,8 @@ export default function useMultiselect (props, context, dep)
   // ================ DATA ================
 
   const multiselect = ref(null)
+  
+  const wrapper = ref(null)
 
   const tags = ref(null)
 
@@ -67,7 +69,11 @@ export default function useMultiselect (props, context, dep)
     }, 1)
   }
 
-  const handleFocusIn = () => {
+  const handleFocusIn = (e) => {
+    if (e.target.closest('[data-tags]') || e.target.closest('[data-clear]')) {
+      return
+    }
+
     activate(mouseClicked.value)
   }
 
@@ -84,11 +90,12 @@ export default function useMultiselect (props, context, dep)
   const handleMousedown = (e) => {
     mouseClicked.value = true
 
-    if (isOpen.value && (e.target.isEqualNode(multiselect.value) || e.target.isEqualNode(tags.value))) {
+    if (isOpen.value && (e.target.isEqualNode(wrapper.value) || e.target.isEqualNode(tags.value))) {
       setTimeout(() => {
         deactivate()
       }, 0)
-    } else if (document.activeElement.isEqualNode(multiselect.value) && !isOpen.value) {
+    } else if (document.activeElement.isEqualNode(wrapper.value) && !isOpen.value) {
+      console.log(e.target.closest('[data-tags]'))
       activate()    
     }
 
@@ -99,6 +106,7 @@ export default function useMultiselect (props, context, dep)
 
   return {
     multiselect,
+    wrapper,
     tags,
     tabindex,
     isActive,

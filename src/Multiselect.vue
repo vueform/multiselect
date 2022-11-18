@@ -17,6 +17,7 @@
       :aria-expanded="!searchable ? isOpen : undefined"
       :aria-activedescendant="!searchable ? ariaActiveDescendant : undefined"
       :aria-multiselectable="!searchable ? ariaMultiselectable : undefined"
+      :aria-haspopup="!searchable ? 'listbox' : undefined"
       :role="!searchable ? 'combobox' : undefined"
 
       v-bind="!searchable ? aria : {}"
@@ -24,6 +25,8 @@
       @keydown="handleKeydown"
       @keyup="handleKeyup"
       @mousedown="handleMousedown"
+
+      ref="wrapper"
     >
       <!-- Search -->
       <template v-if="mode !== 'tags' && searchable && !disabled">
@@ -39,12 +42,13 @@
           @paste.stop="handlePaste"
           ref="input"
 
-          :aria-owns="ariaOwns"
+          :aria-controls="ariaOwns"
           :aria-placeholder="ariaPlaceholder"
           :aria-expanded="isOpen"
           :aria-activedescendant="ariaActiveDescendant"
           :aria-multiselectable="ariaMultiselectable"
-          role="listbox"
+          aria-haspopup="listbox"
+          role="combobox"
 
           v-bind="{
             ...attrs,
@@ -152,7 +156,8 @@
           aria-hidden="true"
           tabindex="0"
           role="button"
-          aria-label="❎"
+          data-clear
+          aria-roledescription="❎"
           :class="classList.clear"
           @click="clear"
           @keyup.enter="clear"
