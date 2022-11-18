@@ -185,7 +185,10 @@ export default function useKeyboard (props, context, dep)
         break
 
       case 'ArrowLeft':
-        if ((searchable.value && tags.value.querySelector('input').selectionStart) || e.shiftKey || mode.value !== 'tags' || !iv.value || !iv.value.length) {
+        if (
+          (searchable.value && tags.value && tags.value.querySelector('input').selectionStart)
+          || e.shiftKey || mode.value !== 'tags' || !iv.value || !iv.value.length
+        ) {
           return
         }
 
