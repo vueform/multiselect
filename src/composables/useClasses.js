@@ -66,6 +66,7 @@ export default function useClasses (props, context, dependencies)
     noOptions: 'multiselect-no-options',
     noResults: 'multiselect-no-results',
     fakeInput: 'multiselect-fake-input',
+    assist: 'multiselect-assistive-text',
     spacer: 'multiselect-spacer',
     ...classes_.value,
   }))
