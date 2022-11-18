@@ -147,6 +147,7 @@ export default function useClasses (props, context, dependencies)
       },
       noOptions: c.noOptions,
       noResults: c.noResults,
+      assist: c.assist,
       fakeInput: c.fakeInput,
     }
   })

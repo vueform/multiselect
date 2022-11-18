@@ -84,10 +84,6 @@ export default function useScroll (props, context, dep)
       ariaLabel += iv.value.map(v => v[labelProp.value]).join(', ')
     }
 
-    if (ariaLabel) {
-      ariaLabel += ', '
-    }
-
     return ariaLabel
   })
 
@@ -97,12 +93,12 @@ export default function useScroll (props, context, dep)
     // Need to add manually because focusing
     // the input won't read the selected value
     if (searchable.value) {
-      if (arias['aria-labelledby']) {
-        arias['aria-labelledby'] = `${ariaAssist.value} ${arias['aria-labelledby']}`
-      }
+      arias['aria-labelledby'] = arias['aria-labelledby']
+        ? `${ariaAssist.value} ${arias['aria-labelledby']}`
+        : ariaAssist.value
       
-      if (arias['aria-label'] && ariaLabel.value) {
-        arias['aria-label'] = `${ariaLabel.value}${arias['aria-label']}`
+      if (ariaLabel.value && arias['aria-label']) {
+        arias['aria-label'] = `${ariaLabel.value}, ${arias['aria-label']}`
       }
     }
 

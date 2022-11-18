@@ -272,7 +272,7 @@
     </template>
 
     <!-- Screen reader assistive text -->
-    <div v-if="searchable && hasSelected" :class="classes.assist" :id="ariaAssist" aria-hidden="true">
+    <div v-if="searchable && hasSelected" :class="classList.assist" :id="ariaAssist" aria-hidden="true">
       {{ ariaLabel }}
     </div>
 
