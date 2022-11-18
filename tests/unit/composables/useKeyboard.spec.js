@@ -104,6 +104,23 @@ describe('useKeyboard', () => {
         expect(preventMock).toHaveBeenCalled()
       })
 
+      it('should prevent on IME enter', async () => {
+        let select = createSelect({
+          value: 1,
+          options: [1,2,3],
+        })
+
+        let preventMock = jest.fn()
+
+        select.vm.handleKeydown({
+          preventDefault: preventMock,
+          key: 'Enter',
+          keyCode: 229
+        })
+
+        expect(preventMock).toHaveBeenCalled()
+      })
+
       it('should remove last tag if focused on enter', async () => {
         let select = createSelect({
           mode: 'tags',
