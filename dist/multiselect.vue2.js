@@ -1302,6 +1302,8 @@ function useMultiselect (props, context, dep)
   // ================ DATA ================
 
   const multiselect = ref(null);
+  
+  const wrapper = ref(null);
 
   const tags = ref(null);
 
@@ -1322,7 +1324,7 @@ function useMultiselect (props, context, dep)
       input.value.blur();
     }
 
-    multiselect.value.blur();
+    wrapper.value.blur();
   };
 
   const focus = () => {
@@ -1354,7 +1356,11 @@ function useMultiselect (props, context, dep)
     }, 1);
   };
 
-  const handleFocusIn = () => {
+  const handleFocusIn = (e) => {
+    if (e.target.closest('[data-tags]') || e.target.closest('[data-clear]')) {
+      return
+    }
+
     activate(mouseClicked.value);
   };
 
@@ -1371,11 +1377,12 @@ function useMultiselect (props, context, dep)
   const handleMousedown = (e) => {
     mouseClicked.value = true;
 
-    if (isOpen.value && (e.target.isEqualNode(multiselect.value) || e.target.isEqualNode(tags.value))) {
+    if (isOpen.value && (e.target.isEqualNode(wrapper.value) || e.target.isEqualNode(tags.value))) {
       setTimeout(() => {
         deactivate();
       }, 0);
-    } else if (document.activeElement.isEqualNode(multiselect.value) && !isOpen.value) {
+    } else if (document.activeElement.isEqualNode(wrapper.value) && !isOpen.value) {
+      console.log(e.target.closest('[data-tags]'));
       activate();    
     }
 
@@ -1386,6 +1393,7 @@ function useMultiselect (props, context, dep)
 
   return {
     multiselect,
+    wrapper,
     tags,
     tabindex,
     isActive,
@@ -1422,6 +1430,7 @@ function useKeyboard (props, context, dep)
   const backwardPointer = dep.backwardPointer;
   const forwardPointer = dep.forwardPointer;
   const multiselect = dep.multiselect;
+  const wrapper = dep.wrapper;
   const tags = dep.tags;
   const isOpen = dep.isOpen;
   const open = dep.open;
@@ -1485,7 +1494,7 @@ function useKeyboard (props, context, dep)
         if (iv.value.length === 0) {
           return
         }
-        
+
         update([...iv.value].slice(0,-1));
         break
 
@@ -1501,7 +1510,7 @@ function useKeyboard (props, context, dep)
             } else if (searchable.value) {
               tags.value.querySelector('input').focus();
             } else {
-              multiselect.value.focus();
+              wrapper.value.focus();
             }
           }
           return
@@ -1614,7 +1623,7 @@ function useKeyboard (props, context, dep)
           tags.value.querySelector('input').focus();
         }
         else if (!searchable.value) {
-          multiselect.value.focus();
+          wrapper.value.focus();
         }
         
         break
@@ -1654,6 +1663,7 @@ function useClasses (props, context, dependencies)
     containerOpen: 'is-open',
     containerOpenTop: 'is-open-top',
     containerActive: 'is-active',
+    wrapper: 'multiselect-wrapper',
     singleLabel: 'multiselect-single-label',
     singleLabelText: 'multiselect-single-label-text',
     multipleLabel: 'multiselect-multiple-label',
@@ -1697,6 +1707,7 @@ function useClasses (props, context, dependencies)
     noOptions: 'multiselect-no-options',
     noResults: 'multiselect-no-results',
     fakeInput: 'multiselect-fake-input',
+    assist: 'multiselect-assistive-text',
     spacer: 'multiselect-spacer',
     ...classes_.value,
   }));
@@ -1716,6 +1727,7 @@ function useClasses (props, context, dependencies)
         .concat(showDropdown.value && openDirection.value === 'top'  ? c.containerOpenTop : [])
         .concat(showDropdown.value && openDirection.value !== 'top' ? c.containerOpen : [])
         .concat(isActive.value ? c.containerActive : []),
+      wrapper: c.wrapper,
       spacer: c.spacer,
       singleLabel: c.singleLabel,
       singleLabelText: c.singleLabelText,
@@ -1776,6 +1788,7 @@ function useClasses (props, context, dependencies)
       },
       noOptions: c.noOptions,
       noResults: c.noResults,
+      assist: c.assist,
       fakeInput: c.fakeInput,
     }
   });
@@ -1886,15 +1899,16 @@ function useScroll$1 (props, context, dep)
 
 function useScroll (props, context, dep)
 {
-  const { placeholder, id, valueProp, label: labelProp, mode, groupLabel } = toRefs(props);
+  const {
+    placeholder, id, valueProp, label: labelProp, mode, groupLabel, aria, searchable ,
+  } = toRefs(props);
 
   // ============ DEPENDENCIES ============
 
   const pointer = dep.pointer;
-  dep.iv;
-  dep.hasSelected;
-  dep.multipleLabelText;
-  dep.isOpen;
+  const iv = dep.iv;
+  const hasSelected = dep.hasSelected;
+  const multipleLabelText = dep.multipleLabelText;
 
   // ================ DATA ================
 
@@ -1902,7 +1916,19 @@ function useScroll (props, context, dep)
 
   // ============== COMPUTED ==============
 
-  const ariaOwns = computed(() => {
+  const ariaAssist = computed(() => {
+    let texts = [];
+
+    if (id && id.value) {
+      texts.push(id.value);
+    }
+
+    texts.push('assist');
+
+    return texts.join('-')
+  });
+
+  const ariaControls = computed(() => {
     let texts = [];
 
     if (id && id.value) {
@@ -1938,6 +1964,42 @@ function useScroll (props, context, dep)
 
   const ariaMultiselectable = computed(() => {
     return mode.value !== 'single'
+  });
+
+  const ariaLabel = computed(() => {
+    let ariaLabel = '';
+
+    if (mode.value === 'single' && hasSelected.value) {
+      ariaLabel += iv.value[labelProp.value];
+    }
+
+    if (mode.value === 'multiple' && hasSelected.value) {
+      ariaLabel += multipleLabelText.value;
+    }
+
+    if (mode.value === 'tags' && hasSelected.value) {
+      ariaLabel += iv.value.map(v => v[labelProp.value]).join(', ');
+    }
+
+    return ariaLabel
+  });
+
+  const arias = computed(() => {
+    let arias = { ...aria.value };
+    
+    // Need to add manually because focusing
+    // the input won't read the selected value
+    if (searchable.value) {
+      arias['aria-labelledby'] = arias['aria-labelledby']
+        ? `${ariaAssist.value} ${arias['aria-labelledby']}`
+        : ariaAssist.value;
+      
+      if (ariaLabel.value && arias['aria-label']) {
+        arias['aria-label'] = `${ariaLabel.value}, ${arias['aria-label']}`;
+      }
+    }
+
+    return arias
   });
 
   // =============== METHODS ==============
@@ -2001,7 +2063,10 @@ function useScroll (props, context, dep)
   });
 
   return {
-    ariaOwns,
+    arias,
+    ariaLabel,
+    ariaAssist,
+    ariaControls,
     ariaPlaceholder,
     ariaMultiselectable,
     ariaActiveDescendant,
@@ -2425,329 +2490,349 @@ var __vue_render__ = function () {
   var _c = _vm._self._c || _h;
   return _c(
     "div",
-    _vm._b(
-      {
-        ref: "multiselect",
-        class: _vm.classList.container,
-        attrs: {
-          tabindex: _vm.tabindex,
-          id: _vm.searchable ? undefined : _vm.id,
-          dir: _vm.rtl ? "rtl" : undefined,
-          "aria-owns": !_vm.searchable ? _vm.ariaOwns : undefined,
-          "aria-placeholder": !_vm.searchable ? _vm.ariaPlaceholder : undefined,
-          "aria-expanded": !_vm.searchable ? _vm.isOpen : undefined,
-          "aria-activedescendant": !_vm.searchable
-            ? _vm.ariaActiveDescendant
-            : undefined,
-          "aria-multiselectable": !_vm.searchable
-            ? _vm.ariaMultiselectable
-            : undefined,
-          role: !_vm.searchable ? "listbox" : undefined,
-        },
-        on: {
-          focusin: _vm.handleFocusIn,
-          focusout: _vm.handleFocusOut,
-          keydown: _vm.handleKeydown,
-          keyup: _vm.handleKeyup,
-          mousedown: _vm.handleMousedown,
-        },
+    {
+      ref: "multiselect",
+      class: _vm.classList.container,
+      attrs: {
+        id: _vm.searchable ? undefined : _vm.id,
+        dir: _vm.rtl ? "rtl" : undefined,
       },
-      "div",
-      !_vm.searchable ? _vm.aria : {},
-      false
-    ),
+      on: {
+        focusin: _vm.handleFocusIn,
+        focusout: _vm.handleFocusOut,
+        keyup: _vm.handleKeyup,
+        keydown: _vm.handleKeydown,
+      },
+    },
     [
-      _vm.mode !== "tags" && _vm.searchable && !_vm.disabled
-        ? [
-            _c(
-              "input",
-              _vm._b(
-                {
-                  ref: "input",
-                  class: _vm.classList.search,
-                  attrs: {
-                    type: _vm.inputType,
-                    modelValue: _vm.search,
-                    autocomplete: _vm.autocomplete,
-                    id: _vm.searchable ? _vm.id : undefined,
-                    "aria-owns": _vm.ariaOwns,
-                    "aria-placeholder": _vm.ariaPlaceholder,
-                    "aria-expanded": _vm.isOpen,
-                    "aria-activedescendant": _vm.ariaActiveDescendant,
-                    "aria-multiselectable": _vm.ariaMultiselectable,
-                    role: "listbox",
-                  },
-                  domProps: { value: _vm.search },
-                  on: {
-                    input: _vm.handleSearchInput,
-                    keypress: _vm.handleKeypress,
-                    paste: function ($event) {
-                      $event.stopPropagation();
-                      return _vm.handlePaste.apply(null, arguments)
-                    },
-                  },
-                },
-                "input",
-                Object.assign({}, _vm.attrs, _vm.aria),
-                false
-              )
-            ),
-          ]
-        : _vm._e(),
-      _vm._v(" "),
-      _vm.mode == "tags"
-        ? [
-            _c(
-              "div",
-              { class: _vm.classList.tags, attrs: { "data-tags": "" } },
-              [
-                _vm._l(_vm.iv, function (option, i, key) {
-                  return _vm._t(
-                    "tag",
-                    function () {
-                      return [
-                        _c(
-                          "span",
-                          {
-                            key: key,
-                            class: _vm.classList.tag,
-                            attrs: {
-                              tabindex: "-1",
-                              "aria-label": _vm.ariaTagLabel(option[_vm.label]),
-                            },
-                            on: {
-                              keyup: function ($event) {
-                                if (
-                                  !$event.type.indexOf("key") &&
-                                  _vm._k(
-                                    $event.keyCode,
-                                    "enter",
-                                    13,
-                                    $event.key,
-                                    "Enter"
-                                  )
-                                ) {
-                                  return null
-                                }
-                                return _vm.handleTagRemove(option, $event)
-                              },
-                            },
-                          },
-                          [
-                            _vm._v(
-                              "\n          " +
-                                _vm._s(option[_vm.label]) +
-                                "\n          "
-                            ),
-                            !_vm.disabled
-                              ? _c(
-                                  "span",
-                                  {
-                                    class: _vm.classList.tagRemove,
-                                    on: {
-                                      click: function ($event) {
-                                        return _vm.handleTagRemove(
-                                          option,
-                                          $event
-                                        )
-                                      },
-                                    },
-                                  },
-                                  [
-                                    _c("span", {
-                                      class: _vm.classList.tagRemoveIcon,
-                                    }),
-                                  ]
-                                )
-                              : _vm._e(),
-                          ]
-                        ),
-                      ]
-                    },
+      _c(
+        "div",
+        _vm._b(
+          {
+            ref: "wrapper",
+            class: _vm.classList.wrapper,
+            attrs: {
+              tabindex: _vm.tabindex,
+              "aria-controls": !_vm.searchable ? _vm.ariaControls : undefined,
+              "aria-placeholder": !_vm.searchable
+                ? _vm.ariaPlaceholder
+                : undefined,
+              "aria-expanded": !_vm.searchable ? _vm.isOpen : undefined,
+              "aria-activedescendant": !_vm.searchable
+                ? _vm.ariaActiveDescendant
+                : undefined,
+              "aria-multiselectable": !_vm.searchable
+                ? _vm.ariaMultiselectable
+                : undefined,
+              role: !_vm.searchable ? "combobox" : undefined,
+            },
+            on: { mousedown: _vm.handleMousedown },
+          },
+          "div",
+          !_vm.searchable ? _vm.arias : {},
+          false
+        ),
+        [
+          _vm.mode !== "tags" && _vm.searchable && !_vm.disabled
+            ? [
+                _c(
+                  "input",
+                  _vm._b(
                     {
-                      option: option,
-                      handleTagRemove: _vm.handleTagRemove,
-                      disabled: _vm.disabled,
-                    }
-                  )
-                }),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { ref: "tags", class: _vm.classList.tagsSearchWrapper },
-                  [
-                    _c("span", { class: _vm.classList.tagsSearchCopy }, [
-                      _vm._v(_vm._s(_vm.search)),
-                    ]),
-                    _vm._v(" "),
-                    _vm.searchable && !_vm.disabled
-                      ? _c(
-                          "input",
-                          _vm._b(
-                            {
-                              ref: "input",
-                              class: _vm.classList.tagsSearch,
-                              attrs: {
-                                type: _vm.inputType,
-                                modelValue: _vm.search,
-                                id: _vm.searchable ? _vm.id : undefined,
-                                autocomplete: _vm.autocomplete,
-                                "aria-owns": _vm.ariaOwns,
-                                "aria-placeholder": _vm.ariaPlaceholder,
-                                "aria-expanded": _vm.isOpen,
-                                "aria-activedescendant":
-                                  _vm.ariaActiveDescendant,
-                                "aria-multiselectable": _vm.ariaMultiselectable,
-                                role: "listbox",
-                              },
-                              domProps: { value: _vm.search },
-                              on: {
-                                input: _vm.handleSearchInput,
-                                keypress: _vm.handleKeypress,
-                                paste: function ($event) {
-                                  $event.stopPropagation();
-                                  return _vm.handlePaste.apply(null, arguments)
-                                },
-                              },
-                            },
-                            "input",
-                            Object.assign({}, _vm.attrs, _vm.aria),
-                            false
-                          )
-                        )
-                      : _vm._e(),
-                  ]
-                ),
-              ],
-              2
-            ),
-          ]
-        : _vm._e(),
-      _vm._v(" "),
-      _vm.mode == "single" && _vm.hasSelected && !_vm.search && _vm.iv
-        ? [
-            _vm._t(
-              "singlelabel",
-              function () {
-                return [
-                  _c(
-                    "div",
-                    {
-                      class: _vm.classList.singleLabel,
-                      attrs: { "aria-hidden": "true" },
-                    },
-                    [
-                      _c("span", {
-                        class: _vm.classList.singleLabelText,
-                        domProps: { innerHTML: _vm._s(_vm.iv[_vm.label]) },
-                      }),
-                    ]
-                  ),
-                ]
-              },
-              { value: _vm.iv }
-            ),
-          ]
-        : _vm._e(),
-      _vm._v(" "),
-      _vm.mode == "multiple" && _vm.hasSelected && !_vm.search
-        ? [
-            _vm._t(
-              "multiplelabel",
-              function () {
-                return [
-                  _c("div", {
-                    class: _vm.classList.multipleLabel,
-                    attrs: { "aria-hidden": "true" },
-                    domProps: { innerHTML: _vm._s(_vm.multipleLabelText) },
-                  }),
-                ]
-              },
-              { values: _vm.iv }
-            ),
-          ]
-        : _vm._e(),
-      _vm._v(" "),
-      _vm.placeholder && !_vm.hasSelected && !_vm.search
-        ? [
-            _vm._t("placeholder", function () {
-              return [
-                _c(
-                  "div",
-                  {
-                    class: _vm.classList.placeholder,
-                    attrs: { "aria-hidden": "true" },
-                  },
-                  [_vm._v("\n        " + _vm._s(_vm.placeholder) + "\n      ")]
-                ),
-              ]
-            }),
-          ]
-        : _vm._e(),
-      _vm._v(" "),
-      _vm.loading || _vm.resolving
-        ? _vm._t("spinner", function () {
-            return [
-              _c("span", {
-                class: _vm.classList.spinner,
-                attrs: { "aria-hidden": "true" },
-              }),
-            ]
-          })
-        : _vm._e(),
-      _vm._v(" "),
-      _vm.hasSelected && !_vm.disabled && _vm.canClear && !_vm.busy
-        ? _vm._t(
-            "clear",
-            function () {
-              return [
-                _c(
-                  "span",
-                  {
-                    class: _vm.classList.clear,
-                    attrs: {
-                      tabindex: "0",
-                      role: "button",
-                      "aria-label": "❎",
-                    },
-                    on: {
-                      click: _vm.clear,
-                      keyup: function ($event) {
-                        if (
-                          !$event.type.indexOf("key") &&
-                          _vm._k(
-                            $event.keyCode,
-                            "enter",
-                            13,
-                            $event.key,
-                            "Enter"
-                          )
-                        ) {
-                          return null
-                        }
-                        return _vm.clear.apply(null, arguments)
+                      ref: "input",
+                      class: _vm.classList.search,
+                      attrs: {
+                        type: _vm.inputType,
+                        modelValue: _vm.search,
+                        autocomplete: _vm.autocomplete,
+                        id: _vm.searchable ? _vm.id : undefined,
+                        "aria-controls": _vm.ariaControls,
+                        "aria-placeholder": _vm.ariaPlaceholder,
+                        "aria-expanded": _vm.isOpen,
+                        "aria-activedescendant": _vm.ariaActiveDescendant,
+                        "aria-multiselectable": _vm.ariaMultiselectable,
+                        role: "combobox",
+                      },
+                      domProps: { value: _vm.search },
+                      on: {
+                        input: _vm.handleSearchInput,
+                        keypress: _vm.handleKeypress,
+                        paste: function ($event) {
+                          $event.stopPropagation();
+                          return _vm.handlePaste.apply(null, arguments)
+                        },
                       },
                     },
-                  },
-                  [_c("span", { class: _vm.classList.clearIcon })]
+                    "input",
+                    Object.assign({}, _vm.attrs, _vm.arias),
+                    false
+                  )
                 ),
               ]
-            },
-            { clear: _vm.clear }
-          )
-        : _vm._e(),
-      _vm._v(" "),
-      _vm.caret && _vm.showOptions
-        ? _vm._t("caret", function () {
-            return [
-              _c("span", {
-                class: _vm.classList.caret,
-                attrs: { "aria-hidden": "true" },
-                on: { click: _vm.handleCaretClick },
-              }),
-            ]
-          })
-        : _vm._e(),
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.mode == "tags"
+            ? [
+                _c(
+                  "div",
+                  { class: _vm.classList.tags, attrs: { "data-tags": "" } },
+                  [
+                    _vm._l(_vm.iv, function (option, i, key) {
+                      return _vm._t(
+                        "tag",
+                        function () {
+                          return [
+                            _c(
+                              "span",
+                              {
+                                key: key,
+                                class: _vm.classList.tag,
+                                attrs: {
+                                  tabindex: "-1",
+                                  "aria-label": _vm.ariaTagLabel(
+                                    option[_vm.label]
+                                  ),
+                                },
+                                on: {
+                                  keyup: function ($event) {
+                                    if (
+                                      !$event.type.indexOf("key") &&
+                                      _vm._k(
+                                        $event.keyCode,
+                                        "enter",
+                                        13,
+                                        $event.key,
+                                        "Enter"
+                                      )
+                                    ) {
+                                      return null
+                                    }
+                                    return _vm.handleTagRemove(option, $event)
+                                  },
+                                },
+                              },
+                              [
+                                _vm._v(
+                                  "\n            " +
+                                    _vm._s(option[_vm.label]) +
+                                    "\n            "
+                                ),
+                                !_vm.disabled
+                                  ? _c(
+                                      "span",
+                                      {
+                                        class: _vm.classList.tagRemove,
+                                        on: {
+                                          click: function ($event) {
+                                            return _vm.handleTagRemove(
+                                              option,
+                                              $event
+                                            )
+                                          },
+                                        },
+                                      },
+                                      [
+                                        _c("span", {
+                                          class: _vm.classList.tagRemoveIcon,
+                                        }),
+                                      ]
+                                    )
+                                  : _vm._e(),
+                              ]
+                            ),
+                          ]
+                        },
+                        {
+                          option: option,
+                          handleTagRemove: _vm.handleTagRemove,
+                          disabled: _vm.disabled,
+                        }
+                      )
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { ref: "tags", class: _vm.classList.tagsSearchWrapper },
+                      [
+                        _c("span", { class: _vm.classList.tagsSearchCopy }, [
+                          _vm._v(_vm._s(_vm.search)),
+                        ]),
+                        _vm._v(" "),
+                        _vm.searchable && !_vm.disabled
+                          ? _c(
+                              "input",
+                              _vm._b(
+                                {
+                                  ref: "input",
+                                  class: _vm.classList.tagsSearch,
+                                  attrs: {
+                                    type: _vm.inputType,
+                                    modelValue: _vm.search,
+                                    id: _vm.searchable ? _vm.id : undefined,
+                                    autocomplete: _vm.autocomplete,
+                                    "aria-controls": _vm.ariaControls,
+                                    "aria-placeholder": _vm.ariaPlaceholder,
+                                    "aria-expanded": _vm.isOpen,
+                                    "aria-activedescendant":
+                                      _vm.ariaActiveDescendant,
+                                    "aria-multiselectable":
+                                      _vm.ariaMultiselectable,
+                                    role: "combobox",
+                                  },
+                                  domProps: { value: _vm.search },
+                                  on: {
+                                    input: _vm.handleSearchInput,
+                                    keypress: _vm.handleKeypress,
+                                    paste: function ($event) {
+                                      $event.stopPropagation();
+                                      return _vm.handlePaste.apply(
+                                        null,
+                                        arguments
+                                      )
+                                    },
+                                  },
+                                },
+                                "input",
+                                Object.assign({}, _vm.attrs, _vm.arias),
+                                false
+                              )
+                            )
+                          : _vm._e(),
+                      ]
+                    ),
+                  ],
+                  2
+                ),
+              ]
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.mode == "single" && _vm.hasSelected && !_vm.search && _vm.iv
+            ? [
+                _vm._t(
+                  "singlelabel",
+                  function () {
+                    return [
+                      _c("div", { class: _vm.classList.singleLabel }, [
+                        _c("span", {
+                          class: _vm.classList.singleLabelText,
+                          domProps: { innerHTML: _vm._s(_vm.iv[_vm.label]) },
+                        }),
+                      ]),
+                    ]
+                  },
+                  { value: _vm.iv }
+                ),
+              ]
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.mode == "multiple" && _vm.hasSelected && !_vm.search
+            ? [
+                _vm._t(
+                  "multiplelabel",
+                  function () {
+                    return [
+                      _c("div", {
+                        class: _vm.classList.multipleLabel,
+                        domProps: { innerHTML: _vm._s(_vm.multipleLabelText) },
+                      }),
+                    ]
+                  },
+                  { values: _vm.iv }
+                ),
+              ]
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.placeholder && !_vm.hasSelected && !_vm.search
+            ? [
+                _vm._t("placeholder", function () {
+                  return [
+                    _c(
+                      "div",
+                      {
+                        class: _vm.classList.placeholder,
+                        attrs: { "aria-hidden": "true" },
+                      },
+                      [
+                        _vm._v(
+                          "\n          " +
+                            _vm._s(_vm.placeholder) +
+                            "\n        "
+                        ),
+                      ]
+                    ),
+                  ]
+                }),
+              ]
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.loading || _vm.resolving
+            ? _vm._t("spinner", function () {
+                return [
+                  _c("span", {
+                    class: _vm.classList.spinner,
+                    attrs: { "aria-hidden": "true" },
+                  }),
+                ]
+              })
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.hasSelected && !_vm.disabled && _vm.canClear && !_vm.busy
+            ? _vm._t(
+                "clear",
+                function () {
+                  return [
+                    _c(
+                      "span",
+                      {
+                        class: _vm.classList.clear,
+                        attrs: {
+                          "aria-hidden": "true",
+                          tabindex: "0",
+                          role: "button",
+                          "data-clear": "",
+                          "aria-roledescription": "❎",
+                        },
+                        on: {
+                          click: _vm.clear,
+                          keyup: function ($event) {
+                            if (
+                              !$event.type.indexOf("key") &&
+                              _vm._k(
+                                $event.keyCode,
+                                "enter",
+                                13,
+                                $event.key,
+                                "Enter"
+                              )
+                            ) {
+                              return null
+                            }
+                            return _vm.clear.apply(null, arguments)
+                          },
+                        },
+                      },
+                      [_c("span", { class: _vm.classList.clearIcon })]
+                    ),
+                  ]
+                },
+                { clear: _vm.clear }
+              )
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.caret && _vm.showOptions
+            ? _vm._t("caret", function () {
+                return [
+                  _c("span", {
+                    class: _vm.classList.caret,
+                    attrs: { "aria-hidden": "true" },
+                    on: { click: _vm.handleCaretClick },
+                  }),
+                ]
+              })
+            : _vm._e(),
+        ],
+        2
+      ),
       _vm._v(" "),
       _c(
         "div",
@@ -2757,7 +2842,10 @@ var __vue_render__ = function () {
           _vm._v(" "),
           _c(
             "ul",
-            { class: _vm.classList.options, attrs: { id: _vm.ariaOwns } },
+            {
+              class: _vm.classList.options,
+              attrs: { id: _vm.ariaControls, role: "listbox" },
+            },
             [
               _vm.groups
                 ? _vm._l(_vm.fg, function (group, i, key) {
@@ -2988,6 +3076,17 @@ var __vue_render__ = function () {
                   })
                 }),
           ]
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.searchable && _vm.hasSelected
+        ? _c(
+            "div",
+            {
+              class: _vm.classList.assist,
+              attrs: { id: _vm.ariaAssist, "aria-hidden": "true" },
+            },
+            [_vm._v("\n    " + _vm._s(_vm.ariaLabel) + "\n  ")]
+          )
         : _vm._e(),
       _vm._v(" "),
       _c("div", { class: _vm.classList.spacer }),
