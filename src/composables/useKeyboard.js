@@ -92,6 +92,11 @@ export default function useKeyboard (props, context, dep)
       case 'Enter':
         e.preventDefault()
 
+        if (e.keyCode === 229) {
+          // ignore IME confirmation
+          return
+        }
+
         if (activeIndex !== -1 && activeIndex !== undefined) {
           update([...iv.value].filter((v, k) => k !== activeIndex))
 
