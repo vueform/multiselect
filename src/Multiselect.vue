@@ -16,7 +16,7 @@
       :aria-placeholder="!searchable ? ariaPlaceholder : undefined"
       :aria-expanded="!searchable ? isOpen : undefined"
       :aria-activedescendant="!searchable ? ariaActiveDescendant : undefined"
-      :_aria-multiselectable="!searchable ? ariaMultiselectable : undefined"
+      :aria-multiselectable="!searchable ? ariaMultiselectable : undefined"
       :role="!searchable ? 'combobox' : undefined"
 
       v-bind="!searchable ? aria : {}"
