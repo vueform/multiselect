@@ -1,3 +1,16 @@
+## v2.5.7
+
+> `2022-11-21`
+
+### 🎉 Feature
+  - **BREAKING**: added a wrapper `div` and related classes inside the main container next to the dropdown container.
+  - Accessibility improvements.
+
+### 🐞 Bug Fixes
+  - Don't select new tag on IME enter #226.
+  - Removed `v-html` from option & single label for XSS security #278.
+  - Arrow left should not throw error when not using tags #271.
+
 ## v2.5.6
 
 > `2022-09-28`

@@ -95,7 +95,8 @@ function useValue (props, context)
 }
 
 function useSearch (props, context, dep)
-{  const { regex } = toRefs(props);
+{
+  const { regex } = toRefs(props);
 
   const $this = getCurrentInstance().proxy;
 
@@ -1501,6 +1502,11 @@ function useKeyboard (props, context, dep)
       case 'Enter':
         e.preventDefault();
 
+        if (e.keyCode === 229) {
+          // ignore IME confirmation
+          return
+        }
+
         if (activeIndex !== -1 && activeIndex !== undefined) {
           update([...iv.value].filter((v, k) => k !== activeIndex));
 
@@ -1594,7 +1600,10 @@ function useKeyboard (props, context, dep)
         break
 
       case 'ArrowLeft':
-        if ((searchable.value && tags.value.querySelector('input').selectionStart) || e.shiftKey || mode.value !== 'tags' || !iv.value || !iv.value.length) {
+        if (
+          (searchable.value && tags.value && tags.value.querySelector('input').selectionStart)
+          || e.shiftKey || mode.value !== 'tags' || !iv.value || !iv.value.length
+        ) {
           return
         }
 
@@ -2410,22 +2419,19 @@ const _hoisted_4 = ["onKeyup", "aria-label"];
 const _hoisted_5 = ["onClick"];
 const _hoisted_6 = ["type", "modelValue", "value", "id", "autocomplete", "aria-controls", "aria-placeholder", "aria-expanded", "aria-activedescendant", "aria-multiselectable"];
 const _hoisted_7 = ["innerHTML"];
-const _hoisted_8 = ["innerHTML"];
-const _hoisted_9 = ["id"];
-const _hoisted_10 = ["id", "aria-label", "aria-selected"];
-const _hoisted_11 = ["data-pointed", "onMouseenter", "onClick"];
-const _hoisted_12 = ["innerHTML"];
-const _hoisted_13 = ["aria-label"];
+const _hoisted_8 = ["id"];
+const _hoisted_9 = ["id", "aria-label", "aria-selected"];
+const _hoisted_10 = ["data-pointed", "onMouseenter", "onClick"];
+const _hoisted_11 = ["innerHTML"];
+const _hoisted_12 = ["aria-label"];
+const _hoisted_13 = ["data-pointed", "data-selected", "onMouseenter", "onClick", "id", "aria-selected", "aria-label"];
 const _hoisted_14 = ["data-pointed", "data-selected", "onMouseenter", "onClick", "id", "aria-selected", "aria-label"];
 const _hoisted_15 = ["innerHTML"];
-const _hoisted_16 = ["data-pointed", "data-selected", "onMouseenter", "onClick", "id", "aria-selected", "aria-label"];
-const _hoisted_17 = ["innerHTML"];
-const _hoisted_18 = ["innerHTML"];
-const _hoisted_19 = ["innerHTML"];
-const _hoisted_20 = ["value"];
-const _hoisted_21 = ["name", "value"];
-const _hoisted_22 = ["name", "value"];
-const _hoisted_23 = ["id"];
+const _hoisted_16 = ["innerHTML"];
+const _hoisted_17 = ["value"];
+const _hoisted_18 = ["name", "value"];
+const _hoisted_19 = ["name", "value"];
+const _hoisted_20 = ["id"];
 
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (openBlock(), createElementBlock("div", {
@@ -2556,9 +2562,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
               class: normalizeClass(_ctx.classList.singleLabel)
             }, [
               createElementVNode("span", {
-                class: normalizeClass(_ctx.classList.singleLabelText),
-                innerHTML: _ctx.iv[$props.label]
-              }, null, 10 /* CLASS, PROPS */, _hoisted_7)
+                class: normalizeClass(_ctx.classList.singleLabelText)
+              }, toDisplayString(_ctx.iv[$props.label]), 3 /* TEXT, CLASS */)
             ], 2 /* CLASS */)
           ])
         : createCommentVNode("v-if", true),
@@ -2571,7 +2576,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
             createElementVNode("div", {
               class: normalizeClass(_ctx.classList.multipleLabel),
               innerHTML: _ctx.multipleLabelText
-            }, null, 10 /* CLASS, PROPS */, _hoisted_8)
+            }, null, 10 /* CLASS, PROPS */, _hoisted_7)
           ])
         : createCommentVNode("v-if", true),
       createCommentVNode(" Placeholder "),
@@ -2659,9 +2664,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
                   }, () => [
                     createElementVNode("span", {
                       innerHTML: group[$props.groupLabel]
-                    }, null, 8 /* PROPS */, _hoisted_12)
+                    }, null, 8 /* PROPS */, _hoisted_11)
                   ])
-                ], 42 /* CLASS, PROPS, HYDRATE_EVENTS */, _hoisted_11),
+                ], 42 /* CLASS, PROPS, HYDRATE_EVENTS */, _hoisted_10),
                 createElementVNode("ul", {
                   class: normalizeClass(_ctx.classList.groupOptions),
                   "aria-label": _ctx.ariaGroupLabel(group),
@@ -2686,14 +2691,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
                         isPointed: _ctx.isPointed,
                         search: _ctx.search
                       }, () => [
-                        createElementVNode("span", {
-                          innerHTML: option[$props.label]
-                        }, null, 8 /* PROPS */, _hoisted_15)
+                        createElementVNode("span", null, toDisplayString(option[$props.label]), 1 /* TEXT */)
                       ])
-                    ], 42 /* CLASS, PROPS, HYDRATE_EVENTS */, _hoisted_14))
+                    ], 42 /* CLASS, PROPS, HYDRATE_EVENTS */, _hoisted_13))
                   }), 128 /* KEYED_FRAGMENT */))
-                ], 10 /* CLASS, PROPS */, _hoisted_13)
-              ], 10 /* CLASS, PROPS */, _hoisted_10))
+                ], 10 /* CLASS, PROPS */, _hoisted_12)
+              ], 10 /* CLASS, PROPS */, _hoisted_9))
             }), 128 /* KEYED_FRAGMENT */))
           : (openBlock(true), createElementBlock(Fragment, { key: 1 }, renderList(_ctx.fo, (option, i, key) => {
               return (openBlock(), createElementBlock("li", {
@@ -2714,19 +2717,17 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
                   isPointed: _ctx.isPointed,
                   search: _ctx.search
                 }, () => [
-                  createElementVNode("span", {
-                    innerHTML: option[$props.label]
-                  }, null, 8 /* PROPS */, _hoisted_17)
+                  createElementVNode("span", null, toDisplayString(option[$props.label]), 1 /* TEXT */)
                 ])
-              ], 42 /* CLASS, PROPS, HYDRATE_EVENTS */, _hoisted_16))
+              ], 42 /* CLASS, PROPS, HYDRATE_EVENTS */, _hoisted_14))
             }), 128 /* KEYED_FRAGMENT */))
-      ], 10 /* CLASS, PROPS */, _hoisted_9),
+      ], 10 /* CLASS, PROPS */, _hoisted_8),
       (_ctx.noOptions)
         ? renderSlot(_ctx.$slots, "nooptions", { key: 0 }, () => [
             createElementVNode("div", {
               class: normalizeClass(_ctx.classList.noOptions),
               innerHTML: $props.noOptionsText
-            }, null, 10 /* CLASS, PROPS */, _hoisted_18)
+            }, null, 10 /* CLASS, PROPS */, _hoisted_15)
           ])
         : createCommentVNode("v-if", true),
       (_ctx.noResults)
@@ -2734,7 +2735,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
             createElementVNode("div", {
               class: normalizeClass(_ctx.classList.noResults),
               innerHTML: $props.noResultsText
-            }, null, 10 /* CLASS, PROPS */, _hoisted_19)
+            }, null, 10 /* CLASS, PROPS */, _hoisted_16)
           ])
         : createCommentVNode("v-if", true),
       ($props.infinite && _ctx.hasMore)
@@ -2760,7 +2761,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           tabindex: "-1",
           value: _ctx.textValue,
           required: ""
-        }, null, 10 /* CLASS, PROPS */, _hoisted_20))
+        }, null, 10 /* CLASS, PROPS */, _hoisted_17))
       : createCommentVNode("v-if", true),
     createCommentVNode(" Native input support "),
     ($props.nativeSupport)
@@ -2771,14 +2772,14 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
                 type: "hidden",
                 name: $props.name,
                 value: _ctx.plainValue !== undefined ? _ctx.plainValue : ''
-              }, null, 8 /* PROPS */, _hoisted_21))
+              }, null, 8 /* PROPS */, _hoisted_18))
             : (openBlock(true), createElementBlock(Fragment, { key: 1 }, renderList(_ctx.plainValue, (v, i) => {
                 return (openBlock(), createElementBlock("input", {
                   type: "hidden",
                   name: `${$props.name}[]`,
                   value: v,
                   key: i
-                }, null, 8 /* PROPS */, _hoisted_22))
+                }, null, 8 /* PROPS */, _hoisted_19))
               }), 128 /* KEYED_FRAGMENT */))
         ], 64 /* STABLE_FRAGMENT */))
       : createCommentVNode("v-if", true),
@@ -2789,7 +2790,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           class: normalizeClass(_ctx.classList.assist),
           id: _ctx.ariaAssist,
           "aria-hidden": "true"
-        }, toDisplayString(_ctx.ariaLabel), 11 /* TEXT, CLASS, PROPS */, _hoisted_23))
+        }, toDisplayString(_ctx.ariaLabel), 11 /* TEXT, CLASS, PROPS */, _hoisted_20))
       : createCommentVNode("v-if", true),
     createCommentVNode(" Create height for empty input "),
     createElementVNode("div", {

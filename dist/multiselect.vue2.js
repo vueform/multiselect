@@ -95,7 +95,8 @@ function useValue (props, context)
 }
 
 function useSearch (props, context, dep)
-{  const { regex } = toRefs(props);
+{
+  const { regex } = toRefs(props);
 
   const $this = getCurrentInstance().proxy;
 
@@ -1501,6 +1502,11 @@ function useKeyboard (props, context, dep)
       case 'Enter':
         e.preventDefault();
 
+        if (e.keyCode === 229) {
+          // ignore IME confirmation
+          return
+        }
+
         if (activeIndex !== -1 && activeIndex !== undefined) {
           update([...iv.value].filter((v, k) => k !== activeIndex));
 
@@ -1594,7 +1600,10 @@ function useKeyboard (props, context, dep)
         break
 
       case 'ArrowLeft':
-        if ((searchable.value && tags.value.querySelector('input').selectionStart) || e.shiftKey || mode.value !== 'tags' || !iv.value || !iv.value.length) {
+        if (
+          (searchable.value && tags.value && tags.value.querySelector('input').selectionStart)
+          || e.shiftKey || mode.value !== 'tags' || !iv.value || !iv.value.length
+        ) {
           return
         }
 
@@ -2713,10 +2722,9 @@ var __vue_render__ = function () {
                   function () {
                     return [
                       _c("div", { class: _vm.classList.singleLabel }, [
-                        _c("span", {
-                          class: _vm.classList.singleLabelText,
-                          domProps: { innerHTML: _vm._s(_vm.iv[_vm.label]) },
-                        }),
+                        _c("span", { class: _vm.classList.singleLabelText }, [
+                          _vm._v(_vm._s(_vm.iv[_vm.label])),
+                        ]),
                       ]),
                     ]
                   },
@@ -2936,11 +2944,9 @@ var __vue_render__ = function () {
                                   "option",
                                   function () {
                                     return [
-                                      _c("span", {
-                                        domProps: {
-                                          innerHTML: _vm._s(option[_vm.label]),
-                                        },
-                                      }),
+                                      _c("span", [
+                                        _vm._v(_vm._s(option[_vm.label])),
+                                      ]),
                                     ]
                                   },
                                   {
@@ -2987,11 +2993,7 @@ var __vue_render__ = function () {
                           "option",
                           function () {
                             return [
-                              _c("span", {
-                                domProps: {
-                                  innerHTML: _vm._s(option[_vm.label]),
-                                },
-                              }),
+                              _c("span", [_vm._v(_vm._s(option[_vm.label]))]),
                             ]
                           },
                           {

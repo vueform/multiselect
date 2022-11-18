@@ -1,6 +1,6 @@
 {
   "name": "@vueform/multiselect",
-  "version": "2.5.6",
+  "version": "2.5.7",
   "private": false,
   "description": "Vue 3 multiselect component with single select, multiselect and tagging options.",
   "license": "MIT",
