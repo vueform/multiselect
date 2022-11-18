@@ -40,36 +40,46 @@ export const createSelect = (props = {}, options = {}) => {
 export const destroy = (wrapper) => {} 
 
 const keyEvent = (event, wrapper, key) => {
+  let triggerKey = ''
+
   if (typeof key === 'object') {
-    wrapper.trigger(event, key)
-    return
+    triggerKey = key
   }
 
   switch (key) {
     case 'esc':
-      wrapper.trigger(event, { key: 'Escape' })
+      triggerKey = 'Escape'
       break
     case 'backspace':
-      wrapper.trigger(event, { key: 'Backspace' })
+      triggerKey = 'Backspace'
       break
     case 'up':
-      wrapper.trigger(event, { key: 'ArrowUp' })
+      triggerKey = 'ArrowUp'
       break
     case 'down':
-      wrapper.trigger(event, { key: 'ArrowDown' })
+      triggerKey = 'ArrowDown'
       break
     case 'left':
-      wrapper.trigger(event, { key: 'ArrowLeft' })
+      triggerKey = 'ArrowLeft'
       break
     case 'right':
-      wrapper.trigger(event, { key: 'ArrowRight' })
+      triggerKey = 'ArrowRight'
       break
     case 'enter':
-      wrapper.trigger(event, { key: 'Enter' })
+      triggerKey = 'Enter'
       break
     case 'space':
-      wrapper.trigger(event, { key: ' ' })
+      triggerKey = ' '
       break
+  }
+
+  let params = typeof triggerKey === 'object' ? triggerKey : { key: triggerKey }
+  
+  if (wrapper.trigger) {
+    wrapper.trigger(event, params)
+  } else {
+    wrapper.dispatchEvent(new Event(event, params))
+
   }
 }
 

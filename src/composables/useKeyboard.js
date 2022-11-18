@@ -21,6 +21,7 @@ export default function useKeyboard (props, context, dep)
   const backwardPointer = dep.backwardPointer
   const forwardPointer = dep.forwardPointer
   const multiselect = dep.multiselect
+  const wrapper = dep.wrapper
   const tags = dep.tags
   const isOpen = dep.isOpen
   const open = dep.open
@@ -84,7 +85,7 @@ export default function useKeyboard (props, context, dep)
         if (iv.value.length === 0) {
           return
         }
-        
+
         update([...iv.value].slice(0,-1))
         break
 
@@ -100,7 +101,7 @@ export default function useKeyboard (props, context, dep)
             } else if (searchable.value) {
               tags.value.querySelector('input').focus()
             } else {
-              multiselect.value.focus()
+              wrapper.value.focus()
             }
           }
           return
@@ -213,7 +214,7 @@ export default function useKeyboard (props, context, dep)
           tags.value.querySelector('input').focus()
         }
         else if (!searchable.value) {
-          multiselect.value.focus()
+          wrapper.value.focus()
         }
         
         break

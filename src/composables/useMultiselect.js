@@ -37,7 +37,7 @@ export default function useMultiselect (props, context, dep)
       input.value.blur()
     }
 
-    multiselect.value.blur()
+    wrapper.value.blur()
   }
 
   const focus = () => {

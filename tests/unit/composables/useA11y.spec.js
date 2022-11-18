@@ -4,7 +4,7 @@ import { nextTick } from 'vue'
 jest.useFakeTimers()
 
 describe('useA11y', () => {
-  describe('ariaOwns', () => {
+  describe('ariaAssist', () => {
     it('should contain id when defined', () => {
       const select = createSelect({
         value: null,
@@ -12,7 +12,19 @@ describe('useA11y', () => {
         id: 'id'
       })
 
-      expect(select.vm.ariaOwns).toBe('id-multiselect-options')
+      expect(select.vm.ariaAssist).toBe('id-assist')
+    })
+  })
+
+  describe('ariaControls', () => {
+    it('should contain id when defined', () => {
+      const select = createSelect({
+        value: null,
+        options: [1,2,3],
+        id: 'id'
+      })
+
+      expect(select.vm.ariaControls).toBe('id-multiselect-options')
     })
 
     it('should not contain id when not defined', () => {
@@ -21,7 +33,7 @@ describe('useA11y', () => {
         options: [1,2,3],
       })
 
-      expect(select.vm.ariaOwns).toBe('multiselect-options')
+      expect(select.vm.ariaControls).toBe('multiselect-options')
     })
   })
 
@@ -174,6 +186,47 @@ describe('useA11y', () => {
         label: 'a',
         options: [1,2,3]
       })).toBe('a')
+    })
+  })
+
+  describe('ariaLabel', () => {
+    it('should be empty if not selected', () => {
+      const select = createSelect({
+        value: null,
+        options: [1,2,3],
+      })
+
+      expect(select.vm.ariaLabel).toBe('')
+    })
+  })
+
+  describe('arias', () => {
+    it('should add aria-labelledby', () => {
+      const select = createSelect({
+        value: null,
+        options: [1,2,3],
+        searchable: true,
+        id: 'id',
+        aria: {
+          'aria-labelledby': 'a'
+        }
+      })
+
+      expect(select.vm.arias['aria-labelledby']).toBe('id-assist a')
+    })
+
+    it('should add aria-label', () => {
+      const select = createSelect({
+        value: 1,
+        options: [1,2,3],
+        searchable: true,
+        id: 'id',
+        aria: {
+          'aria-label': 'a'
+        }
+      })
+
+      expect(select.vm.arias['aria-label']).toBe('1, a')
     })
   })
 })

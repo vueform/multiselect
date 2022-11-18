@@ -123,7 +123,7 @@ describe('useKeyboard', () => {
         destroy(select)
       })
 
-      it('should put focus to multiselect when last tag removed on enter', async () => {
+      it('should put focus to multiselect wrapper when last tag removed on enter', async () => {
         let select = createSelect({
           mode: 'tags',
           options: [1,2,3],
@@ -138,7 +138,7 @@ describe('useKeyboard', () => {
         await nextTick()
 
         expect(getValue(select)).toEqual([])
-        expect(document.activeElement).toEqual(select.vm.$el)
+        expect(document.activeElement).toEqual(select.vm.wrapper)
 
         destroy(select)
       })
@@ -417,7 +417,7 @@ describe('useKeyboard', () => {
         })
 
         select.vm.mouseClicked = true
-        select.element.focus()
+        select.vm.wrapper.focus()
         expect(select.vm.isOpen).toBe(true)
 
         await nextTick()
@@ -1171,7 +1171,7 @@ describe('useKeyboard', () => {
 
       await nextTick()
 
-      expect(document.activeElement).toEqual(select.vm.$el)
+      expect(document.activeElement).toEqual(select.vm.wrapper)
 
       destroy(select)
     })
@@ -1185,12 +1185,12 @@ describe('useKeyboard', () => {
         attach: true,
       })
 
-      select.vm.$el.focus()
+      select.vm.wrapper.focus()
       keydown(select, 'right')
 
       await nextTick()
 
-      expect(document.activeElement).toEqual(select.vm.$el)
+      expect(document.activeElement).toEqual(select.vm.wrapper)
 
       destroy(select)
     })
@@ -1201,6 +1201,8 @@ describe('useKeyboard', () => {
       let select = createSelect({
         value: 1,
         options: [1,2,3],
+      }, {
+        attach: true
       })
 
       keyup(select, 'backspace')

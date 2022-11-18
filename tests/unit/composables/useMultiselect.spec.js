@@ -40,7 +40,7 @@ describe('useMultiselect', () => {
       })
 
       select.vm.mouseClicked = true
-      select.element.focus()
+      select.vm.wrapper.focus()
       expect(select.vm.isOpen).toBe(true)
 
       select.vm.blur()
@@ -59,7 +59,7 @@ describe('useMultiselect', () => {
       })
 
       select.vm.mouseClicked = true
-      select.element.focus()
+      select.vm.wrapper.focus()
       expect(select.vm.isOpen).toBe(true)
 
       select.vm.blur()

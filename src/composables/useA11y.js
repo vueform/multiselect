@@ -102,7 +102,7 @@ export default function useScroll (props, context, dep)
       }
       
       if (arias['aria-label'] && ariaLabel.value) {
-        arias['aria-label'] = `${ariaLabel.value} ${arias['aria-label']}`
+        arias['aria-label'] = `${ariaLabel.value}${arias['aria-label']}`
       }
     }
 

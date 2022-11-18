@@ -6,26 +6,22 @@
     :dir="rtl ? 'rtl' : undefined"
     @focusin="handleFocusIn"
     @focusout="handleFocusOut"
+    @keyup="handleKeyup"
+    @keydown="handleKeydown"
   >
     <div
       :class="classList.wrapper"
+      @mousedown="handleMousedown"
+      ref="wrapper"
 
       :tabindex="tabindex"
-
       :aria-controls="!searchable ? ariaControls : undefined"
       :aria-placeholder="!searchable ? ariaPlaceholder : undefined"
       :aria-expanded="!searchable ? isOpen : undefined"
       :aria-activedescendant="!searchable ? ariaActiveDescendant : undefined"
       :aria-multiselectable="!searchable ? ariaMultiselectable : undefined"
       :role="!searchable ? 'combobox' : undefined"
-
       v-bind="!searchable ? arias : {}"
-
-      @keydown="handleKeydown"
-      @keyup="handleKeyup"
-      @mousedown="handleMousedown"
-
-      ref="wrapper"
     >
       <!-- Search -->
       <template v-if="mode !== 'tags' && searchable && !disabled">
@@ -276,7 +272,7 @@
     </template>
 
     <!-- Screen reader assistive text -->
-    <div v-if="searchable && hasSelected" class="vf-assistive-text" :id="ariaAssist" aria-hidden="true">
+    <div v-if="searchable && hasSelected" class="multiselect-assistive-text" :id="ariaAssist" aria-hidden="true">
       {{ ariaLabel }}
     </div>
 
@@ -287,6 +283,8 @@
 </template>
 
 <script>
+  /* istanbul ignore file */
+
   import useData from './composables/useData'
   import useValue from './composables/useValue'
   import useSearch from './composables/useSearch'
