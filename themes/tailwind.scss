@@ -18,6 +18,10 @@
   }
 }
 
+.multiselect-wrapper {
+  @apply relative mx-auto w-full flex items-center justify-end box-border cursor-pointer outline-none;
+}
+
 .multiselect-single-label {
   @apply flex items-center h-full max-w-full absolute left-0 top-0 pointer-events-none bg-transparent leading-snug pl-3.5 pr-16 box-border rtl:left-auto rtl:right-0 rtl:pl-0 rtl:pr-3.5;
 }
@@ -188,6 +192,11 @@
 
 .multiselect-fake-input {
   @apply bg-transparent absolute left-0 right-0 -bottom-px w-full h-px border-0 p-0 appearance-none outline-none text-transparent;
+}
+
+.multiselect-assistive-text {
+  @apply absolute -m-px w-px h-px overflow-hidden;
+  clip: rect(0 0 0 0);
 }
 
 .multiselect-spacer {
