@@ -18,4 +18,4 @@ Issues that do not include enough information might not be picked up and closed.
 
 ### Demo
 
-Please use our [JSFiddle template](https://jsfiddle.net/g56vfpe4/) to reproduce the bug. Issues without working reproduction might be ignored.
+Please use our [JSFiddle template](https://jsfiddle.net/5yxpmw4v/) to reproduce the bug. Issues without working reproduction might be ignored.
