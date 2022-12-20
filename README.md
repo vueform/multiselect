@@ -417,6 +417,8 @@ The following CSS variables can be used to customize multiselect when using `def
 --ms-bg-disabled: #F3F4F6;
 --ms-border-color: #D1D5DB;
 --ms-border-width: 1px;
+--ms-border-color-active: #D1D5DB;
+--ms-border-width-active: 1px;
 --ms-radius: 4px;
 --ms-py: 0.5rem;
 --ms-px: 0.875rem;
