@@ -107,7 +107,7 @@
   display: flex;
   flex-wrap: wrap;
   margin: var(--ms-tag-my, 0.25rem) 0 0;
-  padding-left: var(--ms-py, 0.5rem);
+  padding-left: var(--ms-px, 0.875rem);
   align-items: center;
 }
 
@@ -479,7 +479,7 @@
 
   .multiselect-tags {
     padding-left: 0;
-    padding-right: var(--ms-py, 0.5rem);
+    padding-right: var(--ms-px, 0.875rem);
   }
 
   .multiselect-tag {
