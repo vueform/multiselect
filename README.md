@@ -256,40 +256,40 @@ Join our [Discord channel](https://discord.gg/WhX2nG6GTQ) or [open an issue](htt
 
 ### Basic props
 
-| Name | Type | Default | Description |
-| --- | --- | --- | --- |
-| **mode** | `string` | `single` | Possible values: `single\|multiple\|tags`. |
-| **options** | `array\|object\|function` | `[]` | List of options. Can be:<br>- an array (eg. `[1,2,3]`)<br>- an object (eg. `{a:1,b:2,c:3}`)<br>- an array of objects:<br>`[`<br>&nbsp;&nbsp;`{`<br>&nbsp;&nbsp;&nbsp;&nbsp;`[valueProp]: 1,`<br>&nbsp;&nbsp;&nbsp;&nbsp;`[label]: 'v1',`<br>&nbsp;&nbsp;&nbsp;&nbsp;`disabled:true\|false`<br>&nbsp;&nbsp;`},`<br>&nbsp;&nbsp;`//...`<br>`]`<br>- a function returning a Promise (async function) with `query` and `select$` param. The `select$` represents the Multiselect component and its API can be accessed. The promise should return options as an **object** or as an **array of objects**.<br>When an array of objects is provided it **must** have properties that equal to `:valueProp`'s, `:trackBy`'s and `:label`'s value. |
-| **groups** | `boolean` | `false` | Whether options should be groupped. Example:<br>`{`<br>&nbsp;&nbsp;`groups: true,`<br>&nbsp;&nbsp;`options: [`<br>&nbsp;&nbsp;&nbsp;&nbsp;`{`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`[groupLabel]: 'Group label',`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`[groupOptions]: {options},`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`disabled: true\|false,`<br>&nbsp;&nbsp;&nbsp;&nbsp;`}`<br>&nbsp;&nbsp;&nbsp;&nbsp;`//...`<Br>&nbsp;&nbsp;`]`<br>`}`<br>The `{options}` should equal to regular `options` definition. |
-| **groupLabel** | `string` | `label` | The name of the property that contains the label of a group when `options` are provided in group format and `groups` is `true`. |
-| **groupOptions** | `string` | `options` | The name of the property that contains the options of a group when `options` are provided in group format and `groups` is `true`. |
-| **groupSelect** | `boolean` | `true` | Whether groups can be selected when using `multiple` or `tags` mode. |
-| **groupHideEmpty** | `boolean` | `false` | Whether groups that have no `options` by default should be hidden. |
-| **required** | `boolean` | `false` | Whether the HTML5 required attribute should be used for multiselect (using an invisible fake input). |
-| **infinite** | `boolean` | `false` | Whether the actual option nodes should only be loaded on scroll. The `limit` option defines how many options are loaded initially and in each new batch. |
-| **searchable** | `boolean` | `false` | Whether the options should be searchable. |
-| **valueProp** | `string` | `'value'` | If you provide an array of objects as `options` this property should be used as the value of the option. |
-| **trackBy** | `string` | `undefined` | The name of the property that should be searched when `searchable` is `true` and an array of objects are provided as `options`. If left `undefined` the `label` prop will be used instead. |
-| **label** | `string` | `'label'` | If you provide an array of objects as `options` the value of this property will be displayed as selected option. |
-| **disabledProp** | `string` | `'disabled'` | If you provide an array of objects as `options` this property should be used to determine whether the option is disabled. |
-| **placeholder** | `string` | `null` | The text that should be displayed before any option is selected. |
+| Name | Type = Default | Description |
+| --- | --- | --- |
+| **mode** | `string = 'single'` | Possible values: `'single'\|'multiple'\|'tags'`. |
+| **options** | `array\|object\|function = []` | List of options. Can be:<br>- an array (eg. `[1,2,3]`)<br>- an object (eg. `{a:1,b:2,c:3}`)<br>- an array of objects:<br>`[`<br>&nbsp;&nbsp;`{`<br>&nbsp;&nbsp;&nbsp;&nbsp;`[valueProp]: 1,`<br>&nbsp;&nbsp;&nbsp;&nbsp;`[label]: 'v1',`<br>&nbsp;&nbsp;&nbsp;&nbsp;`disabled:true\|false`<br>&nbsp;&nbsp;`},`<br>&nbsp;&nbsp;`//...`<br>`]`<br>- a function returning a Promise (async function) with `query` and `select$` param. The `select$` represents the Multiselect component and its API can be accessed. The promise should return options as an **object** or as an **array of objects**.<br>When an array of objects is provided it **must** have properties that equal to `:valueProp`'s, `:trackBy`'s and `:label`'s value. |
+| **groups** | `boolean = false` | Whether options should be grouped. Example:<br>`{`<br>&nbsp;&nbsp;`groups: true,`<br>&nbsp;&nbsp;`options: [`<br>&nbsp;&nbsp;&nbsp;&nbsp;`{`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`[groupLabel]: 'Group label',`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`[groupOptions]: {options},`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`disabled: true\|false,`<br>&nbsp;&nbsp;&nbsp;&nbsp;`}`<br>&nbsp;&nbsp;&nbsp;&nbsp;`//...`<Br>&nbsp;&nbsp;`]`<br>`}`<br>The `{options}` should equal to regular `options` definition. |
+| **groupLabel** | `string = 'label'` | The name of the property that contains the label of a group when `options` are provided in group format and `groups` is `true`. |
+| **groupOptions** | `string = 'options'` | The name of the property that contains the options of a group when `options` are provided in group format and `groups` is `true`. |
+| **groupSelect** | `boolean = true` | Whether groups can be selected when using `multiple` or `tags` mode. |
+| **groupHideEmpty** | `boolean = false` | Whether groups that have no `options` by default should be hidden. |
+| **required** | `boolean = false` | Whether the HTML5 required attribute should be used for multiselect (using an invisible fake input). |
+| **infinite** | `boolean = false` | Whether the actual option nodes should only be loaded on scroll. The `limit` option defines how many options are loaded initially and in each new batch. |
+| **searchable** | `boolean = false` | Whether the options should be searchable. |
+| **valueProp** | `string = 'value'` | If you provide an array of objects as `options` this property should be used as the value of the option. |
+| **trackBy** | `string = undefined` | The name of the property that should be searched when `searchable` is `true` and an array of objects are provided as `options`. If left `undefined` the `label` prop will be used instead. |
+| **label** | `string = 'label'` | If you provide an array of objects as `options` the value of this property will be displayed as selected option. |
+| **disabledProp** | `string = 'disabled'` | If you provide an array of objects as `options` this property should be used to determine whether the option is disabled. |
+| **placeholder** | `string = null` | The text that should be displayed before any option is selected. |
 | **multipleLabel** | `function` |  | A function that returns the label to be displayed for selected options when using `multiple` mode. It receives `value` as an argument. By default it renders `1 option selected` and `[n] options selected` based on `value` length. |
-| **disabled** | `boolean` | `false` | Whether the input should be disabled for the user (API can still be used programmatically). |
-| **inputType** | `string` | `text` | The `type` attribute of the search input. |
-| **autocomplete** | `string` | `undefined` | The `autocomplete` attribute of the search input. |
-| **rtl** | `boolean` | `false` | Whether the multiselect should be right-to-left. It also respects `dir="rtl"` on any parent element. |
-| **max** | `number` | `-1` | The maximum number of options that **can be selected** when using `multiple` or `tags` mode. If `-1` the number of options won't be limited. |
-| **limit** | `number` | `-1` | The maximum number of options that **should be displayed**. If `-1` the number of options won't be limited. |
-| **loading** | `boolean` | `false` | Whether a loading spinner should be shown. |
-| **id** | `string` | `'multiselect'` | The `id` of the multiselect container DOM. |
-| **caret** | `boolean` | `true` | Whether should display the caret symbol on the right. |
-| **noOptionsText** | `string` | `'The list is empty'` | The text that should be displayed when options list is empty. |
-| **noResultsText** | `string` | `'No results found'` | The text that should be displayed when there are no search results. |
-| **openDirection** | `string` | `bottom` | Whether the option list should be displayed above or below the multiselect. Possible values: `top\|bottom` |
-| **reverse** | `boolean` | `false` | Whether the option list should be reversed. |
-| **regex** | `regex\|string` | `undefined` | The regex that search input should be tested against when `searchable: true`. |
-| **strict** | `boolean` | `true` | Whether should regard accents/diacritics in search. |
-| **searchStart** | `boolean` | `false` | Whether the search should match the start of the options' `trackBy`s. |
+| **disabled** | `boolean = false` | Whether the input should be disabled for the user (API can still be used programmatically). |
+| **inputType** | `string = 'text'` | The `type` attribute of the search input. |
+| **autocomplete** | `string = undefined` | The `autocomplete` attribute of the search input. |
+| **rtl** | `boolean = false` | Whether the multiselect should be right-to-left. It also respects `dir="rtl"` on any parent element. |
+| **max** | `number = -1` | The maximum number of options that **can be selected** when using `multiple` or `tags` mode. If `-1` the number of options won't be limited. |
+| **limit** | `number = -1` | The maximum number of options that **should be displayed**. If `-1` the number of options won't be limited. |
+| **loading** | `boolean = false` | Whether a loading spinner should be shown. |
+| **id** | `string = 'multiselect'` | The `id` of the multiselect container DOM. |
+| **caret** | `boolean = true` | Whether should display the caret symbol on the right. |
+| **noOptionsText** | `string = 'The list is empty'` | The text that should be displayed when options list is empty. |
+| **noResultsText** | `string = 'No results found'` | The text that should be displayed when there are no search results. |
+| **openDirection** | `string = 'bottom'` | Whether the option list should be displayed above or below the multiselect. Possible values: `top\|bottom` |
+| **reverse** | `boolean = false` | Whether the option list should be reversed. |
+| **regex** | `regex\|string = undefined` | The regex that search input should be tested against when `searchable: true`. |
+| **strict** | `boolean = true` | Whether should regard accents/diacritics in search. |
+| **searchStart** | `boolean = false` | Whether the search should match the start of the options' `trackBy`s. |
 | **aria** | `object` | | An object containing aria attributes to be added for the multiselect. |
 | **classes** | `object` | | An object of class names that gets merged with the default values. Default: `{`<br>&nbsp;&nbsp;`container: 'multiselect',`<br>&nbsp;&nbsp;`containerDisabled: 'is-disabled',`<br>&nbsp;&nbsp;`containerOpen: 'is-open',`<br>&nbsp;&nbsp;`containerOpenTop: 'is-open-top',`<br>&nbsp;&nbsp;`containerActive: 'is-active',`<br>&nbsp;&nbsp;`wrapper: 'multiselect-wrapper',`<br>&nbsp;&nbsp;`singleLabel: 'multiselect-single-label',`<br>&nbsp;&nbsp;`singleLabelText: 'multiselect-single-label-text',`<br>&nbsp;&nbsp;`multipleLabel: 'multiselect-multiple-label',`<br>&nbsp;&nbsp;`search: 'multiselect-search',`<br>&nbsp;&nbsp;`tags: 'multiselect-tags',`<br>&nbsp;&nbsp;`tag: 'multiselect-tag',`<br>&nbsp;&nbsp;`tagDisabled: 'is-disabled',`<br>&nbsp;&nbsp;`tagRemove: 'multiselect-tag-remove',`<br>&nbsp;&nbsp;`tagRemoveIcon: 'multiselect-tag-remove-icon',`<br>&nbsp;&nbsp;`tagsSearchWrapper: 'multiselect-tags-search-wrapper',`<br>&nbsp;&nbsp;`tagsSearch: 'multiselect-tags-search',`<br>&nbsp;&nbsp;`tagsSearchCopy: 'multiselect-tags-search-copy',`<br>&nbsp;&nbsp;`placeholder: 'multiselect-placeholder',`<br>&nbsp;&nbsp;`caret: 'multiselect-caret',`<br>&nbsp;&nbsp;`caretOpen: 'is-open',`<br>&nbsp;&nbsp;`clear: 'multiselect-clear',`<br>&nbsp;&nbsp;`clearIcon: 'multiselect-clear-icon',`<br>&nbsp;&nbsp;`spinner: 'multiselect-spinner',`<br>&nbsp;&nbsp;`dropdown: 'multiselect-dropdown',`<br>&nbsp;&nbsp;`dropdownTop: 'is-top',`<br>&nbsp;&nbsp;`dropdownHidden: 'is-hidden',`<br>&nbsp;&nbsp;`options: 'multiselect-options',`<br>&nbsp;&nbsp;`optionsTop: 'is-top',`<br>&nbsp;&nbsp;`group: 'multiselect-group',`<br>&nbsp;&nbsp;`groupLabel: 'multiselect-group-label',`<br>&nbsp;&nbsp;`groupLabelPointable: 'is-pointable',`<br>&nbsp;&nbsp;`groupLabelPointed: 'is-pointed',`<br>&nbsp;&nbsp;`groupLabelSelected: 'is-selected',`<br>&nbsp;&nbsp;`groupLabelDisabled: 'is-disabled',`<br>&nbsp;&nbsp;`groupLabelSelectedPointed: 'is-selected is-pointed',`<br>&nbsp;&nbsp;`groupLabelSelectedDisabled: 'is-selected is-disabled',`<br>&nbsp;&nbsp;`groupOptions: 'multiselect-group-options',`<br>&nbsp;&nbsp;`option: 'multiselect-option',`<br>&nbsp;&nbsp;`optionPointed: 'is-pointed',`<br>&nbsp;&nbsp;`optionSelected: 'is-selected',`<br>&nbsp;&nbsp;`optionDisabled: 'is-disabled',`<br>&nbsp;&nbsp;`optionSelectedPointed: 'is-selected is-pointed',`<br>&nbsp;&nbsp;`optionSelectedDisabled: 'is-selected is-disabled',`<br>&nbsp;&nbsp;`noOptions: 'multiselect-no-options',`<br>&nbsp;&nbsp;`noResults: 'multiselect-no-results',`<br>&nbsp;&nbsp;`fakeInput: 'multiselect-fake-input',`<br>&nbsp;&nbsp;`assist: 'multiselect-assistive-text'`<br>&nbsp;&nbsp;`spacer: 'multiselect-spacer'`<br>`}` |
 
@@ -299,29 +299,29 @@ Join our [Discord channel](https://discord.gg/WhX2nG6GTQ) or [open an issue](htt
 
 ### Advanced Props
 
-| Name | Type | Default | Description |
-| --- | --- | --- | --- |
-| **canDeselect** | `boolean` | `true` | Whether a selected option can be deselected when using `single` mode. |
-| **canClear** | `boolean` | `true` | Whether option(s) can be cleared. |
-| **clearOnSearch** | `boolean` | `false` | Whether the option list should be cleared when a new character is typed before loading new options list, when using async options. |
-| **clearOnSelect** | `boolean` | `true` | Whether the option list should be cleared upon selecting an option when using async options. |
-| **closeOnSelect** | `boolean` | `true` | Whether the option list should be hidden upon selecting an option. |
-| **delay** | `number` | `-1` | The delay in milliseconds that should occur between the last typed character and refreshing an async option list. If `-1` the option list will not refresh when the search query changes. If `0` it will refresh without delay. |
-| **filterResults** | `boolean` | `true` | Whether option list should be filtered by search query. This may be set to `false` if you are handling filtering manually when returning async options. |
-| **minChars** | `number` | `0` | The minimum number of characters that should be typed to refresh async option list. If `0` it will refresh even when the search field becomes empty. |
-| **resolveOnLoad** | `boolean` | `true` | Whether async options should be loaded initially (with an empty query). This should be `true` if you are planning to load non-object value(s) initially while using async options (to fetch matching objects for values). |
-| **appendNewTag** | `boolean` | `true` | **Deprecated 2.3.0: use `appendNewOption` instead.**<br>Whether it should append new tag automatically to option list when using `tags` mode with `createTag`. If set to `false` you need to take care of appending a new tag to the provided `:options` list upon `@tag` event. |
-| **createTag** | `boolean` | `false` | **Deprecated 2.3.0: use `createOption` instead.**<br>Whether it should allow creating new tags based on search query when using `tags` mode. |
-| **addTagOn** | `array` | `['enter']` | **Deprecated 2.3.0: use `addOptionOn` instead.**<br>The list of keys that creates a new tag while typing in the search field when having `createTag` enabled. Possible values: `'enter'\|'space'\|'tab'\|';'\|','`. |
-| **appendNewOption** | `boolean` | `true` | Whether it should append new option automatically to option list when `searchable` and `createTag` are enabled. If set to `false` you need to take care of appending a new option to the provided `:options` list upon `@option` event. |
-| **createOption** | `boolean` | `false` | Whether it should allow creating new options based on search query when `searchable` is enabled. |
-| **addOptionOn** | `array` | `['enter']` | The list of keys that creates a new option while typing in the search field when having `createOption` enabled. Possible values: `'enter'\|'space'\|'tab'\|';'\|','`. |
+| Name | Type = Default | Description |
+| --- | --- | --- |
+| **canDeselect** | `boolean = true` | Whether a selected option can be deselected when using `single` mode. |
+| **canClear** | `boolean = true` | Whether option(s) can be cleared. |
+| **clearOnSearch** | `boolean = false` | Whether the option list should be cleared when a new character is typed before loading new options list, when using async options. |
+| **clearOnSelect** | `boolean = true` | Whether the option list should be cleared upon selecting an option when using async options. |
+| **closeOnSelect** | `boolean = true` | Whether the option list should be hidden upon selecting an option. |
+| **delay** | `number = -1` | The delay in milliseconds that should occur between the last typed character and refreshing an async option list. If `-1` the option list will not refresh when the search query changes. If `0` it will refresh without delay. |
+| **filterResults** | `boolean = true` | Whether option list should be filtered by search query. This may be set to `false` if you are handling filtering manually when returning async options. |
+| **minChars** | `number = 0` | The minimum number of characters that should be typed to refresh async option list. If `0` it will refresh even when the search field becomes empty. |
+| **resolveOnLoad** | `boolean = true` | Whether async options should be loaded initially (with an empty query). This should be `true` if you are planning to load non-object value(s) initially while using async options (to fetch matching objects for values). |
+| **appendNewTag** | `boolean = true` | **Deprecated 2.3.0: use `appendNewOption` instead.**<br>Whether it should append new tag automatically to option list when using `tags` mode with `createTag`. If set to `false` you need to take care of appending a new tag to the provided `:options` list upon `@tag` event. |
+| **createTag** | `boolean = false` | **Deprecated 2.3.0: use `createOption` instead.**<br>Whether it should allow creating new tags based on search query when using `tags` mode. |
+| **addTagOn** | `array = ['enter']` | **Deprecated 2.3.0: use `addOptionOn` instead.**<br>The list of keys that creates a new tag while typing in the search field when having `createTag` enabled. Possible values: `'enter'\|'space'\|'tab'\|';'\|','`. |
+| **appendNewOption** | `boolean = true` | Whether it should append new option automatically to option list when `searchable` and `createTag` are enabled. If set to `false` you need to take care of appending a new option to the provided `:options` list upon `@option` event. |
+| **createOption** | `boolean = false` | Whether it should allow creating new options based on search query when `searchable` is enabled. |
+| **addOptionOn** | `array = ['enter']` | The list of keys that creates a new option while typing in the search field when having `createOption` enabled. Possible values: `'enter'\|'space'\|'tab'\|';'\|','`. |
 | **onCreate** | `function` | | Transforms the created tag before being added when `createOption` is enabled. It receives the original `option` as first param, which is the object that would be added to the option list (`{value: 'Value', label: 'Label'}`) and the Multiselect `component` as the second. It should return an object that contains at least the keys defined by `valueProp`, `label` & `trackBy` options. If defined and returns `false` the option will not be added (the add can be handled manually by updating `options` & `v-model`). |
-| **hideSelected** | `boolean` | `true` | Whether selected options should be excluded from the option list when using `multiple` or `tags` mode. |
-| **showOptions** | `boolean` | `true` | Whether option list should be displayed. Can be used to create free-typed tags. |
-| **object** | `boolean` | `false` | Whether the value should be stored as an object.<br>If **false**:<br>`value: ['js','jsx','ts']`<br>If **true**:<br> `value: [`<br>&nbsp;&nbsp;`{value:'js',label:'Javascript'},`<br>&nbsp;&nbsp;`{value:'jsx',label:'JSX'},`<br>&nbsp;&nbsp;`{value:'ts',label:'Typescript'}`<br>`]` |
-| **attrs** | `object` | `{}` | HTML attributes to add to the `input` field when `search` is enabled. |
-| **nativeSupport** | `boolean` | `false` | Whether hidden input fields should be appended to achieve native data handling. |
+| **hideSelected** | `boolean = true` | Whether selected options should be excluded from the option list when using `multiple` or `tags` mode. |
+| **showOptions** | `boolean = true` | Whether option list should be displayed. Can be used to create free-typed tags. |
+| **object** | `boolean = false` | Whether the value should be stored as an object.<br>If **false**:<br>`value: ['js','jsx','ts']`<br>If **true**:<br> `value: [`<br>&nbsp;&nbsp;`{value:'js',label:'Javascript'},`<br>&nbsp;&nbsp;`{value:'jsx',label:'JSX'},`<br>&nbsp;&nbsp;`{value:'ts',label:'Typescript'}`<br>`]` |
+| **attrs** | `object = {}` | HTML attributes to add to the `input` field when `search` is enabled. |
+| **nativeSupport** | `boolean = false` | Whether hidden input fields should be appended to achieve native data handling. |
 
 ## API methods
 
