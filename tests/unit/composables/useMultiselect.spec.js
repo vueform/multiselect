@@ -163,6 +163,23 @@ describe('useMultiselect', () => {
       expect(select.vm.isOpen).toBe(true)
       expect(select.vm.isActive).toBe(true)
     })
+
+    it('should not clearSearch if clearOnBlur is false', () => {
+      let select = createSelect({
+        value: null,
+        options: [1,2,3],
+        clearOnBlur: false,
+      })
+
+      select.vm.activate()
+
+      select.vm.search = 'a'
+
+      select.vm.deactivate()
+
+      jest.advanceTimersByTime(1)
+      expect(select.vm.search).toBe('a')
+    })
   })
 
   describe('handleCaretClick', () => {
