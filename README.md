@@ -77,7 +77,7 @@ Learn more: [https://vueform.com](https://vueform.com)
 
 | Feature | @vueform/multiselect | vue-multiselect | vue-select |
 | --- | :-: | :-: | :-: |
-| <b>Basic Features<b> |
+| <b>Basic Features*<b> |
 | Vue.js 2 support | ✓ | ✓ | ✓ |
 | Vue.js 3 support | ✓ | ~ | ~ |
 | Single select | ✓ | ✓ | ✓ |
@@ -85,7 +85,7 @@ Learn more: [https://vueform.com](https://vueform.com)
 | Tags | ✓ | ✓ | ✓ |
 | Search & filtering | ✓ | ✓ | ✓ |
 | Option groups | ✓ | ✓ | - |
-| <b>Advanced features<b> |
+| <b>Advanced features*<b> |
 | Async search | ✓ | ~ | ~ |
 | New option when using tags | ✓ | ~ | ✓ |
 | New option when not using tags | ✓ | - | ✓ |
@@ -95,17 +95,17 @@ Learn more: [https://vueform.com](https://vueform.com)
 | Accents/diacritics sensitivity | ✓ | ~ | ~ |
 | Search regex | ✓ | - | ~ |
 | Native select support (required) | ✓ | - | ~ |
-| <b>Options definition<b> |
+| <b>Options definition*<b> |
 | Array | ✓ | ✓ | ✓ |
 | Object | ✓ | - | - |
 | Array of objects | ✓ | ✓ | ✓ |
 | Function (async) | ✓ | - | - |
-| <b>Styling<b> |
+| <b>Styling*<b> |
 | Override class names | ✓ | - | - |
 | CSS vars support | ✓ | - | ✓ |
 | Class based CSS support | ✓ | ✓ | ✓ |
 | <div><img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Tailwind_CSS_logo.svg" width="160" alt="Tailwind CSS" title="Tailwind CSS" /> support</div> | ✓ | - | - |
-| <b>Support<b> |
+| <b>Support*<b> |
 | Accessibility (a11y) | ✓ | ~ | ~ |
 | Internationalization (i18n) | ✓ | ~ | ~ |
 | RTL support | ✓ | ✓ | ✓ |
@@ -113,19 +113,19 @@ Learn more: [https://vueform.com](https://vueform.com)
 | SSR support | ✓ | ✓ | ✓ |
 | ES Module support (ESM) | ✓ | - | - |
 | CSP compilant | ✓ | - | - |
-| <b>API<b> |
+| <b>API*<b> |
 | Events | <b>12</b> | 7 | 11 |
 | Slots | <b>14</b> | 12 | 11 |
 | Documented API methods | <b>10</b> | 0 | 0 |
-| <b>Stats*<b> |
-| Minzipped size | <b>9 KB</b> | 14.2 KB | 20.4 KB |
-| Open issues | <b>6</b> | 296 | 180 |
-| Monthly downloads | 110k | <b>1M</b> | 818k |
+| <b>Stats**<b> |
+| Minzipped size | <b>9.7 KB</b> | 14.2 KB | 20.6 KB |
+| Open issues | <b>18</b> | 233 | 191 |
+| Monthly downloads | 180k | <b>1.1M</b> | 947k |
 | Dependencies | 0 | 0 | 0 |
 | Coverage | <b>100%</b> | unknown | 96% |
-| Latest realease | <b>2022. 06. 01.</b> | 2019. 04. 27. | 2022. 02. 19. |
+| Latest realease | 2022. 12. 21. | 2019. 04. 27. | 2022. 12. 18. |
 
-**~** \- partial support / requires manual extension or official support is in progress<br>**\*** \- as of June 13, 2022 - reviewed periodically
+**~** \- partial support / requires manual extension or official support is in progress<br>**\*** \- as of June 13, 2022 - reviewed periodically<br>**\*\*** \- as of Dec 21, 2022 - reviewed periodically
 
 *Disclaimer: based on docs, Github issues and code discovery.*
 
@@ -290,8 +290,8 @@ Join our [Discord channel](https://discord.gg/WhX2nG6GTQ) or [open an issue](htt
 | **regex** | `{regex\|string} undefined` | The regex that search input should be tested against when `searchable: true`. |
 | **strict** | `{boolean} true` | Whether should regard accents/diacritics in search. |
 | **searchStart** | `{boolean} false` | Whether the search should match the start of the options' `trackBy`s. |
-| **aria** | `object` | | An object containing aria attributes to be added for the multiselect. |
-| **classes** | `object` | | An object of class names that gets merged with the default values. Default: `{`<br>&nbsp;&nbsp;`container: 'multiselect',`<br>&nbsp;&nbsp;`containerDisabled: 'is-disabled',`<br>&nbsp;&nbsp;`containerOpen: 'is-open',`<br>&nbsp;&nbsp;`containerOpenTop: 'is-open-top',`<br>&nbsp;&nbsp;`containerActive: 'is-active',`<br>&nbsp;&nbsp;`wrapper: 'multiselect-wrapper',`<br>&nbsp;&nbsp;`singleLabel: 'multiselect-single-label',`<br>&nbsp;&nbsp;`singleLabelText: 'multiselect-single-label-text',`<br>&nbsp;&nbsp;`multipleLabel: 'multiselect-multiple-label',`<br>&nbsp;&nbsp;`search: 'multiselect-search',`<br>&nbsp;&nbsp;`tags: 'multiselect-tags',`<br>&nbsp;&nbsp;`tag: 'multiselect-tag',`<br>&nbsp;&nbsp;`tagDisabled: 'is-disabled',`<br>&nbsp;&nbsp;`tagRemove: 'multiselect-tag-remove',`<br>&nbsp;&nbsp;`tagRemoveIcon: 'multiselect-tag-remove-icon',`<br>&nbsp;&nbsp;`tagsSearchWrapper: 'multiselect-tags-search-wrapper',`<br>&nbsp;&nbsp;`tagsSearch: 'multiselect-tags-search',`<br>&nbsp;&nbsp;`tagsSearchCopy: 'multiselect-tags-search-copy',`<br>&nbsp;&nbsp;`placeholder: 'multiselect-placeholder',`<br>&nbsp;&nbsp;`caret: 'multiselect-caret',`<br>&nbsp;&nbsp;`caretOpen: 'is-open',`<br>&nbsp;&nbsp;`clear: 'multiselect-clear',`<br>&nbsp;&nbsp;`clearIcon: 'multiselect-clear-icon',`<br>&nbsp;&nbsp;`spinner: 'multiselect-spinner',`<br>&nbsp;&nbsp;`dropdown: 'multiselect-dropdown',`<br>&nbsp;&nbsp;`dropdownTop: 'is-top',`<br>&nbsp;&nbsp;`dropdownHidden: 'is-hidden',`<br>&nbsp;&nbsp;`options: 'multiselect-options',`<br>&nbsp;&nbsp;`optionsTop: 'is-top',`<br>&nbsp;&nbsp;`group: 'multiselect-group',`<br>&nbsp;&nbsp;`groupLabel: 'multiselect-group-label',`<br>&nbsp;&nbsp;`groupLabelPointable: 'is-pointable',`<br>&nbsp;&nbsp;`groupLabelPointed: 'is-pointed',`<br>&nbsp;&nbsp;`groupLabelSelected: 'is-selected',`<br>&nbsp;&nbsp;`groupLabelDisabled: 'is-disabled',`<br>&nbsp;&nbsp;`groupLabelSelectedPointed: 'is-selected is-pointed',`<br>&nbsp;&nbsp;`groupLabelSelectedDisabled: 'is-selected is-disabled',`<br>&nbsp;&nbsp;`groupOptions: 'multiselect-group-options',`<br>&nbsp;&nbsp;`option: 'multiselect-option',`<br>&nbsp;&nbsp;`optionPointed: 'is-pointed',`<br>&nbsp;&nbsp;`optionSelected: 'is-selected',`<br>&nbsp;&nbsp;`optionDisabled: 'is-disabled',`<br>&nbsp;&nbsp;`optionSelectedPointed: 'is-selected is-pointed',`<br>&nbsp;&nbsp;`optionSelectedDisabled: 'is-selected is-disabled',`<br>&nbsp;&nbsp;`noOptions: 'multiselect-no-options',`<br>&nbsp;&nbsp;`noResults: 'multiselect-no-results',`<br>&nbsp;&nbsp;`fakeInput: 'multiselect-fake-input',`<br>&nbsp;&nbsp;`assist: 'multiselect-assistive-text'`<br>&nbsp;&nbsp;`spacer: 'multiselect-spacer'`<br>`}` |
+| **aria** | `object` | An object containing aria attributes to be added for the multiselect. |
+| **classes** | `object` | An object of class names that gets merged with the default values. Default: `{`<br>&nbsp;&nbsp;`container: 'multiselect',`<br>&nbsp;&nbsp;`containerDisabled: 'is-disabled',`<br>&nbsp;&nbsp;`containerOpen: 'is-open',`<br>&nbsp;&nbsp;`containerOpenTop: 'is-open-top',`<br>&nbsp;&nbsp;`containerActive: 'is-active',`<br>&nbsp;&nbsp;`wrapper: 'multiselect-wrapper',`<br>&nbsp;&nbsp;`singleLabel: 'multiselect-single-label',`<br>&nbsp;&nbsp;`singleLabelText: 'multiselect-single-label-text',`<br>&nbsp;&nbsp;`multipleLabel: 'multiselect-multiple-label',`<br>&nbsp;&nbsp;`search: 'multiselect-search',`<br>&nbsp;&nbsp;`tags: 'multiselect-tags',`<br>&nbsp;&nbsp;`tag: 'multiselect-tag',`<br>&nbsp;&nbsp;`tagDisabled: 'is-disabled',`<br>&nbsp;&nbsp;`tagRemove: 'multiselect-tag-remove',`<br>&nbsp;&nbsp;`tagRemoveIcon: 'multiselect-tag-remove-icon',`<br>&nbsp;&nbsp;`tagsSearchWrapper: 'multiselect-tags-search-wrapper',`<br>&nbsp;&nbsp;`tagsSearch: 'multiselect-tags-search',`<br>&nbsp;&nbsp;`tagsSearchCopy: 'multiselect-tags-search-copy',`<br>&nbsp;&nbsp;`placeholder: 'multiselect-placeholder',`<br>&nbsp;&nbsp;`caret: 'multiselect-caret',`<br>&nbsp;&nbsp;`caretOpen: 'is-open',`<br>&nbsp;&nbsp;`clear: 'multiselect-clear',`<br>&nbsp;&nbsp;`clearIcon: 'multiselect-clear-icon',`<br>&nbsp;&nbsp;`spinner: 'multiselect-spinner',`<br>&nbsp;&nbsp;`dropdown: 'multiselect-dropdown',`<br>&nbsp;&nbsp;`dropdownTop: 'is-top',`<br>&nbsp;&nbsp;`dropdownHidden: 'is-hidden',`<br>&nbsp;&nbsp;`options: 'multiselect-options',`<br>&nbsp;&nbsp;`optionsTop: 'is-top',`<br>&nbsp;&nbsp;`group: 'multiselect-group',`<br>&nbsp;&nbsp;`groupLabel: 'multiselect-group-label',`<br>&nbsp;&nbsp;`groupLabelPointable: 'is-pointable',`<br>&nbsp;&nbsp;`groupLabelPointed: 'is-pointed',`<br>&nbsp;&nbsp;`groupLabelSelected: 'is-selected',`<br>&nbsp;&nbsp;`groupLabelDisabled: 'is-disabled',`<br>&nbsp;&nbsp;`groupLabelSelectedPointed: 'is-selected is-pointed',`<br>&nbsp;&nbsp;`groupLabelSelectedDisabled: 'is-selected is-disabled',`<br>&nbsp;&nbsp;`groupOptions: 'multiselect-group-options',`<br>&nbsp;&nbsp;`option: 'multiselect-option',`<br>&nbsp;&nbsp;`optionPointed: 'is-pointed',`<br>&nbsp;&nbsp;`optionSelected: 'is-selected',`<br>&nbsp;&nbsp;`optionDisabled: 'is-disabled',`<br>&nbsp;&nbsp;`optionSelectedPointed: 'is-selected is-pointed',`<br>&nbsp;&nbsp;`optionSelectedDisabled: 'is-selected is-disabled',`<br>&nbsp;&nbsp;`noOptions: 'multiselect-no-options',`<br>&nbsp;&nbsp;`noResults: 'multiselect-no-results',`<br>&nbsp;&nbsp;`fakeInput: 'multiselect-fake-input',`<br>&nbsp;&nbsp;`assist: 'multiselect-assistive-text'`<br>&nbsp;&nbsp;`spacer: 'multiselect-spacer'`<br>`}` |
 
 <a href="https://vueform.com?ref=ghb">
   <img align="center" src="https://github.com/vueform/multiselect/raw/main/assets/vueform-banner.png" alt="Vueform" title="Vueform">
