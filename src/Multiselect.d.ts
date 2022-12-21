@@ -72,6 +72,7 @@ declare class Multiselect extends Vue {
   $emit(eventName: 'open'): this;
   $emit(eventName: 'close'): this;
   $emit(eventName: 'clear'): this;
+  $emit(eventName: 'max'): this;
 
   $slots: {
     placeholder: VNode[];
