@@ -1,3 +1,21 @@
+## v2.5.8
+
+> `2022-12-21`
+
+### 🎉 Feature
+  - Added `--ms-border-width-active` and `--ms-border-color-active` CSS vars #213.
+  - Added `@max` event #269.
+  - Added `clearOnBlur` option #251.
+
+### 🐞 Bug Fixes
+  - Removed `max-height` duplicate from default theme #240.
+  - Norwegian chars fix #243.
+  - Trigger `@change` event on updating external value #259.
+  - Docs fix for 2.7 installation instructions #294.
+  - Docs fix fiddle url.
+  - Tags dropdown focus fix #286 #300.
+  - Stop propagation on tag remove click #295.
+
 ## v2.5.7
 
 > `2022-11-21`

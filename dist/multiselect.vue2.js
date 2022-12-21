@@ -16,7 +16,7 @@ function useData (props, context, dep)
 
   // =============== METHODS ==============
 
-  const update = (val) => {
+  const update = (val, triggerInput = true) => {
     // Setting object(s) as internal value
     iv.value = makeInternal(val);
 
@@ -25,8 +25,11 @@ function useData (props, context, dep)
     const externalVal = makeExternal(val);
 
     context.emit('change', externalVal, $this);
-    context.emit('input', externalVal);
-    context.emit('update:modelValue', externalVal);
+
+    if (triggerInput) {
+      context.emit('input', externalVal);
+      context.emit('update:modelValue', externalVal);
+    }
   }; 
 
   // no export
@@ -210,7 +213,13 @@ function usePointer$1 (props, context, dep)
 function normalize (str, strict = true) {
   return strict
     ? String(str).toLowerCase().trim()
-    : String(str).normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase().trim()
+    : String(str).toLowerCase()
+                 .normalize('NFD')
+                 .trim()
+                 .replace(new RegExp(/æ/g), 'ae')
+                 .replace(new RegExp(/œ/g), 'oe')
+                 .replace(new RegExp(/ø/g), 'o')
+                 .replace(/\p{Diacritic}/gu, '')
 }
 
 function isObject (variable) {
@@ -577,6 +586,7 @@ function useOptions (props, context, dep)
         }
 
         if (isMax()) {
+          context.emit('max', $this);
           return
         }
 
@@ -605,6 +615,7 @@ function useOptions (props, context, dep)
         }
 
         if (isMax()) {
+          context.emit('max', $this);
           return
         }
 
@@ -715,7 +726,7 @@ function useOptions (props, context, dep)
   // no export
   const filterGroups = (groups) => {
     // If the search has value we need to filter among 
-    // he ones that are visible to the user to avoid
+    // the ones that are visible to the user to avoid
     // displaying groups which technically have options
     // based on search but that option is already selected.
     return groupHideEmpty.value
@@ -922,21 +933,21 @@ function useOptions (props, context, dep)
 
   watch(ev, (newValue) => {
     if (isNullish(newValue)) {
-      iv.value = makeInternal(newValue);
+      update(makeInternal(newValue), false);
       return
     }
 
     switch (mode.value) {
       case 'single':
         if (object.value ? newValue[valueProp.value] != iv.value[valueProp.value] : newValue != iv.value[valueProp.value]) {
-          iv.value = makeInternal(newValue);
+          update(makeInternal(newValue), false);
         }
         break
 
       case 'multiple':
       case 'tags':
         if (!arraysEqual(object.value ? newValue.map(o => o[valueProp.value]) : newValue, iv.value.map(o => o[valueProp.value]))) {
-          iv.value = makeInternal(newValue);
+          update(makeInternal(newValue), false);
         }
         break
     }
@@ -1290,7 +1301,7 @@ function useDropdown (props, context, dep)
 
 function useMultiselect (props, context, dep)
 {
-  const { searchable, disabled } = toRefs(props);
+  const { searchable, disabled, clearOnBlur } = toRefs(props);
 
   // ============ DEPENDENCIES ============
 
@@ -1352,13 +1363,16 @@ function useMultiselect (props, context, dep)
     setTimeout(() => {
       if (!isActive.value) {
         close();
-        clearSearch();
+
+        if (clearOnBlur.value) {
+          clearSearch();
+        }
       }
     }, 1);
   };
 
   const handleFocusIn = (e) => {
-    if (e.target.closest('[data-tags]') || e.target.closest('[data-clear]')) {
+    if ((e.target.closest('[data-tags]') && e.target.nodeName !== 'INPUT') || e.target.closest('[data-clear]')) {
       return
     }
 
@@ -1383,7 +1397,6 @@ function useMultiselect (props, context, dep)
         deactivate();
       }, 0);
     } else if (document.activeElement.isEqualNode(wrapper.value) && !isOpen.value) {
-      console.log(e.target.closest('[data-tags]'));
       activate();    
     }
 
@@ -2109,7 +2122,7 @@ function resolveDeps (props, context, features, deps = {}) {
     emits: [
       'paste', 'open', 'close', 'select', 'deselect', 
       'input', 'search-change', 'tag', 'option', 'update:modelValue',
-      'change', 'clear', 'keydown', 'keyup',
+      'change', 'clear', 'keydown', 'keyup', 'max',
     ],
     props: {
       value: {
@@ -2394,6 +2407,11 @@ function resolveDeps (props, context, features, deps = {}) {
         type: Object,
         default: () => ({}),
       },
+      clearOnBlur: {
+        required: false,
+        type: Boolean,
+        default: true,
+      },
     },
     setup(props, context)
     { 
@@ -2633,6 +2651,7 @@ var __vue_render__ = function () {
                                         class: _vm.classList.tagRemove,
                                         on: {
                                           click: function ($event) {
+                                            $event.stopPropagation();
                                             return _vm.handleTagRemove(
                                               option,
                                               $event
