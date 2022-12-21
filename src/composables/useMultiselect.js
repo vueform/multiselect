@@ -70,7 +70,7 @@ export default function useMultiselect (props, context, dep)
   }
 
   const handleFocusIn = (e) => {
-    if (e.target.closest('[data-tags]') || e.target.closest('[data-clear]')) {
+    if ((e.target.closest('[data-tags]') && e.target.nodeName !== 'INPUT') || e.target.closest('[data-clear]')) {
       return
     }
 
