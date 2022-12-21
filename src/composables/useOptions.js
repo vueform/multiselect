@@ -496,7 +496,7 @@ export default function useOptions (props, context, dep)
   // no export
   const filterGroups = (groups) => {
     // If the search has value we need to filter among 
-    // he ones that are visible to the user to avoid
+    // the ones that are visible to the user to avoid
     // displaying groups which technically have options
     // based on search but that option is already selected.
     return groupHideEmpty.value

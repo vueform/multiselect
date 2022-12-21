@@ -95,7 +95,6 @@ export default function useMultiselect (props, context, dep)
         deactivate()
       }, 0)
     } else if (document.activeElement.isEqualNode(wrapper.value) && !isOpen.value) {
-      console.log(e.target.closest('[data-tags]'))
       activate()    
     }
 
