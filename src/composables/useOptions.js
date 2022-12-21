@@ -356,7 +356,7 @@ export default function useOptions (props, context, dep)
         }
 
         if (isMax()) {
-          context.emit('max')
+          context.emit('max', $this)
           return
         }
 
@@ -385,7 +385,7 @@ export default function useOptions (props, context, dep)
         }
 
         if (isMax()) {
-          context.emit('max')
+          context.emit('max', $this)
           return
         }
 

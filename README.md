@@ -381,7 +381,7 @@ mounted() {
 | **@paste** | `Event, select$` | Emitted when value is pasted into the search field. |
 | **@keydown** | `Event, select$` | Emitted on `keydown`. |
 | **@keyup** | `Event, select$` | Emitted on `keyup`. |
-| **@max** | `-` | Emitted when `max` is reached when in `multiple` or `tags` mode. |
+| **@max** | `select$` | Emitted when `max` is reached when in `multiple` or `tags` mode. |
 
 The `select$` param in each event is the Multiselect component's instance.
 
