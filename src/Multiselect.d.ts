@@ -58,6 +58,7 @@ declare class Multiselect extends Vue {
   rtl?: boolean;
   infinite?: boolean;
   aria?: object;
+  clearOnBlur?: boolean;
 
   $emit(eventName: 'change', e: {originalEvent: Event, value: any}): this;
   $emit(eventName: 'select', e: {originalEvent: Event, value: any, option: any}): this;

@@ -590,6 +590,11 @@
         type: Object,
         default: () => ({}),
       },
+      clearOnBlur: {
+        required: false,
+        type: Boolean,
+        default: true,
+      },
     },
     setup(props, context)
     { 

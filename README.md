@@ -306,6 +306,7 @@ Join our [Discord channel](https://discord.gg/WhX2nG6GTQ) or [open an issue](htt
 | **clearOnSearch** | `boolean` | `false` | Whether the option list should be cleared when a new character is typed before loading new options list, when using async options. |
 | **clearOnSelect** | `boolean` | `true` | Whether the option list should be cleared upon selecting an option when using async options. |
 | **closeOnSelect** | `boolean` | `true` | Whether the option list should be hidden upon selecting an option. |
+| **clearOnBlur** | `boolean` | `true` | Whether the search should be cleared when the input is blurred when `searchable: true`. |
 | **delay** | `number` | `-1` | The delay in milliseconds that should occur between the last typed character and refreshing an async option list. If `-1` the option list will not refresh when the search query changes. If `0` it will refresh without delay. |
 | **filterResults** | `boolean` | `true` | Whether option list should be filtered by search query. This may be set to `false` if you are handling filtering manually when returning async options. |
 | **minChars** | `number` | `0` | The minimum number of characters that should be typed to refresh async option list. If `0` it will refresh even when the search field becomes empty. |

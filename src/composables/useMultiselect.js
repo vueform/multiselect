@@ -2,7 +2,7 @@ import { ref, toRefs, computed, nextTick } from 'vue'
 
 export default function useMultiselect (props, context, dep)
 {
-  const { searchable, disabled } = toRefs(props)
+  const { searchable, disabled, clearOnBlur } = toRefs(props)
 
   // ============ DEPENDENCIES ============
 
@@ -64,7 +64,10 @@ export default function useMultiselect (props, context, dep)
     setTimeout(() => {
       if (!isActive.value) {
         close()
-        clearSearch()
+
+        if (clearOnBlur.value) {
+          clearSearch()
+        }
       }
     }, 1)
   }
