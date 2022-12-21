@@ -13,7 +13,7 @@ export default function useData (props, context, dep)
 
   // =============== METHODS ==============
 
-  const update = (val) => {
+  const update = (val, triggerInput = true) => {
     // Setting object(s) as internal value
     iv.value = makeInternal(val)
 
@@ -22,8 +22,11 @@ export default function useData (props, context, dep)
     const externalVal = makeExternal(val)
 
     context.emit('change', externalVal, $this)
-    context.emit('input', externalVal)
-    context.emit('update:modelValue', externalVal)
+
+    if (triggerInput) {
+      context.emit('input', externalVal)
+      context.emit('update:modelValue', externalVal)
+    }
   } 
 
   // no export

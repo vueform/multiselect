@@ -703,21 +703,21 @@ export default function useOptions (props, context, dep)
 
   watch(ev, (newValue) => {
     if (isNullish(newValue)) {
-      iv.value = makeInternal(newValue)
+      update(makeInternal(newValue), false)
       return
     }
 
     switch (mode.value) {
       case 'single':
         if (object.value ? newValue[valueProp.value] != iv.value[valueProp.value] : newValue != iv.value[valueProp.value]) {
-          iv.value = makeInternal(newValue)
+          update(makeInternal(newValue), false)
         }
         break
 
       case 'multiple':
       case 'tags':
         if (!arraysEqual(object.value ? newValue.map(o => o[valueProp.value]) : newValue, iv.value.map(o => o[valueProp.value]))) {
-          iv.value = makeInternal(newValue)
+          update(makeInternal(newValue), false)
         }
         break
     }
