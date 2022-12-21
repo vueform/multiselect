@@ -222,7 +222,7 @@ npm install @vueform/multiselect
 </template>
 
 <script>
-  import Multiselect from '@vueform/multiselect/multiselect.vue2.js'
+  import Multiselect from '@vueform/multiselect/dist/multiselect.vue2.js'
 
   export default {
     components: {
