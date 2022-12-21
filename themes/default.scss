@@ -300,7 +300,6 @@
   transform: translateY(100%);
   border: var(--ms-dropdown-border-width, 1px) solid var(--ms-dropdown-border-color, #D1D5DB);
   margin-top: calc(var(--ms-border-width, 1px) * -1);
-  max-height: 15rem;
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
   z-index: 100;
