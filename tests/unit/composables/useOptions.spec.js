@@ -2473,6 +2473,23 @@ describe('useOptions', () => {
       expect(select.vm.isOpen).toBe(true)
     })
 
+    it('should deactivate on select when option is already selected and canDeselect=false and closeOnSelect=true', async () => {
+      let select = createSelect({
+        value: 2,
+        options: [1,2,3],
+        closeOnSelect: true,
+        canDeselect: false,
+      })
+
+      select.vm.open()
+      expect(select.vm.isOpen).toBe(true)
+
+      select.vm.handleOptionClick(select.vm.getOption(2))
+
+      jest.advanceTimersByTime(1)
+      expect(select.vm.isOpen).toBe(false)
+    })
+
     it('should focus input on select when closeOnSelect=false and has search', async () => {
       let select = createSelect({
         value: null,

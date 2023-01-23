@@ -326,6 +326,11 @@ export default function useOptions (props, context, dep)
         if (option && isSelected(option)) {
           if (canDeselect.value) {
             deselect(option)
+          } else {
+            if (closeOnSelect.value) {
+              clearPointer()
+              close()
+            }
           }
           return
         }
