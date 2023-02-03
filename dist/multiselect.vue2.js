@@ -738,16 +738,19 @@ function useOptions (props, context, dep)
   };
 
   // no export
-  const filterOptions = (options, excludeHideSelected = true) => {
-    let fo = options;
-    
-    if (search.value && filterResults.value) {
-      fo = fo.filter((option) => {
-        return searchStart.value
-          ? normalize(option[trackBy.value], strict.value).startsWith(normalize(search.value, strict.value))
-          : normalize(option[trackBy.value], strict.value).indexOf(normalize(search.value, strict.value)) !== -1
-      });
-    }
+    const filterOptions = (options, excludeHideSelected = true) => {
+        let fo = options;
+
+        if (search.value && filterResults.value) {
+            fo = fo.filter((option) => {
+                return Array.isArray(trackBy.value)
+                    ? trackBy.value.some(tb => normalize(option[tb], strict.value).startsWith(normalize(search.value, strict.value))
+                        || normalize(option[tb], strict.value).indexOf(normalize(search.value, strict.value)) !== -1)
+                    : (searchStart.value
+                        ? normalize(option[trackBy.value], strict.value).startsWith(normalize(search.value, strict.value))
+                        : normalize(option[trackBy.value], strict.value).indexOf(normalize(search.value, strict.value)) !== -1);
+            });
+        }
 
     if (hideSelected.value && excludeHideSelected) {
       fo = fo.filter((option) => !shouldHideOption(option));
