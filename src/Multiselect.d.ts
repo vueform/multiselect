@@ -7,7 +7,7 @@ declare class Multiselect extends Vue {
   options?: any[];
   searchable?: boolean;
   valueProp?: string;
-  trackBy?: string;
+  trackBy?: string|array;
   label?: string;
   placeholder?: string|null;
   multipleLabel?: any; // Function
