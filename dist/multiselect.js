@@ -20,7 +20,7 @@ function useData (props, context, dep)
     // Setting object(s) as internal value
     iv.value = makeInternal(val);
 
-    // Setting object(s) or plain value as external 
+    // Setting object(s) or plain value as external
     // value based on `option` setting
     const externalVal = makeExternal(val);
 
@@ -30,7 +30,7 @@ function useData (props, context, dep)
       context.emit('input', externalVal);
       context.emit('update:modelValue', externalVal);
     }
-  }; 
+  };
 
   // no export
   const makeExternal = (val) => {
@@ -148,7 +148,7 @@ function useSearch (props, context, dep)
       if (typeof regexp === 'string') {
         regexp = new RegExp(regexp);
       }
-      
+
       if (!pastedData.split('').every(c => !!c.match(regexp))) {
         e.preventDefault();
       }
@@ -236,7 +236,7 @@ function arraysEqual (array1, array2) {
 
 function useOptions (props, context, dep)
 {
-  const { 
+  const {
     options, mode, trackBy: trackBy_, limit, hideSelected, createTag, createOption: createOption_, label,
     appendNewTag, appendNewOption: appendNewOption_, multipleLabel, object, loading, delay, resolveOnLoad,
     minChars, filterResults, clearOnSearch, clearOnSelect, valueProp,
@@ -428,7 +428,7 @@ function useOptions (props, context, dep)
   // =============== METHODS ==============
 
   /**
-   * @param {array|object|string|number} option 
+   * @param {array|object|string|number} option
    */
   const select = (option) => {
     if (typeof option !== 'object') {
@@ -516,7 +516,7 @@ function useOptions (props, context, dep)
     if (max === undefined || max.value === -1 || (!hasSelected.value && max.value > 0)) {
       return false
     }
-    
+
     return iv.value.length >= max.value
   };
 
@@ -530,7 +530,7 @@ function useOptions (props, context, dep)
       delete option.__CREATE__;
 
       option = onCreate.value(option, $this);
-      
+
       if (option instanceof Promise) {
         resolving.value = true;
         option.then((result) => {
@@ -539,7 +539,7 @@ function useOptions (props, context, dep)
         });
 
         return
-      } 
+      }
     }
 
     handleOptionSelect(option);
@@ -550,7 +550,7 @@ function useOptions (props, context, dep)
       option = { ...option };
       delete option.__CREATE__;
     }
-    
+
     switch (mode.value) {
       case 'single':
         if (option && isSelected(option)) {
@@ -725,7 +725,7 @@ function useOptions (props, context, dep)
 
   // no export
   const filterGroups = (groups) => {
-    // If the search has value we need to filter among 
+    // If the search has value we need to filter among
     // the ones that are visible to the user to avoid
     // displaying groups which technically have options
     // based on search but that option is already selected.
@@ -762,7 +762,7 @@ function useOptions (props, context, dep)
   // no export
   const optionsToArray = (options) => {
     let uo = options;
-    
+
     // Transforming an object to an array of objects
     if (isObject(uo)) {
       uo = Object.keys(uo).map((key) => {
@@ -916,7 +916,7 @@ function useOptions (props, context, dep)
 
     initInternalValue();
   }
-  
+
   // ============== WATCHERS ==============
 
   if (delay.value > -1) {
@@ -1061,7 +1061,7 @@ function usePointer (props, context, dep)
 
     return prevGroup
   });
-  
+
   const nextGroup = computed(() => {
     let nextIndex = groups.value.map(g => g.label).indexOf(isPointerGroup.value
       ? pointer.value[groupLabel.value]
@@ -1077,7 +1077,7 @@ function usePointer (props, context, dep)
   const lastGroup = computed(() => {
     return [...groups.value].slice(-1)[0]
   });
-  
+
   const currentGroupFirstEnabledOption = computed(() => {
     return pointer.value.__VISIBLE__.filter(o => !o[disabledProp.value])[0]
   });
@@ -1086,7 +1086,7 @@ function usePointer (props, context, dep)
     const options = currentGroup.value.__VISIBLE__.filter(o => !o[disabledProp.value]);
     return options[options.map(o => o[valueProp.value]).indexOf(pointer.value[valueProp.value]) - 1]
   });
-  
+
   const currentGroupNextEnabledOption = computed(() => {
     const options = getParentGroup(pointer.value).__VISIBLE__.filter(o => !o[disabledProp.value]);
     return options[options.map(o => o[valueProp.value]).indexOf(pointer.value[valueProp.value]) + 1]
@@ -1215,7 +1215,7 @@ function usePointer (props, context, dep)
     if (pointedOption.offsetTop + pointedOption.offsetHeight > wrapper.clientHeight + wrapper.scrollTop) {
       wrapper.scrollTop = pointedOption.offsetTop + pointedOption.offsetHeight - wrapper.clientHeight;
     }
-    
+
     if (pointedOption.offsetTop < wrapper.scrollTop) {
       wrapper.scrollTop = pointedOption.offsetTop;
     }
@@ -1242,7 +1242,7 @@ function usePointer (props, context, dep)
       }
 
       let wrapper = firstSelected.parentElement.parentElement;
-      
+
       nextTick(() => {
         /* istanbul ignore next */
         if (wrapper.scrollTop > 0) {
@@ -1317,7 +1317,7 @@ function useMultiselect (props, context, dep)
   // ================ DATA ================
 
   const multiselect = ref(null);
-  
+
   const wrapper = ref(null);
 
   const tags = ref(null);
@@ -1400,7 +1400,7 @@ function useMultiselect (props, context, dep)
         deactivate();
       }, 0);
     } else if (document.activeElement.isEqualNode(wrapper.value) && !isOpen.value) {
-      activate();    
+      activate();
     }
 
     setTimeout(() => {
@@ -1479,7 +1479,7 @@ function useKeyboard (props, context, dep)
   const preparePointer = () => {
     // When options are hidden and creating tags is allowed
     // no pointer will be set (because options are hidden).
-    // In such case we need to set the pointer manually to the 
+    // In such case we need to set the pointer manually to the
     // first option, which equals to the option created from
     // the search value.
     if (mode.value === 'tags' && !showOptions.value && createOption.value && searchable.value && !groupped.value) {
@@ -1541,7 +1541,7 @@ function useKeyboard (props, context, dep)
         if (addOptionOn.value.indexOf('enter') === -1 && createOption.value) {
           return
         }
-        
+
         preparePointer();
         selectPointer();
         break
@@ -1549,7 +1549,7 @@ function useKeyboard (props, context, dep)
       case ' ':
         if (!createOption.value && !searchable.value) {
           e.preventDefault();
-          
+
           preparePointer();
           selectPointer();
           return
@@ -1557,18 +1557,18 @@ function useKeyboard (props, context, dep)
 
         if (!createOption.value) {
           return false
-        } 
+        }
 
         if (addOptionOn.value.indexOf('space') === -1 && createOption.value) {
           return
         }
 
         e.preventDefault();
-        
+
         preparePointer();
         selectPointer();
         break
-      
+
       case 'Tab':
       case ';':
       case ',':
@@ -1596,7 +1596,7 @@ function useKeyboard (props, context, dep)
         if (!isOpen.value) {
           open();
         }
-        
+
         backwardPointer();
         break
 
@@ -1639,7 +1639,7 @@ function useKeyboard (props, context, dep)
         }
 
         e.preventDefault();
-        
+
         /* istanbul ignore else */
         if (tagList.length > activeIndex + 1) {
           tagList[activeIndex+1].focus();
@@ -1650,7 +1650,7 @@ function useKeyboard (props, context, dep)
         else if (!searchable.value) {
           wrapper.value.focus();
         }
-        
+
         break
     }
   };
@@ -1667,7 +1667,7 @@ function useKeyboard (props, context, dep)
 }
 
 function useClasses (props, context, dependencies)
-{const { 
+{const {
     classes: classes_, disabled, openDirection, showOptions
   } = toRefs(props);
 
@@ -2011,14 +2011,14 @@ function useScroll (props, context, dep)
 
   const arias = computed(() => {
     let arias = { ...aria.value };
-    
+
     // Need to add manually because focusing
     // the input won't read the selected value
     if (searchable.value) {
       arias['aria-labelledby'] = arias['aria-labelledby']
         ? `${ariaAssist.value} ${arias['aria-labelledby']}`
         : ariaAssist.value;
-      
+
       if (ariaLabel.value && arias['aria-label']) {
         arias['aria-label'] = `${ariaLabel.value}, ${arias['aria-label']}`;
       }
@@ -2114,14 +2114,14 @@ function resolveDeps (props, context, features, deps = {}) {
     }
 
   });
-  
+
   return deps
 }
 
 var script = {
     name: 'Multiselect',
     emits: [
-      'paste', 'open', 'close', 'select', 'deselect', 
+      'paste', 'open', 'close', 'select', 'deselect',
       'input', 'search-change', 'tag', 'option', 'update:modelValue',
       'change', 'clear', 'keydown', 'keyup', 'max',
     ],
@@ -2157,7 +2157,7 @@ var script = {
         default: 'label',
       },
       trackBy: {
-        type: String,
+        type: [String, Array],
         required: false,
         default: undefined,
       },
@@ -2415,7 +2415,7 @@ var script = {
       },
     },
     setup(props, context)
-    { 
+    {
       return resolveDeps(props, context, [
         useValue,
         usePointer$1,
