@@ -271,7 +271,7 @@ Join our [Discord channel](https://discord.gg/WhX2nG6GTQ) or [open an issue](htt
 | **label** | `{string} 'label'` | If you provide an array of objects as `options` the value of this property will be displayed as selected option. |
 | **disabledProp** | `{string} 'disabled'` | If you provide an array of objects as `options` this property should be used to determine whether the option is disabled. |
 | **placeholder** | `{string} null` | The text that should be displayed before any option is selected. |
-| **multipleLabel** | `function` | A function that returns the label to be displayed for selected options when using `multiple` mode. It receives `value` as an argument. By default it renders `1 option selected` and `[n] options selected` based on `value` length. |
+| **multipleLabel** | `function(value, select$)` | A function that returns the label to be displayed for selected options when using `multiple` mode. It receives `value` as first argument and the multiselect component `select$` as second. By default it renders `1 option selected` and `[n] options selected` based on `value` length. |
 | **disabled** | `{boolean} false` | Whether the input should be disabled for the user (API can still be used programmatically). |
 | **inputType** | `{string} 'text'` | The `type` attribute of the search input. |
 | **autocomplete** | `{string} undefined` | The `autocomplete` attribute of the search input. |
@@ -281,8 +281,10 @@ Join our [Discord channel](https://discord.gg/WhX2nG6GTQ) or [open an issue](htt
 | **loading** | `{boolean} false` | Whether a loading spinner should be shown. |
 | **id** | `{string} 'multiselect'` | The `id` of the multiselect container DOM. |
 | **caret** | `{boolean} true` | Whether should display the caret symbol on the right. |
-| **noOptionsText** | `{string} 'The list is empty'` | The text that should be displayed when options list is empty. |
-| **noResultsText** | `{string} 'No results found'` | The text that should be displayed when there are no search results. |
+| **locale** | `{string} null` | The locale of the multiselect. If a locale is set labels might have an `object` value with different keys for different locales. |
+| **locale** | `{string} 'en'` | The fallback locale. |
+| **noOptionsText** | `{string|object} 'The list is empty'` | The text that should be displayed when options list is empty. It can be an object with different keys for different locales. |
+| **noResultsText** | `{string|object} 'No results found'` | The text that should be displayed when there are no search results. It can be an object with different keys for different locales. |
 | **openDirection** | `{string} 'bottom'` | Whether the option list should be displayed above or below the multiselect. Possible values: `top\|bottom` |
 | **reverse** | `{boolean} false` | Whether the option list should be reversed. |
 | **regex** | `{regex\|string} undefined` | The regex that search input should be tested against when `searchable: true`. |
