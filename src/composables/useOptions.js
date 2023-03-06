@@ -11,7 +11,7 @@ export default function useOptions (props, context, dep)
     appendNewTag, appendNewOption: appendNewOption_, multipleLabel, object, loading, delay, resolveOnLoad,
     minChars, filterResults, clearOnSearch, clearOnSelect, valueProp,
     canDeselect, max, strict, closeOnSelect, groups: groupped, reverse, infinite,
-    groupOptions, groupHideEmpty, groupSelect, onCreate, disabledProp, searchStart,
+    groupOptions, groupHideEmpty, groupSelect, onCreate, disabledProp, searchStart, locale,
   } = toRefs(props)
 
   const $this = getCurrentInstance().proxy
@@ -28,6 +28,7 @@ export default function useOptions (props, context, dep)
   const focus = dep.focus
   const deactivate = dep.deactivate
   const close = dep.close
+  const localize = dep.localize
 
   // ================ DATA ================
 
@@ -167,10 +168,22 @@ export default function useOptions (props, context, dep)
       return []
     }
 
-    return getOptionByTrackBy(search.value) !== -1 ? [] : [{
+    if (getOptionByTrackBy(search.value) !== -1) {
+      return []
+    }
+
+    let labelValue = search.value
+
+    if (locale.value) {
+      labelValue = {
+        [locale.value]: search.value
+      }
+    }
+
+    return [{
       [valueProp.value]: search.value,
-      [label.value]: search.value,
       [trackBy.value]: search.value,
+      [label.value]: labelValue,
       __CREATE__: true,
     }]
   })
@@ -513,9 +526,11 @@ export default function useOptions (props, context, dep)
     
     if (search.value && filterResults.value) {
       fo = fo.filter((option) => {
+        let target = normalize(localize(option[trackBy.value]), strict.value)
+
         return searchStart.value
-          ? normalize(option[trackBy.value], strict.value).startsWith(normalize(search.value, strict.value))
-          : normalize(option[trackBy.value], strict.value).indexOf(normalize(search.value, strict.value)) !== -1
+          ? target.startsWith(normalize(search.value, strict.value))
+          : target.indexOf(normalize(search.value, strict.value)) !== -1
       })
     }
 

@@ -67,9 +67,9 @@
               @keyup.enter="handleTagRemove(option, $event)"
               :key="key"
 
-              :aria-label="ariaTagLabel(option[label])"
+              :aria-label="ariaTagLabel(localize(option[label]))"
             >
-              {{ option[label] }}
+              {{ localize(option[label]) }}
               <span
                 v-if="!disabled"
                 :class="classList.tagRemove"
@@ -118,7 +118,7 @@
       <template v-if="mode == 'single' && hasSelected && !search && iv">
         <slot name="singlelabel" :value="iv">
           <div :class="classList.singleLabel">
-            <span :class="classList.singleLabelText">{{ iv[label] }}</span>
+            <span :class="classList.singleLabelText">{{ localize(iv[label]) }}</span>
           </div>
         </slot>
       </template>
@@ -179,7 +179,7 @@
             :key="key"
 
             :id="ariaGroupId(group)"
-            :aria-label="ariaGroupLabel(group)"
+            :aria-label="ariaGroupLabel(localize(group[groupLabel]))"
             :aria-selected="isSelected(group)"
             role="option"
           >
@@ -190,14 +190,14 @@
               @click="handleGroupClick(group)"
             >
               <slot name="grouplabel" :group="group" :is-selected="isSelected" :is-pointed="isPointed">
-                <span v-html="group[groupLabel]"></span>
+                <span>{{ localize(group[groupLabel]) }}</span>
               </slot>
             </div>
 
             <ul
               :class="classList.groupOptions"
               
-              :aria-label="ariaGroupLabel(group)"
+              :aria-label="ariaGroupLabel(localize(group[groupLabel]))"
               role="group"
             >
               <li
@@ -211,11 +211,11 @@
 
                 :id="ariaOptionId(option)"
                 :aria-selected="isSelected(option)"
-                :aria-label="ariaOptionLabel(option)"
+                :aria-label="ariaOptionLabel(localize(option[label]))"
                 role="option"
               >
                 <slot name="option" :option="option" :is-selected="isSelected" :is-pointed="isPointed" :search="search">
-                  <span>{{ option[label] }}</span>
+                  <span>{{ localize(option[label]) }}</span>
                 </slot>
               </li>
             </ul>
@@ -233,11 +233,11 @@
 
             :id="ariaOptionId(option)"
             :aria-selected="isSelected(option)"
-            :aria-label="ariaOptionLabel(option)"
+            :aria-label="ariaOptionLabel(localize(option[label]))"
             role="option"
           >
             <slot name="option" :option="option" :isSelected="isSelected" :is-pointed="isPointed" :search="search">
-              <span>{{ option[label] }}</span>
+              <span>{{ localize(option[label]) }}</span>
             </slot>
           </li>
         </template>
@@ -297,6 +297,7 @@
   import useClasses from './composables/useClasses' 
   import useScroll from './composables/useScroll' 
   import useA11y from './composables/useA11y' 
+  import useI18n from './composables/useI18n'
 
   import resolveDeps from './utils/resolveDeps'
 
@@ -595,10 +596,21 @@
         type: Boolean,
         default: true,
       },
+      locale: {
+        required: false,
+        type: String,
+        default: null,
+      },
+      fallbackLocale: {
+        required: false,
+        type: String,
+        default: 'en',
+      },
     },
     setup(props, context)
     { 
       return resolveDeps(props, context, [
+        useI18n,
         useValue,
         usePointer,
         useDropdown,

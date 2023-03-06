@@ -159,9 +159,7 @@ describe('useA11y', () => {
         options: [1,2,3],
       })
 
-      expect(select.vm.ariaOptionLabel({
-        value: 1, label: 1
-      })).toBe('1')
+      expect(select.vm.ariaOptionLabel(1)).toBe('1')
     })
   })
 
@@ -182,10 +180,7 @@ describe('useA11y', () => {
         ],
       })
 
-      expect(select.vm.ariaGroupLabel({
-        label: 'a',
-        options: [1,2,3]
-      })).toBe('a')
+      expect(select.vm.ariaGroupLabel('a')).toBe('a')
     })
   })
 
