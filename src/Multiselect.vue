@@ -244,11 +244,11 @@
       </ul>
 
       <slot v-if="noOptions" name="nooptions">
-        <div :class="classList.noOptions" v-html="noOptionsText"></div>
+        <div :class="classList.noOptions" v-html="localize(noOptionsText)"></div>
       </slot>
 
       <slot v-if="noResults" name="noresults">
-        <div :class="classList.noResults" v-html="noResultsText"></div>
+        <div :class="classList.noResults" v-html="localize(noResultsText)"></div>
       </slot>
 
       <div v-if="infinite && hasMore" :class="classList.inifinite" ref="infiniteLoader">
@@ -415,12 +415,12 @@
         default: false,
       },
       noOptionsText: {
-        type: String,
+        type: [String, Object],
         required: false,
         default: 'The list is empty',
       },
       noResultsText: {
-        type: String,
+        type: [String, Object],
         required: false,
         default: 'No results found',
       },

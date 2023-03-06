@@ -18,8 +18,8 @@ declare class Multiselect extends Vue {
   id?: string;
   caret?: boolean;
   maxHeight?: string|number;
-  noOptionsText?: string;
-  noResultsText?: string;
+  noOptionsText?: string|object;
+  noResultsText?: string|object;
   canDeselect?: boolean;
   canClear?: boolean;
   clearOnSearch?: boolean;
