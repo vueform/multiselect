@@ -61,6 +61,23 @@ export default function useKeyboard (props, context, dep)
     }
   }
 
+  const removeLastRemovable = (arr) => {
+    // Find the index of the last object in the array that doesn't have a "remove" property set to false
+    let indexToRemove = arr.length - 1
+    while (indexToRemove >= 0 && (arr[indexToRemove].remove === false || arr[indexToRemove].disabled)) {
+      indexToRemove--
+    }
+
+    // If all objects have a "remove" property set to false, don't remove anything and return the original array
+    if (indexToRemove < 0) {
+      return arr
+    }
+
+    // Remove the object at the found index and return the updated array
+    arr.splice(indexToRemove, 1);
+    return arr
+  }
+
   const handleKeydown = (e) => {
     context.emit('keydown', e, $this)
 
@@ -86,7 +103,7 @@ export default function useKeyboard (props, context, dep)
           return
         }
 
-        update([...iv.value].slice(0,-1))
+        update(removeLastRemovable([...iv.value]))
         break
 
       case 'Enter':

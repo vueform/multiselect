@@ -62,7 +62,10 @@
             :disabled="disabled"
           >
             <span
-              :class="classList.tag"
+              :class="[
+                classList.tag,
+                option.disabled ? classList.tagDisabled : null,
+              ]"
               tabindex="-1"
               @keyup.enter="handleTagRemove(option, $event)"
               :key="key"
@@ -71,7 +74,7 @@
             >
               {{ localize(option[label]) }}
               <span
-                v-if="!disabled"
+                v-if="!disabled && !option.disabled"
                 :class="classList.tagRemove"
                 @click.stop="handleTagRemove(option, $event)"
               >
