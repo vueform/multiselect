@@ -43,6 +43,7 @@ declare class Multiselect extends Vue {
   classes?: object;
   strict?: boolean;
   closeOnSelect?: boolean;
+  closeOnDeselect?: boolean;
   autocomplete?: string;
   groups?: boolean;
   groupLabel?: string;

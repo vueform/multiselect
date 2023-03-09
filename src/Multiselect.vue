@@ -514,6 +514,11 @@
         required: false,
         default: true,
       },
+      closeOnDeselect: {
+        type: Boolean,
+        required: false,
+        default: false,
+      },
       autocomplete: {
         type: String,
         required: false,

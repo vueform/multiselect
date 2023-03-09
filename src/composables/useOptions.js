@@ -10,7 +10,7 @@ export default function useOptions (props, context, dep)
     options, mode, trackBy: trackBy_, limit, hideSelected, createTag, createOption: createOption_, label,
     appendNewTag, appendNewOption: appendNewOption_, multipleLabel, object, loading, delay, resolveOnLoad,
     minChars, filterResults, clearOnSearch, clearOnSelect, valueProp,
-    canDeselect, max, strict, closeOnSelect, groups: groupped, reverse, infinite,
+    canDeselect, max, strict, closeOnSelect, closeOnDeselect, groups: groupped, reverse, infinite,
     groupOptions, groupHideEmpty, groupSelect, onCreate, disabledProp, searchStart, locale,
   } = toRefs(props)
 
@@ -375,6 +375,11 @@ export default function useOptions (props, context, dep)
           if (canDeselect.value) {
             deselect(option)
           }
+
+          if (closeOnDeselect.value) {
+            clearPointer()
+            close()
+          }
           return
         }
 
@@ -400,6 +405,11 @@ export default function useOptions (props, context, dep)
       case 'multiple':
         if (option && isSelected(option)) {
           deselect(option)
+
+          if (closeOnDeselect.value) {
+            clearPointer()
+            close()
+          }
           return
         }
 
@@ -429,6 +439,11 @@ export default function useOptions (props, context, dep)
       case 'tags':
         if (option && isSelected(option)) {
           deselect(option)
+
+          if (closeOnDeselect.value) {
+            clearPointer()
+            close()
+          }
           return
         }
 
