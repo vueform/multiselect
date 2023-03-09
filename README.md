@@ -375,8 +375,9 @@ mounted() {
 | **@open** | `select$` | Emitted after opening the option list. |
 | **@search-change** | `query, select$` | Emitted after a character is typed. |
 | **@select** | `option, select$` | Emitted after an option or tag is selected. |
-| **@tag** | `query, select$` | **Deprecated 2.3.0: use `@option` instead**. Emitted after enter is hit when a new tag is being created. |
-| **@option** | `query, select$` | Emitted after enter is hit when a new option is being created. |
+| **@tag** | `query, select$` | **Deprecated 2.3.0: use `@create` instead**. Emitted after enter is hit when a new tag is being created. |
+| **@option** | `query, select$` | **Deprecated 2.6.0: use `@create` instead**. Emitted after enter is hit when a new option is being created. |
+| **@create** | `query, select$` | Emitted after enter is hit when a new option is being created. |
 | **@clear** | `select$` | Emitted when the options are cleared. |
 | **@paste** | `Event, select$` | Emitted when value is pasted into the search field. |
 | **@keydown** | `Event, select$` | Emitted on `keydown`. |

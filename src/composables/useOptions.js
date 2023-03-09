@@ -493,6 +493,7 @@ export default function useOptions (props, context, dep)
     if (getOption(option[valueProp.value]) === undefined && createOption.value) {
       context.emit('tag', option[valueProp.value], $this)
       context.emit('option', option[valueProp.value], $this)
+      context.emit('create', option[valueProp.value], $this)
 
       if (appendNewOption.value) {
         appendOption(option)

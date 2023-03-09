@@ -307,7 +307,7 @@
     emits: [
       'paste', 'open', 'close', 'select', 'deselect', 
       'input', 'search-change', 'tag', 'option', 'update:modelValue',
-      'change', 'clear', 'keydown', 'keyup', 'max',
+      'change', 'clear', 'keydown', 'keyup', 'max', 'create',
     ],
     props: {
       value: {

@@ -1853,7 +1853,7 @@ describe('useOptions', () => {
       destroy(select)
     })
 
-    it('should emit option and clear search and not append option on select if createOption true and option does not exist', async () => {
+    it('should emit option & create and clear search and not append option on select if createOption true and option does not exist', async () => {
       let select = createSelect({
         mode: 'single',
         value: null,
@@ -1870,6 +1870,7 @@ describe('useOptions', () => {
       await nextTick()
 
       expect(select.emitted('option')[0][0]).toStrictEqual('value')
+      expect(select.emitted('create')[0][0]).toStrictEqual('value')
       expect(select.vm.search).toBe('')
       expect(select.vm.fo.length).toBe(3)
     })
