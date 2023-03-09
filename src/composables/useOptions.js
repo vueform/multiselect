@@ -69,7 +69,7 @@ export default function useOptions (props, context, dep)
   // extendedOptions
   const eo = computed(() => {
     if (groupped.value) {
-      let groups = ro.value || /* istanbul ignore next */ []
+      let groups = eg.value || /* istanbul ignore next */ []
 
       let eo = []
 
@@ -89,25 +89,6 @@ export default function useOptions (props, context, dep)
 
       return eo
     }
-  })
-
-  const fg = computed(() => {
-    if (!groupped.value) {
-      return []
-    }
-
-    return filterGroups((ro.value || /* istanbul ignore next */ []).map((group, index) => {
-      const arrayOptions = optionsToArray(group[groupOptions.value])
-
-      return {
-        ...group,
-        index,
-        group: true,
-        [groupOptions.value]: filterOptions(arrayOptions, false).map(o => Object.assign({}, o, group[disabledProp.value] ? { [disabledProp.value]: true } : {})),
-        __VISIBLE__: filterOptions(arrayOptions).map(o => Object.assign({}, o, group[disabledProp.value] ? { [disabledProp.value]: true } : {})),
-      }
-      // Difference between __VISIBLE__ and {groupOptions}: visible does not contain selected options when hideSelected=true
-    }))
   })
 
   // preFilteredOptions
@@ -134,6 +115,68 @@ export default function useOptions (props, context, dep)
     }
 
     return options
+  })
+
+  // no export
+  // extendedGroups
+  const eg = computed(() => {
+    if (!groupped.value) {
+      return []
+    }
+
+    let eg = []
+    let groups = ro.value || /* istanbul ignore next */ []
+
+    if (ap.value.length) {
+      eg.push({
+        label: ' ',
+        items: [...ap.value],
+        __CREATE__: true
+      })
+    }
+
+    return eg.concat(groups)
+  })
+
+  // preFilteredGroups
+  const pfg = computed(() => {
+    let groups = [...eg.value].map(g => ({...g}))
+
+    if (createdOption.value.length) {
+      if (groups[0]?.__CREATE__) {
+        groups[0].items = [...createdOption.value, ...groups[0].items]
+      } else {
+        groups = [{
+          label: ' ',
+          items: [...createdOption.value],
+          __CREATE__: true
+        }].concat(groups)
+      }
+    }
+
+    return groups
+  })
+
+  // filteredGroups
+  const fg = computed(() => {
+    if (!groupped.value) {
+      return []
+    }
+
+    let options = pfg.value
+
+    return filterGroups((options || /* istanbul ignore next */ []).map((group, index) => {
+      const arrayOptions = optionsToArray(group[groupOptions.value])
+
+      return {
+        ...group,
+        index,
+        group: true,
+        [groupOptions.value]: filterOptions(arrayOptions, false).map(o => Object.assign({}, o, group[disabledProp.value] ? { [disabledProp.value]: true } : {})),
+        __VISIBLE__: filterOptions(arrayOptions).map(o => Object.assign({}, o, group[disabledProp.value] ? { [disabledProp.value]: true } : {})),
+      }
+      // Difference between __VISIBLE__ and {groupOptions}: visible does not contain selected options when hideSelected=true
+    }))
   })
 
   const hasSelected = computed(() => {
@@ -172,18 +215,10 @@ export default function useOptions (props, context, dep)
       return []
     }
 
-    let labelValue = search.value
-
-    if (locale.value) {
-      labelValue = {
-        [locale.value]: search.value
-      }
-    }
-
     return [{
       [valueProp.value]: search.value,
       [trackBy.value]: search.value,
-      [label.value]: labelValue,
+      [label.value]: search.value,
       __CREATE__: true,
     }]
   })

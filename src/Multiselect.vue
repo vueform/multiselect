@@ -184,13 +184,14 @@
             role="option"
           >
             <div
+              v-if="!group.__CREATE__"
               :class="classList.groupLabel(group)"
               :data-pointed="isPointed(group)"
               @mouseenter="setPointer(group, i)"
               @click="handleGroupClick(group)"
             >
               <slot name="grouplabel" :group="group" :is-selected="isSelected" :is-pointed="isPointed">
-                <span>{{ localize(group[groupLabel]) }}</span>
+                <span v-html="localize(group[groupLabel])"></span>
               </slot>
             </div>
 
