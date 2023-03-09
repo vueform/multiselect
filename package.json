@@ -7,7 +7,7 @@
   "author": "Adam Berecz <adam@vueform.com>",
   "main": "./dist/multiselect.js",
   "types": "./src/index.d.ts",
-  "module": "./dist/multiselect.js",
+  "module": "./dist/multiselect.mjs",
   "unpkg": "./dist/multiselect.global.js",
   "style": "./themes/default.css",
   "repository": {
