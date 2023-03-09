@@ -11,7 +11,7 @@ export default function useOptions (props, context, dep)
     appendNewTag, appendNewOption: appendNewOption_, multipleLabel, object, loading, delay, resolveOnLoad,
     minChars, filterResults, clearOnSearch, clearOnSelect, valueProp,
     canDeselect, max, strict, closeOnSelect, closeOnDeselect, groups: groupped, reverse, infinite,
-    groupOptions, groupHideEmpty, groupSelect, onCreate, disabledProp, searchStart, locale,
+    groupOptions, groupHideEmpty, groupSelect, onCreate, disabledProp, searchStart, searchFilter,
   } = toRefs(props)
 
   const $this = getCurrentInstance().proxy
@@ -576,13 +576,19 @@ export default function useOptions (props, context, dep)
     let fo = options
     
     if (search.value && filterResults.value) {
-      fo = fo.filter((option) => {
-        let target = normalize(localize(option[trackBy.value]), strict.value)
+      let filter = searchFilter.value
 
-        return searchStart.value
-          ? target.startsWith(normalize(search.value, strict.value))
-          : target.indexOf(normalize(search.value, strict.value)) !== -1
-      })
+      if (!filter) {
+        filter = (option, $this) => {
+          let target = normalize(localize(option[trackBy.value]), strict.value)
+
+          return searchStart.value
+            ? target.startsWith(normalize(search.value, strict.value))
+            : target.indexOf(normalize(search.value, strict.value)) !== -1
+        }
+      }
+
+      fo = fo.filter(filter)
     }
 
     if (hideSelected.value && excludeHideSelected) {

@@ -612,6 +612,11 @@
         type: String,
         default: 'en',
       },
+      searchFilter: {
+        required: false,
+        type: Function,
+        default: null,
+      },
     },
     setup(props, context)
     { 
