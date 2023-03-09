@@ -286,7 +286,7 @@ Join our [Discord channel](https://discord.gg/WhX2nG6GTQ) or [open an issue](htt
 | **noOptionsText** | `{string|object} 'The list is empty'` | The text that should be displayed when options list is empty. It can be an object with different keys for different locales. |
 | **noResultsText** | `{string|object} 'No results found'` | The text that should be displayed when there are no search results. It can be an object with different keys for different locales. |
 | **openDirection** | `{string} 'bottom'` | Whether the option list should be displayed above or below the multiselect. Possible values: `top\|bottom` |
-| **reverse** | `{boolean} false` | Whether the option list should be reversed. |
+| **reverse** | `{boolean} false` | Whether the option list should be reversed. Only works with `groups: false`. |
 | **regex** | `{regex\|string} undefined` | The regex that search input should be tested against when `searchable: true`. |
 | **strict** | `{boolean} true` | Whether should regard accents/diacritics in search. |
 | **searchStart** | `{boolean} false` | Whether the search should match the start of the options' `trackBy`s. |
