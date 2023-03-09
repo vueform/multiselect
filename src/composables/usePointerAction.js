@@ -97,8 +97,8 @@ export default function usePointer (props, context, dep)
 
   const isPointed = (option) => {
     return (!!pointer.value && (
-      (!option.group && pointer.value[valueProp.value] == option[valueProp.value]) ||
-      (option.group !== undefined && pointer.value[groupLabel.value] == option[groupLabel.value])
+      (!option.group && pointer.value[valueProp.value] === option[valueProp.value]) ||
+      (option.group !== undefined && pointer.value[groupLabel.value] === option[groupLabel.value])
     )) ? true : undefined
   }
 
