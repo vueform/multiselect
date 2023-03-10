@@ -63,6 +63,7 @@ declare class Multiselect extends Vue {
   locale?: string;
   fallbackLocale?: string;
   searchFilter?: Function;
+  allowAbsent?: object;
 
   $emit(eventName: 'change', e: {originalEvent: Event, value: any}): this;
   $emit(eventName: 'select', e: {originalEvent: Event, value: any, option: any}): this;

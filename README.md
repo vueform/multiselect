@@ -157,7 +157,8 @@ Learn more: [https://vueform.com](https://vueform.com)
   - [Multiselect with custom label slot](#multiselect-with-custom-label-slot)
   - [Tags with custom tags slot](#tags-with-custom-tags-slot)
   - [Async options with default values](#async-options-with-default-values)
-  - [Default values that are not among the options](#default-values-that-are-not-among-the-options)
+  - [Default values that are not among the options using object: true](#default-values-that-are-not-among-the-options-using-object-true)
+  - [Default values that are not among the options using allowAbsent: true](#default-values-that-are-not-among-the-options-using-allow-absent)
   - [Manage created tag asynchronously](#manage-created-tag-asynchronously)
   - [Load async options from API on open with infinite scroll](#load-async-options-from-api-on-open-with-infinite-scroll)
 - [License](#license)
@@ -302,6 +303,7 @@ Join our [Discord channel](https://discord.gg/WhX2nG6GTQ) or [open an issue](htt
 
 | Name | {Type} Default | Description |
 | --- | --- | --- |
+| **allowAbsent** | `{boolean} false` | Whether values should be allowed which are not part of options even when using `object: false`. The selected values which are not part of the option list will have the same value and label. This can be useful if you're using an async option list with an array of string options as a result where both labels and values will be the same and you want to have default values which are not part of the initially resolved options. [Example #13](#example-13) |
 | **canDeselect** | `{boolean} true` | Whether a selected option can be deselected when using `single` mode. |
 | **canClear** | `{boolean} true` | Whether option(s) can be cleared. |
 | **clearOnSearch** | `{boolean} false` | Whether the option list should be cleared when a new character is typed before loading new options list, when using async options. |
@@ -950,7 +952,7 @@ export default {
 <a href="https://jsfiddle.net/t421d7cg/" target="_blank">JSFiddle - Example #11</a>
 
 
-### Default values that are not among the options
+### Default values that are not among the options using `object: true`
 
 If we want to add default values without having to add them to options list we can use `object: true` and provide them as objects, containing both `label` and `value` props. This is because if a plain value is not among Multiselect options it has no idea of what option label should be.
 
@@ -984,6 +986,42 @@ export default {
 ```
 
 <a href="https://jsfiddle.net/t421d7cg/" target="_blank">JSFiddle - Example #12</a>
+
+
+### Default values that are not among the options using `allowAbsent: true`
+
+If our async option list returns an **array of strings** we can use `allowAbsent: true` to allow value(s) which are not among the option list. The reason why this only works with an array of strings option list is because plain values like `Java` and `JavaScript` will use the same string for label and value.
+
+``` vue
+<template>
+  <Multiselect
+    mode="tags"
+    v-model="value"
+    placeholder="Select options"
+    :allow-absent="true"
+    :close-on-select="false"
+    :searchable="true"
+    :resolve-on-load="false"
+    :delay="0"
+    :min-chars="1"
+    :options="async (query) => {
+      return await fetchLanguages(query)
+    }"
+  />
+</template>
+<script>
+export default {
+  data: () => ({
+    value: [
+      'Java',
+      'JavaScript',
+    ]
+  })
+}
+</script>
+```
+
+<a href="https://jsfiddle.net/t421d7cg/" target="_blank">JSFiddle - Example #13</a>
 
 
 ### Manage created tag asynchronously
@@ -1032,7 +1070,7 @@ export default {
 </script>
 ```
 
-<a href="https://jsfiddle.net/t421d7cg/" target="_blank">JSFiddle - Example #13</a>
+<a href="https://jsfiddle.net/t421d7cg/" target="_blank">JSFiddle - Example #14</a>
 
 
 ### Load async options from API on open with infinite scroll
@@ -1064,7 +1102,7 @@ Options are not loaded initially, only when the users clicks the dropdown the fi
 />
 ```
 
-<a href="https://jsfiddle.net/t421d7cg/" target="_blank">JSFiddle - Example #14</a>
+<a href="https://jsfiddle.net/t421d7cg/" target="_blank">JSFiddle - Example #15</a>
 
 ## License
 

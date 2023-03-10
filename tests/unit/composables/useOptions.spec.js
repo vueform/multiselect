@@ -3606,6 +3606,35 @@ describe('useOptions', () => {
       expect(select.vm.iv).toStrictEqual([])
     })
 
+    it('should not have value which is not among options when allowAbsent: false', async () => {
+      let select = createSelect({
+        mode: 'multiple',
+        value: null,
+        options: [false,1,2,3],
+        allowAbsent: false,
+      })
+
+      select.vm.$parent.value = [4]
+      await nextTick()
+      expect(select.vm.iv).toStrictEqual([])
+    })
+
+    it('should have value which is not among options when allowAbsent: true', async () => {
+      let select = createSelect({
+        mode: 'multiple',
+        value: null,
+        options: [false,1,2,3],
+        allowAbsent: true,
+      })
+
+      select.vm.$parent.value = [4]
+      await nextTick()
+      expect(select.vm.iv).toStrictEqual([{
+        label: 4,
+        value: 4,
+      }])
+    })
+
     it('should update iv when v-model changes when mode=multiple, object=true', async () => {
       let select = createSelect({
         mode: 'multiple',

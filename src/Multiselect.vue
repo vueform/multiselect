@@ -620,6 +620,11 @@
         type: Function,
         default: null,
       },
+      allowAbsent: {
+        required: false,
+        type: Boolean,
+        default: false,
+      },
     },
     setup(props, context)
     { 
