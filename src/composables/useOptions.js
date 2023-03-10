@@ -9,7 +9,7 @@ export default function useOptions (props, context, dep)
   const { 
     options, mode, trackBy: trackBy_, limit, hideSelected, createTag, createOption: createOption_, label,
     appendNewTag, appendNewOption: appendNewOption_, multipleLabel, object, loading, delay, resolveOnLoad,
-    minChars, filterResults, clearOnSearch, clearOnSelect, valueProp, allowAbsent,
+    minChars, filterResults, clearOnSearch, clearOnSelect, valueProp, allowAbsent, groupLabel,
     canDeselect, max, strict, closeOnSelect, closeOnDeselect, groups: groupped, reverse, infinite,
     groupOptions, groupHideEmpty, groupSelect, onCreate, disabledProp, searchStart, searchFilter,
   } = toRefs(props)
@@ -129,8 +129,8 @@ export default function useOptions (props, context, dep)
 
     if (ap.value.length) {
       eg.push({
-        label: ' ',
-        items: [...ap.value],
+        [groupLabel.value]: ' ',
+        [groupOptions.value]: [...ap.value],
         __CREATE__: true
       })
     }
@@ -144,11 +144,11 @@ export default function useOptions (props, context, dep)
 
     if (createdOption.value.length) {
       if (groups[0]?.__CREATE__) {
-        groups[0].items = [...createdOption.value, ...groups[0].items]
+        groups[0][groupOptions.value] = [...createdOption.value, ...groups[0][groupOptions.value]]
       } else {
         groups = [{
-          label: ' ',
-          items: [...createdOption.value],
+          [groupLabel.value]: ' ',
+          [groupOptions.value]: [...createdOption.value],
           __CREATE__: true
         }].concat(groups)
       }
@@ -828,6 +828,8 @@ export default function useOptions (props, context, dep)
     multipleLabelText,
     eo,
     extendedOptions: eo,
+    eg,
+    extendedGroups: eg,
     fg,
     filteredGroups: fg,
     noOptions,

@@ -5,6 +5,7 @@ export default function usePointer (props, context, dep)
   const {
     valueProp, showOptions, searchable, groupLabel,
     groups: groupped, mode, groupSelect, disabledProp,
+    groupOptions,
   } = toRefs(props)
 
   // ============ DEPENDENCIES ============
@@ -129,7 +130,7 @@ export default function usePointer (props, context, dep)
         nextPointer = nextGroup.value
 
         if (nextPointer.__CREATE__) {
-          nextPointer = nextPointer.items[0]
+          nextPointer = nextPointer[groupOptions.value][0]
         }
       }
 

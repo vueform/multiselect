@@ -476,6 +476,169 @@ describe('usePointer Action', () => {
         index: 0,
       })
     })
+
+    it('should point at created option when using groups', async () => {
+      let select = createSelect({
+        mode: 'multiple',
+        searchable: true,
+        createOption: true,
+        value: [],
+        options: [
+          {
+            label: 'First',
+            options: [123,234,345],
+          },
+          {
+            label: 'Second',
+            options: [456,567,678],
+          },
+        ],
+        groups: true
+      })
+
+      select.vm.search = '11'
+      select.vm.forwardPointer()
+
+      await nextTick()
+
+      expect(select.vm.pointer).toStrictEqual({
+        label: '11',
+        value: '11',
+        __CREATE__: true
+      })
+    })
+
+    it('should point at last option when create option is pointed and moves backward', async () => {
+      let select = createSelect({
+        mode: 'multiple',
+        searchable: true,
+        createOption: true,
+        value: [],
+        options: [
+          {
+            label: 'First',
+            options: [123,234,345],
+          },
+          {
+            label: 'Second',
+            options: [11456,11567,11678],
+          },
+        ],
+        groups: true
+      })
+
+      select.vm.search = '11'
+      select.vm.forwardPointer()
+
+      await nextTick()
+
+      select.vm.backwardPointer()
+
+      expect(select.vm.pointer).toStrictEqual({
+        label: 11678,
+        value: 11678,
+      })
+    })
+
+    it('should point at last group when create option is pointed and moves backward and last group is empty', async () => {
+      let select = createSelect({
+        mode: 'multiple',
+        searchable: true,
+        createOption: true,
+        value: [],
+        options: [
+          {
+            label: 'First',
+            options: [123,234,345],
+          },
+          {
+            label: 'Second',
+            options: [
+              {
+                label: '11456',
+                value: '11456',
+                disabled: true,
+              }
+            ],
+          },
+        ],
+        groups: true
+      })
+
+      select.vm.search = '11'
+      select.vm.forwardPointer()
+
+      await nextTick()
+
+      select.vm.backwardPointer()
+
+      expect(select.vm.pointer).toStrictEqual(select.vm.fg[1])
+      expect(select.vm.pointer.label).toBe('Second')
+    })
+
+    it('should point at created tag if at last item', async () => {
+      let select = createSelect({
+        mode: 'multiple',
+        searchable: true,
+        createOption: true,
+        value: [],
+        options: [
+          {
+            label: 'First',
+            options: [123,234,345],
+          },
+          {
+            label: 'Second',
+            options: [11456,11567,11678],
+          },
+        ],
+        groups: true
+      })
+
+      select.vm.search = '11'
+
+      await nextTick()
+
+      select.vm.pointer = select.vm.getOption(11678)
+      select.vm.forwardPointer()
+
+      expect(select.vm.pointer.label).toBe('11')
+    })
+
+    it('should point at created tag if at last group', async () => {
+      let select = createSelect({
+        mode: 'multiple',
+        searchable: true,
+        createOption: true,
+        value: [],
+        options: [
+          {
+            label: 'First',
+            options: [123,234,345],
+          },
+          {
+            label: 'Second',
+            options: [
+              {
+                label: '11456',
+                value: '11456',
+                disabled: true,
+              }
+            ],
+          },
+        ],
+        groups: true
+      })
+
+      select.vm.search = '11'
+
+      await nextTick()
+
+      select.vm.pointer = select.vm.fg[1]
+      select.vm.forwardPointer()
+
+      expect(select.vm.pointer.label).toBe('11')
+    })
   })
 
   describe('backwardPointer', () => {
