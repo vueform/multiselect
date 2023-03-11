@@ -523,7 +523,7 @@ export default function useOptions (props, context, dep)
       return
     }
 
-    select(fo.value)
+    select(fo.value.filter(o => !o.disabled))
   }
 
   // no export
