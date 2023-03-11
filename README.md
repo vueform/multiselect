@@ -161,11 +161,12 @@ Learn more: [https://vueform.com](https://vueform.com)
   - [Default values that are not among the options using allowAbsent: true](#default-values-that-are-not-among-the-options-using-allow-absent)
   - [Manage created tag asynchronously](#manage-created-tag-asynchronously)
   - [Load async options from API on open with infinite scroll](#load-async-options-from-api-on-open-with-infinite-scroll)
+  - [Multiselect with localized texts](#multiselect-with-localized-texts)
 - [License](#license)
 
 ## Demo
 
-Check out our <a href="https://jsfiddle.net/t421d7cg/" target="_blank">demo</a>.
+Check out our <a href="https://jsfiddle.net/xajub20o/" target="_blank">demo</a>.
 
 ## Installation
 
@@ -175,7 +176,7 @@ npm install @vueform/multiselect
 
 ## Using with Vue 3
 
-``` vue
+```vue
 <template>
   <div>
     <Multiselect
@@ -210,7 +211,7 @@ npm install @vueform/multiselect
 
 ## Using with Vue 2
 
-``` vue
+```vue
 <template>
   <div>
     <Multiselect
@@ -510,7 +511,7 @@ Override them globally:
 
 Or on an instance level:
 
-``` vue
+```vue
 <Multiselect
   v-model="value"
   :options="options"
@@ -566,7 +567,7 @@ module.exports = {
 
 Then you need to import `themes/tailwind.css` to you main component:
 
-``` vue
+```vue
 <template>
   <div id="app">
     <Multiselect ... />
@@ -586,7 +587,7 @@ Then you need to import `themes/tailwind.css` to you main component:
 
 Alternatively you can define class names directly by passing them to the `Multiselect` component via `classes` property. When using this approach you don't need to import `tailwind.css`. Here's a default styling for Tailwind CSS (the same included in `tailwind.css`):
 
-``` vue
+```vue
 <Multiselect ... :classes="{
   container: 'relative mx-auto w-full flex items-center justify-end box-border cursor-pointer border border-gray-300 rounded bg-white text-base leading-snug outline-none',
   containerDisabled: 'cursor-default bg-gray-100',
@@ -666,18 +667,18 @@ In case you need to override the same type of utility you might use [@neojp/tail
 
 ### Single select
 
-``` vue
+```vue
 <Multiselect
   v-model="value"
   :options="['Batman', 'Robin', 'Joker']"
 />
 ```
 
-<a href="https://jsfiddle.net/t421d7cg/" target="_blank">JSFiddle - Example #1</a>
+<a href="https://jsfiddle.net/xajub20o/" target="_blank">JSFiddle - Example #1</a>
 
 ### Multiselect with object options
 
-``` vue
+```vue
 <Multiselect
   v-model="value"
   mode="multiple"
@@ -690,11 +691,11 @@ In case you need to override the same type of utility you might use [@neojp/tail
 />
 ```
 
-<a href="https://jsfiddle.net/t421d7cg/" target="_blank">JSFiddle - Example #2</a>
+<a href="https://jsfiddle.net/xajub20o/" target="_blank">JSFiddle - Example #2</a>
 
 ### Multiselect with disabled options
 
-``` vue
+```vue
 <Multiselect
   v-model="value"
   mode="multiple"
@@ -707,11 +708,11 @@ In case you need to override the same type of utility you might use [@neojp/tail
 />
 ```
 
-<a href="https://jsfiddle.net/t421d7cg/" target="_blank">JSFiddle - Example #3</a>
+<a href="https://jsfiddle.net/xajub20o/" target="_blank">JSFiddle - Example #3</a>
 
 ### Multiselect with groups
 
-``` vue
+```vue
 <Multiselect
   v-model="value"
   mode="multiple"
@@ -730,11 +731,11 @@ In case you need to override the same type of utility you might use [@neojp/tail
 />
 ```
 
-<a href="https://jsfiddle.net/t421d7cg/" target="_blank">JSFiddle - Example #4</a>
+<a href="https://jsfiddle.net/xajub20o/" target="_blank">JSFiddle - Example #4</a>
 
 ### Tags with search, create and array of objects options
 
-``` vue
+```vue
 <Multiselect
   v-model="value"
   mode="tags"
@@ -749,11 +750,11 @@ In case you need to override the same type of utility you might use [@neojp/tail
 />
 ```
 
-<a href="https://jsfiddle.net/t421d7cg/" target="_blank">JSFiddle - Example #5</a>
+<a href="https://jsfiddle.net/xajub20o/" target="_blank">JSFiddle - Example #5</a>
 
 ### Autocomplete with async options
 
-``` vue
+```vue
 <Multiselect
   v-model="value"
   placeholder="Choose a programming language"
@@ -768,11 +769,11 @@ In case you need to override the same type of utility you might use [@neojp/tail
 />
 ```
 
-<a href="https://jsfiddle.net/t421d7cg/" target="_blank">JSFiddle - Example #6</a>
+<a href="https://jsfiddle.net/xajub20o/" target="_blank">JSFiddle - Example #6</a>
 
 ### Tags with async options
 
-``` vue
+```vue
 <Multiselect
   v-model="value"
   mode="tags"
@@ -789,11 +790,11 @@ In case you need to override the same type of utility you might use [@neojp/tail
 />
 ```
 
-<a href="https://jsfiddle.net/t421d7cg/" target="_blank">JSFiddle - Example #7</a>
+<a href="https://jsfiddle.net/xajub20o/" target="_blank">JSFiddle - Example #7</a>
 
 ### Select with custom options slot
 
-``` vue
+```vue
 <Multiselect
   v-model="value"
   placeholder="Select your character"
@@ -817,11 +818,11 @@ In case you need to override the same type of utility you might use [@neojp/tail
 
 ```
 
-<a href="https://jsfiddle.net/t421d7cg/" target="_blank">JSFiddle - Example #8</a>
+<a href="https://jsfiddle.net/xajub20o/" target="_blank">JSFiddle - Example #8</a>
 
 ### Multiselect with custom label slot
 
-``` vue
+```vue
 <Multiselect
   v-model="value"
   mode="multiple"
@@ -842,11 +843,11 @@ In case you need to override the same type of utility you might use [@neojp/tail
 
 ```
 
-<a href="https://jsfiddle.net/t421d7cg/" target="_blank">JSFiddle - Example #9</a>
+<a href="https://jsfiddle.net/xajub20o/" target="_blank">JSFiddle - Example #9</a>
 
 ### Tags with custom tags slot
 
-``` vue
+```vue
 <template>
   <Multiselect
     v-model="value"
@@ -913,14 +914,14 @@ In case you need to override the same type of utility you might use [@neojp/tail
 </style>
 ```
 
-<a href="https://jsfiddle.net/t421d7cg/" target="_blank">JSFiddle - Example #10</a>
+<a href="https://jsfiddle.net/xajub20o/" target="_blank">JSFiddle - Example #10</a>
 
 
 ### Async options with default values
 
 When using `resolveOnLoad: false` we can add default values with `object: true` and providing options as objects, containing both `label` and `value` props. This is because option list is not resolved when the component is mounted so Multiselect has no idea of what option labels should be if only plain values were provided.
 
-``` vue
+```vue
 <template>
   <Multiselect
     mode="tags"
@@ -949,14 +950,14 @@ export default {
 </script>
 ```
 
-<a href="https://jsfiddle.net/t421d7cg/" target="_blank">JSFiddle - Example #11</a>
+<a href="https://jsfiddle.net/xajub20o/" target="_blank">JSFiddle - Example #11</a>
 
 
 ### Default values that are not among the options using `object: true`
 
 If we want to add default values without having to add them to options list we can use `object: true` and provide them as objects, containing both `label` and `value` props. This is because if a plain value is not among Multiselect options it has no idea of what option label should be.
 
-``` vue
+```vue
 <template>
   <Multiselect
     mode="tags"
@@ -985,14 +986,14 @@ export default {
 </script>
 ```
 
-<a href="https://jsfiddle.net/t421d7cg/" target="_blank">JSFiddle - Example #12</a>
+<a href="https://jsfiddle.net/xajub20o/" target="_blank">JSFiddle - Example #12</a>
 
 
 ### Default values that are not among the options using `allowAbsent: true`
 
 If our async option list returns an **array of strings** we can use `allowAbsent: true` to allow value(s) which are not among the option list. The reason why this only works with an array of strings option list is because plain values like `Java` and `JavaScript` will use the same string for label and value.
 
-``` vue
+```vue
 <template>
   <Multiselect
     mode="tags"
@@ -1021,14 +1022,14 @@ export default {
 </script>
 ```
 
-<a href="https://jsfiddle.net/t421d7cg/" target="_blank">JSFiddle - Example #13</a>
+<a href="https://jsfiddle.net/xajub20o/" target="_blank">JSFiddle - Example #13</a>
 
 
 ### Manage created tag asynchronously
 
 Search is restricted by `regex` and tag creation is controlled by `onCreate(option, select$)`.
 
-``` vue
+```vue
 <template>
   <Multiselect
     mode="tags"
@@ -1070,14 +1071,13 @@ export default {
 </script>
 ```
 
-<a href="https://jsfiddle.net/t421d7cg/" target="_blank">JSFiddle - Example #14</a>
-
+<a href="https://jsfiddle.net/xajub20o/" target="_blank">JSFiddle - Example #14</a>
 
 ### Load async options from API on open with infinite scroll
 
 Options are not loaded initially, only when the users clicks the dropdown the first time. It also virtualizes the option list with `infinite: true` even large list of options can be loaded.
 
-``` vue
+```vue
 <Multiselect
   v-model="value"
   mode="tags"
@@ -1102,7 +1102,36 @@ Options are not loaded initially, only when the users clicks the dropdown the fi
 />
 ```
 
-<a href="https://jsfiddle.net/t421d7cg/" target="_blank">JSFiddle - Example #15</a>
+<a href="https://jsfiddle.net/xajub20o/" target="_blank">JSFiddle - Example #15</a>
+
+### Multiselect with localized texts
+
+Options are not loaded initially, only when the users clicks the dropdown the first time. It also virtualizes the option list with `infinite: true` even large list of options can be loaded.
+
+```vue
+<template>
+  <Multiselect
+    v-model="value"
+    locale="de"
+    fallback-locale="en"
+    :options="[
+      { value: 1, label: { en: 'One', de: 'Eins' } },
+      { value: 2, label: { en: 'Two' } },
+      { value: 3, label: { es: 'Tres'} },
+      { value: 4, label: 'Four' },
+    ]"
+  />
+</template>
+<script>
+export default {
+  data: () => ({
+    value: [1]
+  })
+}
+</script>
+```
+
+<a href="https://jsfiddle.net/xajub20o/" target="_blank">JSFiddle - Example #16</a>
 
 ## License
 
