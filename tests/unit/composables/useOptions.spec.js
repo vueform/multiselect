@@ -1541,6 +1541,25 @@ describe('useOptions', () => {
 
       expect(getValue(select)).toStrictEqual([1,3])
     })
+
+    it('should not select an option twice', async () => {
+      let select = createSelect({
+        mode: 'tags',
+        hideSelected: false,
+        options: [
+          { label: 1, value: 1, },
+          { label: 2, value: 2, disabled: true, },
+          { label: 3, value: 3, },
+        ],
+        value: [1],
+      })
+
+      select.vm.selectAll()
+
+      await nextTick()
+
+      expect(getValue(select)).toStrictEqual([1,3])
+    })
   })
 
   describe('isSelected', () => {
