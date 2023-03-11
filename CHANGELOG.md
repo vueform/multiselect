@@ -1,6 +1,6 @@
 ## v2.6.0
 
-> `2023-08-11`
+> `2023-03-11`
 
 ### 🎉 Feature
   - All texts including, option & group labels can now be provided in multiple languages. Added `locale` and `fallbackLocale` props.
