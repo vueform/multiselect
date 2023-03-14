@@ -143,7 +143,7 @@ export default function useOptions (props, context, dep)
     let groups = [...eg.value].map(g => ({...g}))
 
     if (createdOption.value.length) {
-      if (groups[0]?.__CREATE__) {
+      if (groups[0] && groups[0].__CREATE__) {
         groups[0][groupOptions.value] = [...createdOption.value, ...groups[0][groupOptions.value]]
       } else {
         groups = [{

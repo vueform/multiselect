@@ -28,7 +28,7 @@ describe('I18n', () => {
     expect(singleLabel.html()).toContain('value-en')
   })
 
-  it('should render options when options are localized', async () => {
+  it('should render options when options are localized with uppercase locales', async () => {
     let locale = ref('en')
 
     let select = createSelect({
@@ -36,13 +36,13 @@ describe('I18n', () => {
       groups: true,
       options: [{
         label: {
-          en: 'group-en',
-          hu: 'group-hu',
+          EN: 'group-en',
+          HU: 'group-hu',
         },
         options: [{
           label: {
-            en: 'label-en',
-            hu: 'label-hu',
+            EN: 'label-en',
+            HU: 'label-hu',
           },
           value: 'value'
         }]
@@ -78,7 +78,7 @@ describe('I18n', () => {
         options: [{
           label: {
             en: 'label-en',
-            hu: 'label-hu',
+            HU: 'label-hu',
           },
           value: 'value'
         }]
@@ -93,6 +93,30 @@ describe('I18n', () => {
     expect(groups.at(0).html()).toContain('group-hu')
     expect(options.at(0).html()).toContain('label-hu')
     expect(singleLabel.html()).toContain('label-hu')
+  })
+
+  it('should render empty string as option if it is an empty object', async () => {
+    let select = createSelect({
+      value: ['value'],
+      groups: true,
+      options: [{
+        label: {
+          en: 'group-en',
+          hu: 'group-hu',
+        },
+        options: [{
+          label: {},
+          value: 'value'
+        }]
+      }],
+      fallbackLocale: 'hu'
+    })
+
+    let options = findAll(select, '.multiselect-option')
+    let singleLabel = findAll(select, '.multiselect-single-label').at(0)
+
+    expect(options.at(0).html()).not.toContain('label-hu')
+    expect(singleLabel.html()).not.toContain('label-hu')
   })
 
   it('should render options with en translation if locale is not preset', async () => {
