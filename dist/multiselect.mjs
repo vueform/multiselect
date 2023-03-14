@@ -373,7 +373,7 @@ function useOptions (props, context, dep)
     let groups = [...eg.value].map(g => ({...g}));
 
     if (createdOption.value.length) {
-      if (groups[0]?.__CREATE__) {
+      if (groups[0] && groups[0].__CREATE__) {
         groups[0][groupOptions.value] = [...createdOption.value, ...groups[0][groupOptions.value]];
       } else {
         groups = [{
@@ -2221,9 +2221,23 @@ function useI18n (props, context, dep)
   // =============== METHODS ==============
 
   const localize = (target) => {
-    return target && typeof target === 'object'
-      ? target?.[locale.value] || target?.[locale.value?.toUpperCase()] || target?.[fallbackLocale.value] || target?.[fallbackLocale.value?.toUpperCase()] || target?.[Object.keys(target)[0]]
-      : target
+    if (!target || typeof target !== 'object') {
+      return target
+    }
+
+    if (target && target[locale.value]) {
+      return target[locale.value]
+    } else if (target && locale.value && target[locale.value.toUpperCase()]) {
+      return target[locale.value.toUpperCase()]
+    } else if (target && target[fallbackLocale.value]) {
+      return target[fallbackLocale.value]
+    } else if (target && fallbackLocale.value && target[fallbackLocale.value.toUpperCase()]) {
+      return target[fallbackLocale.value.toUpperCase()]
+    } else if (target && Object.keys(target)[0]) {
+      return target[Object.keys(target)[0]]
+    } else {
+      return ''
+    }
   };
 
   return {
