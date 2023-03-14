@@ -1,5 +1,42 @@
 import Vue,{ VNode } from 'vue';
 
+
+interface ClassList {
+  assist: string;
+  caret: Array<string>;
+  clear: string;
+  clearIcon: string;
+  container: Array<string>;
+  dropdown: Array<string>;
+  fakeInput: string;
+  group: string;
+  groupLabel: (g: any) => any;
+  groupOptions: string;
+  inifinite: string;
+  inifiniteSpinner: string;
+  multipleLabel: string;
+  noOptions: string;
+  noResults: string;
+  option: (o:any, g:any) => any;
+  options: Array<string>;
+  placeholder: string;
+  search: string;
+  singleLabel: string;
+  singleLabelText: string;
+  spacer: string;
+  spinner: string;
+  tag: Array<string>
+  tagDisabled: string;
+  tagRemove: string;
+  tagRemoveIcon: string;
+  tags: string;
+  tagsSearch: string;
+  tagsSearchCopy: string;
+  tagsSearchWrapper: string;
+  wrapper: string;
+}
+
+
 declare class Multiselect extends Vue {
   modelValue?: any;
   value?: any;
@@ -18,8 +55,8 @@ declare class Multiselect extends Vue {
   id?: string;
   caret?: boolean;
   maxHeight?: string|number;
-  noOptionsText?: string;
-  noResultsText?: string;
+  noOptionsText?: string|object;
+  noResultsText?: string|object;
   canDeselect?: boolean;
   canClear?: boolean;
   clearOnSearch?: boolean;
@@ -43,6 +80,7 @@ declare class Multiselect extends Vue {
   classes?: object;
   strict?: boolean;
   closeOnSelect?: boolean;
+  closeOnDeselect?: boolean;
   autocomplete?: string;
   groups?: boolean;
   groupLabel?: string;
@@ -59,6 +97,10 @@ declare class Multiselect extends Vue {
   infinite?: boolean;
   aria?: object;
   clearOnBlur?: boolean;
+  locale?: string;
+  fallbackLocale?: string;
+  searchFilter?: Function;
+  allowAbsent?: object;
 
   $emit(eventName: 'change', e: {originalEvent: Event, value: any}): this;
   $emit(eventName: 'select', e: {originalEvent: Event, value: any, option: any}): this;
@@ -67,6 +109,7 @@ declare class Multiselect extends Vue {
   $emit(eventName: 'search-change', e: {originalEvent: Event, query: string}): this;
   $emit(eventName: 'tag', e: {originalEvent: Event, query: string}): this;
   $emit(eventName: 'option', e: {originalEvent: Event, query: string}): this;
+  $emit(eventName: 'create', e: {originalEvent: Event, query: string}): this;
   $emit(eventName: 'paste', e: {originalEvent: Event}): this;
   $emit(eventName: 'keydown', e: {originalEvent: Event}): this;
   $emit(eventName: 'keyup', e: {originalEvent: Event}): this;
@@ -92,6 +135,83 @@ declare class Multiselect extends Vue {
     clear: VNode[];
     spinner: VNode[];
   };
+
+  activate: (shouldOpen?: boolean) => void;
+  ariaActiveDescendant: string | undefined;
+  ariaAssist: string;
+  ariaControls: string;
+  ariaGroupId: (option : any) => string;
+  ariaGroupLabel: (label: any) => string;
+  ariaLabel: string;
+  ariaMultiselectable: boolean;
+  ariaOptionId: (option: any) => string;
+  ariaOptionLabel: (label: any) => string;
+  ariaPlaceholder: any;
+  ariaTagLabel: (label: any) => string;
+  arias: object;
+  backwardPointer: any;
+  blur: () => void;
+  busy: boolean;
+  canPointGroups: boolean;
+  classList: ClassList;
+  clearPointer: () => void;
+  clearSearch: () => void;
+  deactivate: () => void;
+  disabledProp?: string;
+  extendedGroups: Array<any>
+  extendedOptions: Array<any>
+  externalValue: any;
+  filteredGroups: Array<any>
+  filteredOptions: any;
+  focus: () => void;
+  forwardPointer: () => void;
+  getOption: (val: any) => any
+  handleCaretClick: () => void;
+  handleFocusIn: (e: any) => void;
+  handleFocusOut: () => void;
+  handleGroupClick: (group: any) => void;
+  handleKeydown: (e: Event) => void;
+  handleKeypress: (e: Event) => void;
+  handleKeyup: (e: Event) => void;
+  handleMousedown: (e: Event) => void;
+  handleOptionClic: (option: any) => void;
+  handlePaste: (e: Event) => void;
+  handleSearchInput: (e: Event) => void;
+  handleTagRemove: (option: any, e: Event) => void;
+  hasMore: boolean;
+  hasSelected: boolean;
+  infiniteLoader: any;
+  input: any;
+  internalValue: any;
+  isActive: boolean;
+  isDisabled: boolean;
+  isMax: () => boolean;
+  isOpen: boolean;
+  isPointed: (option: any) => boolean | undefined;
+  isSelected: (option: any) => boolean;
+  localize: (target: any) => any
+  mouseClicked: boolean;
+  multipleLabelText: string;
+  multiselect: any;
+  offset: number;
+  plainValue: any;
+  pointer: any;
+  preparePointer: () => void;
+  refreshLabels: () => void;
+  refreshOptions: (callback: any) => void;
+  resolveOptions: (callback: anu) => void;
+  resolving: boolean;
+  search: any;
+  select: (option: any) => void;
+  selectAll: () => void;
+  selectPointer: () => void;
+  setPointer: (option: any) => void;
+  setPointerFirst: () => void;
+  showDropdown: boolean;
+  tabindex: number;
+  tags: any;
+  textValue: any;
+  update: (val: any, triggerInput?: boolean) => void;
 }
 
 export default Multiselect;
