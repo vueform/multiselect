@@ -1,4 +1,4 @@
-import Vue,{ VNode } from 'vue';
+import { VNode, defineComponent } from "vue";
 
 
 interface ClassList {
@@ -37,16 +37,16 @@ interface ClassList {
 }
 
 
-declare class Multiselect extends Vue {
+declare class Multiselect implements ReturnType<typeof defineComponent> {
   modelValue?: any;
   value?: any;
-  mode: 'single'|'multiple'|'tags';
+  mode: 'single' | 'multiple' | 'tags';
   options?: any[];
   searchable?: boolean;
   valueProp?: string;
   trackBy?: string;
   label?: string;
-  placeholder?: string|null;
+  placeholder?: string | null;
   multipleLabel?: any; // Function
   disabled?: boolean;
   max?: number;
@@ -54,9 +54,9 @@ declare class Multiselect extends Vue {
   loading?: boolean;
   id?: string;
   caret?: boolean;
-  maxHeight?: string|number;
-  noOptionsText?: string|object;
-  noResultsText?: string|object;
+  maxHeight?: string | number;
+  noOptionsText?: string | object;
+  noResultsText?: string | object;
   canDeselect?: boolean;
   canClear?: boolean;
   clearOnSearch?: boolean;
@@ -75,7 +75,7 @@ declare class Multiselect extends Vue {
   showOptions?: boolean;
   object?: boolean;
   required?: boolean;
-  openDirection?: 'top'|'bottom';
+  openDirection?: 'top' | 'bottom';
   nativeSupport?: boolean;
   classes?: object;
   strict?: boolean;
@@ -189,7 +189,7 @@ declare class Multiselect extends Vue {
   isOpen: boolean;
   isPointed: (option: any) => boolean | undefined;
   isSelected: (option: any) => boolean;
-  localize: (target: any) => any
+  localize: (target: any) => any;
   mouseClicked: boolean;
   multipleLabelText: string;
   multiselect: any;
@@ -199,7 +199,7 @@ declare class Multiselect extends Vue {
   preparePointer: () => void;
   refreshLabels: () => void;
   refreshOptions: (callback: any) => void;
-  resolveOptions: (callback: anu) => void;
+  resolveOptions: (callback: any) => void;
   resolving: boolean;
   search: any;
   select: (option: any) => void;
