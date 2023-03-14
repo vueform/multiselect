@@ -1,3 +1,29 @@
+## v2.6.1
+
+> `2023-03-14`
+
+### 🐞 Bug Fixes
+  - Use `.mjs` for `import`.
+
+## v2.6.0
+
+> `2023-03-11`
+
+### 🎉 Feature
+  - All texts including, option & group labels can now be provided in multiple languages. Added `locale` and `fallbackLocale` props.
+  - Added `searchFilter` prop that allow to provide a custom search algorithm #313.
+  - Added `allowAbsent` option to allow adding values that are not among the options.
+  - Added `closeOnDeselect` prop.
+  - Deprecated `option` event, added `create` instead (`option` still works).
+  - Tags that added can also be disabled, which will prevent their removal.
+
+### 🐞 Bug Fixes
+  - Fix for new option display when using `groups`, `createOption` and `tags` #254 #291.
+  - String pointer equality #316.
+  - Disabled tags will not be removed on backspace #318.
+  - Added `.mjs` extension build and referenced `module` to that #290 #258.
+  - The `selectAll()` now does not select disabled options and does not duplicate already selected options.
+
 ## v2.5.8
 
 > `2022-12-21`

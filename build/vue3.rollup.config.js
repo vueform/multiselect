@@ -17,6 +17,17 @@ export default [
   {
     input: 'src/Multiselect.vue',
     output: {
+      file: 'dist/multiselect.mjs',
+      format: 'esm',
+    },
+    plugins: [
+      vue(),
+    ],
+    external: ['vue'],
+  },
+  {
+    input: 'src/Multiselect.vue',
+    output: {
       file: 'dist/multiselect.global.js',
       format: 'iife',
       name: 'VueformMultiselect',

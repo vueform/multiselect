@@ -5,6 +5,7 @@ export default function usePointer (props, context, dep)
   const {
     valueProp, showOptions, searchable, groupLabel,
     groups: groupped, mode, groupSelect, disabledProp,
+    groupOptions,
   } = toRefs(props)
 
   // ============ DEPENDENCIES ============
@@ -28,7 +29,7 @@ export default function usePointer (props, context, dep)
   })
 
   const groups = computed(() => {
-    return fg.value.filter(o => !o[disabledProp.value])
+    return fg.value.filter(g => !g[disabledProp.value])
   })
 
   const canPointGroups = computed(() => {
@@ -97,8 +98,8 @@ export default function usePointer (props, context, dep)
 
   const isPointed = (option) => {
     return (!!pointer.value && (
-      (!option.group && pointer.value[valueProp.value] == option[valueProp.value]) ||
-      (option.group !== undefined && pointer.value[groupLabel.value] == option[groupLabel.value])
+      (!option.group && pointer.value[valueProp.value] === option[valueProp.value]) ||
+      (option.group !== undefined && pointer.value[groupLabel.value] === option[groupLabel.value])
     )) ? true : undefined
   }
 
@@ -120,13 +121,17 @@ export default function usePointer (props, context, dep)
 
   const forwardPointer = () => {
     if (pointer.value === null) {
-      setPointer((groupped.value && canPointGroups.value ? groups.value[0] : options.value[0]) || null)
+      setPointer((groupped.value && canPointGroups.value ? (!groups.value[0].__CREATE__ ? groups.value[0] : options.value[0]) : options.value[0]) || null)
     }
     else if (groupped.value && canPointGroups.value) {
       let nextPointer = isPointerGroup.value ? currentGroupFirstEnabledOption.value : currentGroupNextEnabledOption.value
 
       if (nextPointer === undefined) {
         nextPointer = nextGroup.value
+
+        if (nextPointer.__CREATE__) {
+          nextPointer = nextPointer[groupOptions.value][0]
+        }
       }
 
       setPointer(nextPointer || /* istanbul ignore next */ null)
@@ -164,6 +169,14 @@ export default function usePointer (props, context, dep)
 
       if (prevPointer === undefined) {
         prevPointer = isPointerGroup.value ? prevGroup.value : currentGroup.value
+
+        if (prevPointer.__CREATE__) {
+          prevPointer = prevGroupLastEnabledOption.value
+
+          if (prevPointer === undefined) {
+            prevPointer = prevGroup.value
+          }
+        }
       }
 
       setPointer(prevPointer || /* istanbul ignore next */ null)

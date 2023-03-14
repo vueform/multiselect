@@ -1,6 +1,6 @@
 import { toRefs, onMounted, ref, computed } from 'vue'
 
-export default function useScroll (props, context, dep)
+export default function useA11y (props, context, dep)
 {
   const {
     placeholder, id, valueProp, label: labelProp, mode, groupLabel, aria, searchable ,
@@ -135,18 +135,18 @@ export default function useScroll (props, context, dep)
     return texts.join('-')
   }
 
-  const ariaOptionLabel = (option) => {
+  const ariaOptionLabel = (label) => {
     let texts = []
 
-    texts.push(option[labelProp.value])
+    texts.push(label)
 
     return texts.join(' ')
   }
 
-  const ariaGroupLabel = (group) => {
+  const ariaGroupLabel = (label) => {
     let texts = []
 
-    texts.push(group[groupLabel.value])
+    texts.push(label)
 
     return texts.join(' ')
   }

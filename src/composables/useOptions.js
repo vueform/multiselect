@@ -9,9 +9,9 @@ export default function useOptions (props, context, dep)
   const { 
     options, mode, trackBy: trackBy_, limit, hideSelected, createTag, createOption: createOption_, label,
     appendNewTag, appendNewOption: appendNewOption_, multipleLabel, object, loading, delay, resolveOnLoad,
-    minChars, filterResults, clearOnSearch, clearOnSelect, valueProp,
-    canDeselect, max, strict, closeOnSelect, groups: groupped, reverse, infinite,
-    groupOptions, groupHideEmpty, groupSelect, onCreate, disabledProp, searchStart,
+    minChars, filterResults, clearOnSearch, clearOnSelect, valueProp, allowAbsent, groupLabel,
+    canDeselect, max, strict, closeOnSelect, closeOnDeselect, groups: groupped, reverse, infinite,
+    groupOptions, groupHideEmpty, groupSelect, onCreate, disabledProp, searchStart, searchFilter,
   } = toRefs(props)
 
   const $this = getCurrentInstance().proxy
@@ -28,6 +28,7 @@ export default function useOptions (props, context, dep)
   const focus = dep.focus
   const deactivate = dep.deactivate
   const close = dep.close
+  const localize = dep.localize
 
   // ================ DATA ================
 
@@ -68,7 +69,7 @@ export default function useOptions (props, context, dep)
   // extendedOptions
   const eo = computed(() => {
     if (groupped.value) {
-      let groups = ro.value || /* istanbul ignore next */ []
+      let groups = eg.value || /* istanbul ignore next */ []
 
       let eo = []
 
@@ -88,25 +89,6 @@ export default function useOptions (props, context, dep)
 
       return eo
     }
-  })
-
-  const fg = computed(() => {
-    if (!groupped.value) {
-      return []
-    }
-
-    return filterGroups((ro.value || /* istanbul ignore next */ []).map((group, index) => {
-      const arrayOptions = optionsToArray(group[groupOptions.value])
-
-      return {
-        ...group,
-        index,
-        group: true,
-        [groupOptions.value]: filterOptions(arrayOptions, false).map(o => Object.assign({}, o, group[disabledProp.value] ? { [disabledProp.value]: true } : {})),
-        __VISIBLE__: filterOptions(arrayOptions).map(o => Object.assign({}, o, group[disabledProp.value] ? { [disabledProp.value]: true } : {})),
-      }
-      // Difference between __VISIBLE__ and {groupOptions}: visible does not contain selected options when hideSelected=true
-    }))
   })
 
   // preFilteredOptions
@@ -133,6 +115,68 @@ export default function useOptions (props, context, dep)
     }
 
     return options
+  })
+
+  // no export
+  // extendedGroups
+  const eg = computed(() => {
+    if (!groupped.value) {
+      return []
+    }
+
+    let eg = []
+    let groups = ro.value || /* istanbul ignore next */ []
+
+    if (ap.value.length) {
+      eg.push({
+        [groupLabel.value]: ' ',
+        [groupOptions.value]: [...ap.value],
+        __CREATE__: true
+      })
+    }
+
+    return eg.concat(groups)
+  })
+
+  // preFilteredGroups
+  const pfg = computed(() => {
+    let groups = [...eg.value].map(g => ({...g}))
+
+    if (createdOption.value.length) {
+      if (groups[0] && groups[0].__CREATE__) {
+        groups[0][groupOptions.value] = [...createdOption.value, ...groups[0][groupOptions.value]]
+      } else {
+        groups = [{
+          [groupLabel.value]: ' ',
+          [groupOptions.value]: [...createdOption.value],
+          __CREATE__: true
+        }].concat(groups)
+      }
+    }
+
+    return groups
+  })
+
+  // filteredGroups
+  const fg = computed(() => {
+    if (!groupped.value) {
+      return []
+    }
+
+    let options = pfg.value
+
+    return filterGroups((options || /* istanbul ignore next */ []).map((group, index) => {
+      const arrayOptions = optionsToArray(group[groupOptions.value])
+
+      return {
+        ...group,
+        index,
+        group: true,
+        [groupOptions.value]: filterOptions(arrayOptions, false).map(o => Object.assign({}, o, group[disabledProp.value] ? { [disabledProp.value]: true } : {})),
+        __VISIBLE__: filterOptions(arrayOptions).map(o => Object.assign({}, o, group[disabledProp.value] ? { [disabledProp.value]: true } : {})),
+      }
+      // Difference between __VISIBLE__ and {groupOptions}: visible does not contain selected options when hideSelected=true
+    }))
   })
 
   const hasSelected = computed(() => {
@@ -167,10 +211,14 @@ export default function useOptions (props, context, dep)
       return []
     }
 
-    return getOptionByTrackBy(search.value) !== -1 ? [] : [{
+    if (getOptionByTrackBy(search.value) !== -1) {
+      return []
+    }
+
+    return [{
       [valueProp.value]: search.value,
-      [label.value]: search.value,
       [trackBy.value]: search.value,
+      [label.value]: search.value,
       __CREATE__: true,
     }]
   })
@@ -327,6 +375,11 @@ export default function useOptions (props, context, dep)
           if (canDeselect.value) {
             deselect(option)
           }
+
+          if (closeOnDeselect.value) {
+            clearPointer()
+            close()
+          }
           return
         }
 
@@ -352,6 +405,11 @@ export default function useOptions (props, context, dep)
       case 'multiple':
         if (option && isSelected(option)) {
           deselect(option)
+
+          if (closeOnDeselect.value) {
+            clearPointer()
+            close()
+          }
           return
         }
 
@@ -381,6 +439,11 @@ export default function useOptions (props, context, dep)
       case 'tags':
         if (option && isSelected(option)) {
           deselect(option)
+
+          if (closeOnDeselect.value) {
+            clearPointer()
+            close()
+          }
           return
         }
 
@@ -445,6 +508,7 @@ export default function useOptions (props, context, dep)
     if (getOption(option[valueProp.value]) === undefined && createOption.value) {
       context.emit('tag', option[valueProp.value], $this)
       context.emit('option', option[valueProp.value], $this)
+      context.emit('create', option[valueProp.value], $this)
 
       if (appendNewOption.value) {
         appendOption(option)
@@ -459,7 +523,7 @@ export default function useOptions (props, context, dep)
       return
     }
 
-    select(fo.value)
+    select(fo.value.filter(o => !o.disabled && !isSelected(o)))
   }
 
   // no export
@@ -512,11 +576,19 @@ export default function useOptions (props, context, dep)
     let fo = options
     
     if (search.value && filterResults.value) {
-      fo = fo.filter((option) => {
-        return searchStart.value
-          ? normalize(option[trackBy.value], strict.value).startsWith(normalize(search.value, strict.value))
-          : normalize(option[trackBy.value], strict.value).indexOf(normalize(search.value, strict.value)) !== -1
-      })
+      let filter = searchFilter.value
+
+      if (!filter) {
+        filter = (option, $this) => {
+          let target = normalize(localize(option[trackBy.value]), strict.value)
+
+          return searchStart.value
+            ? target.startsWith(normalize(search.value, strict.value))
+            : target.indexOf(normalize(search.value, strict.value)) !== -1
+        }
+      }
+
+      fo = fo.filter(filter)
     }
 
     if (hideSelected.value && excludeHideSelected) {
@@ -629,9 +701,16 @@ export default function useOptions (props, context, dep)
       return val
     }
 
-    // If external should be plain transform
-    // value object to plain values
-    return mode.value === 'single' ? getOption(val) || {} : val.filter(v => !! getOption(v)).map(v => getOption(v))
+    // If external should be plain transform value object to plain values
+    return mode.value === 'single' ? getOption(val) || (allowAbsent.value ? {
+      [label.value]: val,
+      [valueProp.value]: val,
+      [trackBy.value]: val,
+    } : {}) : val.filter(v => !!getOption(v) || allowAbsent.value).map(v => getOption(v) || {
+      [label.value]: v,
+      [valueProp.value]: v,
+      [trackBy.value]: v,
+    })
   }
 
   // no export
@@ -749,6 +828,8 @@ export default function useOptions (props, context, dep)
     multipleLabelText,
     eo,
     extendedOptions: eo,
+    eg,
+    extendedGroups: eg,
     fg,
     filteredGroups: fg,
     noOptions,

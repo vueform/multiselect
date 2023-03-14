@@ -62,16 +62,19 @@
             :disabled="disabled"
           >
             <span
-              :class="classList.tag"
+              :class="[
+                classList.tag,
+                option.disabled ? classList.tagDisabled : null,
+              ]"
               tabindex="-1"
               @keyup.enter="handleTagRemove(option, $event)"
               :key="key"
 
-              :aria-label="ariaTagLabel(option[label])"
+              :aria-label="ariaTagLabel(localize(option[label]))"
             >
-              {{ option[label] }}
+              {{ localize(option[label]) }}
               <span
-                v-if="!disabled"
+                v-if="!disabled && !option.disabled"
                 :class="classList.tagRemove"
                 @click.stop="handleTagRemove(option, $event)"
               >
@@ -118,7 +121,7 @@
       <template v-if="mode == 'single' && hasSelected && !search && iv">
         <slot name="singlelabel" :value="iv">
           <div :class="classList.singleLabel">
-            <span :class="classList.singleLabelText">{{ iv[label] }}</span>
+            <span :class="classList.singleLabelText">{{ localize(iv[label]) }}</span>
           </div>
         </slot>
       </template>
@@ -179,25 +182,26 @@
             :key="key"
 
             :id="ariaGroupId(group)"
-            :aria-label="ariaGroupLabel(group)"
+            :aria-label="ariaGroupLabel(localize(group[groupLabel]))"
             :aria-selected="isSelected(group)"
             role="option"
           >
             <div
+              v-if="!group.__CREATE__"
               :class="classList.groupLabel(group)"
               :data-pointed="isPointed(group)"
               @mouseenter="setPointer(group, i)"
               @click="handleGroupClick(group)"
             >
               <slot name="grouplabel" :group="group" :is-selected="isSelected" :is-pointed="isPointed">
-                <span v-html="group[groupLabel]"></span>
+                <span v-html="localize(group[groupLabel])"></span>
               </slot>
             </div>
 
             <ul
               :class="classList.groupOptions"
               
-              :aria-label="ariaGroupLabel(group)"
+              :aria-label="ariaGroupLabel(localize(group[groupLabel]))"
               role="group"
             >
               <li
@@ -211,11 +215,11 @@
 
                 :id="ariaOptionId(option)"
                 :aria-selected="isSelected(option)"
-                :aria-label="ariaOptionLabel(option)"
+                :aria-label="ariaOptionLabel(localize(option[label]))"
                 role="option"
               >
                 <slot name="option" :option="option" :is-selected="isSelected" :is-pointed="isPointed" :search="search">
-                  <span>{{ option[label] }}</span>
+                  <span>{{ localize(option[label]) }}</span>
                 </slot>
               </li>
             </ul>
@@ -233,22 +237,22 @@
 
             :id="ariaOptionId(option)"
             :aria-selected="isSelected(option)"
-            :aria-label="ariaOptionLabel(option)"
+            :aria-label="ariaOptionLabel(localize(option[label]))"
             role="option"
           >
             <slot name="option" :option="option" :isSelected="isSelected" :is-pointed="isPointed" :search="search">
-              <span>{{ option[label] }}</span>
+              <span>{{ localize(option[label]) }}</span>
             </slot>
           </li>
         </template>
       </ul>
 
       <slot v-if="noOptions" name="nooptions">
-        <div :class="classList.noOptions" v-html="noOptionsText"></div>
+        <div :class="classList.noOptions" v-html="localize(noOptionsText)"></div>
       </slot>
 
       <slot v-if="noResults" name="noresults">
-        <div :class="classList.noResults" v-html="noResultsText"></div>
+        <div :class="classList.noResults" v-html="localize(noResultsText)"></div>
       </slot>
 
       <div v-if="infinite && hasMore" :class="classList.inifinite" ref="infiniteLoader">
@@ -297,6 +301,7 @@
   import useClasses from './composables/useClasses' 
   import useScroll from './composables/useScroll' 
   import useA11y from './composables/useA11y' 
+  import useI18n from './composables/useI18n'
 
   import resolveDeps from './utils/resolveDeps'
 
@@ -305,7 +310,7 @@
     emits: [
       'paste', 'open', 'close', 'select', 'deselect', 
       'input', 'search-change', 'tag', 'option', 'update:modelValue',
-      'change', 'clear', 'keydown', 'keyup', 'max',
+      'change', 'clear', 'keydown', 'keyup', 'max', 'create',
     ],
     props: {
       value: {
@@ -414,12 +419,12 @@
         default: false,
       },
       noOptionsText: {
-        type: String,
+        type: [String, Object],
         required: false,
         default: 'The list is empty',
       },
       noResultsText: {
-        type: String,
+        type: [String, Object],
         required: false,
         default: 'No results found',
       },
@@ -512,6 +517,11 @@
         required: false,
         default: true,
       },
+      closeOnDeselect: {
+        type: Boolean,
+        required: false,
+        default: false,
+      },
       autocomplete: {
         type: String,
         required: false,
@@ -595,10 +605,31 @@
         type: Boolean,
         default: true,
       },
+      locale: {
+        required: false,
+        type: String,
+        default: null,
+      },
+      fallbackLocale: {
+        required: false,
+        type: String,
+        default: 'en',
+      },
+      searchFilter: {
+        required: false,
+        type: Function,
+        default: null,
+      },
+      allowAbsent: {
+        required: false,
+        type: Boolean,
+        default: false,
+      },
     },
     setup(props, context)
     { 
       return resolveDeps(props, context, [
+        useI18n,
         useValue,
         usePointer,
         useDropdown,

@@ -95,6 +95,7 @@ export default function useClasses (props, context, dependencies)
       tags: c.tags,
       tag: [c.tag]
         .concat(disabled.value ? c.tagDisabled : []),
+      tagDisabled: c.tagDisabled,
       tagRemove: c.tagRemove,
       tagRemoveIcon: c.tagRemoveIcon,
       tagsSearchWrapper: c.tagsSearchWrapper,

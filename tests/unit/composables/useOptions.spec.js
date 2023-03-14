@@ -29,6 +29,7 @@ describe('useOptions', () => {
       expect(select.vm.offset).toStrictEqual(20)
     })
   })
+
   describe('fo', () => {
     it('should be an empty array of options not defined', () => {
       let select = createSelect()
@@ -418,7 +419,94 @@ describe('useOptions', () => {
     })
   })
 
+  describe('eg', () => {
+    it('should be empty if not groupped', async () => {
+      let select = createSelect({
+        options: [1,2,3],
+        value: null,
+      })
+
+      expect(select.vm.eg).toStrictEqual([])
+    })
+  })
+
+  describe('pfg', () => {
+    it('should add created option to already existing no-label group if it has appended value', async () => {
+      let select = createSelect({
+        createOption: true,
+        value: null,
+        groups: true,
+        searchable: true,
+        options: [
+          {
+            label: 'First',
+            options: [1,2,3],
+          },
+          {
+            label: 'Second',
+            options: [4,5,6],
+          },
+        ],
+      })
+
+      select.vm.search = 111
+      select.vm.setPointerFirst()
+      select.vm.selectPointer()
+      select.vm.clear()
+
+      select.vm.search = 11
+
+      expect(select.vm.fg[0].__CREATE__).toEqual(true)
+      expect(select.vm.fg[0].label).toEqual(' ')
+      expect(select.vm.fg[0].options).toEqual([
+        {
+          __CREATE__: true,
+          value: 11,
+          label: 11,
+        },
+        {
+          value: 111,
+          label: 111,
+        }
+      ])
+    })
+  })
+
   describe('fg', () => {
+    it('should keep the appended option in the first no-label group', async () => {
+      let select = createSelect({
+        createOption: true,
+        value: null,
+        groups: true,
+        searchable: true,
+        options: [
+          {
+            label: 'First',
+            options: [1,2,3],
+          },
+          {
+            label: 'Second',
+            options: [4,5,6],
+          },
+        ],
+      })
+
+      select.vm.search = 11
+      select.vm.setPointerFirst()
+      select.vm.selectPointer()
+      select.vm.clear()
+
+
+      expect(select.vm.fg[0].__CREATE__).toEqual(true)
+      expect(select.vm.fg[0].label).toEqual(' ')
+      expect(select.vm.fg[0].options).toEqual([
+        {
+          value: 11,
+          label: 11,
+        }
+      ])
+    })
+
     it('should have options/__visible__ equal to options', async () => {
       let select = createSelect({
         groups: true,
@@ -1435,6 +1523,43 @@ describe('useOptions', () => {
 
       expect(getValue(select)).toStrictEqual([1,2,3])
     })
+
+    it('should only select non-disabled options', async () => {
+      let select = createSelect({
+        mode: 'tags',
+        options: [
+          { label: 1, value: 1, },
+          { label: 2, value: 2, disabled: true, },
+          { label: 3, value: 3, },
+        ],
+        value: [],
+      })
+
+      select.vm.selectAll()
+
+      await nextTick()
+
+      expect(getValue(select)).toStrictEqual([1,3])
+    })
+
+    it('should not select an option twice', async () => {
+      let select = createSelect({
+        mode: 'tags',
+        hideSelected: false,
+        options: [
+          { label: 1, value: 1, },
+          { label: 2, value: 2, disabled: true, },
+          { label: 3, value: 3, },
+        ],
+        value: [1],
+      })
+
+      select.vm.selectAll()
+
+      await nextTick()
+
+      expect(getValue(select)).toStrictEqual([1,3])
+    })
   })
 
   describe('isSelected', () => {
@@ -1853,7 +1978,7 @@ describe('useOptions', () => {
       destroy(select)
     })
 
-    it('should emit option and clear search and not append option on select if createOption true and option does not exist', async () => {
+    it('should emit option & create and clear search and not append option on select if createOption true and option does not exist', async () => {
       let select = createSelect({
         mode: 'single',
         value: null,
@@ -1870,6 +1995,7 @@ describe('useOptions', () => {
       await nextTick()
 
       expect(select.emitted('option')[0][0]).toStrictEqual('value')
+      expect(select.emitted('create')[0][0]).toStrictEqual('value')
       expect(select.vm.search).toBe('')
       expect(select.vm.fo.length).toBe(3)
     })
@@ -2178,6 +2304,32 @@ describe('useOptions', () => {
       destroy(select)
     })
 
+    it('should close input after deselect if closeOnDeselect=true && mode=multiple', async () => {
+      let select = createSelect({
+        mode: 'multiple',
+        value: [2],
+        options: [1,2,3],
+        searchable: true,
+        closeOnDeselect: true,
+        hideSelected: false,
+      }, {
+        attach: true,
+      })
+
+      select.vm.input.focus()
+
+      expect(document.activeElement == select.vm.input).toBe(true)
+
+      select.vm.handleOptionClick(select.vm.getOption(2))
+
+      await nextTick()
+
+      expect(select.vm.isOpen).toBe(false)
+      expect(document.activeElement == select.vm.input).toBe(true)
+
+      destroy(select)
+    })
+
     it('should not blur input after select if closeOnSelect=false && mode=multiple', async () => {
       let select = createSelect({
         mode: 'multiple',
@@ -2417,6 +2569,32 @@ describe('useOptions', () => {
       destroy(select)
     })
 
+    it('should close input after deselect if closeOnDeselect=true && mode=tags', async () => {
+      let select = createSelect({
+        mode: 'tags',
+        value: [2],
+        options: [1,2,3],
+        searchable: true,
+        closeOnDeselect: true,
+        hideSelected: false,
+      }, {
+        attach: true,
+      })
+
+      select.vm.input.focus()
+
+      expect(document.activeElement == select.vm.input).toBe(true)
+
+      select.vm.handleOptionClick(select.vm.getOption(2))
+
+      await nextTick()
+
+      expect(select.vm.isOpen).toBe(false)
+      expect(document.activeElement == select.vm.input).toBe(true)
+
+      destroy(select)
+    })
+
     it('should not blur input after select if closeOnSelect=false && mode=tags', async () => {
       let select = createSelect({
         mode: 'tags',
@@ -2446,6 +2624,22 @@ describe('useOptions', () => {
         value: null,
         options: [1,2,3],
         closeOnSelect: true,
+      })
+
+      select.vm.open()
+      expect(select.vm.isOpen).toBe(true)
+
+      select.vm.handleOptionClick(select.vm.getOption(2))
+
+      jest.advanceTimersByTime(1)
+      expect(select.vm.isOpen).toBe(false)
+    })
+
+    it('should deactivate on deselect when closeOnDeelect=true', async () => {
+      let select = createSelect({
+        value: 2,
+        options: [1,2,3],
+        closeOnDeselect: true,
       })
 
       select.vm.open()
@@ -2761,6 +2955,28 @@ describe('useOptions', () => {
       expect(select.vm.getOption(3)).toStrictEqual({ v: 3, label: 3 })
     })
   })
+
+  describe('filterOptions', () => {
+    it('should use searchFilter for search when defined', () => {
+      let select = createSelect({
+        value: null,
+        options: [1,2,3],
+        searchable: true,
+        searchFilter(option) {
+          return option.value == 2
+        }
+      })
+
+      select.vm.search = 'aaa'
+
+      expect(select.vm.fo).toStrictEqual([
+        {
+          label: 2,
+          value: 2,
+        }
+      ])
+    })
+  })
   
   describe('resolveOptions', () => {
     it('should resolve options', async () => {
@@ -2845,6 +3061,30 @@ describe('useOptions', () => {
         { value: 2, label: 2 },
         { value: 3, label: 3 },
       ])
+    })
+  })
+  
+  describe('makeInternal', () => {
+    it('should not set absent values by default', async () => {
+      let select = createSelect({
+        options: [1,2,3],
+        value: 4,
+      })
+  
+      expect(select.vm.iv).toEqual({})
+    })
+
+    it('should set absent values if allowAbsent: true', async () => {
+      let select = createSelect({
+        options: [1,2,3],
+        value: 4,
+        allowAbsent: true,
+      })
+  
+      expect(select.vm.iv).toEqual({
+        value: 4,
+        label: 4
+      })
     })
   })
 
@@ -3603,6 +3843,35 @@ describe('useOptions', () => {
       select.vm.$parent.value = [4]
       await nextTick()
       expect(select.vm.iv).toStrictEqual([])
+    })
+
+    it('should not have value which is not among options when allowAbsent: false', async () => {
+      let select = createSelect({
+        mode: 'multiple',
+        value: null,
+        options: [false,1,2,3],
+        allowAbsent: false,
+      })
+
+      select.vm.$parent.value = [4]
+      await nextTick()
+      expect(select.vm.iv).toStrictEqual([])
+    })
+
+    it('should have value which is not among options when allowAbsent: true', async () => {
+      let select = createSelect({
+        mode: 'multiple',
+        value: null,
+        options: [false,1,2,3],
+        allowAbsent: true,
+      })
+
+      select.vm.$parent.value = [4]
+      await nextTick()
+      expect(select.vm.iv).toStrictEqual([{
+        label: 4,
+        value: 4,
+      }])
     })
 
     it('should update iv when v-model changes when mode=multiple, object=true', async () => {

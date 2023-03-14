@@ -157,14 +157,16 @@ Learn more: [https://vueform.com](https://vueform.com)
   - [Multiselect with custom label slot](#multiselect-with-custom-label-slot)
   - [Tags with custom tags slot](#tags-with-custom-tags-slot)
   - [Async options with default values](#async-options-with-default-values)
-  - [Default values that are not among the options](#default-values-that-are-not-among-the-options)
+  - [Default values that are not among the options using object: true](#default-values-that-are-not-among-the-options-using-object-true)
+  - [Default values that are not among the options using allowAbsent: true](#default-values-that-are-not-among-the-options-using-allowabsent-true)
   - [Manage created tag asynchronously](#manage-created-tag-asynchronously)
   - [Load async options from API on open with infinite scroll](#load-async-options-from-api-on-open-with-infinite-scroll)
+  - [Multiselect with localized texts](#multiselect-with-localized-texts)
 - [License](#license)
 
 ## Demo
 
-Check out our <a href="https://jsfiddle.net/t421d7cg/" target="_blank">demo</a>.
+Check out our <a href="https://jsfiddle.net/xajub20o/" target="_blank">demo</a>.
 
 ## Installation
 
@@ -174,7 +176,7 @@ npm install @vueform/multiselect
 
 ## Using with Vue 3
 
-``` vue
+```vue
 <template>
   <div>
     <Multiselect
@@ -209,7 +211,7 @@ npm install @vueform/multiselect
 
 ## Using with Vue 2
 
-``` vue
+```vue
 <template>
   <div>
     <Multiselect
@@ -271,7 +273,7 @@ Join our [Discord channel](https://discord.gg/WhX2nG6GTQ) or [open an issue](htt
 | **label** | `{string} 'label'` | If you provide an array of objects as `options` the value of this property will be displayed as selected option. |
 | **disabledProp** | `{string} 'disabled'` | If you provide an array of objects as `options` this property should be used to determine whether the option is disabled. |
 | **placeholder** | `{string} null` | The text that should be displayed before any option is selected. |
-| **multipleLabel** | `function` | A function that returns the label to be displayed for selected options when using `multiple` mode. It receives `value` as an argument. By default it renders `1 option selected` and `[n] options selected` based on `value` length. |
+| **multipleLabel** | `function(value, select$)` | A function that returns the label to be displayed for selected options when using `multiple` mode. It receives `value` as first argument and the multiselect component `select$` as second. By default it renders `1 option selected` and `[n] options selected` based on `value` length. |
 | **disabled** | `{boolean} false` | Whether the input should be disabled for the user (API can still be used programmatically). |
 | **inputType** | `{string} 'text'` | The `type` attribute of the search input. |
 | **autocomplete** | `{string} undefined` | The `autocomplete` attribute of the search input. |
@@ -281,13 +283,16 @@ Join our [Discord channel](https://discord.gg/WhX2nG6GTQ) or [open an issue](htt
 | **loading** | `{boolean} false` | Whether a loading spinner should be shown. |
 | **id** | `{string} 'multiselect'` | The `id` of the multiselect container DOM. |
 | **caret** | `{boolean} true` | Whether should display the caret symbol on the right. |
-| **noOptionsText** | `{string} 'The list is empty'` | The text that should be displayed when options list is empty. |
-| **noResultsText** | `{string} 'No results found'` | The text that should be displayed when there are no search results. |
+| **locale** | `{string} null` | The locale of the multiselect. If a locale is set labels might have an `object` value with different keys for different locales. |
+| **locale** | `{string} 'en'` | The fallback locale. |
+| **noOptionsText** | `{string|object} 'The list is empty'` | The text that should be displayed when options list is empty. It can be an object with different keys for different locales. |
+| **noResultsText** | `{string|object} 'No results found'` | The text that should be displayed when there are no search results. It can be an object with different keys for different locales. |
 | **openDirection** | `{string} 'bottom'` | Whether the option list should be displayed above or below the multiselect. Possible values: `top\|bottom` |
-| **reverse** | `{boolean} false` | Whether the option list should be reversed. |
+| **reverse** | `{boolean} false` | Whether the option list should be reversed. Only works with `groups: false`. |
 | **regex** | `{regex\|string} undefined` | The regex that search input should be tested against when `searchable: true`. |
 | **strict** | `{boolean} true` | Whether should regard accents/diacritics in search. |
 | **searchStart** | `{boolean} false` | Whether the search should match the start of the options' `trackBy`s. |
+| **searchFilter** | `function(option, select$) null` | A custom search function that overrides the default search algorithm. |
 | **aria** | `object` | An object containing aria attributes to be added for the multiselect. |
 | **classes** | `object` | An object of class names that gets merged with the default values. Default: `{`<br>&nbsp;&nbsp;`container: 'multiselect',`<br>&nbsp;&nbsp;`containerDisabled: 'is-disabled',`<br>&nbsp;&nbsp;`containerOpen: 'is-open',`<br>&nbsp;&nbsp;`containerOpenTop: 'is-open-top',`<br>&nbsp;&nbsp;`containerActive: 'is-active',`<br>&nbsp;&nbsp;`wrapper: 'multiselect-wrapper',`<br>&nbsp;&nbsp;`singleLabel: 'multiselect-single-label',`<br>&nbsp;&nbsp;`singleLabelText: 'multiselect-single-label-text',`<br>&nbsp;&nbsp;`multipleLabel: 'multiselect-multiple-label',`<br>&nbsp;&nbsp;`search: 'multiselect-search',`<br>&nbsp;&nbsp;`tags: 'multiselect-tags',`<br>&nbsp;&nbsp;`tag: 'multiselect-tag',`<br>&nbsp;&nbsp;`tagDisabled: 'is-disabled',`<br>&nbsp;&nbsp;`tagRemove: 'multiselect-tag-remove',`<br>&nbsp;&nbsp;`tagRemoveIcon: 'multiselect-tag-remove-icon',`<br>&nbsp;&nbsp;`tagsSearchWrapper: 'multiselect-tags-search-wrapper',`<br>&nbsp;&nbsp;`tagsSearch: 'multiselect-tags-search',`<br>&nbsp;&nbsp;`tagsSearchCopy: 'multiselect-tags-search-copy',`<br>&nbsp;&nbsp;`placeholder: 'multiselect-placeholder',`<br>&nbsp;&nbsp;`caret: 'multiselect-caret',`<br>&nbsp;&nbsp;`caretOpen: 'is-open',`<br>&nbsp;&nbsp;`clear: 'multiselect-clear',`<br>&nbsp;&nbsp;`clearIcon: 'multiselect-clear-icon',`<br>&nbsp;&nbsp;`spinner: 'multiselect-spinner',`<br>&nbsp;&nbsp;`dropdown: 'multiselect-dropdown',`<br>&nbsp;&nbsp;`dropdownTop: 'is-top',`<br>&nbsp;&nbsp;`dropdownHidden: 'is-hidden',`<br>&nbsp;&nbsp;`options: 'multiselect-options',`<br>&nbsp;&nbsp;`optionsTop: 'is-top',`<br>&nbsp;&nbsp;`group: 'multiselect-group',`<br>&nbsp;&nbsp;`groupLabel: 'multiselect-group-label',`<br>&nbsp;&nbsp;`groupLabelPointable: 'is-pointable',`<br>&nbsp;&nbsp;`groupLabelPointed: 'is-pointed',`<br>&nbsp;&nbsp;`groupLabelSelected: 'is-selected',`<br>&nbsp;&nbsp;`groupLabelDisabled: 'is-disabled',`<br>&nbsp;&nbsp;`groupLabelSelectedPointed: 'is-selected is-pointed',`<br>&nbsp;&nbsp;`groupLabelSelectedDisabled: 'is-selected is-disabled',`<br>&nbsp;&nbsp;`groupOptions: 'multiselect-group-options',`<br>&nbsp;&nbsp;`option: 'multiselect-option',`<br>&nbsp;&nbsp;`optionPointed: 'is-pointed',`<br>&nbsp;&nbsp;`optionSelected: 'is-selected',`<br>&nbsp;&nbsp;`optionDisabled: 'is-disabled',`<br>&nbsp;&nbsp;`optionSelectedPointed: 'is-selected is-pointed',`<br>&nbsp;&nbsp;`optionSelectedDisabled: 'is-selected is-disabled',`<br>&nbsp;&nbsp;`noOptions: 'multiselect-no-options',`<br>&nbsp;&nbsp;`noResults: 'multiselect-no-results',`<br>&nbsp;&nbsp;`fakeInput: 'multiselect-fake-input',`<br>&nbsp;&nbsp;`assist: 'multiselect-assistive-text'`<br>&nbsp;&nbsp;`spacer: 'multiselect-spacer'`<br>`}` |
 
@@ -299,11 +304,13 @@ Join our [Discord channel](https://discord.gg/WhX2nG6GTQ) or [open an issue](htt
 
 | Name | {Type} Default | Description |
 | --- | --- | --- |
+| **allowAbsent** | `{boolean} false` | Whether values should be allowed which are not part of options even when using `object: false`. The selected values which are not part of the option list will have the same value and label. This can be useful if you're using an async option list with an array of string options as a result where both labels and values will be the same and you want to have default values which are not part of the initially resolved options. [Example #13](#example-13) |
 | **canDeselect** | `{boolean} true` | Whether a selected option can be deselected when using `single` mode. |
 | **canClear** | `{boolean} true` | Whether option(s) can be cleared. |
 | **clearOnSearch** | `{boolean} false` | Whether the option list should be cleared when a new character is typed before loading new options list, when using async options. |
 | **clearOnSelect** | `{boolean} true` | Whether the option list should be cleared upon selecting an option when using async options. |
-| **closeOnSelect** | `{boolean} true` | Whether the option list should be hidden upon selecting an option. |
+| **closeOnSelect** | `{boolean} true` | Whether the option list should be closed upon selecting an option. |
+| **closeOnDeselect** | `{boolean} true` | Whether the option list should be closed upon deselecting an option. |
 | **clearOnBlur** | `{boolean} true` | Whether the search should be cleared when the input is blurred when `searchable: true`. |
 | **delay** | `{number} -1` | The delay in milliseconds that should occur between the last typed character and refreshing an async option list. If `-1` the option list will not refresh when the search query changes. If `0` it will refresh without delay. |
 | **filterResults** | `{boolean} true` | Whether option list should be filtered by search query. This may be set to `false` if you are handling filtering manually when returning async options. |
@@ -315,7 +322,7 @@ Join our [Discord channel](https://discord.gg/WhX2nG6GTQ) or [open an issue](htt
 | **appendNewOption** | `{boolean} true` | Whether it should append new option automatically to option list when `searchable` and `createTag` are enabled. If set to `false` you need to take care of appending a new option to the provided `:options` list upon `@option` event. |
 | **createOption** | `{boolean} false` | Whether it should allow creating new options based on search query when `searchable` is enabled. |
 | **addOptionOn** | `{array} ['enter']` | The list of keys that creates a new option while typing in the search field when having `createOption` enabled. Possible values: `'enter'\|'space'\|'tab'\|';'\|','`. |
-| **onCreate** | `function` | Transforms the created tag before being added when `createOption` is enabled. It receives the original `option` as first param, which is the object that would be added to the option list (`{value: 'Value', label: 'Label'}`) and the Multiselect `component` as the second. It should return an object that contains at least the keys defined by `valueProp`, `label` & `trackBy` options. If defined and returns `false` the option will not be added (the add can be handled manually by updating `options` & `v-model`). |
+| **onCreate** | `function(option, select$)` | Transforms the created tag before being added when `createOption` is enabled. It receives the original `option` as first param, which is the object that would be added to the option list (`{value: 'Value', label: 'Label'}`) and the Multiselect `component` as the second. It should return an object that contains at least the keys defined by `valueProp`, `label` & `trackBy` options. If defined and returns `false` the option will not be added (the add can be handled manually by updating `options` & `v-model`). |
 | **hideSelected** | `{boolean} true` | Whether selected options should be excluded from the option list when using `multiple` or `tags` mode. |
 | **showOptions** | `{boolean} true` | Whether option list should be displayed. Can be used to create free-typed tags. |
 | **object** | `{boolean} false` | Whether the value should be stored as an object.<br>If **false**:<br>`value: ['js','jsx','ts']`<br>If **true**:<br> `value: [`<br>&nbsp;&nbsp;`{value:'js',label:'Javascript'},`<br>&nbsp;&nbsp;`{value:'jsx',label:'JSX'},`<br>&nbsp;&nbsp;`{value:'ts',label:'Typescript'}`<br>`]` |
@@ -373,8 +380,9 @@ mounted() {
 | **@open** | `select$` | Emitted after opening the option list. |
 | **@search-change** | `query, select$` | Emitted after a character is typed. |
 | **@select** | `option, select$` | Emitted after an option or tag is selected. |
-| **@tag** | `query, select$` | **Deprecated 2.3.0: use `@option` instead**. Emitted after enter is hit when a new tag is being created. |
-| **@option** | `query, select$` | Emitted after enter is hit when a new option is being created. |
+| **@tag** | `query, select$` | **Deprecated 2.3.0: use `@create` instead**. Emitted after enter is hit when a new tag is being created. |
+| **@option** | `query, select$` | **Deprecated 2.6.0: use `@create` instead**. Emitted after enter is hit when a new option is being created. |
+| **@create** | `query, select$` | Emitted after enter is hit when a new option is being created. |
 | **@clear** | `select$` | Emitted when the options are cleared. |
 | **@paste** | `Event, select$` | Emitted when value is pasted into the search field. |
 | **@keydown** | `Event, select$` | Emitted on `keydown`. |
@@ -503,7 +511,7 @@ Override them globally:
 
 Or on an instance level:
 
-``` vue
+```vue
 <Multiselect
   v-model="value"
   :options="options"
@@ -559,7 +567,7 @@ module.exports = {
 
 Then you need to import `themes/tailwind.css` to you main component:
 
-``` vue
+```vue
 <template>
   <div id="app">
     <Multiselect ... />
@@ -579,7 +587,7 @@ Then you need to import `themes/tailwind.css` to you main component:
 
 Alternatively you can define class names directly by passing them to the `Multiselect` component via `classes` property. When using this approach you don't need to import `tailwind.css`. Here's a default styling for Tailwind CSS (the same included in `tailwind.css`):
 
-``` vue
+```vue
 <Multiselect ... :classes="{
   container: 'relative mx-auto w-full flex items-center justify-end box-border cursor-pointer border border-gray-300 rounded bg-white text-base leading-snug outline-none',
   containerDisabled: 'cursor-default bg-gray-100',
@@ -659,18 +667,18 @@ In case you need to override the same type of utility you might use [@neojp/tail
 
 ### Single select
 
-``` vue
+```vue
 <Multiselect
   v-model="value"
   :options="['Batman', 'Robin', 'Joker']"
 />
 ```
 
-<a href="https://jsfiddle.net/t421d7cg/" target="_blank">JSFiddle - Example #1</a>
+<a href="https://jsfiddle.net/xajub20o/" target="_blank">JSFiddle - Example #1</a>
 
 ### Multiselect with object options
 
-``` vue
+```vue
 <Multiselect
   v-model="value"
   mode="multiple"
@@ -683,11 +691,11 @@ In case you need to override the same type of utility you might use [@neojp/tail
 />
 ```
 
-<a href="https://jsfiddle.net/t421d7cg/" target="_blank">JSFiddle - Example #2</a>
+<a href="https://jsfiddle.net/xajub20o/" target="_blank">JSFiddle - Example #2</a>
 
 ### Multiselect with disabled options
 
-``` vue
+```vue
 <Multiselect
   v-model="value"
   mode="multiple"
@@ -700,11 +708,11 @@ In case you need to override the same type of utility you might use [@neojp/tail
 />
 ```
 
-<a href="https://jsfiddle.net/t421d7cg/" target="_blank">JSFiddle - Example #3</a>
+<a href="https://jsfiddle.net/xajub20o/" target="_blank">JSFiddle - Example #3</a>
 
 ### Multiselect with groups
 
-``` vue
+```vue
 <Multiselect
   v-model="value"
   mode="multiple"
@@ -723,11 +731,11 @@ In case you need to override the same type of utility you might use [@neojp/tail
 />
 ```
 
-<a href="https://jsfiddle.net/t421d7cg/" target="_blank">JSFiddle - Example #4</a>
+<a href="https://jsfiddle.net/xajub20o/" target="_blank">JSFiddle - Example #4</a>
 
 ### Tags with search, create and array of objects options
 
-``` vue
+```vue
 <Multiselect
   v-model="value"
   mode="tags"
@@ -742,11 +750,11 @@ In case you need to override the same type of utility you might use [@neojp/tail
 />
 ```
 
-<a href="https://jsfiddle.net/t421d7cg/" target="_blank">JSFiddle - Example #5</a>
+<a href="https://jsfiddle.net/xajub20o/" target="_blank">JSFiddle - Example #5</a>
 
 ### Autocomplete with async options
 
-``` vue
+```vue
 <Multiselect
   v-model="value"
   placeholder="Choose a programming language"
@@ -761,11 +769,11 @@ In case you need to override the same type of utility you might use [@neojp/tail
 />
 ```
 
-<a href="https://jsfiddle.net/t421d7cg/" target="_blank">JSFiddle - Example #6</a>
+<a href="https://jsfiddle.net/xajub20o/" target="_blank">JSFiddle - Example #6</a>
 
 ### Tags with async options
 
-``` vue
+```vue
 <Multiselect
   v-model="value"
   mode="tags"
@@ -782,11 +790,11 @@ In case you need to override the same type of utility you might use [@neojp/tail
 />
 ```
 
-<a href="https://jsfiddle.net/t421d7cg/" target="_blank">JSFiddle - Example #7</a>
+<a href="https://jsfiddle.net/xajub20o/" target="_blank">JSFiddle - Example #7</a>
 
 ### Select with custom options slot
 
-``` vue
+```vue
 <Multiselect
   v-model="value"
   placeholder="Select your character"
@@ -810,11 +818,11 @@ In case you need to override the same type of utility you might use [@neojp/tail
 
 ```
 
-<a href="https://jsfiddle.net/t421d7cg/" target="_blank">JSFiddle - Example #8</a>
+<a href="https://jsfiddle.net/xajub20o/" target="_blank">JSFiddle - Example #8</a>
 
 ### Multiselect with custom label slot
 
-``` vue
+```vue
 <Multiselect
   v-model="value"
   mode="multiple"
@@ -835,11 +843,11 @@ In case you need to override the same type of utility you might use [@neojp/tail
 
 ```
 
-<a href="https://jsfiddle.net/t421d7cg/" target="_blank">JSFiddle - Example #9</a>
+<a href="https://jsfiddle.net/xajub20o/" target="_blank">JSFiddle - Example #9</a>
 
 ### Tags with custom tags slot
 
-``` vue
+```vue
 <template>
   <Multiselect
     v-model="value"
@@ -906,14 +914,14 @@ In case you need to override the same type of utility you might use [@neojp/tail
 </style>
 ```
 
-<a href="https://jsfiddle.net/t421d7cg/" target="_blank">JSFiddle - Example #10</a>
+<a href="https://jsfiddle.net/xajub20o/" target="_blank">JSFiddle - Example #10</a>
 
 
 ### Async options with default values
 
 When using `resolveOnLoad: false` we can add default values with `object: true` and providing options as objects, containing both `label` and `value` props. This is because option list is not resolved when the component is mounted so Multiselect has no idea of what option labels should be if only plain values were provided.
 
-``` vue
+```vue
 <template>
   <Multiselect
     mode="tags"
@@ -942,14 +950,14 @@ export default {
 </script>
 ```
 
-<a href="https://jsfiddle.net/t421d7cg/" target="_blank">JSFiddle - Example #11</a>
+<a href="https://jsfiddle.net/xajub20o/" target="_blank">JSFiddle - Example #11</a>
 
 
-### Default values that are not among the options
+### Default values that are not among the options using `object: true`
 
 If we want to add default values without having to add them to options list we can use `object: true` and provide them as objects, containing both `label` and `value` props. This is because if a plain value is not among Multiselect options it has no idea of what option label should be.
 
-``` vue
+```vue
 <template>
   <Multiselect
     mode="tags"
@@ -978,14 +986,50 @@ export default {
 </script>
 ```
 
-<a href="https://jsfiddle.net/t421d7cg/" target="_blank">JSFiddle - Example #12</a>
+<a href="https://jsfiddle.net/xajub20o/" target="_blank">JSFiddle - Example #12</a>
+
+
+### Default values that are not among the options using `allowAbsent: true`
+
+If our async option list returns an **array of strings** we can use `allowAbsent: true` to allow value(s) which are not among the option list. The reason why this only works with an array of strings option list is because plain values like `Java` and `JavaScript` will use the same string for label and value.
+
+```vue
+<template>
+  <Multiselect
+    mode="tags"
+    v-model="value"
+    placeholder="Select options"
+    :allow-absent="true"
+    :close-on-select="false"
+    :searchable="true"
+    :resolve-on-load="false"
+    :delay="0"
+    :min-chars="1"
+    :options="async (query) => {
+      return await fetchLanguages(query)
+    }"
+  />
+</template>
+<script>
+export default {
+  data: () => ({
+    value: [
+      'Java',
+      'JavaScript',
+    ]
+  })
+}
+</script>
+```
+
+<a href="https://jsfiddle.net/xajub20o/" target="_blank">JSFiddle - Example #13</a>
 
 
 ### Manage created tag asynchronously
 
 Search is restricted by `regex` and tag creation is controlled by `onCreate(option, select$)`.
 
-``` vue
+```vue
 <template>
   <Multiselect
     mode="tags"
@@ -1027,14 +1071,13 @@ export default {
 </script>
 ```
 
-<a href="https://jsfiddle.net/t421d7cg/" target="_blank">JSFiddle - Example #13</a>
-
+<a href="https://jsfiddle.net/xajub20o/" target="_blank">JSFiddle - Example #14</a>
 
 ### Load async options from API on open with infinite scroll
 
 Options are not loaded initially, only when the users clicks the dropdown the first time. It also virtualizes the option list with `infinite: true` even large list of options can be loaded.
 
-``` vue
+```vue
 <Multiselect
   v-model="value"
   mode="tags"
@@ -1059,7 +1102,36 @@ Options are not loaded initially, only when the users clicks the dropdown the fi
 />
 ```
 
-<a href="https://jsfiddle.net/t421d7cg/" target="_blank">JSFiddle - Example #14</a>
+<a href="https://jsfiddle.net/xajub20o/" target="_blank">JSFiddle - Example #15</a>
+
+### Multiselect with localized texts
+
+Options are not loaded initially, only when the users clicks the dropdown the first time. It also virtualizes the option list with `infinite: true` even large list of options can be loaded.
+
+```vue
+<template>
+  <Multiselect
+    v-model="value"
+    locale="de"
+    fallback-locale="en"
+    :options="[
+      { value: 1, label: { en: 'One', de: 'Eins' } },
+      { value: 2, label: { en: 'Two' } },
+      { value: 3, label: { es: 'Tres'} },
+      { value: 4, label: 'Four' },
+    ]"
+  />
+</template>
+<script>
+export default {
+  data: () => ({
+    value: [1]
+  })
+}
+</script>
+```
+
+<a href="https://jsfiddle.net/xajub20o/" target="_blank">JSFiddle - Example #16</a>
 
 ## License
 

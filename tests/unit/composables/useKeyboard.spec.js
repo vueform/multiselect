@@ -85,6 +85,81 @@ describe('useKeyboard', () => {
 
         expect(getValue(select)).toStrictEqual([1])
       })
+      
+      it('should remove last enabled element if search is empty and not single', async () => {
+        let select = createSelect({
+          mode: 'tags',
+          value: [1,2],
+          options: [{
+            label: 1,
+            value: 1,
+          },{
+            label: 2,
+            value: 2,
+            disabled:true
+          },{
+            label: 3,
+            value: 3,
+          }],
+          searchable: true,
+        })
+
+        keydown(select, 'backspace')
+
+        await nextTick()
+
+        expect(getValue(select)).toStrictEqual([2])
+      })
+      
+      it('should remove last removable element if search is empty and not single', async () => {
+        let select = createSelect({
+          mode: 'tags',
+          value: [1,2],
+          options: [{
+            label: 1,
+            value: 1,
+          },{
+            label: 2,
+            value: 2,
+            remove: false
+          },{
+            label: 3,
+            value: 3,
+          }],
+          searchable: true,
+        })
+
+        keydown(select, 'backspace')
+
+        await nextTick()
+
+        expect(getValue(select)).toStrictEqual([2])
+      })
+      
+      it('should not remove anything if has only disabled tags if search is empty and not single', async () => {
+        let select = createSelect({
+          mode: 'tags',
+          value: [2],
+          options: [{
+            label: 1,
+            value: 1,
+          },{
+            label: 2,
+            value: 2,
+            disabled: true
+          },{
+            label: 3,
+            value: 3,
+          }],
+          searchable: true,
+        })
+
+        keydown(select, 'backspace')
+
+        await nextTick()
+
+        expect(getValue(select)).toStrictEqual([2])
+      })
     })
 
     describe('enter', () => {

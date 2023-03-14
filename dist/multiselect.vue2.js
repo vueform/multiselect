@@ -239,9 +239,9 @@ function useOptions (props, context, dep)
   const { 
     options, mode, trackBy: trackBy_, limit, hideSelected, createTag, createOption: createOption_, label,
     appendNewTag, appendNewOption: appendNewOption_, multipleLabel, object, loading, delay, resolveOnLoad,
-    minChars, filterResults, clearOnSearch, clearOnSelect, valueProp,
-    canDeselect, max, strict, closeOnSelect, groups: groupped, reverse, infinite,
-    groupOptions, groupHideEmpty, groupSelect, onCreate, disabledProp, searchStart,
+    minChars, filterResults, clearOnSearch, clearOnSelect, valueProp, allowAbsent, groupLabel,
+    canDeselect, max, strict, closeOnSelect, closeOnDeselect, groups: groupped, reverse, infinite,
+    groupOptions, groupHideEmpty, groupSelect, onCreate, disabledProp, searchStart, searchFilter,
   } = toRefs(props);
 
   const $this = getCurrentInstance().proxy;
@@ -258,6 +258,7 @@ function useOptions (props, context, dep)
   const focus = dep.focus;
   const deactivate = dep.deactivate;
   const close = dep.close;
+  const localize = dep.localize;
 
   // ================ DATA ================
 
@@ -298,7 +299,7 @@ function useOptions (props, context, dep)
   // extendedOptions
   const eo = computed(() => {
     if (groupped.value) {
-      let groups = ro.value || /* istanbul ignore next */ [];
+      let groups = eg.value || /* istanbul ignore next */ [];
 
       let eo = [];
 
@@ -318,25 +319,6 @@ function useOptions (props, context, dep)
 
       return eo
     }
-  });
-
-  const fg = computed(() => {
-    if (!groupped.value) {
-      return []
-    }
-
-    return filterGroups((ro.value || /* istanbul ignore next */ []).map((group, index) => {
-      const arrayOptions = optionsToArray(group[groupOptions.value]);
-
-      return {
-        ...group,
-        index,
-        group: true,
-        [groupOptions.value]: filterOptions(arrayOptions, false).map(o => Object.assign({}, o, group[disabledProp.value] ? { [disabledProp.value]: true } : {})),
-        __VISIBLE__: filterOptions(arrayOptions).map(o => Object.assign({}, o, group[disabledProp.value] ? { [disabledProp.value]: true } : {})),
-      }
-      // Difference between __VISIBLE__ and {groupOptions}: visible does not contain selected options when hideSelected=true
-    }))
   });
 
   // preFilteredOptions
@@ -363,6 +345,68 @@ function useOptions (props, context, dep)
     }
 
     return options
+  });
+
+  // no export
+  // extendedGroups
+  const eg = computed(() => {
+    if (!groupped.value) {
+      return []
+    }
+
+    let eg = [];
+    let groups = ro.value || /* istanbul ignore next */ [];
+
+    if (ap.value.length) {
+      eg.push({
+        [groupLabel.value]: ' ',
+        [groupOptions.value]: [...ap.value],
+        __CREATE__: true
+      });
+    }
+
+    return eg.concat(groups)
+  });
+
+  // preFilteredGroups
+  const pfg = computed(() => {
+    let groups = [...eg.value].map(g => ({...g}));
+
+    if (createdOption.value.length) {
+      if (groups[0] && groups[0].__CREATE__) {
+        groups[0][groupOptions.value] = [...createdOption.value, ...groups[0][groupOptions.value]];
+      } else {
+        groups = [{
+          [groupLabel.value]: ' ',
+          [groupOptions.value]: [...createdOption.value],
+          __CREATE__: true
+        }].concat(groups);
+      }
+    }
+
+    return groups
+  });
+
+  // filteredGroups
+  const fg = computed(() => {
+    if (!groupped.value) {
+      return []
+    }
+
+    let options = pfg.value;
+
+    return filterGroups((options || /* istanbul ignore next */ []).map((group, index) => {
+      const arrayOptions = optionsToArray(group[groupOptions.value]);
+
+      return {
+        ...group,
+        index,
+        group: true,
+        [groupOptions.value]: filterOptions(arrayOptions, false).map(o => Object.assign({}, o, group[disabledProp.value] ? { [disabledProp.value]: true } : {})),
+        __VISIBLE__: filterOptions(arrayOptions).map(o => Object.assign({}, o, group[disabledProp.value] ? { [disabledProp.value]: true } : {})),
+      }
+      // Difference between __VISIBLE__ and {groupOptions}: visible does not contain selected options when hideSelected=true
+    }))
   });
 
   const hasSelected = computed(() => {
@@ -397,10 +441,14 @@ function useOptions (props, context, dep)
       return []
     }
 
-    return getOptionByTrackBy(search.value) !== -1 ? [] : [{
+    if (getOptionByTrackBy(search.value) !== -1) {
+      return []
+    }
+
+    return [{
       [valueProp.value]: search.value,
-      [label.value]: search.value,
       [trackBy.value]: search.value,
+      [label.value]: search.value,
       __CREATE__: true,
     }]
   });
@@ -557,6 +605,11 @@ function useOptions (props, context, dep)
           if (canDeselect.value) {
             deselect(option);
           }
+
+          if (closeOnDeselect.value) {
+            clearPointer();
+            close();
+          }
           return
         }
 
@@ -582,6 +635,11 @@ function useOptions (props, context, dep)
       case 'multiple':
         if (option && isSelected(option)) {
           deselect(option);
+
+          if (closeOnDeselect.value) {
+            clearPointer();
+            close();
+          }
           return
         }
 
@@ -611,6 +669,11 @@ function useOptions (props, context, dep)
       case 'tags':
         if (option && isSelected(option)) {
           deselect(option);
+
+          if (closeOnDeselect.value) {
+            clearPointer();
+            close();
+          }
           return
         }
 
@@ -675,6 +738,7 @@ function useOptions (props, context, dep)
     if (getOption(option[valueProp.value]) === undefined && createOption.value) {
       context.emit('tag', option[valueProp.value], $this);
       context.emit('option', option[valueProp.value], $this);
+      context.emit('create', option[valueProp.value], $this);
 
       if (appendNewOption.value) {
         appendOption(option);
@@ -689,7 +753,7 @@ function useOptions (props, context, dep)
       return
     }
 
-    select(fo.value);
+    select(fo.value.filter(o => !o.disabled && !isSelected(o)));
   };
 
   // no export
@@ -742,11 +806,19 @@ function useOptions (props, context, dep)
     let fo = options;
     
     if (search.value && filterResults.value) {
-      fo = fo.filter((option) => {
-        return searchStart.value
-          ? normalize(option[trackBy.value], strict.value).startsWith(normalize(search.value, strict.value))
-          : normalize(option[trackBy.value], strict.value).indexOf(normalize(search.value, strict.value)) !== -1
-      });
+      let filter = searchFilter.value;
+
+      if (!filter) {
+        filter = (option, $this) => {
+          let target = normalize(localize(option[trackBy.value]), strict.value);
+
+          return searchStart.value
+            ? target.startsWith(normalize(search.value, strict.value))
+            : target.indexOf(normalize(search.value, strict.value)) !== -1
+        };
+      }
+
+      fo = fo.filter(filter);
     }
 
     if (hideSelected.value && excludeHideSelected) {
@@ -859,9 +931,16 @@ function useOptions (props, context, dep)
       return val
     }
 
-    // If external should be plain transform
-    // value object to plain values
-    return mode.value === 'single' ? getOption(val) || {} : val.filter(v => !! getOption(v)).map(v => getOption(v))
+    // If external should be plain transform value object to plain values
+    return mode.value === 'single' ? getOption(val) || (allowAbsent.value ? {
+      [label.value]: val,
+      [valueProp.value]: val,
+      [trackBy.value]: val,
+    } : {}) : val.filter(v => !!getOption(v) || allowAbsent.value).map(v => getOption(v) || {
+      [label.value]: v,
+      [valueProp.value]: v,
+      [trackBy.value]: v,
+    })
   };
 
   // no export
@@ -979,6 +1058,8 @@ function useOptions (props, context, dep)
     multipleLabelText,
     eo,
     extendedOptions: eo,
+    eg,
+    extendedGroups: eg,
     fg,
     filteredGroups: fg,
     noOptions,
@@ -1009,6 +1090,7 @@ function usePointer (props, context, dep)
   const {
     valueProp, showOptions, searchable, groupLabel,
     groups: groupped, mode, groupSelect, disabledProp,
+    groupOptions,
   } = toRefs(props);
 
   // ============ DEPENDENCIES ============
@@ -1032,7 +1114,7 @@ function usePointer (props, context, dep)
   });
 
   const groups = computed(() => {
-    return fg.value.filter(o => !o[disabledProp.value])
+    return fg.value.filter(g => !g[disabledProp.value])
   });
 
   const canPointGroups = computed(() => {
@@ -1101,8 +1183,8 @@ function usePointer (props, context, dep)
 
   const isPointed = (option) => {
     return (!!pointer.value && (
-      (!option.group && pointer.value[valueProp.value] == option[valueProp.value]) ||
-      (option.group !== undefined && pointer.value[groupLabel.value] == option[groupLabel.value])
+      (!option.group && pointer.value[valueProp.value] === option[valueProp.value]) ||
+      (option.group !== undefined && pointer.value[groupLabel.value] === option[groupLabel.value])
     )) ? true : undefined
   };
 
@@ -1124,13 +1206,17 @@ function usePointer (props, context, dep)
 
   const forwardPointer = () => {
     if (pointer.value === null) {
-      setPointer((groupped.value && canPointGroups.value ? groups.value[0] : options.value[0]) || null);
+      setPointer((groupped.value && canPointGroups.value ? (!groups.value[0].__CREATE__ ? groups.value[0] : options.value[0]) : options.value[0]) || null);
     }
     else if (groupped.value && canPointGroups.value) {
       let nextPointer = isPointerGroup.value ? currentGroupFirstEnabledOption.value : currentGroupNextEnabledOption.value;
 
       if (nextPointer === undefined) {
         nextPointer = nextGroup.value;
+
+        if (nextPointer.__CREATE__) {
+          nextPointer = nextPointer[groupOptions.value][0];
+        }
       }
 
       setPointer(nextPointer || /* istanbul ignore next */ null);
@@ -1168,6 +1254,14 @@ function usePointer (props, context, dep)
 
       if (prevPointer === undefined) {
         prevPointer = isPointerGroup.value ? prevGroup.value : currentGroup.value;
+
+        if (prevPointer.__CREATE__) {
+          prevPointer = prevGroupLastEnabledOption.value;
+
+          if (prevPointer === undefined) {
+            prevPointer = prevGroup.value;
+          }
+        }
       }
 
       setPointer(prevPointer || /* istanbul ignore next */ null);
@@ -1484,6 +1578,23 @@ function useKeyboard (props, context, dep)
     }
   };
 
+  const removeLastRemovable = (arr) => {
+    // Find the index of the last object in the array that doesn't have a "remove" property set to false
+    let indexToRemove = arr.length - 1;
+    while (indexToRemove >= 0 && (arr[indexToRemove].remove === false || arr[indexToRemove].disabled)) {
+      indexToRemove--;
+    }
+
+    // If all objects have a "remove" property set to false, don't remove anything and return the original array
+    if (indexToRemove < 0) {
+      return arr
+    }
+
+    // Remove the object at the found index and return the updated array
+    arr.splice(indexToRemove, 1);
+    return arr
+  };
+
   const handleKeydown = (e) => {
     context.emit('keydown', e, $this);
 
@@ -1509,7 +1620,7 @@ function useKeyboard (props, context, dep)
           return
         }
 
-        update([...iv.value].slice(0,-1));
+        update(removeLastRemovable([...iv.value]));
         break
 
       case 'Enter':
@@ -1758,6 +1869,7 @@ function useClasses (props, context, dependencies)
       tags: c.tags,
       tag: [c.tag]
         .concat(disabled.value ? c.tagDisabled : []),
+      tagDisabled: c.tagDisabled,
       tagRemove: c.tagRemove,
       tagRemoveIcon: c.tagRemoveIcon,
       tagsSearchWrapper: c.tagsSearchWrapper,
@@ -1821,7 +1933,7 @@ function useClasses (props, context, dependencies)
   }
 }
 
-function useScroll$1 (props, context, dep)
+function useScroll (props, context, dep)
 {
   const {
     limit, infinite,
@@ -1919,7 +2031,7 @@ function useScroll$1 (props, context, dep)
   }
 }
 
-function useScroll (props, context, dep)
+function useA11y (props, context, dep)
 {
   const {
     placeholder, id, valueProp, label: labelProp, mode, groupLabel, aria, searchable ,
@@ -2054,18 +2166,18 @@ function useScroll (props, context, dep)
     return texts.join('-')
   };
 
-  const ariaOptionLabel = (option) => {
+  const ariaOptionLabel = (label) => {
     let texts = [];
 
-    texts.push(option[labelProp.value]);
+    texts.push(label);
 
     return texts.join(' ')
   };
 
-  const ariaGroupLabel = (group) => {
+  const ariaGroupLabel = (label) => {
     let texts = [];
 
-    texts.push(group[groupLabel.value]);
+    texts.push(label);
 
     return texts.join(' ')
   };
@@ -2100,6 +2212,39 @@ function useScroll (props, context, dep)
   }
 }
 
+function useI18n (props, context, dep)
+{
+  const {
+    locale, fallbackLocale,
+  } = toRefs(props);
+
+  // =============== METHODS ==============
+
+  const localize = (target) => {
+    if (!target || typeof target !== 'object') {
+      return target
+    }
+
+    if (target && target[locale.value]) {
+      return target[locale.value]
+    } else if (target && locale.value && target[locale.value.toUpperCase()]) {
+      return target[locale.value.toUpperCase()]
+    } else if (target && target[fallbackLocale.value]) {
+      return target[fallbackLocale.value]
+    } else if (target && fallbackLocale.value && target[fallbackLocale.value.toUpperCase()]) {
+      return target[fallbackLocale.value.toUpperCase()]
+    } else if (target && Object.keys(target)[0]) {
+      return target[Object.keys(target)[0]]
+    } else {
+      return ''
+    }
+  };
+
+  return {
+    localize,
+  }
+}
+
 function resolveDeps (props, context, features, deps = {}) {
   features.forEach((composable) => {
     /* istanbul ignore else */
@@ -2122,7 +2267,7 @@ function resolveDeps (props, context, features, deps = {}) {
     emits: [
       'paste', 'open', 'close', 'select', 'deselect', 
       'input', 'search-change', 'tag', 'option', 'update:modelValue',
-      'change', 'clear', 'keydown', 'keyup', 'max',
+      'change', 'clear', 'keydown', 'keyup', 'max', 'create',
     ],
     props: {
       value: {
@@ -2231,12 +2376,12 @@ function resolveDeps (props, context, features, deps = {}) {
         default: false,
       },
       noOptionsText: {
-        type: String,
+        type: [String, Object],
         required: false,
         default: 'The list is empty',
       },
       noResultsText: {
-        type: String,
+        type: [String, Object],
         required: false,
         default: 'No results found',
       },
@@ -2329,6 +2474,11 @@ function resolveDeps (props, context, features, deps = {}) {
         required: false,
         default: true,
       },
+      closeOnDeselect: {
+        type: Boolean,
+        required: false,
+        default: false,
+      },
       autocomplete: {
         type: String,
         required: false,
@@ -2412,10 +2562,31 @@ function resolveDeps (props, context, features, deps = {}) {
         type: Boolean,
         default: true,
       },
+      locale: {
+        required: false,
+        type: String,
+        default: null,
+      },
+      fallbackLocale: {
+        required: false,
+        type: String,
+        default: 'en',
+      },
+      searchFilter: {
+        required: false,
+        type: Function,
+        default: null,
+      },
+      allowAbsent: {
+        required: false,
+        type: Boolean,
+        default: false,
+      },
     },
     setup(props, context)
     { 
       return resolveDeps(props, context, [
+        useI18n,
         useValue,
         usePointer$1,
         useDropdown,
@@ -2423,11 +2594,11 @@ function resolveDeps (props, context, features, deps = {}) {
         useData,
         useMultiselect,
         useOptions,
-        useScroll$1,
+        useScroll,
         usePointer,
         useKeyboard,
         useClasses,
-        useScroll,
+        useA11y,
       ])
     }
   };
@@ -2613,11 +2784,16 @@ var __vue_render__ = function () {
                               "span",
                               {
                                 key: key,
-                                class: _vm.classList.tag,
+                                class: [
+                                  _vm.classList.tag,
+                                  option.disabled
+                                    ? _vm.classList.tagDisabled
+                                    : null,
+                                ],
                                 attrs: {
                                   tabindex: "-1",
                                   "aria-label": _vm.ariaTagLabel(
-                                    option[_vm.label]
+                                    _vm.localize(option[_vm.label])
                                   ),
                                 },
                                 on: {
@@ -2641,10 +2817,10 @@ var __vue_render__ = function () {
                               [
                                 _vm._v(
                                   "\n            " +
-                                    _vm._s(option[_vm.label]) +
+                                    _vm._s(_vm.localize(option[_vm.label])) +
                                     "\n            "
                                 ),
-                                !_vm.disabled
+                                !_vm.disabled && !option.disabled
                                   ? _c(
                                       "span",
                                       {
@@ -2742,7 +2918,7 @@ var __vue_render__ = function () {
                     return [
                       _c("div", { class: _vm.classList.singleLabel }, [
                         _c("span", { class: _vm.classList.singleLabelText }, [
-                          _vm._v(_vm._s(_vm.iv[_vm.label])),
+                          _vm._v(_vm._s(_vm.localize(_vm.iv[_vm.label]))),
                         ]),
                       ]),
                     ]
@@ -2883,54 +3059,62 @@ var __vue_render__ = function () {
                         class: _vm.classList.group,
                         attrs: {
                           id: _vm.ariaGroupId(group),
-                          "aria-label": _vm.ariaGroupLabel(group),
+                          "aria-label": _vm.ariaGroupLabel(
+                            _vm.localize(group[_vm.groupLabel])
+                          ),
                           "aria-selected": _vm.isSelected(group),
                           role: "option",
                         },
                       },
                       [
-                        _c(
-                          "div",
-                          {
-                            class: _vm.classList.groupLabel(group),
-                            attrs: { "data-pointed": _vm.isPointed(group) },
-                            on: {
-                              mouseenter: function ($event) {
-                                return _vm.setPointer(group, i)
-                              },
-                              click: function ($event) {
-                                return _vm.handleGroupClick(group)
-                              },
-                            },
-                          },
-                          [
-                            _vm._t(
-                              "grouplabel",
-                              function () {
-                                return [
-                                  _c("span", {
-                                    domProps: {
-                                      innerHTML: _vm._s(group[_vm.groupLabel]),
-                                    },
-                                  }),
-                                ]
-                              },
+                        !group.__CREATE__
+                          ? _c(
+                              "div",
                               {
-                                group: group,
-                                isSelected: _vm.isSelected,
-                                isPointed: _vm.isPointed,
-                              }
-                            ),
-                          ],
-                          2
-                        ),
+                                class: _vm.classList.groupLabel(group),
+                                attrs: { "data-pointed": _vm.isPointed(group) },
+                                on: {
+                                  mouseenter: function ($event) {
+                                    return _vm.setPointer(group, i)
+                                  },
+                                  click: function ($event) {
+                                    return _vm.handleGroupClick(group)
+                                  },
+                                },
+                              },
+                              [
+                                _vm._t(
+                                  "grouplabel",
+                                  function () {
+                                    return [
+                                      _c("span", {
+                                        domProps: {
+                                          innerHTML: _vm._s(
+                                            _vm.localize(group[_vm.groupLabel])
+                                          ),
+                                        },
+                                      }),
+                                    ]
+                                  },
+                                  {
+                                    group: group,
+                                    isSelected: _vm.isSelected,
+                                    isPointed: _vm.isPointed,
+                                  }
+                                ),
+                              ],
+                              2
+                            )
+                          : _vm._e(),
                         _vm._v(" "),
                         _c(
                           "ul",
                           {
                             class: _vm.classList.groupOptions,
                             attrs: {
-                              "aria-label": _vm.ariaGroupLabel(group),
+                              "aria-label": _vm.ariaGroupLabel(
+                                _vm.localize(group[_vm.groupLabel])
+                              ),
                               role: "group",
                             },
                           },
@@ -2946,7 +3130,9 @@ var __vue_render__ = function () {
                                     _vm.isSelected(option) || undefined,
                                   id: _vm.ariaOptionId(option),
                                   "aria-selected": _vm.isSelected(option),
-                                  "aria-label": _vm.ariaOptionLabel(option),
+                                  "aria-label": _vm.ariaOptionLabel(
+                                    _vm.localize(option[_vm.label])
+                                  ),
                                   role: "option",
                                 },
                                 on: {
@@ -2964,7 +3150,11 @@ var __vue_render__ = function () {
                                   function () {
                                     return [
                                       _c("span", [
-                                        _vm._v(_vm._s(option[_vm.label])),
+                                        _vm._v(
+                                          _vm._s(
+                                            _vm.localize(option[_vm.label])
+                                          )
+                                        ),
                                       ]),
                                     ]
                                   },
@@ -2995,7 +3185,9 @@ var __vue_render__ = function () {
                           "data-selected": _vm.isSelected(option) || undefined,
                           id: _vm.ariaOptionId(option),
                           "aria-selected": _vm.isSelected(option),
-                          "aria-label": _vm.ariaOptionLabel(option),
+                          "aria-label": _vm.ariaOptionLabel(
+                            _vm.localize(option[_vm.label])
+                          ),
                           role: "option",
                         },
                         on: {
@@ -3012,7 +3204,9 @@ var __vue_render__ = function () {
                           "option",
                           function () {
                             return [
-                              _c("span", [_vm._v(_vm._s(option[_vm.label]))]),
+                              _c("span", [
+                                _vm._v(_vm._s(_vm.localize(option[_vm.label]))),
+                              ]),
                             ]
                           },
                           {
@@ -3035,7 +3229,9 @@ var __vue_render__ = function () {
                 return [
                   _c("div", {
                     class: _vm.classList.noOptions,
-                    domProps: { innerHTML: _vm._s(_vm.noOptionsText) },
+                    domProps: {
+                      innerHTML: _vm._s(_vm.localize(_vm.noOptionsText)),
+                    },
                   }),
                 ]
               })
@@ -3046,7 +3242,9 @@ var __vue_render__ = function () {
                 return [
                   _c("div", {
                     class: _vm.classList.noResults,
-                    domProps: { innerHTML: _vm._s(_vm.noResultsText) },
+                    domProps: {
+                      innerHTML: _vm._s(_vm.localize(_vm.noResultsText)),
+                    },
                   }),
                 ]
               })
