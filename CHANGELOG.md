@@ -1,3 +1,10 @@
+## v2.6.2
+
+> `2023-04-17`
+
+### 🐞 Bug Fixes
+  - Removed `sideEffects: false` from `package.json`.
+
 ## v2.6.1
 
 > `2023-03-14`
