@@ -34,7 +34,6 @@
     "./themes/*": "./themes/*",
     "./package.json": "./package.json"
   },
-  "sideEffects": false,
   "repository": {
     "type": "git",
     "url": "git+https://github.com/vueform/multiselect.git"
