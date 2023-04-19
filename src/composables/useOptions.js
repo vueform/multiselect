@@ -307,8 +307,8 @@ export default function useOptions (props, context, dep)
   }
 
   const clear = () => {
-    context.emit('clear', $this)
     update(nullValue.value)
+    context.emit('clear', $this)
   }
 
   const isSelected = (option) => {
