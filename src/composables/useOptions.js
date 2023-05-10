@@ -576,9 +576,9 @@ export default function useOptions (props, context, dep)
     let fo = options
     
     if (search.value && filterResults.value) {
-      let filter = searchFilter.value
+      let filter = null
 
-      if (!filter) {
+      if (!searchFilter.value) {
         filter = (option, $this) => {
           let target = normalize(localize(option[trackBy.value]), strict.value)
 
@@ -586,6 +586,8 @@ export default function useOptions (props, context, dep)
             ? target.startsWith(normalize(search.value, strict.value))
             : target.indexOf(normalize(search.value, strict.value)) !== -1
         }
+      } else {
+        filter = option => searchFilter.value(option, search.value)
       }
 
       fo = fo.filter(filter)
