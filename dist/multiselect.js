@@ -236,7 +236,7 @@ function arraysEqual (array1, array2) {
 
 function useOptions (props, context, dep)
 {
-  const { 
+  const {
     options, mode, trackBy: trackBy_, limit, hideSelected, createTag, createOption: createOption_, label,
     appendNewTag, appendNewOption: appendNewOption_, multipleLabel, object, loading, delay, resolveOnLoad,
     minChars, filterResults, clearOnSearch, clearOnSelect, valueProp, allowAbsent, groupLabel,
@@ -476,7 +476,7 @@ function useOptions (props, context, dep)
   // =============== METHODS ==============
 
   /**
-   * @param {array|object|string|number} option 
+   * @param {array|object|string|number} option
    */
   const select = (option) => {
     if (typeof option !== 'object') {
@@ -564,7 +564,7 @@ function useOptions (props, context, dep)
     if (max === undefined || max.value === -1 || (!hasSelected.value && max.value > 0)) {
       return false
     }
-    
+
     return iv.value.length >= max.value
   };
 
@@ -578,7 +578,7 @@ function useOptions (props, context, dep)
       delete option.__CREATE__;
 
       option = onCreate.value(option, $this);
-      
+
       if (option instanceof Promise) {
         resolving.value = true;
         option.then((result) => {
@@ -587,7 +587,7 @@ function useOptions (props, context, dep)
         });
 
         return
-      } 
+      }
     }
 
     handleOptionSelect(option);
@@ -598,7 +598,7 @@ function useOptions (props, context, dep)
       option = { ...option };
       delete option.__CREATE__;
     }
-    
+
     switch (mode.value) {
       case 'single':
         if (option && isSelected(option)) {
@@ -789,7 +789,7 @@ function useOptions (props, context, dep)
 
   // no export
   const filterGroups = (groups) => {
-    // If the search has value we need to filter among 
+    // If the search has value we need to filter among
     // the ones that are visible to the user to avoid
     // displaying groups which technically have options
     // based on search but that option is already selected.
@@ -804,21 +804,23 @@ function useOptions (props, context, dep)
   // no export
   const filterOptions = (options, excludeHideSelected = true) => {
     let fo = options;
-    
+    const searchTerm = search.value;
+
     if (search.value && filterResults.value) {
       let filter = searchFilter.value;
 
       if (!filter) {
-        filter = (option, $this) => {
+        filter = (searchValue, option, $this) => {
           let target = normalize(localize(option[trackBy.value]), strict.value);
 
           return searchStart.value
-            ? target.startsWith(normalize(search.value, strict.value))
-            : target.indexOf(normalize(search.value, strict.value)) !== -1
+            ? target.startsWith(normalize(searchValue, strict.value))
+            : target.indexOf(normalize(searchValue, strict.value)) !== -1
         };
       }
 
-      fo = fo.filter(filter);
+      fo = fo.filter((option, $el) => filter(searchTerm, option, $el));
+
     }
 
     if (hideSelected.value && excludeHideSelected) {
@@ -831,7 +833,7 @@ function useOptions (props, context, dep)
   // no export
   const optionsToArray = (options) => {
     let uo = options;
-    
+
     // Transforming an object to an array of objects
     if (isObject(uo)) {
       uo = Object.keys(uo).map((key) => {
@@ -992,7 +994,7 @@ function useOptions (props, context, dep)
 
     initInternalValue();
   }
-  
+
   // ============== WATCHERS ==============
 
   if (delay.value > -1) {
@@ -2260,10 +2262,12 @@ function resolveDeps (props, context, features, deps = {}) {
   return deps
 }
 
-var script = {
+console.log(" => MY Multiselect");
+
+  var script = {
     name: 'Multiselect',
     emits: [
-      'paste', 'open', 'close', 'select', 'deselect', 
+      'paste', 'open', 'close', 'select', 'deselect',
       'input', 'search-change', 'tag', 'option', 'update:modelValue',
       'change', 'clear', 'keydown', 'keyup', 'max', 'create',
     ],
@@ -2582,7 +2586,7 @@ var script = {
       },
     },
     setup(props, context)
-    { 
+    {
       return resolveDeps(props, context, [
         useI18n,
         useValue,

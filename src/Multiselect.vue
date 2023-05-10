@@ -82,13 +82,13 @@
               </span>
             </span>
           </slot>
-      
+
           <div :class="classList.tagsSearchWrapper" ref="tags">
             <!-- Used for measuring search width -->
             <span :class="classList.tagsSearchCopy">{{ search }}</span>
 
             <!-- Actual search input -->
-            <input    
+            <input
               v-if="searchable && !disabled"
               :type="inputType"
               :modelValue="search"
@@ -100,7 +100,7 @@
               @keypress="handleKeypress"
               @paste.stop="handlePaste"
               ref="input"
-              
+
               :aria-controls="ariaControls"
               :aria-placeholder="ariaPlaceholder"
               :aria-expanded="isOpen"
@@ -200,7 +200,7 @@
 
             <ul
               :class="classList.groupOptions"
-              
+
               :aria-label="ariaGroupLabel(localize(group[groupLabel]))"
               role="group"
             >
@@ -266,7 +266,7 @@
 
     <!-- Hacky input element to show HTML5 required warning -->
     <input v-if="required" :class="classList.fakeInput" tabindex="-1" :value="textValue" required/>
-    
+
     <!-- Native input support -->
     <template v-if="nativeSupport">
       <input v-if="mode == 'single'" type="hidden" :name="name" :value="plainValue !== undefined ? plainValue : ''" />
@@ -297,18 +297,20 @@
   import usePointerAction from './composables/usePointerAction'
   import useDropdown from './composables/useDropdown'
   import useMultiselect from './composables/useMultiselect'
-  import useKeyboard from './composables/useKeyboard' 
-  import useClasses from './composables/useClasses' 
-  import useScroll from './composables/useScroll' 
-  import useA11y from './composables/useA11y' 
+  import useKeyboard from './composables/useKeyboard'
+  import useClasses from './composables/useClasses'
+  import useScroll from './composables/useScroll'
+  import useA11y from './composables/useA11y'
   import useI18n from './composables/useI18n'
 
   import resolveDeps from './utils/resolveDeps'
 
+  console.log(" => MY Multiselect")
+
   export default {
     name: 'Multiselect',
     emits: [
-      'paste', 'open', 'close', 'select', 'deselect', 
+      'paste', 'open', 'close', 'select', 'deselect',
       'input', 'search-change', 'tag', 'option', 'update:modelValue',
       'change', 'clear', 'keydown', 'keyup', 'max', 'create',
     ],
@@ -627,7 +629,7 @@
       },
     },
     setup(props, context)
-    { 
+    {
       return resolveDeps(props, context, [
         useI18n,
         useValue,

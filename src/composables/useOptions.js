@@ -6,7 +6,7 @@ import arraysEqual from './../utils/arraysEqual'
 
 export default function useOptions (props, context, dep)
 {
-  const { 
+  const {
     options, mode, trackBy: trackBy_, limit, hideSelected, createTag, createOption: createOption_, label,
     appendNewTag, appendNewOption: appendNewOption_, multipleLabel, object, loading, delay, resolveOnLoad,
     minChars, filterResults, clearOnSearch, clearOnSelect, valueProp, allowAbsent, groupLabel,
@@ -246,7 +246,7 @@ export default function useOptions (props, context, dep)
   // =============== METHODS ==============
 
   /**
-   * @param {array|object|string|number} option 
+   * @param {array|object|string|number} option
    */
   const select = (option) => {
     if (typeof option !== 'object') {
@@ -334,7 +334,7 @@ export default function useOptions (props, context, dep)
     if (max === undefined || max.value === -1 || (!hasSelected.value && max.value > 0)) {
       return false
     }
-    
+
     return iv.value.length >= max.value
   }
 
@@ -348,7 +348,7 @@ export default function useOptions (props, context, dep)
       delete option.__CREATE__
 
       option = onCreate.value(option, $this)
-      
+
       if (option instanceof Promise) {
         resolving.value = true
         option.then((result) => {
@@ -357,7 +357,7 @@ export default function useOptions (props, context, dep)
         })
 
         return
-      } 
+      }
     }
 
     handleOptionSelect(option)
@@ -368,7 +368,7 @@ export default function useOptions (props, context, dep)
       option = { ...option }
       delete option.__CREATE__
     }
-    
+
     switch (mode.value) {
       case 'single':
         if (option && isSelected(option)) {
@@ -559,7 +559,7 @@ export default function useOptions (props, context, dep)
 
   // no export
   const filterGroups = (groups) => {
-    // If the search has value we need to filter among 
+    // If the search has value we need to filter among
     // the ones that are visible to the user to avoid
     // displaying groups which technically have options
     // based on search but that option is already selected.
@@ -574,21 +574,23 @@ export default function useOptions (props, context, dep)
   // no export
   const filterOptions = (options, excludeHideSelected = true) => {
     let fo = options
-    
+    const searchTerm = search.value
+
     if (search.value && filterResults.value) {
       let filter = searchFilter.value
 
       if (!filter) {
-        filter = (option, $this) => {
+        filter = (searchValue, option, $this) => {
           let target = normalize(localize(option[trackBy.value]), strict.value)
 
           return searchStart.value
-            ? target.startsWith(normalize(search.value, strict.value))
-            : target.indexOf(normalize(search.value, strict.value)) !== -1
+            ? target.startsWith(normalize(searchValue, strict.value))
+            : target.indexOf(normalize(searchValue, strict.value)) !== -1
         }
       }
 
-      fo = fo.filter(filter)
+      fo = fo.filter((option, $el) => filter(searchTerm, option, $el))
+
     }
 
     if (hideSelected.value && excludeHideSelected) {
@@ -601,7 +603,7 @@ export default function useOptions (props, context, dep)
   // no export
   const optionsToArray = (options) => {
     let uo = options
-    
+
     // Transforming an object to an array of objects
     if (isObject(uo)) {
       uo = Object.keys(uo).map((key) => {
@@ -762,7 +764,7 @@ export default function useOptions (props, context, dep)
 
     initInternalValue()
   }
-  
+
   // ============== WATCHERS ==============
 
   if (delay.value > -1) {
