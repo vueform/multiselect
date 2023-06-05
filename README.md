@@ -285,8 +285,8 @@ Join our [Discord channel](https://discord.gg/WhX2nG6GTQ) or [open an issue](htt
 | **caret** | `{boolean} true` | Whether should display the caret symbol on the right. |
 | **locale** | `{string} null` | The locale of the multiselect. If a locale is set labels might have an `object` value with different keys for different locales. |
 | **locale** | `{string} 'en'` | The fallback locale. |
-| **noOptionsText** | `{string|object} 'The list is empty'` | The text that should be displayed when options list is empty. It can be an object with different keys for different locales. |
-| **noResultsText** | `{string|object} 'No results found'` | The text that should be displayed when there are no search results. It can be an object with different keys for different locales. |
+| **noOptionsText** | `{string\|object} 'The list is empty'` | The text that should be displayed when options list is empty. It can be an object with different keys for different locales. |
+| **noResultsText** | `{string\|object} 'No results found'` | The text that should be displayed when there are no search results. It can be an object with different keys for different locales. |
 | **openDirection** | `{string} 'bottom'` | Whether the option list should be displayed above or below the multiselect. Possible values: `top\|bottom` |
 | **reverse** | `{boolean} false` | Whether the option list should be reversed. Only works with `groups: false`. |
 | **regex** | `{regex\|string} undefined` | The regex that search input should be tested against when `searchable: true`. |
