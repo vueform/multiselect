@@ -13,7 +13,9 @@ export default function useValue (props, context)
 
   /* istanbul ignore next */
   // externalValue
-  const ev = modelValue && modelValue.value !== undefined ? modelValue : value
+  const ev = computed(() => {
+    return modelValue && modelValue.value !== undefined ? modelValue.value : value.value
+  })
 
   const plainValue = computed(() => {
     return mode.value === 'single' ? iv.value[valueProp.value] : iv.value.map(v=>v[valueProp.value])
