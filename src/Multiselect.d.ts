@@ -65,21 +65,21 @@ declare class Multiselect extends Vue {
   searchFilter?: Function;
   allowAbsent?: object;
 
-  $emit(eventName: 'change', e: {originalEvent: Event, value: any}): this;
-  $emit(eventName: 'select', e: {originalEvent: Event, value: any, option: any}): this;
-  $emit(eventName: 'deselect', e: {originalEvent: Event, value: any, option: any}): this;
-  $emit(eventName: 'remove', e: {originalEvent: Event, value: any, option: any}): this;
-  $emit(eventName: 'search-change', e: {originalEvent: Event, query: string}): this;
-  $emit(eventName: 'tag', e: {originalEvent: Event, query: string}): this;
-  $emit(eventName: 'option', e: {originalEvent: Event, query: string}): this;
-  $emit(eventName: 'create', e: {originalEvent: Event, query: string}): this;
-  $emit(eventName: 'paste', e: {originalEvent: Event}): this;
-  $emit(eventName: 'keydown', e: {originalEvent: Event}): this;
-  $emit(eventName: 'keyup', e: {originalEvent: Event}): this;
-  $emit(eventName: 'open'): this;
-  $emit(eventName: 'close'): this;
-  $emit(eventName: 'clear'): this;
-  $emit(eventName: 'max'): this;
+  $emit(eventName: 'change', e: {originalEvent: Event, value: any}): this | void;
+  $emit(eventName: 'select', e: {originalEvent: Event, value: any, option: any}): this | void;
+  $emit(eventName: 'deselect', e: {originalEvent: Event, value: any, option: any}): this | void;
+  $emit(eventName: 'remove', e: {originalEvent: Event, value: any, option: any}): this | void;
+  $emit(eventName: 'search-change', e: {originalEvent: Event, query: string}): this | void;
+  $emit(eventName: 'tag', e: {originalEvent: Event, query: string}): this | void;
+  $emit(eventName: 'option', e: {originalEvent: Event, query: string}): this | void;
+  $emit(eventName: 'create', e: {originalEvent: Event, query: string}): this | void;
+  $emit(eventName: 'paste', e: {originalEvent: Event}): this | void;
+  $emit(eventName: 'keydown', e: {originalEvent: Event}): this | void;
+  $emit(eventName: 'keyup', e: {originalEvent: Event}): this | void;
+  $emit(eventName: 'open'): this | void;
+  $emit(eventName: 'close'): this| void;
+  $emit(eventName: 'clear'): this| void;
+  $emit(eventName: 'max'): this| void;
 
   $slots: {
     placeholder: VNode[];
