@@ -168,101 +168,105 @@
     </div>
 
     <!-- Options -->
-    <div
-      :class="classList.dropdown"
-      tabindex="-1"
-    >
-      <slot name="beforelist" :options="fo"></slot>
+    <Teleport to="body" :disabled="!appendToBody">
+      <div
+        :class="classList.dropdown"
+        tabindex="-1"
+        :style="dropdownStyles"
+        ref="dropdown"
+      >
+        <slot name="beforelist" :options="fo"></slot>
 
-      <ul :class="classList.options" :id="ariaControls" role="listbox">
-        <template v-if="groups">
-          <li
-            v-for="(group, i, key) in fg"
-            :class="classList.group"
-            :key="key"
+        <ul :class="classList.options" :id="ariaControls" role="listbox">
+          <template v-if="groups">
+            <li
+              v-for="(group, i, key) in fg"
+              :class="classList.group"
+              :key="key"
 
-            :id="ariaGroupId(group)"
-            :aria-label="ariaGroupLabel(localize(group[groupLabel]))"
-            :aria-selected="isSelected(group)"
-            role="option"
-          >
-            <div
-              v-if="!group.__CREATE__"
-              :class="classList.groupLabel(group)"
-              :data-pointed="isPointed(group)"
-              @mouseenter="setPointer(group, i)"
-              @click="handleGroupClick(group)"
-            >
-              <slot name="grouplabel" :group="group" :is-selected="isSelected" :is-pointed="isPointed">
-                <span v-html="localize(group[groupLabel])"></span>
-              </slot>
-            </div>
-
-            <ul
-              :class="classList.groupOptions"
-              
+              :id="ariaGroupId(group)"
               :aria-label="ariaGroupLabel(localize(group[groupLabel]))"
-              role="group"
+              :aria-selected="isSelected(group)"
+              role="option"
             >
-              <li
-                v-for="(option, i, key) in group.__VISIBLE__"
-                :class="classList.option(option, group)"
-                :data-pointed="isPointed(option)"
-                :data-selected="isSelected(option) || undefined"
-                :key="key"
-                @mouseenter="setPointer(option)"
-                @click="handleOptionClick(option)"
-
-                :id="ariaOptionId(option)"
-                :aria-selected="isSelected(option)"
-                :aria-label="ariaOptionLabel(localize(option[label]))"
-                role="option"
+              <div
+                v-if="!group.__CREATE__"
+                :class="classList.groupLabel(group)"
+                :data-pointed="isPointed(group)"
+                @mouseenter="setPointer(group, i)"
+                @mousedown.prevent="handleGroupClick(group)"
               >
-                <slot name="option" :option="option" :is-selected="isSelected" :is-pointed="isPointed" :search="search">
-                  <span>{{ localize(option[label]) }}</span>
+                <slot name="grouplabel" :group="group" :is-selected="isSelected" :is-pointed="isPointed">
+                  <span v-html="localize(group[groupLabel])"></span>
                 </slot>
-              </li>
-            </ul>
-          </li>
-        </template>
-        <template v-else>
-          <li
-            v-for="(option, i, key) in fo"
-            :class="classList.option(option)"
-            :data-pointed="isPointed(option)"
-            :data-selected="isSelected(option) || undefined"
-            :key="key"
-            @mouseenter="setPointer(option)"
-            @click="handleOptionClick(option)"
+              </div>
 
-            :id="ariaOptionId(option)"
-            :aria-selected="isSelected(option)"
-            :aria-label="ariaOptionLabel(localize(option[label]))"
-            role="option"
-          >
-            <slot name="option" :option="option" :isSelected="isSelected" :is-pointed="isPointed" :search="search">
-              <span>{{ localize(option[label]) }}</span>
-            </slot>
-          </li>
-        </template>
-      </ul>
+              <ul
+                :class="classList.groupOptions"
+                
+                :aria-label="ariaGroupLabel(localize(group[groupLabel]))"
+                role="group"
+              >
+                <li
+                  v-for="(option, i, key) in group.__VISIBLE__"
+                  :class="classList.option(option, group)"
+                  :data-pointed="isPointed(option)"
+                  :data-selected="isSelected(option) || undefined"
+                  :key="key"
+                  @mouseenter="setPointer(option)"
+                  @mousedown.prevent="handleOptionClick(option)"
 
-      <slot v-if="noOptions" name="nooptions">
-        <div :class="classList.noOptions" v-html="localize(noOptionsText)"></div>
-      </slot>
+                  :id="ariaOptionId(option)"
+                  :aria-selected="isSelected(option)"
+                  :aria-label="ariaOptionLabel(localize(option[label]))"
+                  role="option"
+                >
+                  <slot name="option" :option="option" :is-selected="isSelected" :is-pointed="isPointed" :search="search">
+                    <span>{{ localize(option[label]) }}</span>
+                  </slot>
+                </li>
+              </ul>
+            </li>
+          </template>
+          <template v-else>
+            <li
+              v-for="(option, i, key) in fo"
+              :class="classList.option(option)"
+              :data-pointed="isPointed(option)"
+              :data-selected="isSelected(option) || undefined"
+              :key="key"
+              @mouseenter="setPointer(option)"
+              @mousedown.prevent="handleOptionClick(option)"
 
-      <slot v-if="noResults" name="noresults">
-        <div :class="classList.noResults" v-html="localize(noResultsText)"></div>
-      </slot>
+              :id="ariaOptionId(option)"
+              :aria-selected="isSelected(option)"
+              :aria-label="ariaOptionLabel(localize(option[label]))"
+              role="option"
+            >
+              <slot name="option" :option="option" :isSelected="isSelected" :is-pointed="isPointed" :search="search">
+                <span>{{ localize(option[label]) }}</span>
+              </slot>
+            </li>
+          </template>
+        </ul>
 
-      <div v-if="infinite && hasMore" :class="classList.inifinite" ref="infiniteLoader">
-        <slot name="infinite">
-          <span :class="classList.inifiniteSpinner"></span>
+        <slot v-if="noOptions" name="nooptions">
+          <div :class="classList.noOptions" v-html="localize(noOptionsText)"></div>
         </slot>
-      </div>
 
-      <slot name="afterlist" :options="fo"></slot>
-    </div>
+        <slot v-if="noResults" name="noresults">
+          <div :class="classList.noResults" v-html="localize(noResultsText)"></div>
+        </slot>
+
+        <div v-if="infinite && hasMore" :class="classList.inifinite" ref="infiniteLoader">
+          <slot name="infinite">
+            <span :class="classList.inifiniteSpinner"></span>
+          </slot>
+        </div>
+
+        <slot name="afterlist" :options="fo"></slot>
+      </div>
+    </Teleport>
 
     <!-- Hacky input element to show HTML5 required warning -->
     <input v-if="required" :class="classList.fakeInput" tabindex="-1" :value="textValue" required/>
@@ -302,6 +306,7 @@
   import useScroll from './composables/useScroll' 
   import useA11y from './composables/useA11y' 
   import useI18n from './composables/useI18n'
+  import useRefs from './composables/useRefs'
 
   import resolveDeps from './utils/resolveDeps'
 
@@ -625,10 +630,21 @@
         type: Boolean,
         default: false,
       },
+      appendToBody: {
+        required: false,
+        type: Boolean,
+        default: false,
+      },
+      closeOnScroll: {
+        required: false,
+        type: Boolean,
+        default: false,
+      },
     },
     setup(props, context)
     { 
       return resolveDeps(props, context, [
+        useRefs,
         useI18n,
         useValue,
         usePointer,

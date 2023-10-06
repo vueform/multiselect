@@ -64,6 +64,8 @@ declare class Multiselect extends Vue {
   fallbackLocale?: string;
   searchFilter?: Function;
   allowAbsent?: object;
+  appendToBody?: boolean;
+  closeOnScroll?: boolean;
 
   $emit(eventName: 'change', e: {originalEvent: Event, value: any}): this;
   $emit(eventName: 'select', e: {originalEvent: Event, value: any, option: any}): this;
