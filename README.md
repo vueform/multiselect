@@ -89,6 +89,7 @@ Learn more: [https://vueform.com](https://vueform.com)
 | New option when not using tags | ✓ | - | ✓ |
 | New option validation | ✓ | ~ | - |
 | Infinite scroll | ✓ | ~ | ~ |
+| Append to body | ✓ | ~ | ✓ |
 | Object value support | ✓ | ✓ | - |
 | Accents/diacritics sensitivity | ✓ | ~ | ~ |
 | Search regex | ✓ | - | ~ |
@@ -130,10 +131,14 @@ Learn more: [https://vueform.com](https://vueform.com)
 
 ## Docs
 
+- [Sponsors](#sponsors)
+- [Comparison with other libraries](#comparison-with-other-libraries)
+- [Docs](#docs)
 - [Demo](#demo)
 - [Installation](#installation)
 - [Using with Vue 3](#using-with-vue-3)
 - [Using with Vue 2](#using-with-vue-2)
+    - [Using with \< Vue 2.7](#using-with--vue-27)
 - [Support](#support)
 - [Configuration](#configuration)
   - [Basic props](#basic-props)
@@ -157,8 +162,8 @@ Learn more: [https://vueform.com](https://vueform.com)
   - [Multiselect with custom label slot](#multiselect-with-custom-label-slot)
   - [Tags with custom tags slot](#tags-with-custom-tags-slot)
   - [Async options with default values](#async-options-with-default-values)
-  - [Default values that are not among the options using object: true](#default-values-that-are-not-among-the-options-using-object-true)
-  - [Default values that are not among the options using allowAbsent: true](#default-values-that-are-not-among-the-options-using-allowabsent-true)
+  - [Default values that are not among the options using `object: true`](#default-values-that-are-not-among-the-options-using-object-true)
+  - [Default values that are not among the options using `allowAbsent: true`](#default-values-that-are-not-among-the-options-using-allowabsent-true)
   - [Manage created tag asynchronously](#manage-created-tag-asynchronously)
   - [Load async options from API on open with infinite scroll](#load-async-options-from-api-on-open-with-infinite-scroll)
   - [Multiselect with localized texts](#multiselect-with-localized-texts)
@@ -267,9 +272,11 @@ Join our [Discord channel](https://discord.gg/WhX2nG6GTQ) or [open an issue](htt
 | **groupHideEmpty** | `{boolean} false` | Whether groups that have no `options` by default should be hidden. |
 | **required** | `{boolean} false` | Whether the HTML5 required attribute should be used for multiselect (using an invisible fake input). |
 | **infinite** | `{boolean} false` | Whether the actual option nodes should only be loaded on scroll. The `limit` option defines how many options are loaded initially and in each new batch. |
+| **appendToBody** | `{boolean} false` | **[Vue 3 only]** *(experimental)* Whether the dropdown list should be appended to `<body>` and positioned absolutely. |
+| **closeOnSearch** | `{boolean} false` | Closes the dropdown list on scrolling parent DOM / window when using `appendToBody: true`. |
 | **searchable** | `{boolean} false` | Whether the options should be searchable. |
 | **valueProp** | `{string} 'value'` | If you provide an array of objects as `options` this property should be used as the value of the option. |
-| **trackBy** | `{string} undefined` | The name of the property that should be searched when `searchable` is `true` and an array of objects are provided as `options`. If left `undefined` the `label` prop will be used instead. |
+| **trackBy** | `{string|array} undefined` | The name(s) of the properties that should be searched when `searchable` is `true` and an array of objects are provided as `options`. If left `undefined` the `label` prop will be used instead. |
 | **label** | `{string} 'label'` | If you provide an array of objects as `options` the value of this property will be displayed as selected option. |
 | **disabledProp** | `{string} 'disabled'` | If you provide an array of objects as `options` this property should be used to determine whether the option is disabled. |
 | **placeholder** | `{string} null` | The text that should be displayed before any option is selected. |
@@ -285,8 +292,8 @@ Join our [Discord channel](https://discord.gg/WhX2nG6GTQ) or [open an issue](htt
 | **caret** | `{boolean} true` | Whether should display the caret symbol on the right. |
 | **locale** | `{string} null` | The locale of the multiselect. If a locale is set labels might have an `object` value with different keys for different locales. |
 | **locale** | `{string} 'en'` | The fallback locale. |
-| **noOptionsText** | `{string|object} 'The list is empty'` | The text that should be displayed when options list is empty. It can be an object with different keys for different locales. |
-| **noResultsText** | `{string|object} 'No results found'` | The text that should be displayed when there are no search results. It can be an object with different keys for different locales. |
+| **noOptionsText** | `{string\|object} 'The list is empty'` | The text that should be displayed when options list is empty. It can be an object with different keys for different locales. |
+| **noResultsText** | `{string\|object} 'No results found'` | The text that should be displayed when there are no search results. It can be an object with different keys for different locales. |
 | **openDirection** | `{string} 'bottom'` | Whether the option list should be displayed above or below the multiselect. Possible values: `top\|bottom` |
 | **reverse** | `{boolean} false` | Whether the option list should be reversed. Only works with `groups: false`. |
 | **regex** | `{regex\|string} undefined` | The regex that search input should be tested against when `searchable: true`. |
@@ -539,7 +546,7 @@ Or on an instance level:
 
 ### Styling with Tailwind CSS
 
-To use `Multiselect` with Tailwind CSS first you need install `npm i -D mini-svg-data-url` and add background images to `tailwind.config.js`:
+To use `Multiselect` with Tailwind CSS first you need install `npm i -D mini-svg-data-uri` and add background images to `tailwind.config.js`:
 
 ``` js
 // tailwind.config.js

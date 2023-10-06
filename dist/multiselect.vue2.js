@@ -1,4 +1,4 @@
-import { toRefs, getCurrentInstance, ref, computed, watch, nextTick, onMounted } from 'vue';
+import { toRefs, getCurrentInstance, ref, computed, watch, nextTick, onMounted, onBeforeUnmount } from 'vue';
 
 function isNullish (val) {
   return [null, undefined].indexOf(val) !== -1
@@ -112,8 +112,6 @@ function useSearch (props, context, dep)
 
   const search = ref(null);
 
-  const input = ref(null);
-
   // =============== METHODS ==============
 
   const clearSearch = () => {
@@ -169,7 +167,6 @@ function useSearch (props, context, dep)
 
   return {
     search,
-    input,
     clearSearch,
     handleSearchInput,
     handleKeypress,
@@ -447,14 +444,14 @@ function useOptions (props, context, dep)
 
     return [{
       [valueProp.value]: search.value,
-      [trackBy.value]: search.value,
+      [trackBy.value[0]]: search.value,
       [label.value]: search.value,
       __CREATE__: true,
     }]
   });
 
   const trackBy = computed(() => {
-    return trackBy_.value || label.value
+    return trackBy_ && trackBy_.value ? (Array.isArray(trackBy_.value) ? trackBy_.value : [trackBy_.value]) : [label.value]
   });
 
   // no export
@@ -537,8 +534,8 @@ function useOptions (props, context, dep)
   };
 
   const clear = () => {
-    context.emit('clear', $this);
     update(nullValue.value);
+    context.emit('clear', $this);
   };
 
   const isSelected = (option) => {
@@ -771,10 +768,12 @@ function useOptions (props, context, dep)
   };
 
   // no export
-  const getOptionByTrackBy = (val, norm = true) => {
-    return eo.value.map(o => parseInt(o[trackBy.value]) == o[trackBy.value] ? parseInt(o[trackBy.value]) : o[trackBy.value]).indexOf(
-      parseInt(val) == val ? parseInt(val) : val
-    )
+  const getOptionByTrackBy = (val) => {
+    return eo.value.findIndex((o) => {
+      return trackBy.value.some((track) => {
+        return (parseInt(o[track]) == o[track] ? parseInt(o[track]) : o[track]) === (parseInt(val) == val ? parseInt(val) : val)
+      })
+    })
   };
 
   // no export
@@ -810,11 +809,13 @@ function useOptions (props, context, dep)
 
       if (!filter) {
         filter = (option, $this) => {
-          let target = normalize(localize(option[trackBy.value]), strict.value);
+          return trackBy.value.some(track => {
+            let target = normalize(localize(option[track]), strict.value);
 
-          return searchStart.value
-            ? target.startsWith(normalize(search.value, strict.value))
-            : target.indexOf(normalize(search.value, strict.value)) !== -1
+            return searchStart.value
+                ? target.startsWith(normalize(search.value, strict.value))
+                : target.indexOf(normalize(search.value, strict.value)) !== -1;
+          })
         };
       }
 
@@ -837,13 +838,13 @@ function useOptions (props, context, dep)
       uo = Object.keys(uo).map((key) => {
         let val = uo[key];
 
-        return { [valueProp.value]: key, [trackBy.value]: val, [label.value]: val}
+        return { [valueProp.value]: key, [trackBy.value[0]]: val, [label.value]: val}
       });
     }
 
     // Transforming an plain arrays to an array of objects
     uo = uo.map((val) => {
-      return typeof val === 'object' ? val : { [valueProp.value]: val, [trackBy.value]: val, [label.value]: val}
+      return typeof val === 'object' ? val : { [valueProp.value]: val, [trackBy.value[0]]: val, [label.value]: val}
     });
 
     return uo
@@ -935,11 +936,11 @@ function useOptions (props, context, dep)
     return mode.value === 'single' ? getOption(val) || (allowAbsent.value ? {
       [label.value]: val,
       [valueProp.value]: val,
-      [trackBy.value]: val,
+      [trackBy.value[0]]: val,
     } : {}) : val.filter(v => !!getOption(v) || allowAbsent.value).map(v => getOption(v) || {
       [label.value]: v,
       [valueProp.value]: v,
-      [trackBy.value]: v,
+      [trackBy.value[0]]: v,
     })
   };
 
@@ -1358,13 +1359,53 @@ function usePointer (props, context, dep)
 
 function useDropdown (props, context, dep)
 {
-  const { disabled } = toRefs(props);
+  const { disabled, appendToBody, openDirection, closeOnScroll } = toRefs(props);
 
   const $this = getCurrentInstance().proxy;
+
+  // ============ DEPENDENCIES ============
+
+  const multiselect = dep.multiselect;
+  const dropdown = dep.dropdown;
+  const iv = dep.iv;
 
   // ================ DATA ================
 
   const isOpen = ref(false);
+  const updates = ref(0);
+  
+  // ============== COMPUTED ==============
+
+  /* istanbul ignore next: UI feature */
+  const dropdownStyles = computed(() => {
+    if (!appendToBody.value || typeof window === 'undefined' || !isOpen.value || !dropdown.value || updates.value === -1) {
+      return
+    }
+
+    let msPos = multiselect.value.getBoundingClientRect();
+    let maxHeight = window.getComputedStyle(dropdown.value).maxHeight;
+    let spaceAbove = msPos.y;
+    let spaceBelow = window.innerHeight - (msPos.y + msPos.height);
+
+    maxHeight = maxHeight.match(/%/)
+      ? (parseInt(maxHeight.replace('%')) / 100) * window.innerHeight
+      : parseInt(maxHeight.replace('px', ''));
+
+    return {
+      position: 'absolute',
+      zIndex: 9999,
+      transform: openDirection.value === 'top' ? `translateY(-100%)` : 'none',
+      maxHeight: openDirection.value === 'top' ? (
+        maxHeight > spaceAbove ? `${spaceAbove}px` : maxHeight
+      ) : (
+        maxHeight > spaceBelow ? `${spaceBelow}px` : undefined
+      ),
+      left: `${msPos.x}px`,
+      right: `${window.innerWidth - (msPos.x + msPos.width)}px`,
+      top: openDirection.value === 'top' ? `${msPos.y}px` : `${msPos.y + msPos.height}px`,
+      bottom: 'auto',
+    }
+  });
 
   // =============== METHODS ==============
 
@@ -1386,10 +1427,118 @@ function useDropdown (props, context, dep)
     context.emit('close', $this);
   };
 
+  /* istanbul ignore next: UI feature */
+  const getAllScrollableParents = (element) => {
+    const scrollableParents = [document];
+
+    function checkScrollable(element) {
+      if (!element || !element.parentNode) {
+        return
+      }
+
+      const computedStyle = window.getComputedStyle(element);
+      const overflowY = computedStyle.overflowY;
+
+      if (overflowY === 'scroll' || overflowY === 'auto') {
+        scrollableParents.push(element);
+      }
+
+      checkScrollable(element.parentNode);
+    }
+
+    checkScrollable(element);
+
+    return scrollableParents
+  };
+
+  /* istanbul ignore next: UI feature */
+  const updatePosition = () => {
+    updates.value++;
+  };
+
+  /* istanbul ignore next: UI feature */
+  const handleScroll = () => {
+    if (!isOpen.value) {
+      return
+    }
+
+    if (closeOnScroll.value) {
+      close();
+    }
+
+    updatePosition();
+  };
+
+  /* istanbul ignore next: UI feature */
+  const handleResize = () => {
+    if (!isOpen.value) {
+      return
+    }
+
+    updatePosition();
+  };
+
+  /* istanbul ignore next: UI feature */
+  watch(iv, () => {
+    if (!appendToBody.value) {
+      return
+    }
+
+    updatePosition();
+  }, { flush: 'post' });
+
+  /* istanbul ignore next: UI feature */
+  onMounted(() => {
+    if (!appendToBody.value) {
+      return
+    }
+
+    getAllScrollableParents(multiselect.value).forEach((el) => {
+      el.addEventListener('scroll', handleScroll);
+    });
+
+    window.addEventListener('resize', handleResize);
+  });
+
+  /* istanbul ignore next: UI feature */
+  onBeforeUnmount(() => {
+    if (!appendToBody.value) {
+      return
+    }
+
+    getAllScrollableParents(multiselect.value).forEach((el) => {
+      el.removeEventListener('scroll', handleScroll);
+    });
+
+    window.removeEventListener('resize', handleResize);
+  });
+
+  /* istanbul ignore next: UI feature */
+  watch(appendToBody, (n, o) => {
+    getAllScrollableParents(multiselect.value).forEach((el) => {
+      if (o && !n) {
+        el.removeEventListener('scroll', handleScroll);
+      }
+      
+      if (n) {
+        el.addEventListener('scroll', handleScroll);
+      }
+    });
+
+    if (o && !n) {
+      window.removeEventListener('resize', handleResize);
+    }
+
+    if (n) {
+      window.addEventListener('resize', handleResize);
+    }
+  });
+
   return {
     isOpen,
     open,
     close,
+    dropdownStyles,
   }
 }
 
@@ -1404,14 +1553,10 @@ function useMultiselect (props, context, dep)
   const close = dep.close;
   const clearSearch = dep.clearSearch;
   const isOpen = dep.isOpen;
+  const wrapper = dep.wrapper;
+  const tags = dep.tags;
 
   // ================ DATA ================
-
-  const multiselect = ref(null);
-  
-  const wrapper = ref(null);
-
-  const tags = ref(null);
 
   const isActive = ref(false);
 
@@ -1490,7 +1635,9 @@ function useMultiselect (props, context, dep)
       setTimeout(() => {
         deactivate();
       }, 0);
-    } else if (document.activeElement.isEqualNode(wrapper.value) && !isOpen.value) {
+    } else if (!isOpen.value 
+      && (document.activeElement.isEqualNode(wrapper.value)
+        || document.activeElement.isEqualNode(input.value))) {
       activate();    
     }
 
@@ -1500,9 +1647,6 @@ function useMultiselect (props, context, dep)
   };
 
   return {
-    multiselect,
-    wrapper,
-    tags,
     tabindex,
     isActive,
     mouseClicked,
@@ -2245,6 +2389,29 @@ function useI18n (props, context, dep)
   }
 }
 
+function useRefs (props, context, dep)
+{
+  // ================ DATA ================
+
+  const multiselect = ref(null);
+  
+  const wrapper = ref(null);
+
+  const tags = ref(null);
+
+  const input = ref(null);
+
+  const dropdown = ref(null);
+
+  return {
+    multiselect,
+    wrapper,
+    tags,
+    input,
+    dropdown,
+  }
+}
+
 function resolveDeps (props, context, features, deps = {}) {
   features.forEach((composable) => {
     /* istanbul ignore else */
@@ -2301,7 +2468,7 @@ function resolveDeps (props, context, features, deps = {}) {
         default: 'label',
       },
       trackBy: {
-        type: String,
+        type: [String, Array],
         required: false,
         default: undefined,
       },
@@ -2582,10 +2749,21 @@ function resolveDeps (props, context, features, deps = {}) {
         type: Boolean,
         default: false,
       },
+      appendToBody: {
+        required: false,
+        type: Boolean,
+        default: false,
+      },
+      closeOnScroll: {
+        required: false,
+        type: Boolean,
+        default: false,
+      },
     },
     setup(props, context)
     { 
       return resolveDeps(props, context, [
+        useRefs,
         useI18n,
         useValue,
         usePointer$1,
@@ -2600,6 +2778,17 @@ function resolveDeps (props, context, features, deps = {}) {
         useClasses,
         useA11y,
       ])
+    },
+    beforeMount() {
+      if (this.$root.constructor?.version?.match(/^2\./) || this.vueVersionMs === 2) {
+        if (!this.$options.components.Teleport) {
+          this.$options.components.Teleport = {
+            render() {
+              return this.$slots.default ? this.$slots.default[0] : null
+            }
+          };
+        }
+      }
     }
   };
 
@@ -3037,238 +3226,258 @@ var __vue_render__ = function () {
         2
       ),
       _vm._v(" "),
-      _c(
-        "div",
-        { class: _vm.classList.dropdown, attrs: { tabindex: "-1" } },
-        [
-          _vm._t("beforelist", null, { options: _vm.fo }),
-          _vm._v(" "),
-          _c(
-            "ul",
-            {
-              class: _vm.classList.options,
-              attrs: { id: _vm.ariaControls, role: "listbox" },
-            },
-            [
-              _vm.groups
-                ? _vm._l(_vm.fg, function (group, i, key) {
-                    return _c(
-                      "li",
-                      {
-                        key: key,
-                        class: _vm.classList.group,
-                        attrs: {
-                          id: _vm.ariaGroupId(group),
-                          "aria-label": _vm.ariaGroupLabel(
-                            _vm.localize(group[_vm.groupLabel])
-                          ),
-                          "aria-selected": _vm.isSelected(group),
-                          role: "option",
+      _c("Teleport", { attrs: { to: "body", disabled: !_vm.appendToBody } }, [
+        _c(
+          "div",
+          {
+            ref: "dropdown",
+            class: _vm.classList.dropdown,
+            style: _vm.dropdownStyles,
+            attrs: { tabindex: "-1" },
+          },
+          [
+            _vm._t("beforelist", null, { options: _vm.fo }),
+            _vm._v(" "),
+            _c(
+              "ul",
+              {
+                class: _vm.classList.options,
+                attrs: { id: _vm.ariaControls, role: "listbox" },
+              },
+              [
+                _vm.groups
+                  ? _vm._l(_vm.fg, function (group, i, key) {
+                      return _c(
+                        "li",
+                        {
+                          key: key,
+                          class: _vm.classList.group,
+                          attrs: {
+                            id: _vm.ariaGroupId(group),
+                            "aria-label": _vm.ariaGroupLabel(
+                              _vm.localize(group[_vm.groupLabel])
+                            ),
+                            "aria-selected": _vm.isSelected(group),
+                            role: "option",
+                          },
                         },
-                      },
-                      [
-                        !group.__CREATE__
-                          ? _c(
-                              "div",
-                              {
-                                class: _vm.classList.groupLabel(group),
-                                attrs: { "data-pointed": _vm.isPointed(group) },
-                                on: {
-                                  mouseenter: function ($event) {
-                                    return _vm.setPointer(group, i)
+                        [
+                          !group.__CREATE__
+                            ? _c(
+                                "div",
+                                {
+                                  class: _vm.classList.groupLabel(group),
+                                  attrs: {
+                                    "data-pointed": _vm.isPointed(group),
                                   },
-                                  click: function ($event) {
-                                    return _vm.handleGroupClick(group)
+                                  on: {
+                                    mouseenter: function ($event) {
+                                      return _vm.setPointer(group, i)
+                                    },
+                                    mousedown: function ($event) {
+                                      $event.preventDefault();
+                                      return _vm.handleGroupClick(group)
+                                    },
                                   },
                                 },
-                              },
-                              [
-                                _vm._t(
-                                  "grouplabel",
-                                  function () {
-                                    return [
-                                      _c("span", {
-                                        domProps: {
-                                          innerHTML: _vm._s(
-                                            _vm.localize(group[_vm.groupLabel])
-                                          ),
-                                        },
-                                      }),
-                                    ]
-                                  },
-                                  {
-                                    group: group,
-                                    isSelected: _vm.isSelected,
-                                    isPointed: _vm.isPointed,
-                                  }
+                                [
+                                  _vm._t(
+                                    "grouplabel",
+                                    function () {
+                                      return [
+                                        _c("span", {
+                                          domProps: {
+                                            innerHTML: _vm._s(
+                                              _vm.localize(
+                                                group[_vm.groupLabel]
+                                              )
+                                            ),
+                                          },
+                                        }),
+                                      ]
+                                    },
+                                    {
+                                      group: group,
+                                      isSelected: _vm.isSelected,
+                                      isPointed: _vm.isPointed,
+                                    }
+                                  ),
+                                ],
+                                2
+                              )
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _c(
+                            "ul",
+                            {
+                              class: _vm.classList.groupOptions,
+                              attrs: {
+                                "aria-label": _vm.ariaGroupLabel(
+                                  _vm.localize(group[_vm.groupLabel])
                                 ),
-                              ],
-                              2
-                            )
-                          : _vm._e(),
-                        _vm._v(" "),
-                        _c(
-                          "ul",
-                          {
-                            class: _vm.classList.groupOptions,
-                            attrs: {
-                              "aria-label": _vm.ariaGroupLabel(
-                                _vm.localize(group[_vm.groupLabel])
-                              ),
-                              role: "group",
+                                role: "group",
+                              },
+                            },
+                            _vm._l(
+                              group.__VISIBLE__,
+                              function (option, i, key) {
+                                return _c(
+                                  "li",
+                                  {
+                                    key: key,
+                                    class: _vm.classList.option(option, group),
+                                    attrs: {
+                                      "data-pointed": _vm.isPointed(option),
+                                      "data-selected":
+                                        _vm.isSelected(option) || undefined,
+                                      id: _vm.ariaOptionId(option),
+                                      "aria-selected": _vm.isSelected(option),
+                                      "aria-label": _vm.ariaOptionLabel(
+                                        _vm.localize(option[_vm.label])
+                                      ),
+                                      role: "option",
+                                    },
+                                    on: {
+                                      mouseenter: function ($event) {
+                                        return _vm.setPointer(option)
+                                      },
+                                      mousedown: function ($event) {
+                                        $event.preventDefault();
+                                        return _vm.handleOptionClick(option)
+                                      },
+                                    },
+                                  },
+                                  [
+                                    _vm._t(
+                                      "option",
+                                      function () {
+                                        return [
+                                          _c("span", [
+                                            _vm._v(
+                                              _vm._s(
+                                                _vm.localize(option[_vm.label])
+                                              )
+                                            ),
+                                          ]),
+                                        ]
+                                      },
+                                      {
+                                        option: option,
+                                        isSelected: _vm.isSelected,
+                                        isPointed: _vm.isPointed,
+                                        search: _vm.search,
+                                      }
+                                    ),
+                                  ],
+                                  2
+                                )
+                              }
+                            ),
+                            0
+                          ),
+                        ]
+                      )
+                    })
+                  : _vm._l(_vm.fo, function (option, i, key) {
+                      return _c(
+                        "li",
+                        {
+                          key: key,
+                          class: _vm.classList.option(option),
+                          attrs: {
+                            "data-pointed": _vm.isPointed(option),
+                            "data-selected":
+                              _vm.isSelected(option) || undefined,
+                            id: _vm.ariaOptionId(option),
+                            "aria-selected": _vm.isSelected(option),
+                            "aria-label": _vm.ariaOptionLabel(
+                              _vm.localize(option[_vm.label])
+                            ),
+                            role: "option",
+                          },
+                          on: {
+                            mouseenter: function ($event) {
+                              return _vm.setPointer(option)
+                            },
+                            mousedown: function ($event) {
+                              $event.preventDefault();
+                              return _vm.handleOptionClick(option)
                             },
                           },
-                          _vm._l(group.__VISIBLE__, function (option, i, key) {
-                            return _c(
-                              "li",
-                              {
-                                key: key,
-                                class: _vm.classList.option(option, group),
-                                attrs: {
-                                  "data-pointed": _vm.isPointed(option),
-                                  "data-selected":
-                                    _vm.isSelected(option) || undefined,
-                                  id: _vm.ariaOptionId(option),
-                                  "aria-selected": _vm.isSelected(option),
-                                  "aria-label": _vm.ariaOptionLabel(
-                                    _vm.localize(option[_vm.label])
+                        },
+                        [
+                          _vm._t(
+                            "option",
+                            function () {
+                              return [
+                                _c("span", [
+                                  _vm._v(
+                                    _vm._s(_vm.localize(option[_vm.label]))
                                   ),
-                                  role: "option",
-                                },
-                                on: {
-                                  mouseenter: function ($event) {
-                                    return _vm.setPointer(option)
-                                  },
-                                  click: function ($event) {
-                                    return _vm.handleOptionClick(option)
-                                  },
-                                },
-                              },
-                              [
-                                _vm._t(
-                                  "option",
-                                  function () {
-                                    return [
-                                      _c("span", [
-                                        _vm._v(
-                                          _vm._s(
-                                            _vm.localize(option[_vm.label])
-                                          )
-                                        ),
-                                      ]),
-                                    ]
-                                  },
-                                  {
-                                    option: option,
-                                    isSelected: _vm.isSelected,
-                                    isPointed: _vm.isPointed,
-                                    search: _vm.search,
-                                  }
-                                ),
-                              ],
-                              2
-                            )
-                          }),
-                          0
-                        ),
-                      ]
-                    )
-                  })
-                : _vm._l(_vm.fo, function (option, i, key) {
-                    return _c(
-                      "li",
-                      {
-                        key: key,
-                        class: _vm.classList.option(option),
-                        attrs: {
-                          "data-pointed": _vm.isPointed(option),
-                          "data-selected": _vm.isSelected(option) || undefined,
-                          id: _vm.ariaOptionId(option),
-                          "aria-selected": _vm.isSelected(option),
-                          "aria-label": _vm.ariaOptionLabel(
-                            _vm.localize(option[_vm.label])
+                                ]),
+                              ]
+                            },
+                            {
+                              option: option,
+                              isSelected: _vm.isSelected,
+                              isPointed: _vm.isPointed,
+                              search: _vm.search,
+                            }
                           ),
-                          role: "option",
-                        },
-                        on: {
-                          mouseenter: function ($event) {
-                            return _vm.setPointer(option)
-                          },
-                          click: function ($event) {
-                            return _vm.handleOptionClick(option)
-                          },
-                        },
+                        ],
+                        2
+                      )
+                    }),
+              ],
+              2
+            ),
+            _vm._v(" "),
+            _vm.noOptions
+              ? _vm._t("nooptions", function () {
+                  return [
+                    _c("div", {
+                      class: _vm.classList.noOptions,
+                      domProps: {
+                        innerHTML: _vm._s(_vm.localize(_vm.noOptionsText)),
                       },
-                      [
-                        _vm._t(
-                          "option",
-                          function () {
-                            return [
-                              _c("span", [
-                                _vm._v(_vm._s(_vm.localize(option[_vm.label]))),
-                              ]),
-                            ]
-                          },
-                          {
-                            option: option,
-                            isSelected: _vm.isSelected,
-                            isPointed: _vm.isPointed,
-                            search: _vm.search,
-                          }
-                        ),
-                      ],
-                      2
-                    )
-                  }),
-            ],
-            2
-          ),
-          _vm._v(" "),
-          _vm.noOptions
-            ? _vm._t("nooptions", function () {
-                return [
-                  _c("div", {
-                    class: _vm.classList.noOptions,
-                    domProps: {
-                      innerHTML: _vm._s(_vm.localize(_vm.noOptionsText)),
-                    },
-                  }),
-                ]
-              })
-            : _vm._e(),
-          _vm._v(" "),
-          _vm.noResults
-            ? _vm._t("noresults", function () {
-                return [
-                  _c("div", {
-                    class: _vm.classList.noResults,
-                    domProps: {
-                      innerHTML: _vm._s(_vm.localize(_vm.noResultsText)),
-                    },
-                  }),
-                ]
-              })
-            : _vm._e(),
-          _vm._v(" "),
-          _vm.infinite && _vm.hasMore
-            ? _c(
-                "div",
-                { ref: "infiniteLoader", class: _vm.classList.inifinite },
-                [
-                  _vm._t("infinite", function () {
-                    return [
-                      _c("span", { class: _vm.classList.inifiniteSpinner }),
-                    ]
-                  }),
-                ],
-                2
-              )
-            : _vm._e(),
-          _vm._v(" "),
-          _vm._t("afterlist", null, { options: _vm.fo }),
-        ],
-        2
-      ),
+                    }),
+                  ]
+                })
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.noResults
+              ? _vm._t("noresults", function () {
+                  return [
+                    _c("div", {
+                      class: _vm.classList.noResults,
+                      domProps: {
+                        innerHTML: _vm._s(_vm.localize(_vm.noResultsText)),
+                      },
+                    }),
+                  ]
+                })
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.infinite && _vm.hasMore
+              ? _c(
+                  "div",
+                  { ref: "infiniteLoader", class: _vm.classList.inifinite },
+                  [
+                    _vm._t("infinite", function () {
+                      return [
+                        _c("span", { class: _vm.classList.inifiniteSpinner }),
+                      ]
+                    }),
+                  ],
+                  2
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm._t("afterlist", null, { options: _vm.fo }),
+          ],
+          2
+        ),
+      ]),
       _vm._v(" "),
       _vm.required
         ? _c("input", {

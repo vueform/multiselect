@@ -15,8 +15,6 @@ export default function useSearch (props, context, dep)
 
   const search = ref(null)
 
-  const input = ref(null)
-
   // =============== METHODS ==============
 
   const clearSearch = () => {
@@ -72,7 +70,6 @@ export default function useSearch (props, context, dep)
 
   return {
     search,
-    input,
     clearSearch,
     handleSearchInput,
     handleKeypress,

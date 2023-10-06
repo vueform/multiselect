@@ -4,6 +4,16 @@ import Multiselect from './../../../dist/multiselect.vue2'
 export const createSelect = (props = {}, options = {}) => {
   const localVue = createLocalVue()
 
+  localVue.use({
+    install(vue) {
+      vue.mixin({
+        data: () => ({
+          vueVersionMs: 2
+        })
+      })
+    }
+  })
+
   let config = {
     localVue,
   }

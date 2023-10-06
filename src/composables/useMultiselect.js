@@ -11,14 +11,10 @@ export default function useMultiselect (props, context, dep)
   const close = dep.close
   const clearSearch = dep.clearSearch
   const isOpen = dep.isOpen
+  const wrapper = dep.wrapper
+  const tags = dep.tags
 
   // ================ DATA ================
-
-  const multiselect = ref(null)
-  
-  const wrapper = ref(null)
-
-  const tags = ref(null)
 
   const isActive = ref(false)
 
@@ -97,7 +93,9 @@ export default function useMultiselect (props, context, dep)
       setTimeout(() => {
         deactivate()
       }, 0)
-    } else if (document.activeElement.isEqualNode(wrapper.value) && !isOpen.value) {
+    } else if (!isOpen.value 
+      && (document.activeElement.isEqualNode(wrapper.value)
+        || document.activeElement.isEqualNode(input.value))) {
       activate()    
     }
 
@@ -107,9 +105,6 @@ export default function useMultiselect (props, context, dep)
   }
 
   return {
-    multiselect,
-    wrapper,
-    tags,
     tabindex,
     isActive,
     mouseClicked,

@@ -217,14 +217,14 @@ export default function useOptions (props, context, dep)
 
     return [{
       [valueProp.value]: search.value,
-      [trackBy.value]: search.value,
+      [trackBy.value[0]]: search.value,
       [label.value]: search.value,
       __CREATE__: true,
     }]
   })
 
   const trackBy = computed(() => {
-    return trackBy_.value || label.value
+    return trackBy_.value ? (Array.isArray(trackBy_.value) ? trackBy_.value : [trackBy_.value]) : [label.value]
   })
 
   // no export
@@ -307,8 +307,8 @@ export default function useOptions (props, context, dep)
   }
 
   const clear = () => {
-    context.emit('clear', $this)
     update(nullValue.value)
+    context.emit('clear', $this)
   }
 
   const isSelected = (option) => {
@@ -541,10 +541,12 @@ export default function useOptions (props, context, dep)
   }
 
   // no export
-  const getOptionByTrackBy = (val, norm = true) => {
-    return eo.value.map(o => parseInt(o[trackBy.value]) == o[trackBy.value] ? parseInt(o[trackBy.value]) : o[trackBy.value]).indexOf(
-      parseInt(val) == val ? parseInt(val) : val
-    )
+  const getOptionByTrackBy = (val) => {
+    return eo.value.findIndex((o) => {
+      return trackBy.value.some((track) => {
+        return (parseInt(o[track]) == o[track] ? parseInt(o[track]) : o[track]) === (parseInt(val) == val ? parseInt(val) : val)
+      })
+    })
   }
 
   // no export
@@ -580,11 +582,13 @@ export default function useOptions (props, context, dep)
 
       if (!filter) {
         filter = (option, $this) => {
-          let target = normalize(localize(option[trackBy.value]), strict.value)
+          return trackBy.value.some(track => {
+            let target = normalize(localize(option[track]), strict.value);
 
-          return searchStart.value
-            ? target.startsWith(normalize(search.value, strict.value))
-            : target.indexOf(normalize(search.value, strict.value)) !== -1
+            return searchStart.value
+                ? target.startsWith(normalize(search.value, strict.value))
+                : target.indexOf(normalize(search.value, strict.value)) !== -1;
+          })
         }
       }
 
@@ -607,13 +611,13 @@ export default function useOptions (props, context, dep)
       uo = Object.keys(uo).map((key) => {
         let val = uo[key]
 
-        return { [valueProp.value]: key, [trackBy.value]: val, [label.value]: val}
+        return { [valueProp.value]: key, [trackBy.value[0]]: val, [label.value]: val}
       })
     }
 
     // Transforming an plain arrays to an array of objects
     uo = uo.map((val) => {
-      return typeof val === 'object' ? val : { [valueProp.value]: val, [trackBy.value]: val, [label.value]: val}
+      return typeof val === 'object' ? val : { [valueProp.value]: val, [trackBy.value[0]]: val, [label.value]: val}
     })
 
     return uo
@@ -705,11 +709,11 @@ export default function useOptions (props, context, dep)
     return mode.value === 'single' ? getOption(val) || (allowAbsent.value ? {
       [label.value]: val,
       [valueProp.value]: val,
-      [trackBy.value]: val,
+      [trackBy.value[0]]: val,
     } : {}) : val.filter(v => !!getOption(v) || allowAbsent.value).map(v => getOption(v) || {
       [label.value]: v,
       [valueProp.value]: v,
-      [trackBy.value]: v,
+      [trackBy.value[0]]: v,
     })
   }
 
