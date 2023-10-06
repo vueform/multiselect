@@ -67,7 +67,7 @@
     "jest": "^27.3.1",
     "jest-environment-jsdom-sixteen": "^1.0.3",
     "node-sass": "^7.0.0",
-    "postcss": "^8.2.1",
+    "postcss": "^8.4.31",
     "rollup": "^2.34.2",
     "rollup-plugin-postcss": "^4.0.0",
     "rollup-plugin-terser": "^7.0.2",
