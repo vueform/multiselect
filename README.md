@@ -546,7 +546,7 @@ Or on an instance level:
 
 ### Styling with Tailwind CSS
 
-To use `Multiselect` with Tailwind CSS first you need install `npm i -D mini-svg-data-url` and add background images to `tailwind.config.js`:
+To use `Multiselect` with Tailwind CSS first you need install `npm i -D mini-svg-data-uri` and add background images to `tailwind.config.js`:
 
 ``` js
 // tailwind.config.js
