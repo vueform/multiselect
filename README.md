@@ -382,11 +382,11 @@ mounted() {
 | Event | Attributes | Description |
 | --- | --- | --- |
 | **@change** | `value, select$` | Emitted after the value is changed. |
-| **@close** | `select$` | Emitted after closing the option list. |
-| **@deselect** | `option, select$` | Emitted after an option is deselected or a tag is removed. |
+| **@select** | `value, option, select$` | Emitted after an option or tag is selected. |
+| **@deselect** | `value, option, select$` | Emitted after an option is deselected or a tag is removed. |
 | **@open** | `select$` | Emitted after opening the option list. |
+| **@close** | `select$` | Emitted after closing the option list. |
 | **@search-change** | `query, select$` | Emitted after a character is typed. |
-| **@select** | `option, select$` | Emitted after an option or tag is selected. |
 | **@tag** | `query, select$` | **Deprecated 2.3.0: use `@create` instead**. Emitted after enter is hit when a new tag is being created. |
 | **@option** | `query, select$` | **Deprecated 2.6.0: use `@create` instead**. Emitted after enter is hit when a new option is being created. |
 | **@create** | `query, select$` | Emitted after enter is hit when a new option is being created. |

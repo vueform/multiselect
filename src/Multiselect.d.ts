@@ -104,17 +104,17 @@ declare class Multiselect implements ReturnType<typeof defineComponent> {
   appendToBody?: boolean;
   closeOnScroll?: boolean;
 
-  $emit(eventName: 'change', e: {originalEvent: Event, value: any}): this | void;
-  $emit(eventName: 'select', e: {originalEvent: Event, value: any, option: any}): this | void;
-  $emit(eventName: 'deselect', e: {originalEvent: Event, value: any, option: any}): this | void;
-  $emit(eventName: 'remove', e: {originalEvent: Event, value: any, option: any}): this | void;
-  $emit(eventName: 'search-change', e: {originalEvent: Event, query: string}): this | void;
-  $emit(eventName: 'tag', e: {originalEvent: Event, query: string}): this | void;
-  $emit(eventName: 'option', e: {originalEvent: Event, query: string}): this | void;
-  $emit(eventName: 'create', e: {originalEvent: Event, query: string}): this | void;
-  $emit(eventName: 'paste', e: {originalEvent: Event}): this | void;
-  $emit(eventName: 'keydown', e: {originalEvent: Event}): this | void;
-  $emit(eventName: 'keyup', e: {originalEvent: Event}): this | void;
+  $emit(eventName: 'change', value: any, instance: this): this | void;
+  $emit(eventName: 'select', value: any, option: any, instance:this): this | void;
+  $emit(eventName: 'deselect', value: any, option: any, instance:this): this | void;
+  $emit(eventName: 'remove', value: any, option: any, instance:this): this | void;
+  $emit(eventName: 'search-change', query: string, instance: this): this | void;
+  $emit(eventName: 'tag', query: string, instance: this): this | void;
+  $emit(eventName: 'option', query: string, instance: this): this | void;
+  $emit(eventName: 'create', query: string, instance: this): this | void;
+  $emit(eventName: 'paste', e: Event, instance: this): this | void;
+  $emit(eventName: 'keydown', e: Event, instance: this): this | void;
+  $emit(eventName: 'keyup', e: Event, instance: this): this | void;
   $emit(eventName: 'open'): this | void;
   $emit(eventName: 'close'): this | void;
   $emit(eventName: 'clear'): this | void;
