@@ -77,7 +77,9 @@ function useValue (props, context)
 
   /* istanbul ignore next */
   // externalValue
-  const ev = modelValue && modelValue.value !== undefined ? modelValue : value;
+  const ev = computed(() => {
+    return modelValue && modelValue.value !== undefined ? modelValue.value : value.value
+  });
 
   const plainValue = computed(() => {
     return mode.value === 'single' ? iv.value[valueProp.value] : iv.value.map(v=>v[valueProp.value])
@@ -451,7 +453,7 @@ function useOptions (props, context, dep)
   });
 
   const trackBy = computed(() => {
-    return trackBy_ && trackBy_.value ? (Array.isArray(trackBy_.value) ? trackBy_.value : [trackBy_.value]) : [label.value]
+    return trackBy_.value ? (Array.isArray(trackBy_.value) ? trackBy_.value : [trackBy_.value]) : [label.value]
   });
 
   // no export
