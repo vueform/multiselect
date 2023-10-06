@@ -810,18 +810,20 @@ function useOptions (props, context, dep)
       let filter = searchFilter.value;
 
       if (!filter) {
-        filter = (option, $this) => {
+        filter = (option, query, $this) => {
           return trackBy.value.some(track => {
             let target = normalize(localize(option[track]), strict.value);
 
             return searchStart.value
-                ? target.startsWith(normalize(search.value, strict.value))
-                : target.indexOf(normalize(search.value, strict.value)) !== -1;
+                ? target.startsWith(normalize(query, strict.value))
+                : target.indexOf(normalize(query, strict.value)) !== -1;
           })
         };
       }
 
-      fo = fo.filter(filter);
+      fo = fo.filter((o) => {
+        return filter(o, search.value, $this)
+      });
     }
 
     if (hideSelected.value && excludeHideSelected) {

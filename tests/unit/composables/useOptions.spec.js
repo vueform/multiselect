@@ -2988,19 +2988,19 @@ describe('useOptions', () => {
     it('should use searchFilter for search when defined', () => {
       let select = createSelect({
         value: null,
-        options: [1,2,3],
+        options: ['abc','bca','cab'],
         searchable: true,
-        searchFilter(option) {
-          return option.value == 2
+        searchFilter(option, query) {
+          return option.value.endsWith(query)
         }
       })
 
-      select.vm.search = 'aaa'
+      select.vm.search = 'a'
 
       expect(select.vm.fo).toStrictEqual([
         {
-          label: 2,
-          value: 2,
+          label: 'bca',
+          value: 'bca',
         }
       ])
     })
