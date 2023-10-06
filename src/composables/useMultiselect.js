@@ -93,7 +93,9 @@ export default function useMultiselect (props, context, dep)
       setTimeout(() => {
         deactivate()
       }, 0)
-    } else if (document.activeElement.isEqualNode(wrapper.value) && !isOpen.value) {
+    } else if (!isOpen.value 
+      && (document.activeElement.isEqualNode(wrapper.value)
+        || document.activeElement.isEqualNode(input.value))) {
       activate()    
     }
 
