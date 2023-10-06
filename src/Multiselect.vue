@@ -349,7 +349,7 @@
         default: 'label',
       },
       trackBy: {
-        type: String,
+        type: [String, Array],
         required: false,
         default: undefined,
       },

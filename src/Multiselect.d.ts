@@ -44,7 +44,7 @@ declare class Multiselect implements ReturnType<typeof defineComponent> {
   options?: any[];
   searchable?: boolean;
   valueProp?: string;
-  trackBy?: string;
+  trackBy?: string | string[];
   label?: string;
   placeholder?: string | null;
   multipleLabel?: any; // Function
