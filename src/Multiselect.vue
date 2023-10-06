@@ -659,6 +659,17 @@
         useClasses,
         useA11y,
       ])
+    },
+    beforeMount() {
+      if (this.$root.constructor?.version?.match(/^2\./) || this.vueVersionMs === 2) {
+        if (!this.$options.components.Teleport) {
+          this.$options.components.Teleport = {
+            render() {
+              return this.$slots.default ? this.$slots.default[0] : null
+            }
+          }
+        }
+      }
     }
   }
 </script>
