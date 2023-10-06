@@ -1,4 +1,4 @@
-import { toRefs, getCurrentInstance, ref, computed, watch, nextTick, onMounted, openBlock, createElementBlock, normalizeClass, createElementVNode, mergeProps, createCommentVNode, withModifiers, Fragment, renderList, renderSlot, withKeys, createTextVNode, toDisplayString } from 'vue';
+import { toRefs, getCurrentInstance, ref, computed, watch, nextTick, onMounted, onBeforeUnmount, openBlock, createElementBlock, normalizeClass, createElementVNode, mergeProps, createCommentVNode, withModifiers, Fragment, renderList, renderSlot, withKeys, createTextVNode, toDisplayString, createBlock, Teleport, normalizeStyle } from 'vue';
 
 function isNullish (val) {
   return [null, undefined].indexOf(val) !== -1
@@ -112,8 +112,6 @@ function useSearch (props, context, dep)
 
   const search = ref(null);
 
-  const input = ref(null);
-
   // =============== METHODS ==============
 
   const clearSearch = () => {
@@ -169,7 +167,6 @@ function useSearch (props, context, dep)
 
   return {
     search,
-    input,
     clearSearch,
     handleSearchInput,
     handleKeypress,
@@ -447,14 +444,14 @@ function useOptions (props, context, dep)
 
     return [{
       [valueProp.value]: search.value,
-      [trackBy.value]: search.value,
+      [trackBy.value[0]]: search.value,
       [label.value]: search.value,
       __CREATE__: true,
     }]
   });
 
   const trackBy = computed(() => {
-    return trackBy_.value || label.value
+    return trackBy_ && trackBy_.value ? (Array.isArray(trackBy_.value) ? trackBy_.value : [trackBy_.value]) : [label.value]
   });
 
   // no export
@@ -537,8 +534,8 @@ function useOptions (props, context, dep)
   };
 
   const clear = () => {
-    context.emit('clear', $this);
     update(nullValue.value);
+    context.emit('clear', $this);
   };
 
   const isSelected = (option) => {
@@ -771,10 +768,12 @@ function useOptions (props, context, dep)
   };
 
   // no export
-  const getOptionByTrackBy = (val, norm = true) => {
-    return eo.value.map(o => parseInt(o[trackBy.value]) == o[trackBy.value] ? parseInt(o[trackBy.value]) : o[trackBy.value]).indexOf(
-      parseInt(val) == val ? parseInt(val) : val
-    )
+  const getOptionByTrackBy = (val) => {
+    return eo.value.findIndex((o) => {
+      return trackBy.value.some((track) => {
+        return (parseInt(o[track]) == o[track] ? parseInt(o[track]) : o[track]) === (parseInt(val) == val ? parseInt(val) : val)
+      })
+    })
   };
 
   // no export
@@ -810,11 +809,13 @@ function useOptions (props, context, dep)
 
       if (!filter) {
         filter = (option, $this) => {
-          let target = normalize(localize(option[trackBy.value]), strict.value);
+          return trackBy.value.some(track => {
+            let target = normalize(localize(option[track]), strict.value);
 
-          return searchStart.value
-            ? target.startsWith(normalize(search.value, strict.value))
-            : target.indexOf(normalize(search.value, strict.value)) !== -1
+            return searchStart.value
+                ? target.startsWith(normalize(search.value, strict.value))
+                : target.indexOf(normalize(search.value, strict.value)) !== -1;
+          })
         };
       }
 
@@ -837,13 +838,13 @@ function useOptions (props, context, dep)
       uo = Object.keys(uo).map((key) => {
         let val = uo[key];
 
-        return { [valueProp.value]: key, [trackBy.value]: val, [label.value]: val}
+        return { [valueProp.value]: key, [trackBy.value[0]]: val, [label.value]: val}
       });
     }
 
     // Transforming an plain arrays to an array of objects
     uo = uo.map((val) => {
-      return typeof val === 'object' ? val : { [valueProp.value]: val, [trackBy.value]: val, [label.value]: val}
+      return typeof val === 'object' ? val : { [valueProp.value]: val, [trackBy.value[0]]: val, [label.value]: val}
     });
 
     return uo
@@ -935,11 +936,11 @@ function useOptions (props, context, dep)
     return mode.value === 'single' ? getOption(val) || (allowAbsent.value ? {
       [label.value]: val,
       [valueProp.value]: val,
-      [trackBy.value]: val,
+      [trackBy.value[0]]: val,
     } : {}) : val.filter(v => !!getOption(v) || allowAbsent.value).map(v => getOption(v) || {
       [label.value]: v,
       [valueProp.value]: v,
-      [trackBy.value]: v,
+      [trackBy.value[0]]: v,
     })
   };
 
@@ -1358,13 +1359,53 @@ function usePointer (props, context, dep)
 
 function useDropdown (props, context, dep)
 {
-  const { disabled } = toRefs(props);
+  const { disabled, appendToBody, openDirection, closeOnScroll } = toRefs(props);
 
   const $this = getCurrentInstance().proxy;
+
+  // ============ DEPENDENCIES ============
+
+  const multiselect = dep.multiselect;
+  const dropdown = dep.dropdown;
+  const iv = dep.iv;
 
   // ================ DATA ================
 
   const isOpen = ref(false);
+  const updates = ref(0);
+  
+  // ============== COMPUTED ==============
+
+  /* istanbul ignore next: UI feature */
+  const dropdownStyles = computed(() => {
+    if (!appendToBody.value || typeof window === 'undefined' || !isOpen.value || !dropdown.value || updates.value === -1) {
+      return
+    }
+
+    let msPos = multiselect.value.getBoundingClientRect();
+    let maxHeight = window.getComputedStyle(dropdown.value).maxHeight;
+    let spaceAbove = msPos.y;
+    let spaceBelow = window.innerHeight - (msPos.y + msPos.height);
+
+    maxHeight = maxHeight.match(/%/)
+      ? (parseInt(maxHeight.replace('%')) / 100) * window.innerHeight
+      : parseInt(maxHeight.replace('px', ''));
+
+    return {
+      position: 'absolute',
+      zIndex: 9999,
+      transform: openDirection.value === 'top' ? `translateY(-100%)` : 'none',
+      maxHeight: openDirection.value === 'top' ? (
+        maxHeight > spaceAbove ? `${spaceAbove}px` : maxHeight
+      ) : (
+        maxHeight > spaceBelow ? `${spaceBelow}px` : undefined
+      ),
+      left: `${msPos.x}px`,
+      right: `${window.innerWidth - (msPos.x + msPos.width)}px`,
+      top: openDirection.value === 'top' ? `${msPos.y}px` : `${msPos.y + msPos.height}px`,
+      bottom: 'auto',
+    }
+  });
 
   // =============== METHODS ==============
 
@@ -1386,10 +1427,118 @@ function useDropdown (props, context, dep)
     context.emit('close', $this);
   };
 
+  /* istanbul ignore next: UI feature */
+  const getAllScrollableParents = (element) => {
+    const scrollableParents = [document];
+
+    function checkScrollable(element) {
+      if (!element || !element.parentNode) {
+        return
+      }
+
+      const computedStyle = window.getComputedStyle(element);
+      const overflowY = computedStyle.overflowY;
+
+      if (overflowY === 'scroll' || overflowY === 'auto') {
+        scrollableParents.push(element);
+      }
+
+      checkScrollable(element.parentNode);
+    }
+
+    checkScrollable(element);
+
+    return scrollableParents
+  };
+
+  /* istanbul ignore next: UI feature */
+  const updatePosition = () => {
+    updates.value++;
+  };
+
+  /* istanbul ignore next: UI feature */
+  const handleScroll = () => {
+    if (!isOpen.value) {
+      return
+    }
+
+    if (closeOnScroll.value) {
+      close();
+    }
+
+    updatePosition();
+  };
+
+  /* istanbul ignore next: UI feature */
+  const handleResize = () => {
+    if (!isOpen.value) {
+      return
+    }
+
+    updatePosition();
+  };
+
+  /* istanbul ignore next: UI feature */
+  watch(iv, () => {
+    if (!appendToBody.value) {
+      return
+    }
+
+    updatePosition();
+  }, { flush: 'post' });
+
+  /* istanbul ignore next: UI feature */
+  onMounted(() => {
+    if (!appendToBody.value) {
+      return
+    }
+
+    getAllScrollableParents(multiselect.value).forEach((el) => {
+      el.addEventListener('scroll', handleScroll);
+    });
+
+    window.addEventListener('resize', handleResize);
+  });
+
+  /* istanbul ignore next: UI feature */
+  onBeforeUnmount(() => {
+    if (!appendToBody.value) {
+      return
+    }
+
+    getAllScrollableParents(multiselect.value).forEach((el) => {
+      el.removeEventListener('scroll', handleScroll);
+    });
+
+    window.removeEventListener('resize', handleResize);
+  });
+
+  /* istanbul ignore next: UI feature */
+  watch(appendToBody, (n, o) => {
+    getAllScrollableParents(multiselect.value).forEach((el) => {
+      if (o && !n) {
+        el.removeEventListener('scroll', handleScroll);
+      }
+      
+      if (n) {
+        el.addEventListener('scroll', handleScroll);
+      }
+    });
+
+    if (o && !n) {
+      window.removeEventListener('resize', handleResize);
+    }
+
+    if (n) {
+      window.addEventListener('resize', handleResize);
+    }
+  });
+
   return {
     isOpen,
     open,
     close,
+    dropdownStyles,
   }
 }
 
@@ -1404,14 +1553,10 @@ function useMultiselect (props, context, dep)
   const close = dep.close;
   const clearSearch = dep.clearSearch;
   const isOpen = dep.isOpen;
+  const wrapper = dep.wrapper;
+  const tags = dep.tags;
 
   // ================ DATA ================
-
-  const multiselect = ref(null);
-  
-  const wrapper = ref(null);
-
-  const tags = ref(null);
 
   const isActive = ref(false);
 
@@ -1490,7 +1635,9 @@ function useMultiselect (props, context, dep)
       setTimeout(() => {
         deactivate();
       }, 0);
-    } else if (document.activeElement.isEqualNode(wrapper.value) && !isOpen.value) {
+    } else if (!isOpen.value 
+      && (document.activeElement.isEqualNode(wrapper.value)
+        || document.activeElement.isEqualNode(input.value))) {
       activate();    
     }
 
@@ -1500,9 +1647,6 @@ function useMultiselect (props, context, dep)
   };
 
   return {
-    multiselect,
-    wrapper,
-    tags,
     tabindex,
     isActive,
     mouseClicked,
@@ -2245,6 +2389,29 @@ function useI18n (props, context, dep)
   }
 }
 
+function useRefs (props, context, dep)
+{
+  // ================ DATA ================
+
+  const multiselect = ref(null);
+  
+  const wrapper = ref(null);
+
+  const tags = ref(null);
+
+  const input = ref(null);
+
+  const dropdown = ref(null);
+
+  return {
+    multiselect,
+    wrapper,
+    tags,
+    input,
+    dropdown,
+  }
+}
+
 function resolveDeps (props, context, features, deps = {}) {
   features.forEach((composable) => {
     /* istanbul ignore else */
@@ -2299,7 +2466,7 @@ var script = {
         default: 'label',
       },
       trackBy: {
-        type: String,
+        type: [String, Array],
         required: false,
         default: undefined,
       },
@@ -2580,10 +2747,21 @@ var script = {
         type: Boolean,
         default: false,
       },
+      appendToBody: {
+        required: false,
+        type: Boolean,
+        default: false,
+      },
+      closeOnScroll: {
+        required: false,
+        type: Boolean,
+        default: false,
+      },
     },
     setup(props, context)
     { 
       return resolveDeps(props, context, [
+        useRefs,
         useI18n,
         useValue,
         usePointer$1,
@@ -2598,6 +2776,17 @@ var script = {
         useClasses,
         useA11y,
       ])
+    },
+    beforeMount() {
+      if (this.$root.constructor?.version?.match(/^2\./) || this.vueVersionMs === 2) {
+        if (!this.$options.components.Teleport) {
+          this.$options.components.Teleport = {
+            render() {
+              return this.$slots.default ? this.$slots.default[0] : null
+            }
+          };
+        }
+      }
     }
   };
 
@@ -2610,11 +2799,11 @@ const _hoisted_6 = ["type", "modelValue", "value", "id", "autocomplete", "aria-c
 const _hoisted_7 = ["innerHTML"];
 const _hoisted_8 = ["id"];
 const _hoisted_9 = ["id", "aria-label", "aria-selected"];
-const _hoisted_10 = ["data-pointed", "onMouseenter", "onClick"];
+const _hoisted_10 = ["data-pointed", "onMouseenter", "onMousedown"];
 const _hoisted_11 = ["innerHTML"];
 const _hoisted_12 = ["aria-label"];
-const _hoisted_13 = ["data-pointed", "data-selected", "onMouseenter", "onClick", "id", "aria-selected", "aria-label"];
-const _hoisted_14 = ["data-pointed", "data-selected", "onMouseenter", "onClick", "id", "aria-selected", "aria-label"];
+const _hoisted_13 = ["data-pointed", "data-selected", "onMouseenter", "onMousedown", "id", "aria-selected", "aria-label"];
+const _hoisted_14 = ["data-pointed", "data-selected", "onMouseenter", "onMousedown", "id", "aria-selected", "aria-label"];
 const _hoisted_15 = ["innerHTML"];
 const _hoisted_16 = ["innerHTML"];
 const _hoisted_17 = ["value"];
@@ -2823,131 +3012,138 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         : createCommentVNode("v-if", true)
     ], 16 /* FULL_PROPS */, _hoisted_2),
     createCommentVNode(" Options "),
-    createElementVNode("div", {
-      class: normalizeClass(_ctx.classList.dropdown),
-      tabindex: "-1"
+    (openBlock(), createBlock(Teleport, {
+      to: "body",
+      disabled: !$props.appendToBody
     }, [
-      renderSlot(_ctx.$slots, "beforelist", { options: _ctx.fo }),
-      createElementVNode("ul", {
-        class: normalizeClass(_ctx.classList.options),
-        id: _ctx.ariaControls,
-        role: "listbox"
+      createElementVNode("div", {
+        class: normalizeClass(_ctx.classList.dropdown),
+        tabindex: "-1",
+        style: normalizeStyle(_ctx.dropdownStyles),
+        ref: "dropdown"
       }, [
-        ($props.groups)
-          ? (openBlock(true), createElementBlock(Fragment, { key: 0 }, renderList(_ctx.fg, (group, i, key) => {
-              return (openBlock(), createElementBlock("li", {
-                class: normalizeClass(_ctx.classList.group),
-                key: key,
-                id: _ctx.ariaGroupId(group),
-                "aria-label": _ctx.ariaGroupLabel(_ctx.localize(group[$props.groupLabel])),
-                "aria-selected": _ctx.isSelected(group),
-                role: "option"
-              }, [
-                (!group.__CREATE__)
-                  ? (openBlock(), createElementBlock("div", {
-                      key: 0,
-                      class: normalizeClass(_ctx.classList.groupLabel(group)),
-                      "data-pointed": _ctx.isPointed(group),
-                      onMouseenter: $event => (_ctx.setPointer(group, i)),
-                      onClick: $event => (_ctx.handleGroupClick(group))
-                    }, [
-                      renderSlot(_ctx.$slots, "grouplabel", {
-                        group: group,
-                        isSelected: _ctx.isSelected,
-                        isPointed: _ctx.isPointed
-                      }, () => [
-                        createElementVNode("span", {
-                          innerHTML: _ctx.localize(group[$props.groupLabel])
-                        }, null, 8 /* PROPS */, _hoisted_11)
-                      ])
-                    ], 42 /* CLASS, PROPS, HYDRATE_EVENTS */, _hoisted_10))
-                  : createCommentVNode("v-if", true),
-                createElementVNode("ul", {
-                  class: normalizeClass(_ctx.classList.groupOptions),
+        renderSlot(_ctx.$slots, "beforelist", { options: _ctx.fo }),
+        createElementVNode("ul", {
+          class: normalizeClass(_ctx.classList.options),
+          id: _ctx.ariaControls,
+          role: "listbox"
+        }, [
+          ($props.groups)
+            ? (openBlock(true), createElementBlock(Fragment, { key: 0 }, renderList(_ctx.fg, (group, i, key) => {
+                return (openBlock(), createElementBlock("li", {
+                  class: normalizeClass(_ctx.classList.group),
+                  key: key,
+                  id: _ctx.ariaGroupId(group),
                   "aria-label": _ctx.ariaGroupLabel(_ctx.localize(group[$props.groupLabel])),
-                  role: "group"
+                  "aria-selected": _ctx.isSelected(group),
+                  role: "option"
                 }, [
-                  (openBlock(true), createElementBlock(Fragment, null, renderList(group.__VISIBLE__, (option, i, key) => {
-                    return (openBlock(), createElementBlock("li", {
-                      class: normalizeClass(_ctx.classList.option(option, group)),
-                      "data-pointed": _ctx.isPointed(option),
-                      "data-selected": _ctx.isSelected(option) || undefined,
-                      key: key,
-                      onMouseenter: $event => (_ctx.setPointer(option)),
-                      onClick: $event => (_ctx.handleOptionClick(option)),
-                      id: _ctx.ariaOptionId(option),
-                      "aria-selected": _ctx.isSelected(option),
-                      "aria-label": _ctx.ariaOptionLabel(_ctx.localize(option[$props.label])),
-                      role: "option"
-                    }, [
-                      renderSlot(_ctx.$slots, "option", {
-                        option: option,
-                        isSelected: _ctx.isSelected,
-                        isPointed: _ctx.isPointed,
-                        search: _ctx.search
-                      }, () => [
-                        createElementVNode("span", null, toDisplayString(_ctx.localize(option[$props.label])), 1 /* TEXT */)
-                      ])
-                    ], 42 /* CLASS, PROPS, HYDRATE_EVENTS */, _hoisted_13))
-                  }), 128 /* KEYED_FRAGMENT */))
-                ], 10 /* CLASS, PROPS */, _hoisted_12)
-              ], 10 /* CLASS, PROPS */, _hoisted_9))
-            }), 128 /* KEYED_FRAGMENT */))
-          : (openBlock(true), createElementBlock(Fragment, { key: 1 }, renderList(_ctx.fo, (option, i, key) => {
-              return (openBlock(), createElementBlock("li", {
-                class: normalizeClass(_ctx.classList.option(option)),
-                "data-pointed": _ctx.isPointed(option),
-                "data-selected": _ctx.isSelected(option) || undefined,
-                key: key,
-                onMouseenter: $event => (_ctx.setPointer(option)),
-                onClick: $event => (_ctx.handleOptionClick(option)),
-                id: _ctx.ariaOptionId(option),
-                "aria-selected": _ctx.isSelected(option),
-                "aria-label": _ctx.ariaOptionLabel(_ctx.localize(option[$props.label])),
-                role: "option"
-              }, [
-                renderSlot(_ctx.$slots, "option", {
-                  option: option,
-                  isSelected: _ctx.isSelected,
-                  isPointed: _ctx.isPointed,
-                  search: _ctx.search
-                }, () => [
-                  createElementVNode("span", null, toDisplayString(_ctx.localize(option[$props.label])), 1 /* TEXT */)
-                ])
-              ], 42 /* CLASS, PROPS, HYDRATE_EVENTS */, _hoisted_14))
-            }), 128 /* KEYED_FRAGMENT */))
-      ], 10 /* CLASS, PROPS */, _hoisted_8),
-      (_ctx.noOptions)
-        ? renderSlot(_ctx.$slots, "nooptions", { key: 0 }, () => [
-            createElementVNode("div", {
-              class: normalizeClass(_ctx.classList.noOptions),
-              innerHTML: _ctx.localize($props.noOptionsText)
-            }, null, 10 /* CLASS, PROPS */, _hoisted_15)
-          ])
-        : createCommentVNode("v-if", true),
-      (_ctx.noResults)
-        ? renderSlot(_ctx.$slots, "noresults", { key: 1 }, () => [
-            createElementVNode("div", {
-              class: normalizeClass(_ctx.classList.noResults),
-              innerHTML: _ctx.localize($props.noResultsText)
-            }, null, 10 /* CLASS, PROPS */, _hoisted_16)
-          ])
-        : createCommentVNode("v-if", true),
-      ($props.infinite && _ctx.hasMore)
-        ? (openBlock(), createElementBlock("div", {
-            key: 2,
-            class: normalizeClass(_ctx.classList.inifinite),
-            ref: "infiniteLoader"
-          }, [
-            renderSlot(_ctx.$slots, "infinite", {}, () => [
-              createElementVNode("span", {
-                class: normalizeClass(_ctx.classList.inifiniteSpinner)
-              }, null, 2 /* CLASS */)
+                  (!group.__CREATE__)
+                    ? (openBlock(), createElementBlock("div", {
+                        key: 0,
+                        class: normalizeClass(_ctx.classList.groupLabel(group)),
+                        "data-pointed": _ctx.isPointed(group),
+                        onMouseenter: $event => (_ctx.setPointer(group, i)),
+                        onMousedown: withModifiers($event => (_ctx.handleGroupClick(group)), ["prevent"])
+                      }, [
+                        renderSlot(_ctx.$slots, "grouplabel", {
+                          group: group,
+                          isSelected: _ctx.isSelected,
+                          isPointed: _ctx.isPointed
+                        }, () => [
+                          createElementVNode("span", {
+                            innerHTML: _ctx.localize(group[$props.groupLabel])
+                          }, null, 8 /* PROPS */, _hoisted_11)
+                        ])
+                      ], 42 /* CLASS, PROPS, HYDRATE_EVENTS */, _hoisted_10))
+                    : createCommentVNode("v-if", true),
+                  createElementVNode("ul", {
+                    class: normalizeClass(_ctx.classList.groupOptions),
+                    "aria-label": _ctx.ariaGroupLabel(_ctx.localize(group[$props.groupLabel])),
+                    role: "group"
+                  }, [
+                    (openBlock(true), createElementBlock(Fragment, null, renderList(group.__VISIBLE__, (option, i, key) => {
+                      return (openBlock(), createElementBlock("li", {
+                        class: normalizeClass(_ctx.classList.option(option, group)),
+                        "data-pointed": _ctx.isPointed(option),
+                        "data-selected": _ctx.isSelected(option) || undefined,
+                        key: key,
+                        onMouseenter: $event => (_ctx.setPointer(option)),
+                        onMousedown: withModifiers($event => (_ctx.handleOptionClick(option)), ["prevent"]),
+                        id: _ctx.ariaOptionId(option),
+                        "aria-selected": _ctx.isSelected(option),
+                        "aria-label": _ctx.ariaOptionLabel(_ctx.localize(option[$props.label])),
+                        role: "option"
+                      }, [
+                        renderSlot(_ctx.$slots, "option", {
+                          option: option,
+                          isSelected: _ctx.isSelected,
+                          isPointed: _ctx.isPointed,
+                          search: _ctx.search
+                        }, () => [
+                          createElementVNode("span", null, toDisplayString(_ctx.localize(option[$props.label])), 1 /* TEXT */)
+                        ])
+                      ], 42 /* CLASS, PROPS, HYDRATE_EVENTS */, _hoisted_13))
+                    }), 128 /* KEYED_FRAGMENT */))
+                  ], 10 /* CLASS, PROPS */, _hoisted_12)
+                ], 10 /* CLASS, PROPS */, _hoisted_9))
+              }), 128 /* KEYED_FRAGMENT */))
+            : (openBlock(true), createElementBlock(Fragment, { key: 1 }, renderList(_ctx.fo, (option, i, key) => {
+                return (openBlock(), createElementBlock("li", {
+                  class: normalizeClass(_ctx.classList.option(option)),
+                  "data-pointed": _ctx.isPointed(option),
+                  "data-selected": _ctx.isSelected(option) || undefined,
+                  key: key,
+                  onMouseenter: $event => (_ctx.setPointer(option)),
+                  onMousedown: withModifiers($event => (_ctx.handleOptionClick(option)), ["prevent"]),
+                  id: _ctx.ariaOptionId(option),
+                  "aria-selected": _ctx.isSelected(option),
+                  "aria-label": _ctx.ariaOptionLabel(_ctx.localize(option[$props.label])),
+                  role: "option"
+                }, [
+                  renderSlot(_ctx.$slots, "option", {
+                    option: option,
+                    isSelected: _ctx.isSelected,
+                    isPointed: _ctx.isPointed,
+                    search: _ctx.search
+                  }, () => [
+                    createElementVNode("span", null, toDisplayString(_ctx.localize(option[$props.label])), 1 /* TEXT */)
+                  ])
+                ], 42 /* CLASS, PROPS, HYDRATE_EVENTS */, _hoisted_14))
+              }), 128 /* KEYED_FRAGMENT */))
+        ], 10 /* CLASS, PROPS */, _hoisted_8),
+        (_ctx.noOptions)
+          ? renderSlot(_ctx.$slots, "nooptions", { key: 0 }, () => [
+              createElementVNode("div", {
+                class: normalizeClass(_ctx.classList.noOptions),
+                innerHTML: _ctx.localize($props.noOptionsText)
+              }, null, 10 /* CLASS, PROPS */, _hoisted_15)
             ])
-          ], 2 /* CLASS */))
-        : createCommentVNode("v-if", true),
-      renderSlot(_ctx.$slots, "afterlist", { options: _ctx.fo })
-    ], 2 /* CLASS */),
+          : createCommentVNode("v-if", true),
+        (_ctx.noResults)
+          ? renderSlot(_ctx.$slots, "noresults", { key: 1 }, () => [
+              createElementVNode("div", {
+                class: normalizeClass(_ctx.classList.noResults),
+                innerHTML: _ctx.localize($props.noResultsText)
+              }, null, 10 /* CLASS, PROPS */, _hoisted_16)
+            ])
+          : createCommentVNode("v-if", true),
+        ($props.infinite && _ctx.hasMore)
+          ? (openBlock(), createElementBlock("div", {
+              key: 2,
+              class: normalizeClass(_ctx.classList.inifinite),
+              ref: "infiniteLoader"
+            }, [
+              renderSlot(_ctx.$slots, "infinite", {}, () => [
+                createElementVNode("span", {
+                  class: normalizeClass(_ctx.classList.inifiniteSpinner)
+                }, null, 2 /* CLASS */)
+              ])
+            ], 2 /* CLASS */))
+          : createCommentVNode("v-if", true),
+        renderSlot(_ctx.$slots, "afterlist", { options: _ctx.fo })
+      ], 6 /* CLASS, STYLE */)
+    ], 8 /* PROPS */, ["disabled"])),
     createCommentVNode(" Hacky input element to show HTML5 required warning "),
     ($props.required)
       ? (openBlock(), createElementBlock("input", {
