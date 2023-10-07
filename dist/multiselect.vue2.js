@@ -3214,15 +3214,19 @@ var __vue_render__ = function () {
             : _vm._e(),
           _vm._v(" "),
           _vm.caret && _vm.showOptions
-            ? _vm._t("caret", function () {
-                return [
-                  _c("span", {
-                    class: _vm.classList.caret,
-                    attrs: { "aria-hidden": "true" },
-                    on: { click: _vm.handleCaretClick },
-                  }),
-                ]
-              })
+            ? _vm._t(
+                "caret",
+                function () {
+                  return [
+                    _c("span", {
+                      class: _vm.classList.caret,
+                      attrs: { "aria-hidden": "true" },
+                      on: { click: _vm.handleCaretClick },
+                    }),
+                  ]
+                },
+                { handleCaretClick: _vm.handleCaretClick, isOpen: _vm.isOpen }
+              )
             : _vm._e(),
         ],
         2

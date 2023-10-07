@@ -3004,7 +3004,11 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         : createCommentVNode("v-if", true),
       createCommentVNode(" Caret "),
       ($props.caret && $props.showOptions)
-        ? renderSlot(_ctx.$slots, "caret", { key: 7 }, () => [
+        ? renderSlot(_ctx.$slots, "caret", {
+            key: 7,
+            handleCaretClick: _ctx.handleCaretClick,
+            isOpen: _ctx.isOpen
+          }, () => [
             createElementVNode("span", {
               class: normalizeClass(_ctx.classList.caret),
               onClick: _cache[8] || (_cache[8] = (...args) => (_ctx.handleCaretClick && _ctx.handleCaretClick(...args))),
