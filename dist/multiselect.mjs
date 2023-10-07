@@ -253,6 +253,7 @@ function useOptions (props, context, dep)
   const clearSearch = dep.clearSearch;
   const update = dep.update;
   const pointer = dep.pointer;
+  const setPointer = dep.setPointer;
   const clearPointer = dep.clearPointer;
   const focus = dep.focus;
   const deactivate = dep.deactivate;
@@ -724,6 +725,13 @@ function useOptions (props, context, dep)
             .filter(o => !o[disabledProp.value])
             .filter((o, k) => iv.value.length + 1 + k <= max.value || max.value === -1)
           );
+        }
+
+        if (hideSelected.value && pointer.value) {
+          nextTick(() => {
+            // Refresh pointer because pointer.__VISIBLE__ are not reactive #354
+            setPointer(fg.value.filter(g => !g[disabledProp.value])[pointer.value.index]);
+          });
         }
         break
     }
