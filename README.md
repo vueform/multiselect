@@ -301,7 +301,7 @@ Join our [Discord channel](https://discord.gg/WhX2nG6GTQ) or [open an issue](htt
 | **searchStart** | `{boolean} false` | Whether the search should match the start of the options' `trackBy`s. |
 | **searchFilter** | `function(option, query, select$) null` | A custom search function that overrides the default search algorithm. |
 | **aria** | `object` | An object containing aria attributes to be added for the multiselect. |
-| **classes** | `object` | An object of class names that gets merged with the default values. Default: `{`<br>&nbsp;&nbsp;`container: 'multiselect',`<br>&nbsp;&nbsp;`containerDisabled: 'is-disabled',`<br>&nbsp;&nbsp;`containerOpen: 'is-open',`<br>&nbsp;&nbsp;`containerOpenTop: 'is-open-top',`<br>&nbsp;&nbsp;`containerActive: 'is-active',`<br>&nbsp;&nbsp;`wrapper: 'multiselect-wrapper',`<br>&nbsp;&nbsp;`singleLabel: 'multiselect-single-label',`<br>&nbsp;&nbsp;`singleLabelText: 'multiselect-single-label-text',`<br>&nbsp;&nbsp;`multipleLabel: 'multiselect-multiple-label',`<br>&nbsp;&nbsp;`search: 'multiselect-search',`<br>&nbsp;&nbsp;`tags: 'multiselect-tags',`<br>&nbsp;&nbsp;`tag: 'multiselect-tag',`<br>&nbsp;&nbsp;`tagWrapper: 'multiselect-tag-wrapper',`<br>&nbsp;&nbsp;`tagWrapperBreak: 'multiselect-tag-wrapper-break',`<br>&nbsp;&nbsp;`tagDisabled: 'is-disabled',`<br>&nbsp;&nbsp;`tagRemove: 'multiselect-tag-remove',`<br>&nbsp;&nbsp;`tagRemoveIcon: 'multiselect-tag-remove-icon',`<br>&nbsp;&nbsp;`tagsSearchWrapper: 'multiselect-tags-search-wrapper',`<br>&nbsp;&nbsp;`tagsSearch: 'multiselect-tags-search',`<br>&nbsp;&nbsp;`tagsSearchCopy: 'multiselect-tags-search-copy',`<br>&nbsp;&nbsp;`placeholder: 'multiselect-placeholder',`<br>&nbsp;&nbsp;`caret: 'multiselect-caret',`<br>&nbsp;&nbsp;`caretOpen: 'is-open',`<br>&nbsp;&nbsp;`clear: 'multiselect-clear',`<br>&nbsp;&nbsp;`clearIcon: 'multiselect-clear-icon',`<br>&nbsp;&nbsp;`spinner: 'multiselect-spinner',`<br>&nbsp;&nbsp;`dropdown: 'multiselect-dropdown',`<br>&nbsp;&nbsp;`dropdownTop: 'is-top',`<br>&nbsp;&nbsp;`dropdownHidden: 'is-hidden',`<br>&nbsp;&nbsp;`options: 'multiselect-options',`<br>&nbsp;&nbsp;`optionsTop: 'is-top',`<br>&nbsp;&nbsp;`group: 'multiselect-group',`<br>&nbsp;&nbsp;`groupLabel: 'multiselect-group-label',`<br>&nbsp;&nbsp;`groupLabelPointable: 'is-pointable',`<br>&nbsp;&nbsp;`groupLabelPointed: 'is-pointed',`<br>&nbsp;&nbsp;`groupLabelSelected: 'is-selected',`<br>&nbsp;&nbsp;`groupLabelDisabled: 'is-disabled',`<br>&nbsp;&nbsp;`groupLabelSelectedPointed: 'is-selected is-pointed',`<br>&nbsp;&nbsp;`groupLabelSelectedDisabled: 'is-selected is-disabled',`<br>&nbsp;&nbsp;`groupOptions: 'multiselect-group-options',`<br>&nbsp;&nbsp;`option: 'multiselect-option',`<br>&nbsp;&nbsp;`optionPointed: 'is-pointed',`<br>&nbsp;&nbsp;`optionSelected: 'is-selected',`<br>&nbsp;&nbsp;`optionDisabled: 'is-disabled',`<br>&nbsp;&nbsp;`optionSelectedPointed: 'is-selected is-pointed',`<br>&nbsp;&nbsp;`optionSelectedDisabled: 'is-selected is-disabled',`<br>&nbsp;&nbsp;`noOptions: 'multiselect-no-options',`<br>&nbsp;&nbsp;`noResults: 'multiselect-no-results',`<br>&nbsp;&nbsp;`fakeInput: 'multiselect-fake-input',`<br>&nbsp;&nbsp;`assist: 'multiselect-assistive-text'`<br>&nbsp;&nbsp;`spacer: 'multiselect-spacer'`<br>`}` |
+| **classes** | `object` | An object of class names that gets merged with the default values. Default: `{`<br>&nbsp;&nbsp;`container: 'multiselect',`<br>&nbsp;&nbsp;`containerDisabled: 'is-disabled',`<br>&nbsp;&nbsp;`containerOpen: 'is-open',`<br>&nbsp;&nbsp;`containerOpenTop: 'is-open-top',`<br>&nbsp;&nbsp;`containerActive: 'is-active',`<br>&nbsp;&nbsp;`wrapper: 'multiselect-wrapper',`<br>&nbsp;&nbsp;`singleLabel: 'multiselect-single-label',`<br>&nbsp;&nbsp;`singleLabelText: 'multiselect-single-label-text',`<br>&nbsp;&nbsp;`multipleLabel: 'multiselect-multiple-label',`<br>&nbsp;&nbsp;`search: 'multiselect-search',`<br>&nbsp;&nbsp;`tags: 'multiselect-tags',`<br>&nbsp;&nbsp;`tag: 'multiselect-tag',`<br>&nbsp;&nbsp;`tagDisabled: 'is-disabled',`<br>&nbsp;&nbsp;`tagWrapper: 'multiselect-tag-wrapper',`<br>&nbsp;&nbsp;`tagWrapperBreak: 'multiselect-tag-wrapper-break',`<br>&nbsp;&nbsp;`tagRemove: 'multiselect-tag-remove',`<br>&nbsp;&nbsp;`tagRemoveIcon: 'multiselect-tag-remove-icon',`<br>&nbsp;&nbsp;`tagsSearchWrapper: 'multiselect-tags-search-wrapper',`<br>&nbsp;&nbsp;`tagsSearch: 'multiselect-tags-search',`<br>&nbsp;&nbsp;`tagsSearchCopy: 'multiselect-tags-search-copy',`<br>&nbsp;&nbsp;`placeholder: 'multiselect-placeholder',`<br>&nbsp;&nbsp;`caret: 'multiselect-caret',`<br>&nbsp;&nbsp;`caretOpen: 'is-open',`<br>&nbsp;&nbsp;`clear: 'multiselect-clear',`<br>&nbsp;&nbsp;`clearIcon: 'multiselect-clear-icon',`<br>&nbsp;&nbsp;`spinner: 'multiselect-spinner',`<br>&nbsp;&nbsp;`infinite: 'multiselect-infinite',`<br>&nbsp;&nbsp;`infiniteSpinner: 'multiselect-infinite-spinner',`<br>&nbsp;&nbsp;`dropdown: 'multiselect-dropdown',`<br>&nbsp;&nbsp;`dropdownTop: 'is-top',`<br>&nbsp;&nbsp;`dropdownHidden: 'is-hidden',`<br>&nbsp;&nbsp;`options: 'multiselect-options',`<br>&nbsp;&nbsp;`optionsTop: 'is-top',`<br>&nbsp;&nbsp;`group: 'multiselect-group',`<br>&nbsp;&nbsp;`groupLabel: 'multiselect-group-label',`<br>&nbsp;&nbsp;`groupLabelPointable: 'is-pointable',`<br>&nbsp;&nbsp;`groupLabelPointed: 'is-pointed',`<br>&nbsp;&nbsp;`groupLabelSelected: 'is-selected',`<br>&nbsp;&nbsp;`groupLabelDisabled: 'is-disabled',`<br>&nbsp;&nbsp;`groupLabelSelectedPointed: 'is-selected is-pointed',`<br>&nbsp;&nbsp;`groupLabelSelectedDisabled: 'is-selected is-disabled',`<br>&nbsp;&nbsp;`groupOptions: 'multiselect-group-options',`<br>&nbsp;&nbsp;`option: 'multiselect-option',`<br>&nbsp;&nbsp;`optionPointed: 'is-pointed',`<br>&nbsp;&nbsp;`optionSelected: 'is-selected',`<br>&nbsp;&nbsp;`optionDisabled: 'is-disabled',`<br>&nbsp;&nbsp;`optionSelectedPointed: 'is-selected is-pointed',`<br>&nbsp;&nbsp;`optionSelectedDisabled: 'is-selected is-disabled',`<br>&nbsp;&nbsp;`noOptions: 'multiselect-no-options',`<br>&nbsp;&nbsp;`noResults: 'multiselect-no-results',`<br>&nbsp;&nbsp;`fakeInput: 'multiselect-fake-input',`<br>&nbsp;&nbsp;`assist: 'multiselect-assistive-text'`<br>&nbsp;&nbsp;`spacer: 'multiselect-spacer'`<br>`}` |
 
 <a href="https://vueform.com?ref=ghb">
   <img align="center" src="https://github.com/vueform/multiselect/raw/main/assets/vueform-banner.png" alt="Vueform" title="Vueform">
@@ -604,15 +604,16 @@ Alternatively you can define class names directly by passing them to the `Multis
   containerOpen: 'rounded-b-none',
   containerOpenTop: 'rounded-t-none',
   containerActive: 'ring ring-green-500 ring-opacity-30',
+  wrapper: 'relative mx-auto w-full flex items-center justify-end box-border cursor-pointer outline-none',
   singleLabel: 'flex items-center h-full max-w-full absolute left-0 top-0 pointer-events-none bg-transparent leading-snug pl-3.5 pr-16 box-border rtl:left-auto rtl:right-0 rtl:pl-0 rtl:pr-3.5',
   singleLabelText: 'overflow-ellipsis overflow-hidden block whitespace-nowrap max-w-full',
   multipleLabel: 'flex items-center h-full absolute left-0 top-0 pointer-events-none bg-transparent leading-snug pl-3.5 rtl:left-auto rtl:right-0 rtl:pl-0 rtl:pr-3.5',
   search: 'w-full absolute inset-0 outline-none focus:ring-0 appearance-none box-border border-0 text-base font-sans bg-white rounded pl-3.5 rtl:pl-0 rtl:pr-3.5',
   tags: 'flex-grow flex-shrink flex flex-wrap items-center mt-1 pl-2 min-width-[0px] rtl:pl-0 rtl:pr-2',
   tag: 'bg-green-500 text-white text-sm font-semibold py-0.5 pl-2 rounded mr-1 mb-1 flex items-center whitespace-nowrap min-width-[0px] rtl:pl-0 rtl:pr-2 rtl:mr-0 rtl:ml-1',
+  tagDisabled: 'pr-2 opacity-50 rtl:pl-2',
   tagWrapper: 'whitespace-nowrap overflow-hidden overflow-ellipsis',
   tagWrapperBreak: 'whitespace-normal break-all',
-  tagDisabled: 'pr-2 opacity-50 rtl:pl-2',
   tagRemove: 'flex items-center justify-center p-1 mx-0.5 rounded-sm hover:bg-black hover:bg-opacity-10 group',
   tagRemoveIcon: 'bg-multiselect-remove bg-center bg-no-repeat opacity-30 inline-block w-3 h-3 group-hover:opacity-60',
   tagsSearchWrapper: 'inline-block relative mx-1 mb-1 flex-grow flex-shrink h-full',
@@ -624,8 +625,8 @@ Alternatively you can define class names directly by passing them to the `Multis
   clear: 'pr-3.5 relative z-10 opacity-40 transition duration-300 flex-shrink-0 flex-grow-0 flex hover:opacity-80 rtl:pr-0 rtl:pl-3.5',
   clearIcon: 'bg-multiselect-remove bg-center bg-no-repeat w-2.5 h-4 py-px box-content inline-block',
   spinner: 'bg-multiselect-spinner bg-center bg-no-repeat w-4 h-4 z-10 mr-3.5 animate-spin flex-shrink-0 flex-grow-0 rtl:mr-0 rtl:ml-3.5',
-  inifite: 'flex items-center justify-center w-full',
-  inifiteSpinner: 'bg-multiselect-spinner bg-center bg-no-repeat w-4 h-4 z-10 animate-spin flex-shrink-0 flex-grow-0 m-3.5',
+  infinite: 'flex items-center justify-center w-full',
+  infiniteSpinner: 'bg-multiselect-spinner bg-center bg-no-repeat w-4 h-4 z-10 animate-spin flex-shrink-0 flex-grow-0 m-3.5',
   dropdown: 'max-h-60 absolute -left-px -right-px bottom-0 transform translate-y-full border border-gray-300 -mt-px overflow-y-scroll z-50 bg-white flex flex-col rounded-b',
   dropdownTop: '-translate-y-full top-px bottom-auto rounded-b-none rounded-t',
   dropdownHidden: 'hidden',
@@ -646,10 +647,11 @@ Alternatively you can define class names directly by passing them to the `Multis
   optionDisabled: 'text-gray-300 cursor-not-allowed',
   optionSelectedPointed: 'text-white bg-green-500 opacity-90',
   optionSelectedDisabled: 'text-green-100 bg-green-500 bg-opacity-50 cursor-not-allowed',
-  noOptions: 'py-2 px-3 text-gray-600 bg-white text-left',
-  noResults: 'py-2 px-3 text-gray-600 bg-white text-left',
+  noOptions: 'py-2 px-3 text-gray-600 bg-white text-left rtl:text-right',
+  noResults: 'py-2 px-3 text-gray-600 bg-white text-left rtl:text-right',
   fakeInput: 'bg-transparent absolute left-0 right-0 -bottom-px w-full h-px border-0 p-0 appearance-none outline-none text-transparent',
-  spacer: 'h-9 py-px box-content',
+  assist: 'absolute -m-px w-px h-px overflow-hidden'
+  spacer: 'h-9 py-px box-content'
 }" />
 ```
 
