@@ -71,6 +71,8 @@ Feature highlights:
 <a href="https://vueform.com?ref=multiselect">
   <img align="center" src="https://github.com/vueform/multiselect/raw/main/assets/builder-banner.png" alt="Vueform Builder" title="Vueform Builder">
 </a>
+<br>
+<br>
 
 **Learn more:**
 - Builder: [https://builder.vueform.com](https://builder.vueform.com?ref=vite-starter)
