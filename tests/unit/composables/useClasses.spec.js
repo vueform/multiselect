@@ -75,6 +75,17 @@ describe('useClasses', () => {
 
       expect(select.vm.classList.groupLabel(select.vm.fg[0])).toStrictEqual(['multiselect-group-label', 'is-selected is-disabled', 'is-pointable'])
     })
+
+    it('should add tagWrapperBreak to tagWrapper when `breakTags: true`', async () => {
+      const select = createSelect({
+        mode: 'tags',
+        value: [1,2,3],
+        breakTags: true,
+        options: [1,2,3],
+      })
+
+      expect(select.vm.classList.tagWrapper).toStrictEqual(['multiselect-tag-wrapper', 'multiselect-tag-wrapper-break'])
+    })
   })
 
   describe('showDropdown', () => {

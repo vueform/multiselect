@@ -103,6 +103,7 @@ declare class Multiselect implements ReturnType<typeof defineComponent> {
   allowAbsent?: object;
   appendToBody?: boolean;
   closeOnScroll?: boolean;
+  breakTags?: boolean;
 
   $emit(eventName: 'change', value: any, instance: this): this | void;
   $emit(eventName: 'select', value: any, option: any, instance:this): this | void;

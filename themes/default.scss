@@ -110,6 +110,7 @@
   margin: var(--ms-tag-my, 0.25rem) 0 0;
   padding-left: var(--ms-py, 0.5rem);
   align-items: center;
+  min-width: 0;
 }
 
 .multiselect-tag {
@@ -125,12 +126,24 @@
   display: flex;
   align-items: center;
   white-space: nowrap;
+  min-width: 0;
 
   &.is-disabled {
     padding-right: var(--ms-tag-px, 0.5rem);
     background: var(--ms-tag-bg-disabled, #9CA3AF);
     color: var(--ms-tag-color-disabled, #FFFFFF);
   }
+}
+
+.multiselect-tag-wrapper {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.multiselect-tag-wrapper-break {
+  white-space: normal;
+  word-break: break-all;
 }
 
 .multiselect-tag-remove {

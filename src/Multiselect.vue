@@ -72,7 +72,7 @@
 
               :aria-label="ariaTagLabel(localize(option[label]))"
             >
-              {{ localize(option[label]) }}
+              <span :class="classList.tagWrapper">{{ localize(option[label]) }}</span>
               <span
                 v-if="!disabled && !option.disabled"
                 :class="classList.tagRemove"
@@ -636,6 +636,11 @@
         default: false,
       },
       closeOnScroll: {
+        required: false,
+        type: Boolean,
+        default: false,
+      },
+      breakTags: {
         required: false,
         type: Boolean,
         default: false,

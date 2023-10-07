@@ -2,7 +2,7 @@ import { computed, toRefs } from 'vue'
 
 export default function useClasses (props, context, dependencies)
 {const { 
-    classes: classes_, disabled, openDirection, showOptions
+    classes: classes_, disabled, openDirection, showOptions, breakTags
   } = toRefs(props)
 
   // ============ DEPENDENCIES ============
@@ -29,6 +29,8 @@ export default function useClasses (props, context, dependencies)
     search: 'multiselect-search',
     tags: 'multiselect-tags',
     tag: 'multiselect-tag',
+    tagWrapper: 'multiselect-tag-wrapper',
+    tagWrapperBreak: 'multiselect-tag-wrapper-break',
     tagDisabled: 'is-disabled',
     tagRemove: 'multiselect-tag-remove',
     tagRemoveIcon: 'multiselect-tag-remove-icon',
@@ -95,6 +97,7 @@ export default function useClasses (props, context, dependencies)
       tags: c.tags,
       tag: [c.tag]
         .concat(disabled.value ? c.tagDisabled : []),
+      tagWrapper: [c.tagWrapper, breakTags.value ? c.tagWrapperBreak : null],
       tagDisabled: c.tagDisabled,
       tagRemove: c.tagRemove,
       tagRemoveIcon: c.tagRemoveIcon,
