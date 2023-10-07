@@ -4029,5 +4029,21 @@ describe('useOptions', () => {
 
       expect(getValue(select)).toStrictEqual([1,2])
     })
+
+    it('should update offset when limit changes', async () => {
+      let select = createSelect({
+        mode: 'single',
+        options: [1,2,3,4,5],
+        limit: 2
+      })
+
+      expect(select.vm.fo.length).toStrictEqual(2)
+
+      select.vm.$parent.props.limit = 3
+
+      await nextTick()
+
+      expect(select.vm.fo.length).toStrictEqual(3)
+    })
   })
 })

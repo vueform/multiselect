@@ -832,6 +832,10 @@ export default function useOptions (props, context, dep)
 
   watch(label, refreshLabels)
 
+  watch(limit, (n,o) => {
+    offset.value = infinite.value && n === -1 ? 10 : n
+  })
+
   return {
     pfo,
     fo,
