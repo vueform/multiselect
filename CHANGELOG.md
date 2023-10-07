@@ -1,3 +1,23 @@
+## v2.6.3
+
+> `2023-10-07`
+
+### 🎉 Feature
+  - Added `appendToBody` **experimental** feature for **Vue.js 3 only**. #133 #341
+  - `trackBy` can now accept array. #314
+  - Auto truncate long tags. Added `breakTags` prop. #346
+  - Added `handleCaretClick` and `isOpen` to `caret` slot. #320
+  - The externalValue (from `v-model`) is now reactive. #356
+
+### 🐞 Bug Fixes
+  - `limit` prop was not reactive. #342
+  - Trigger `deselect` on tags backspace. #335
+  - Keyboard nav on group select fix. #354
+  - TypeScript fixes. Thanks @antpngl92 @Adeiko @mathildaax 🙏 #287 #282 #260 #230
+  - `searchFilter` did not receive proper args. #338 #337
+  - Open dropdown when it has search, it's focued and dropdown is closed. #333
+  - Options are cleared before `clear` event is emitted. #332
+
 ## v2.6.2
 
 > `2023-04-17`
