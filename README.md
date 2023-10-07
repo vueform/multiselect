@@ -68,7 +68,7 @@ Feature highlights:
 - breaking forms into **steps** with **form wizard**
 - **translating** form content and global i18n support.
 
-<a href="https://vueform.com?ref=multiselect">
+<a href="https://builer.vueform.com/demo?ref=multiselect">
   <img align="center" src="https://github.com/vueform/multiselect/raw/main/assets/builder-banner.png" alt="Vueform Builder" title="Vueform Builder">
 </a>
 <br>
