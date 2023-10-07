@@ -728,10 +728,8 @@ function useOptions (props, context, dep)
         }
 
         if (hideSelected.value && pointer.value) {
-          nextTick(() => {
-            // Refresh pointer because pointer.__VISIBLE__ are not reactive #354
-            setPointer(fg.value.filter(g => !g[disabledProp.value])[pointer.value.index]);
-          });
+          // Refresh pointer because pointer.__VISIBLE__ are not reactive #354
+          setPointer(fg.value.filter(g => !g[disabledProp.value])[pointer.value.index]);
         }
         break
     }
@@ -1062,6 +1060,10 @@ function useOptions (props, context, dep)
   });
 
   watch(label, refreshLabels);
+
+  watch(limit, (n,o) => {
+    offset.value = infinite.value && n === -1 ? 10 : n;
+  });
 
   return {
     pfo,
