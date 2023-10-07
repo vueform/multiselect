@@ -4045,5 +4045,22 @@ describe('useOptions', () => {
 
       expect(select.vm.fo.length).toStrictEqual(3)
     })
+
+    it('should update offset to 10 when limit changes to -1 and has infinite', async () => {
+      let select = createSelect({
+        mode: 'single',
+        options: [1,2,3,4,5,6,7,8,9,10,11,12],
+        limit: 2,
+        infinite: true,
+      })
+
+      expect(select.vm.fo.length).toStrictEqual(2)
+
+      select.vm.$parent.props.limit = -1
+
+      await nextTick()
+
+      expect(select.vm.fo.length).toStrictEqual(10)
+    })
   })
 })
