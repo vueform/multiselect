@@ -639,6 +639,35 @@ describe('usePointer Action', () => {
 
       expect(select.vm.pointer.label).toBe('11')
     })
+
+    it('should point at next group after full group is selected when hideSelected=true', async () => {
+      let select = createSelect({
+        mode: 'multiple',
+        value: [],
+        hideSelected: true,
+        closeOnSelect: false,
+        options: [
+          {
+            label: 'First',
+            options: [1,2,3],
+          },
+          {
+            label: 'Second',
+            options: [4,5,6],
+          },
+        ],
+        groups: true
+      })
+
+      select.vm.pointer = select.vm.fg[0]
+      select.vm.selectPointer()
+
+      await nextTick()
+
+      select.vm.forwardPointer()
+
+      expect(select.vm.pointer.label).toBe('Second')
+    })
   })
 
   describe('backwardPointer', () => {
