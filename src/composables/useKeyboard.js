@@ -15,6 +15,7 @@ export default function useKeyboard (props, context, dep)
 
   const iv = dep.iv
   const update = dep.update
+  const deselect = dep.deselect
   const search = dep.search
   const setPointer = dep.setPointer
   const selectPointer = dep.selectPointer
@@ -61,23 +62,6 @@ export default function useKeyboard (props, context, dep)
     }
   }
 
-  const removeLastRemovable = (arr) => {
-    // Find the index of the last object in the array that doesn't have a "remove" property set to false
-    let indexToRemove = arr.length - 1
-    while (indexToRemove >= 0 && (arr[indexToRemove].remove === false || arr[indexToRemove].disabled)) {
-      indexToRemove--
-    }
-
-    // If all objects have a "remove" property set to false, don't remove anything and return the original array
-    if (indexToRemove < 0) {
-      return arr
-    }
-
-    // Remove the object at the found index and return the updated array
-    arr.splice(indexToRemove, 1);
-    return arr
-  }
-
   const handleKeydown = (e) => {
     context.emit('keydown', e, $this)
 
@@ -103,7 +87,11 @@ export default function useKeyboard (props, context, dep)
           return
         }
 
-        update(removeLastRemovable([...iv.value]))
+        let deselectables = iv.value.filter(v=>!v.disabled && v.remove !== false)
+
+        if (deselectables.length) {
+          deselect(deselectables[deselectables.length - 1])
+        }
         break
 
       case 'Enter':
