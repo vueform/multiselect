@@ -1922,7 +1922,7 @@ function useKeyboard (props, context, dep)
 
 function useClasses (props, context, dependencies)
 {const { 
-    classes: classes_, disabled, openDirection, showOptions
+    classes: classes_, disabled, openDirection, showOptions, breakTags
   } = toRefs(props);
 
   // ============ DEPENDENCIES ============
@@ -1949,6 +1949,8 @@ function useClasses (props, context, dependencies)
     search: 'multiselect-search',
     tags: 'multiselect-tags',
     tag: 'multiselect-tag',
+    tagWrapper: 'multiselect-tag-wrapper',
+    tagWrapperBreak: 'multiselect-tag-wrapper-break',
     tagDisabled: 'is-disabled',
     tagRemove: 'multiselect-tag-remove',
     tagRemoveIcon: 'multiselect-tag-remove-icon',
@@ -2015,6 +2017,7 @@ function useClasses (props, context, dependencies)
       tags: c.tags,
       tag: [c.tag]
         .concat(disabled.value ? c.tagDisabled : []),
+      tagWrapper: [c.tagWrapper, breakTags.value ? c.tagWrapperBreak : null],
       tagDisabled: c.tagDisabled,
       tagRemove: c.tagRemove,
       tagRemoveIcon: c.tagRemoveIcon,
@@ -2761,6 +2764,11 @@ function resolveDeps (props, context, features, deps = {}) {
         type: Boolean,
         default: false,
       },
+      breakTags: {
+        required: false,
+        type: Boolean,
+        default: false,
+      },
     },
     setup(props, context)
     { 
@@ -3006,11 +3014,16 @@ var __vue_render__ = function () {
                                 },
                               },
                               [
-                                _vm._v(
-                                  "\n            " +
-                                    _vm._s(_vm.localize(option[_vm.label])) +
-                                    "\n            "
+                                _c(
+                                  "span",
+                                  { class: _vm.classList.tagWrapper },
+                                  [
+                                    _vm._v(
+                                      _vm._s(_vm.localize(option[_vm.label]))
+                                    ),
+                                  ]
                                 ),
+                                _vm._v(" "),
                                 !_vm.disabled && !option.disabled
                                   ? _c(
                                       "span",

@@ -1,4 +1,4 @@
-import { toRefs, getCurrentInstance, ref, computed, watch, nextTick, onMounted, onBeforeUnmount, openBlock, createElementBlock, normalizeClass, createElementVNode, mergeProps, createCommentVNode, withModifiers, Fragment, renderList, renderSlot, withKeys, createTextVNode, toDisplayString, createBlock, Teleport, normalizeStyle } from 'vue';
+import { toRefs, getCurrentInstance, ref, computed, watch, nextTick, onMounted, onBeforeUnmount, openBlock, createElementBlock, normalizeClass, createElementVNode, mergeProps, createCommentVNode, withModifiers, Fragment, renderList, renderSlot, withKeys, toDisplayString, createBlock, Teleport, normalizeStyle } from 'vue';
 
 function isNullish (val) {
   return [null, undefined].indexOf(val) !== -1
@@ -1922,7 +1922,7 @@ function useKeyboard (props, context, dep)
 
 function useClasses (props, context, dependencies)
 {const { 
-    classes: classes_, disabled, openDirection, showOptions
+    classes: classes_, disabled, openDirection, showOptions, breakTags
   } = toRefs(props);
 
   // ============ DEPENDENCIES ============
@@ -1949,6 +1949,8 @@ function useClasses (props, context, dependencies)
     search: 'multiselect-search',
     tags: 'multiselect-tags',
     tag: 'multiselect-tag',
+    tagWrapper: 'multiselect-tag-wrapper',
+    tagWrapperBreak: 'multiselect-tag-wrapper-break',
     tagDisabled: 'is-disabled',
     tagRemove: 'multiselect-tag-remove',
     tagRemoveIcon: 'multiselect-tag-remove-icon',
@@ -2015,6 +2017,7 @@ function useClasses (props, context, dependencies)
       tags: c.tags,
       tag: [c.tag]
         .concat(disabled.value ? c.tagDisabled : []),
+      tagWrapper: [c.tagWrapper, breakTags.value ? c.tagWrapperBreak : null],
       tagDisabled: c.tagDisabled,
       tagRemove: c.tagRemove,
       tagRemoveIcon: c.tagRemoveIcon,
@@ -2759,6 +2762,11 @@ var script = {
         type: Boolean,
         default: false,
       },
+      breakTags: {
+        required: false,
+        type: Boolean,
+        default: false,
+      },
     },
     setup(props, context)
     { 
@@ -2884,7 +2892,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
                   key: key,
                   "aria-label": _ctx.ariaTagLabel(_ctx.localize(option[$props.label]))
                 }, [
-                  createTextVNode(toDisplayString(_ctx.localize(option[$props.label])) + " ", 1 /* TEXT */),
+                  createElementVNode("span", {
+                    class: normalizeClass(_ctx.classList.tagWrapper)
+                  }, toDisplayString(_ctx.localize(option[$props.label])), 3 /* TEXT, CLASS */),
                   (!$props.disabled && !option.disabled)
                     ? (openBlock(), createElementBlock("span", {
                         key: 0,
