@@ -162,7 +162,7 @@
       </slot>
 
       <!-- Caret -->
-      <slot v-if="caret && showOptions" name="caret">
+      <slot v-if="caret && showOptions" name="caret" :handle-caret-click="handleCaretClick" :is-open="isOpen">
         <span :class="classList.caret" @click="handleCaretClick" aria-hidden="true"></span>
       </slot>
     </div>

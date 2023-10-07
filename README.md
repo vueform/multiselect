@@ -412,7 +412,7 @@ The `select$` param in each event is the Multiselect component's instance.
 | **option** | `option, isPointed, isSelected, search` | Renders an option in options list. The `isPointed` and `isSelected` props are function that used be used like `isPointed(option)` to determine the state. |
 | **singlelabel** | `value` | Rendered when using `single` mode and an option is selected. By default it renders the `:label` if the selected option. |
 | **tag** | `option, handleTagRemove, disabled` | Renders a tag when using `tags` mode. When `disabled` the remove icon should not be displayed. The `handleTagRemove` prop should be used to trigger the removal of the tag. |
-| **caret** | | Renders a small triangle on the right side of the multiselect. |
+| **caret** | `handleCaretClick, isOpen` | Renders a small triangle on the right side of the multiselect. The content of the slot should have `pointer-events: false` when `isOpen: false` to replicate the original behaviour. |
 | **clear** | `clear` | Renders a remove icon if the multiselect has any value. The `clear` method should be used on `mousedown` event. |
 | **spinner** | | Renders a loader icon when async options are being fetched. |
 | **infinite** | | Renders a loader icon when infinite scroll is in progress. |
