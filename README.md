@@ -285,7 +285,7 @@ Join our [Discord channel](https://discord.gg/WhX2nG6GTQ) or [open an issue](htt
 | **required** | `{boolean} false` | Whether the HTML5 required attribute should be used for multiselect (using an invisible fake input). |
 | **infinite** | `{boolean} false` | Whether the actual option nodes should only be loaded on scroll. The `limit` option defines how many options are loaded initially and in each new batch. |
 | **appendToBody** | `{boolean} false` | **[Vue 3 only]** *(experimental)* Whether the dropdown list should be appended to `<body>` and positioned absolutely. |
-| **closeOnSearch** | `{boolean} false` | Closes the dropdown list on scrolling parent DOM / window when using `appendToBody: true`. |
+| **closeOnScroll** | `{boolean} false` | Closes the dropdown list on scrolling parent DOM / window when using `appendToBody: true`. |
 | **searchable** | `{boolean} false` | Whether the options should be searchable. |
 | **valueProp** | `{string} 'value'` | If you provide an array of objects as `options` this property should be used as the value of the option. |
 | **trackBy** | `{string|array} undefined` | The name(s) of the properties that should be searched when `searchable` is `true` and an array of objects are provided as `options`. If left `undefined` the `label` prop will be used instead. |
