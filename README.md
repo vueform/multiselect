@@ -288,7 +288,7 @@ Join our [Discord channel](https://discord.gg/WhX2nG6GTQ) or [open an issue](htt
 | **closeOnScroll** | `{boolean} false` | Closes the dropdown list on scrolling parent DOM / window when using `appendToBody: true`. |
 | **searchable** | `{boolean} false` | Whether the options should be searchable. |
 | **valueProp** | `{string} 'value'` | If you provide an array of objects as `options` this property should be used as the value of the option. |
-| **trackBy** | `{string|array} undefined` | The name(s) of the properties that should be searched when `searchable` is `true` and an array of objects are provided as `options`. If left `undefined` the `label` prop will be used instead. |
+| **trackBy** | `{string\|array} undefined` | The name(s) of the properties that should be searched when `searchable` is `true` and an array of objects are provided as `options`. If left `undefined` the `label` prop will be used instead. |
 | **label** | `{string} 'label'` | If you provide an array of objects as `options` the value of this property will be displayed as selected option. |
 | **disabledProp** | `{string} 'disabled'` | If you provide an array of objects as `options` this property should be used to determine whether the option is disabled. |
 | **placeholder** | `{string} null` | The text that should be displayed before any option is selected. |
