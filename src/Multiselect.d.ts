@@ -41,7 +41,7 @@ declare class Multiselect implements ReturnType<typeof defineComponent> {
   modelValue?: any;
   value?: any;
   mode: 'single' | 'multiple' | 'tags';
-  options?: any[];
+  options?: any[] | object | Function;
   searchable?: boolean;
   valueProp?: string;
   trackBy?: string | string[];
@@ -92,7 +92,7 @@ declare class Multiselect implements ReturnType<typeof defineComponent> {
   onCreate?: Function;
   searchStart?: boolean;
   reverse?: boolean;
-  regex?: string|object;
+  regex?: string | object;
   rtl?: boolean;
   infinite?: boolean;
   aria?: object;
@@ -108,18 +108,17 @@ declare class Multiselect implements ReturnType<typeof defineComponent> {
   $emit(eventName: 'change', value: any, instance: this): this | void;
   $emit(eventName: 'select', value: any, option: any, instance:this): this | void;
   $emit(eventName: 'deselect', value: any, option: any, instance:this): this | void;
-  $emit(eventName: 'remove', value: any, option: any, instance:this): this | void;
   $emit(eventName: 'search-change', query: string, instance: this): this | void;
-  $emit(eventName: 'tag', query: string, instance: this): this | void;
-  $emit(eventName: 'option', query: string, instance: this): this | void;
-  $emit(eventName: 'create', query: string, instance: this): this | void;
+  $emit(eventName: 'tag', option: any, instance: this): this | void;
+  $emit(eventName: 'option', option: any, instance: this): this | void;
+  $emit(eventName: 'create', option: any, instance: this): this | void;
   $emit(eventName: 'paste', e: Event, instance: this): this | void;
   $emit(eventName: 'keydown', e: Event, instance: this): this | void;
   $emit(eventName: 'keyup', e: Event, instance: this): this | void;
-  $emit(eventName: 'open'): this | void;
-  $emit(eventName: 'close'): this | void;
-  $emit(eventName: 'clear'): this | void;
-  $emit(eventName: 'max'): this | void;
+  $emit(eventName: 'open', instance: this): this | void;
+  $emit(eventName: 'close', instance: this): this | void;
+  $emit(eventName: 'clear', instance: this): this | void;
+  $emit(eventName: 'max', instance: this): this | void;
 
   $slots: {
     placeholder: VNode[];
