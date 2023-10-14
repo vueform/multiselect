@@ -1,6 +1,5 @@
 import { VNode, defineComponent } from 'vue';
 
-
 interface ClassList {
   assist: string;
   caret: Array<string>;
@@ -36,11 +35,10 @@ interface ClassList {
   wrapper: string;
 }
 
-
-declare class Multiselect implements ReturnType<typeof defineComponent> {
+interface MultiselectProps {
   modelValue?: any;
   value?: any;
-  mode: 'single' | 'multiple' | 'tags';
+  mode?: 'single' | 'multiple' | 'tags';
   options?: any[] | object | Function;
   searchable?: boolean;
   valueProp?: string;
@@ -104,6 +102,77 @@ declare class Multiselect implements ReturnType<typeof defineComponent> {
   appendToBody?: boolean;
   closeOnScroll?: boolean;
   breakTags?: boolean;
+}
+
+declare class Multiselect implements ReturnType<typeof defineComponent> {
+  modelValue: MultiselectProps['modelValue'];
+  value: MultiselectProps['value'];
+  mode: MultiselectProps['mode'];
+  options: MultiselectProps['options'];
+  searchable: MultiselectProps['searchable'];
+  valueProp: MultiselectProps['valueProp'];
+  trackBy: MultiselectProps['trackBy'];
+  label: MultiselectProps['label'];
+  placeholder: MultiselectProps['placeholder'];
+  multipleLabel: MultiselectProps['multipleLabel'];
+  disabled: MultiselectProps['disabled'];
+  max: MultiselectProps['max'];
+  limit: MultiselectProps['limit'];
+  loading: MultiselectProps['loading'];
+  id: MultiselectProps['id'];
+  caret: MultiselectProps['caret'];
+  maxHeight: MultiselectProps['maxHeight'];
+  noOptionsText: MultiselectProps['noOptionsText'];
+  noResultsText: MultiselectProps['noResultsText'];
+  canDeselect: MultiselectProps['canDeselect'];
+  canClear: MultiselectProps['canClear'];
+  clearOnSearch: MultiselectProps['clearOnSearch'];
+  clearOnSelect: MultiselectProps['clearOnSelect'];
+  delay: MultiselectProps['delay'];
+  filterResults: MultiselectProps['filterResults'];
+  minChars: MultiselectProps['minChars'];
+  resolveOnLoad: MultiselectProps['resolveOnLoad'];
+  appendNewTag: MultiselectProps['appendNewTag'];
+  appendNewOption: MultiselectProps['appendNewOption'];
+  createTag: MultiselectProps['createTag'];
+  createOption: MultiselectProps['createOption'];
+  addTagOn: MultiselectProps['addTagOn'];
+  addOptionOn: MultiselectProps['addOptionOn'];
+  hideSelected: MultiselectProps['hideSelected'];
+  showOptions: MultiselectProps['showOptions'];
+  object: MultiselectProps['object'];
+  required: MultiselectProps['required'];
+  openDirection: MultiselectProps['openDirection'];
+  nativeSupport: MultiselectProps['nativeSupport'];
+  classes: MultiselectProps['classes'];
+  strict: MultiselectProps['strict'];
+  closeOnSelect: MultiselectProps['closeOnSelect'];
+  closeOnDeselect: MultiselectProps['closeOnDeselect'];
+  autocomplete: MultiselectProps['autocomplete'];
+  groups: MultiselectProps['groups'];
+  groupLabel: MultiselectProps['groupLabel'];
+  groupOptions: MultiselectProps['groupOptions'];
+  groupHideEmpty: MultiselectProps['groupHideEmpty'];
+  groupSelect: MultiselectProps['groupSelect'];
+  inputType: MultiselectProps['inputType'];
+  attrs: MultiselectProps['attrs'];
+  onCreate: MultiselectProps['onCreate'];
+  searchStart: MultiselectProps['searchStart'];
+  reverse: MultiselectProps['reverse'];
+  regex: MultiselectProps['regex'];
+  rtl: MultiselectProps['rtl'];
+  infinite: MultiselectProps['infinite'];
+  aria: MultiselectProps['aria'];
+  clearOnBlur: MultiselectProps['clearOnBlur'];
+  locale: MultiselectProps['locale'];
+  fallbackLocale: MultiselectProps['fallbackLocale'];
+  searchFilter: MultiselectProps['searchFilter'];
+  allowAbsent: MultiselectProps['allowAbsent'];
+  appendToBody: MultiselectProps['appendToBody'];
+  closeOnScroll: MultiselectProps['closeOnScroll'];
+  breakTags: MultiselectProps['breakTags'];
+
+  $props: MultiselectProps;
 
   $emit(eventName: 'change', value: any, instance: this): this | void;
   $emit(eventName: 'select', value: any, option: any, instance:this): this | void;
