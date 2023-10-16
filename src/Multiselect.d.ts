@@ -98,7 +98,7 @@ interface MultiselectProps {
   locale?: string;
   fallbackLocale?: string;
   searchFilter?: Function;
-  allowAbsent?: object;
+  allowAbsent?: boolean;
   appendToBody?: boolean;
   closeOnScroll?: boolean;
   breakTags?: boolean;

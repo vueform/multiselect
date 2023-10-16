@@ -1,7 +1,14 @@
+## v2.6.5
+
+> `2023-10-16`
+
+### 🐞 Bug Fixes
+  - Type fixes.
+
 ## v2.6.4
 
 > `2023-10-14`
-> 
+
 ### 🐞 Bug Fixes
   - Type fixes.
 
