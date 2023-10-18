@@ -1,7 +1,7 @@
 import { ref, toRefs, getCurrentInstance, computed, onMounted, onBeforeUnmount, nextTick } from 'vue'
-import { createPopper } from '@popperjs/core/lib/popper-lite.js'
-import preventOverflow from '@popperjs/core/lib/modifiers/preventOverflow.js'
-import flip from '@popperjs/core/lib/modifiers/flip.js'
+import { createPopper } from '@popperjs/core/lib/popper-lite'
+import preventOverflow from '@popperjs/core/lib/modifiers/preventOverflow'
+import flip from '@popperjs/core/lib/modifiers/flip'
 
 export default function useDropdown (props, context, dep)
 {
@@ -104,6 +104,7 @@ export default function useDropdown (props, context, dep)
       return
     }
 
+    /* istanbul ignore next: popper mock */
     popper.value = createPopper(multiselect.value, dropdown.value, {
       strategy: hasFixedParent(multiselect.value) ? /* istanbul ignore next: UI feature */ 'fixed' : undefined,
       placement: openDirection.value,
