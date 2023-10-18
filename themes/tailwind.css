@@ -35,13 +35,11 @@
 }
 
 .multiselect-tags {
-  min-width: 0;
-  @apply flex-grow flex-shrink flex flex-wrap items-center mt-1 pl-2 rtl:pl-0 rtl:pr-2;
+  @apply flex-grow flex-shrink flex flex-wrap items-center mt-1 pl-2 min-w-0 rtl:pl-0 rtl:pr-2;
 }
 
 .multiselect-tag {
-  min-width: 0;
-  @apply bg-green-500 text-white text-sm font-semibold py-0.5 pl-2 rounded mr-1 mb-1 flex items-center whitespace-nowrap rtl:pl-0 rtl:pr-2 rtl:mr-0 rtl:ml-1;
+  @apply bg-green-500 text-white text-sm font-semibold py-0.5 pl-2 rounded mr-1 mb-1 flex items-center whitespace-nowrap min-w-0 rtl:pl-0 rtl:pr-2 rtl:mr-0 rtl:ml-1;
 }
 .multiselect-tag.is-disabled {
   @apply pr-2 opacity-50 rtl:pl-2;
