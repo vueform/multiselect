@@ -1,3 +1,14 @@
+## v2.6.6
+
+> `2023-10-18`
+
+### 🎉 Feature
+  - Added `appendTo` option.
+  - Added `${id}-dropdown` to dropdown DOM.
+
+### 🐞 Bug Fixes
+  - Included `@popperjs/core` for `appendToBody` / `appendTo` position fixes.
+
 ## v2.6.5
 
 > `2023-10-16`
