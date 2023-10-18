@@ -2,7 +2,7 @@ import { computed, toRefs } from 'vue'
 
 export default function useClasses (props, context, dependencies)
 {const { 
-    classes: classes_, disabled, openDirection, showOptions, breakTags
+    classes: classes_, disabled, showOptions, breakTags
   } = toRefs(props)
 
   // ============ DEPENDENCIES ============
@@ -15,6 +15,9 @@ export default function useClasses (props, context, dependencies)
   const canPointGroups = dependencies.canPointGroups
   const resolving = dependencies.resolving
   const fo = dependencies.fo
+  const placement = dependencies.placement
+
+  // ============== COMPUTED ==============
 
   const classes = computed(() => ({
     container: 'multiselect',
@@ -73,8 +76,6 @@ export default function useClasses (props, context, dependencies)
     ...classes_.value,
   }))
 
-  // ============== COMPUTED ==============
-
   const showDropdown = computed(() => {
     return !!(isOpen.value && showOptions.value && (!resolving.value || (resolving.value && fo.value.length)))
   })
@@ -85,8 +86,8 @@ export default function useClasses (props, context, dependencies)
     return {
       container: [c.container]
         .concat(disabled.value ? c.containerDisabled : [])
-        .concat(showDropdown.value && openDirection.value === 'top'  ? c.containerOpenTop : [])
-        .concat(showDropdown.value && openDirection.value !== 'top' ? c.containerOpen : [])
+        .concat(showDropdown.value && placement.value === 'top'  ? c.containerOpenTop : [])
+        .concat(showDropdown.value && placement.value !== 'top' ? c.containerOpen : [])
         .concat(isActive.value ? c.containerActive : []),
       wrapper: c.wrapper,
       spacer: c.spacer,
@@ -113,10 +114,10 @@ export default function useClasses (props, context, dependencies)
       inifinite: c.inifinite,
       inifiniteSpinner: c.inifiniteSpinner,
       dropdown: [c.dropdown]
-        .concat(openDirection.value === 'top' ? c.dropdownTop : [])
+        .concat(placement.value === 'top' ? c.dropdownTop : [])
         .concat(!isOpen.value || !showOptions.value || !showDropdown.value ? c.dropdownHidden : []),
       options: [c.options]
-        .concat(openDirection.value === 'top' ? c.optionsTop : []),
+        .concat(placement.value === 'top' ? c.optionsTop : []),
       group: c.group,
       groupLabel: (g) => {
         let groupLabel = [c.groupLabel]

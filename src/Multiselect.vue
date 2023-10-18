@@ -168,11 +168,11 @@
     </div>
 
     <!-- Options -->
-    <Teleport to="body" :disabled="!appendToBody">
+    <Teleport :to="appendTo || 'body'" :disabled="!appendToBody && !appendTo">
       <div
+        :id="`${id}-dropdown`"
         :class="classList.dropdown"
         tabindex="-1"
-        :style="dropdownStyles"
         ref="dropdown"
       >
         <slot name="beforelist" :options="fo"></slot>
@@ -644,6 +644,10 @@
         required: false,
         type: Boolean,
         default: false,
+      },
+      appendTo: {
+        required: false,
+        type: String,
       },
     },
     setup(props, context)

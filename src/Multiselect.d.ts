@@ -102,6 +102,7 @@ interface MultiselectProps {
   appendToBody?: boolean;
   closeOnScroll?: boolean;
   breakTags?: boolean;
+  appendTo?: string;
 }
 
 declare class Multiselect implements ReturnType<typeof defineComponent> {
@@ -171,6 +172,7 @@ declare class Multiselect implements ReturnType<typeof defineComponent> {
   appendToBody: MultiselectProps['appendToBody'];
   closeOnScroll: MultiselectProps['closeOnScroll'];
   breakTags: MultiselectProps['breakTags'];
+  appendTo: MultiselectProps['appendTo'];
 
   $props: MultiselectProps;
 
@@ -267,6 +269,8 @@ declare class Multiselect implements ReturnType<typeof defineComponent> {
   offset: number;
   plainValue: any;
   pointer: any;
+  placement: string;
+  popper: object;
   preparePointer: () => void;
   refreshLabels: () => void;
   refreshOptions: (callback: any) => void;
@@ -283,6 +287,7 @@ declare class Multiselect implements ReturnType<typeof defineComponent> {
   tags: any;
   textValue: any;
   update: (val: any, triggerInput?: boolean) => void;
+  updatePopper: () => void;
 }
 
 export default Multiselect;

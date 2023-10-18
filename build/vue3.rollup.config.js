@@ -1,6 +1,6 @@
 import vue from 'vue-next-rollup-plugin-vue'
-import alias from '@rollup/plugin-alias'
 import { terser } from 'rollup-plugin-terser'
+import { nodeResolve } from '@rollup/plugin-node-resolve'
 
 export default [
   {
@@ -11,6 +11,24 @@ export default [
     },
     plugins: [
       vue(),
+      nodeResolve({
+        resolveOnly: ['@popperjs/core']
+      }),
+    ],
+    external: ['vue'],
+  },
+  {
+    input: 'src/Multiselect.vue',
+    output: {
+      file: 'dist/multiselect.min.js',
+      format: 'esm',
+    },
+    plugins: [
+      vue(),
+      nodeResolve({
+        resolveOnly: ['@popperjs/core']
+      }),
+      terser(),
     ],
     external: ['vue'],
   },
@@ -22,6 +40,9 @@ export default [
     },
     plugins: [
       vue(),
+      nodeResolve({
+        resolveOnly: ['@popperjs/core']
+      }),
     ],
     external: ['vue'],
   },
@@ -37,6 +58,9 @@ export default [
     },
     plugins: [
       vue(),
+      nodeResolve({
+        resolveOnly: ['@popperjs/core']
+      }),
       terser(),
     ],
     external: ['vue'],
