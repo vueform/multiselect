@@ -1,7 +1,7 @@
 import { mount, createLocalVue } from '@vue/test-utils'
 import Multiselect from './../../../dist/multiselect.vue2'
 
-export const createSelect = (props = {}, options = {}) => {
+export const createSelect = (props = {}, options = {}, returnWrapper = false) => {
   const localVue = createLocalVue()
 
   localVue.use({
@@ -42,10 +42,16 @@ export const createSelect = (props = {}, options = {}) => {
     }
   }, config)
 
-  return wrapper.findAllComponents({ name: 'Multiselect' }).at(0)
+  return returnWrapper
+    ? wrapper
+    : wrapper.findAllComponents({ name: 'Multiselect' }).at(0)
 }
 
 export const destroy = (wrapper) => {
+  wrapper.destroy()
+} 
+
+export const unmount = (wrapper) => {
   wrapper.destroy()
 } 
 
@@ -93,6 +99,15 @@ export const keydown = (wrapper, key) => {
 
 export const findAll = (parent, query) => {
   let res = parent.findAll(query)
+
+  return {
+    at: (i) => { return res.at(i) },
+    length: res.length,
+  }
+}
+
+export const findAllComponents = (parent, query) => {
+  let res = parent.findAllComponents(query)
 
   return {
     at: (i) => { return res.at(i) },

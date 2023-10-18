@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils'
 import Multiselect from './../../../src/Multiselect.vue'
 
-export const createSelect = (props = {}, options = {}) => {
+export const createSelect = (props = {}, options = {}, returnWrapper = false) => {
   let config = {}
 
   document.body.innerHTML = `
@@ -34,10 +34,16 @@ export const createSelect = (props = {}, options = {}) => {
     }
   }, config)
 
-  return wrapper.findAllComponents({ name: 'Multiselect' })[0]
+  return returnWrapper
+    ? wrapper
+    : wrapper.findAllComponents({ name: 'Multiselect' })[0]
 }
 
 export const destroy = (wrapper) => {} 
+
+export const unmount = (wrapper) => {
+  wrapper.unmount()
+} 
 
 const keyEvent = (event, wrapper, key) => {
   let triggerKey = ''
@@ -93,6 +99,15 @@ export const keydown = (wrapper, key) => {
 
 export const findAll = (parent, query) => {
   let res = parent.findAll(query)
+
+  return {
+    at: (i) => { return res[i] },
+    length: res.length,
+  }
+}
+
+export const findAllComponents = (parent, query) => {
+  let res = parent.findAllComponents(query)
 
   return {
     at: (i) => { return res[i] },
