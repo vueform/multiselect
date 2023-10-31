@@ -71,7 +71,7 @@
 }
 
 .multiselect-tags-search-wrapper {
-  @apply inline-block relative mx-1 mb-1 flex-grow flex-shrink h-full;
+  @apply inline-block relative mx-1 mb-1 flex-grow flex-shrink h-full max-w-full;
 }
 
 .multiselect-tags-search {
