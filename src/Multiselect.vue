@@ -170,7 +170,7 @@
     <!-- Options -->
     <Teleport :to="appendTo || 'body'" :disabled="!appendToBody && !appendTo">
       <div
-        :id="`${id}-dropdown`"
+        :id="id ? `${id}-dropdown` : undefined"
         :class="classList.dropdown"
         tabindex="-1"
         ref="dropdown"
