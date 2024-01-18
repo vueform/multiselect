@@ -663,7 +663,7 @@ Alternatively you can define class names directly by passing them to the `Multis
   noOptions: 'py-2 px-3 text-gray-600 bg-white text-left rtl:text-right',
   noResults: 'py-2 px-3 text-gray-600 bg-white text-left rtl:text-right',
   fakeInput: 'bg-transparent absolute left-0 right-0 -bottom-px w-full h-px border-0 p-0 appearance-none outline-none text-transparent',
-  assist: 'absolute -m-px w-px h-px overflow-hidden'
+  assist: 'absolute -m-px w-px h-px overflow-hidden',
   spacer: 'h-9 py-px box-content'
 }" />
 ```
