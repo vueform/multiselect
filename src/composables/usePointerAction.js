@@ -240,7 +240,7 @@ export default function usePointer (props, context, dep)
   })
 
   watch(isOpen, (val) => {
-    if (val) {
+    if (val && multiselect?.value) {
       let firstSelected = multiselect.value.querySelectorAll(`[data-selected]`)[0]
 
       if (!firstSelected) {
