@@ -199,7 +199,7 @@ declare class Multiselect implements ReturnType<typeof defineComponent> {
     multiplelabel: VNode[];
     singlelabel: VNode[];
     option: VNode[];
-    groupLabel: VNode[];
+    grouplabel: VNode[];
     tag: VNode[];
     infinite: VNode[];
     nooptions: VNode[];
