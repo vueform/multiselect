@@ -227,9 +227,12 @@ declare class Multiselect implements ReturnType<typeof defineComponent> {
   busy: boolean;
   canPointGroups: boolean;
   classList: ClassList;
+  clear: () => void;
   clearPointer: () => void;
   clearSearch: () => void;
+  close: () => void;
   deactivate: () => void;
+  deselect: (option: any) => void;
   disabledProp?: string;
   extendedGroups: Array<any>
   extendedOptions: Array<any>
@@ -267,6 +270,7 @@ declare class Multiselect implements ReturnType<typeof defineComponent> {
   multipleLabelText: string;
   multiselect: any;
   offset: number;
+  open: () => void;
   plainValue: any;
   pointer: any;
   placement: string;
@@ -274,6 +278,7 @@ declare class Multiselect implements ReturnType<typeof defineComponent> {
   preparePointer: () => void;
   refreshLabels: () => void;
   refreshOptions: (callback: any) => void;
+  remove: (option: any) => void;
   resolveOptions: (callback: any) => void;
   resolving: boolean;
   search: any;
