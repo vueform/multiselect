@@ -1340,7 +1340,7 @@ function usePointer (props, context, dep)
   });
 
   watch(isOpen, (val) => {
-    if (val) {
+    if (val && multiselect?.value) {
       let firstSelected = multiselect.value.querySelectorAll(`[data-selected]`)[0];
 
       if (!firstSelected) {
@@ -3071,6 +3071,7 @@ function useDropdown (props, context, dep)
       return
     }
 
+    /* istanbul ignore next: popper mock */
     popper.value = createPopper(multiselect.value, dropdown.value, {
       strategy: hasFixedParent(multiselect.value) ? /* istanbul ignore next: UI feature */ 'fixed' : undefined,
       placement: openDirection.value,
@@ -4399,10 +4400,10 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     class: normalizeClass(_ctx.classList.container),
     id: $props.searchable ? undefined : $props.id,
     dir: $props.rtl ? 'rtl' : undefined,
-    onFocusin: _cache[10] || (_cache[10] = (...args) => (_ctx.handleFocusIn && _ctx.handleFocusIn(...args))),
-    onFocusout: _cache[11] || (_cache[11] = (...args) => (_ctx.handleFocusOut && _ctx.handleFocusOut(...args))),
-    onKeyup: _cache[12] || (_cache[12] = (...args) => (_ctx.handleKeyup && _ctx.handleKeyup(...args))),
-    onKeydown: _cache[13] || (_cache[13] = (...args) => (_ctx.handleKeydown && _ctx.handleKeydown(...args)))
+    onFocusin: _cache[12] || (_cache[12] = (...args) => (_ctx.handleFocusIn && _ctx.handleFocusIn(...args))),
+    onFocusout: _cache[13] || (_cache[13] = (...args) => (_ctx.handleFocusOut && _ctx.handleFocusOut(...args))),
+    onKeyup: _cache[14] || (_cache[14] = (...args) => (_ctx.handleKeyup && _ctx.handleKeyup(...args))),
+    onKeydown: _cache[15] || (_cache[15] = (...args) => (_ctx.handleKeydown && _ctx.handleKeydown(...args)))
   }, [
     createElementVNode("div", mergeProps({
       class: _ctx.classList.wrapper,
@@ -4478,7 +4479,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
                         }, null, 2 /* CLASS */)
                       ], 10 /* CLASS, PROPS */, _hoisted_5))
                     : createCommentVNode("v-if", true)
-                ], 42 /* CLASS, PROPS, HYDRATE_EVENTS */, _hoisted_4))
+                ], 42 /* CLASS, PROPS, NEED_HYDRATION */, _hoisted_4))
               ])
             }), 256 /* UNKEYED_FRAGMENT */)),
             createElementVNode("div", {
@@ -4581,7 +4582,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
               createElementVNode("span", {
                 class: normalizeClass(_ctx.classList.clearIcon)
               }, null, 2 /* CLASS */)
-            ], 34 /* CLASS, HYDRATE_EVENTS */)
+            ], 34 /* CLASS, NEED_HYDRATION */)
           ])
         : createCommentVNode("v-if", true),
       createCommentVNode(" Caret "),
@@ -4605,10 +4606,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       disabled: !$props.appendToBody && !$props.appendTo
     }, [
       createElementVNode("div", {
-        id: `${$props.id}-dropdown`,
+        id: $props.id ? `${$props.id}-dropdown` : undefined,
         class: normalizeClass(_ctx.classList.dropdown),
         tabindex: "-1",
-        ref: "dropdown"
+        ref: "dropdown",
+        onFocusin: _cache[10] || (_cache[10] = (...args) => (_ctx.handleFocusIn && _ctx.handleFocusIn(...args))),
+        onFocusout: _cache[11] || (_cache[11] = (...args) => (_ctx.handleFocusOut && _ctx.handleFocusOut(...args)))
       }, [
         renderSlot(_ctx.$slots, "beforelist", { options: _ctx.fo }),
         createElementVNode("ul", {
@@ -4643,7 +4646,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
                             innerHTML: _ctx.localize(group[$props.groupLabel])
                           }, null, 8 /* PROPS */, _hoisted_12)
                         ])
-                      ], 42 /* CLASS, PROPS, HYDRATE_EVENTS */, _hoisted_11))
+                      ], 42 /* CLASS, PROPS, NEED_HYDRATION */, _hoisted_11))
                     : createCommentVNode("v-if", true),
                   createElementVNode("ul", {
                     class: normalizeClass(_ctx.classList.groupOptions),
@@ -4671,7 +4674,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
                         }, () => [
                           createElementVNode("span", null, toDisplayString(_ctx.localize(option[$props.label])), 1 /* TEXT */)
                         ])
-                      ], 42 /* CLASS, PROPS, HYDRATE_EVENTS */, _hoisted_14))
+                      ], 42 /* CLASS, PROPS, NEED_HYDRATION */, _hoisted_14))
                     }), 128 /* KEYED_FRAGMENT */))
                   ], 10 /* CLASS, PROPS */, _hoisted_13)
                 ], 10 /* CLASS, PROPS */, _hoisted_10))
@@ -4697,7 +4700,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
                   }, () => [
                     createElementVNode("span", null, toDisplayString(_ctx.localize(option[$props.label])), 1 /* TEXT */)
                   ])
-                ], 42 /* CLASS, PROPS, HYDRATE_EVENTS */, _hoisted_15))
+                ], 42 /* CLASS, PROPS, NEED_HYDRATION */, _hoisted_15))
               }), 128 /* KEYED_FRAGMENT */))
         ], 10 /* CLASS, PROPS */, _hoisted_9),
         (_ctx.noOptions)
@@ -4730,7 +4733,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
             ], 2 /* CLASS */))
           : createCommentVNode("v-if", true),
         renderSlot(_ctx.$slots, "afterlist", { options: _ctx.fo })
-      ], 10 /* CLASS, PROPS */, _hoisted_8)
+      ], 42 /* CLASS, PROPS, NEED_HYDRATION */, _hoisted_8)
     ], 8 /* PROPS */, ["to", "disabled"])),
     createCommentVNode(" Hacky input element to show HTML5 required warning "),
     ($props.required)
@@ -4775,7 +4778,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     createElementVNode("div", {
       class: normalizeClass(_ctx.classList.spacer)
     }, null, 2 /* CLASS */)
-  ], 42 /* CLASS, PROPS, HYDRATE_EVENTS */, _hoisted_1))
+  ], 42 /* CLASS, PROPS, NEED_HYDRATION */, _hoisted_1))
 }
 
 script.render = render;

@@ -1,3 +1,14 @@
+## v2.6.7
+
+> `2024-03-20`
+
+### 🐞 Bug Fixes
+  - Clicking on scroll bar closes the dropdown fix #383
+  - Types for scoped slots #391
+  - Missing method types and typo fixes #376 #392
+  - Don't show dropdown id when id is not defined
+  - Avoid error when multiselect does not exist #394
+
 ## v2.6.6
 
 > `2023-10-18`

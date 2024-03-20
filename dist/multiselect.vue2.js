@@ -1340,7 +1340,7 @@ function usePointer (props, context, dep)
   });
 
   watch(isOpen, (val) => {
-    if (val) {
+    if (val && multiselect?.value) {
       let firstSelected = multiselect.value.querySelectorAll(`[data-selected]`)[0];
 
       if (!firstSelected) {
@@ -3071,6 +3071,7 @@ function useDropdown (props, context, dep)
       return
     }
 
+    /* istanbul ignore next: popper mock */
     popper.value = createPopper(multiselect.value, dropdown.value, {
       strategy: hasFixedParent(multiselect.value) ? /* istanbul ignore next: UI feature */ 'fixed' : undefined,
       placement: openDirection.value,
@@ -4830,7 +4831,11 @@ var __vue_render__ = function () {
             {
               ref: "dropdown",
               class: _vm.classList.dropdown,
-              attrs: { id: _vm.id + "-dropdown", tabindex: "-1" },
+              attrs: {
+                id: _vm.id ? _vm.id + "-dropdown" : undefined,
+                tabindex: "-1",
+              },
+              on: { focusin: _vm.handleFocusIn, focusout: _vm.handleFocusOut },
             },
             [
               _vm._t("beforelist", null, { options: _vm.fo }),
