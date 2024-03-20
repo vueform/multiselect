@@ -193,19 +193,18 @@ declare class Multiselect implements ReturnType<typeof defineComponent> {
 
   $slots: {
     placeholder: VNode[];
-    afterlist: VNode[];
-    beforelist: VNode[];
-    list: VNode[];
-    multiplelabel: VNode[];
-    singlelabel: VNode[];
-    option: VNode[];
-    grouplabel: VNode[];
-    tag: VNode[];
+    afterlist: (props: { options: any[] }) => VNode[];
+    beforelist: (props: { options: any[] }) => VNode[];
+    multiplelabel: (props: { values: any[] | object }) => VNode[];
+    singlelabel: (props: { value: any }) => VNode[];
+    option: (props: { option: any, isSelected: boolean, isPointed: boolean, search: null | string }) => VNode[];
+    grouplabel: (props: { group: any, isSelected: boolean, isPointed: boolean }) => VNode[];
+    tag: (props: { option: any, handleTagRemove: (option: any, e: Event) => void, disabled: boolean,  }) => VNode[];
     infinite: VNode[];
     nooptions: VNode[];
     noresults: VNode[];
-    caret: VNode[];
-    clear: VNode[];
+    caret: (props: { handleCaretClick: () => void, isOpen: boolean, }) => VNode[];
+    clear: (props: { clear: () => void }) => VNode[];
     spinner: VNode[];
   };
 
