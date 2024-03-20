@@ -174,6 +174,8 @@
         :class="classList.dropdown"
         tabindex="-1"
         ref="dropdown"
+        @focusin="handleFocusIn"
+        @focusout="handleFocusOut"
       >
         <slot name="beforelist" :options="fo"></slot>
 
