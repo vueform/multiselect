@@ -1,4 +1,4 @@
-import { toRefs, watch, nextTick, onMounted, ref, computed } from 'vue'
+import { toRefs, watch, nextTick, onMounted, ref, shallowRef, computed } from 'vue'
 
 export default function useScroll (props, context, dep)
 {
@@ -19,7 +19,7 @@ export default function useScroll (props, context, dep)
   // no export
   const observer = ref(null)
 
-  const infiniteLoader = ref(null)
+  const infiniteLoader = shallowRef(null)
 
   // ============== COMPUTED ==============
 
