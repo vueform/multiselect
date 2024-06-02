@@ -1,4 +1,5 @@
 import { toRefs, watch, nextTick, computed } from 'vue'
+import toRef from './../utils/toRef'
 
 export default function usePointer (props, context, dep)
 {
