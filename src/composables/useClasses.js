@@ -1,4 +1,5 @@
 import { computed, toRefs } from 'vue'
+import toRef from './../utils/toRef'
 
 export default function useClasses (props, context, dependencies)
 {const { 
@@ -19,7 +20,7 @@ export default function useClasses (props, context, dependencies)
 
   // ============== COMPUTED ==============
 
-  const classes = computed(() => ({
+  const classes = toRef(() => ({
     container: 'multiselect',
     containerDisabled: 'is-disabled',
     containerOpen: 'is-open',
@@ -76,7 +77,7 @@ export default function useClasses (props, context, dependencies)
     ...classes_.value,
   }))
 
-  const showDropdown = computed(() => {
+  const showDropdown = toRef(() => {
     return !!(isOpen.value && showOptions.value && (!resolving.value || (resolving.value && fo.value.length)))
   })
 

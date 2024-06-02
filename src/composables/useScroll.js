@@ -1,4 +1,5 @@
 import { toRefs, watch, nextTick, onMounted, ref, shallowRef, computed } from 'vue'
+import toRef from '../utils/toRef'
 
 export default function useScroll (props, context, dep)
 {
@@ -23,7 +24,7 @@ export default function useScroll (props, context, dep)
 
   // ============== COMPUTED ==============
 
-  const hasMore = computed(() => {
+  const hasMore = toRef(() => {
     return offset.value < pfo.value.length
   })
 

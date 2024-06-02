@@ -1,4 +1,5 @@
 import { toRefs, onMounted, ref, computed } from 'vue'
+import toRef from './../utils/toRef'
 
 export default function useA11y (props, context, dep)
 {
@@ -19,15 +20,15 @@ export default function useA11y (props, context, dep)
 
   // ============== COMPUTED ==============
 
-  const ariaAssist = computed(() => (
+  const ariaAssist = toRef(() => (
     `${id.value ? id.value + '-' : ''}assist`
   ))
 
-  const ariaControls = computed(() => (
+  const ariaControls = toRef(() => (
     `${id.value ? id.value + '-' : ''}multiselect-options`
   ))
 
-  const ariaActiveDescendant = computed(() => {
+  const ariaActiveDescendant = toRef(() => {
     if (pointer.value) {
       let texts = id.value
         ? `${id.value}-`
@@ -41,13 +42,11 @@ export default function useA11y (props, context, dep)
     }
   })
 
-
-
-  const ariaPlaceholder = computed(() => {
+  const ariaPlaceholder = toRef(() => {
     return placeholder.value
   })
 
-  const ariaMultiselectable = computed(() => {
+  const ariaMultiselectable = toRef(() => {
     return mode.value !== 'single'
   })
 

@@ -3,6 +3,7 @@ import normalize from './../utils/normalize'
 import isObject from './../utils/isObject'
 import isNullish from './../utils/isNullish'
 import arraysEqual from './../utils/arraysEqual'
+import toRef from './../utils/toRef'
 
 export default function useOptions (props, context, dep)
 {
@@ -51,12 +52,12 @@ export default function useOptions (props, context, dep)
   // ============== COMPUTED ==============
 
   // no export
-  const createOption = computed(() => {
+  const createOption = toRef(() => {
     return createTag.value || createOption_.value || false
   })
 
   // no export
-  const appendNewOption = computed(() => {
+  const appendNewOption = toRef(() => {
     if (appendNewTag.value !== undefined) {
       return appendNewTag.value
     } else if (appendNewOption_.value !== undefined) {
@@ -197,12 +198,12 @@ export default function useOptions (props, context, dep)
       : (iv.value && iv.value.length > 1 ? `${iv.value.length} options selected` : `1 option selected`)
   })
 
-  const noOptions = computed(() => {
+  const noOptions = toRef(() => {
     return !eo.value.length && !resolving.value && !createdOption.value.length
   })
 
 
-  const noResults = computed(() => {
+  const noResults = toRef(() => {
     return eo.value.length > 0 && fo.value.length == 0 && ((search.value && groupped.value) || !groupped.value)
   })
 
@@ -229,7 +230,7 @@ export default function useOptions (props, context, dep)
   })
 
   // no export
-  const nullValue = computed(() => {
+  const nullValue = toRef(() => {
     switch (mode.value) {
       case 'single':
         return null
@@ -240,7 +241,7 @@ export default function useOptions (props, context, dep)
     }
   })
 
-  const busy = computed(() => {
+  const busy = toRef(() => {
     return loading.value || resolving.value
   })
 
