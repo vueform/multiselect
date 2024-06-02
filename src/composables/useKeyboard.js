@@ -1,4 +1,4 @@
-import { toRefs, computed, getCurrentInstance } from 'vue'
+import { toRefs, getCurrentInstance } from 'vue'
 import toRef from './../utils/toRef'
 
 export default function useKeyboard (props, context, dep)
