@@ -94,9 +94,9 @@ export default function useA11y (props, context, dep)
     `${id.value ? id.value + '-' : ''}multiselect-group-${option.index}`
   )
 
-  const ariaOptionLabel = (label) => label
+  const ariaOptionLabel = (label) => `${label}`
 
-  const ariaGroupLabel = (label) => label
+  const ariaGroupLabel = (label) => `${label}`
 
   const ariaTagLabel = (label) => `${label} ❎`
 
