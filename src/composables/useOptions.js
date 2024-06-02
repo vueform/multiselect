@@ -193,7 +193,7 @@ export default function useOptions (props, context, dep)
   })
 
   const multipleLabelText = computed(() => {
-    return multipleLabel !== undefined && multipleLabel.value !== undefined
+    return multipleLabel.value !== undefined
       ? multipleLabel.value(iv.value, $this)
       : (iv.value && iv.value.length > 1 ? `${iv.value.length} options selected` : `1 option selected`)
   })
@@ -345,7 +345,7 @@ export default function useOptions (props, context, dep)
       return
     }
 
-    if (onCreate && onCreate.value && !isSelected(option) && option.__CREATE__) {
+    if (onCreate.value && !isSelected(option) && option.__CREATE__) {
       option = { ...option }
       delete option.__CREATE__
 

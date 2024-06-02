@@ -15,7 +15,7 @@ export default function useValue (props, context)
   /* istanbul ignore next */
   // externalValue
   const ev = toRef(() => {
-    return modelValue && modelValue.value !== undefined ? modelValue.value : value.value
+    return modelValue.value !== undefined ? modelValue.value : value.value
   })
 
   const plainValue = computed(() => {
