@@ -6,3 +6,4 @@ stats.json
 .npmrc
 coverage/
 .idea
+package-lock.json
