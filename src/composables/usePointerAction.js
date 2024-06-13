@@ -250,10 +250,11 @@ export default function usePointer (props, context, dep)
       let wrapper = firstSelected.parentElement.parentElement
       
       nextTick(() => {
+        // Removed because of #406
         /* istanbul ignore next */
-        if (wrapper.scrollTop > 0) {
-          return
-        }
+        // if (wrapper.scrollTop > 0) {
+        //   return
+        // }
 
         wrapper.scrollTop = firstSelected.offsetTop
       })
