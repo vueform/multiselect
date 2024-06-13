@@ -197,8 +197,8 @@ declare class Multiselect implements ReturnType<typeof defineComponent> {
     beforelist: (props: { options: any[] }) => VNode[];
     multiplelabel: (props: { values: any[] | object }) => VNode[];
     singlelabel: (props: { value: any }) => VNode[];
-    option: (props: { option: any, isSelected: boolean, isPointed: boolean, search: null | string }) => VNode[];
-    grouplabel: (props: { group: any, isSelected: boolean, isPointed: boolean }) => VNode[];
+    option: (props: { option: any, isSelected: (option: any) => boolean, isPointed: (option: any) => boolean, search: null | string }) => VNode[];
+    grouplabel: (props: { group: any, isSelected: (option: any) => boolean, isPointed: (option: any) => boolean }) => VNode[];
     tag: (props: { option: any, handleTagRemove: (option: any, e: Event) => void, disabled: boolean,  }) => VNode[];
     infinite: VNode[];
     nooptions: VNode[];
