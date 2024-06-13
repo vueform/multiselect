@@ -4,8 +4,8 @@ export default function normalize (str, strict = true) {
     : String(str).toLowerCase()
                  .normalize('NFD')
                  .trim()
-                 .replace(new RegExp(/æ/g), 'ae')
-                 .replace(new RegExp(/œ/g), 'oe')
-                 .replace(new RegExp(/ø/g), 'o')
+                 .replace(/æ/g, 'ae')
+                 .replace(/œ/g, 'oe')
+                 .replace(/ø/g, 'o')
                  .replace(/\p{Diacritic}/gu, '')
 }

@@ -1,4 +1,5 @@
-import { toRefs, computed, getCurrentInstance } from 'vue'
+import { toRefs, getCurrentInstance } from 'vue'
+import toRef from './../utils/toRef'
 
 export default function useKeyboard (props, context, dep)
 {
@@ -32,12 +33,12 @@ export default function useKeyboard (props, context, dep)
   // ============== COMPUTED ==============
 
   // no export
-  const createOption = computed(() => {
+  const createOption = toRef(() => {
     return createTag.value || createOption_.value || false
   })
 
   // no export
-  const addOptionOn = computed(() => {
+  const addOptionOn = toRef(() => {
     if (addTagOn.value !== undefined) {
       return addTagOn.value
     }

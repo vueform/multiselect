@@ -1,4 +1,5 @@
 import { computed, toRefs, ref } from 'vue'
+import toRef from '../utils/toRef'
 
 export default function useValue (props, context)
 {
@@ -13,15 +14,15 @@ export default function useValue (props, context)
 
   /* istanbul ignore next */
   // externalValue
-  const ev = computed(() => {
-    return modelValue && modelValue.value !== undefined ? modelValue.value : value.value
+  const ev = toRef(() => {
+    return modelValue.value !== undefined ? modelValue.value : value.value
   })
 
   const plainValue = computed(() => {
     return mode.value === 'single' ? iv.value[valueProp.value] : iv.value.map(v=>v[valueProp.value])
   })
 
-  const textValue = computed(() => {
+  const textValue = toRef(() => {
     return mode.value !== 'single' ? iv.value.map(v=>v[valueProp.value]).join(',') : iv.value[valueProp.value]
   })
 

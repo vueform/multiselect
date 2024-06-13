@@ -1,7 +1,8 @@
-import { ref, toRefs, getCurrentInstance, computed, onMounted, onBeforeUnmount, nextTick } from 'vue'
+import { ref, toRefs, getCurrentInstance, onMounted, onBeforeUnmount, nextTick } from 'vue'
 import { createPopper } from '@popperjs/core/lib/popper-lite'
 import preventOverflow from '@popperjs/core/lib/modifiers/preventOverflow'
 import flip from '@popperjs/core/lib/modifiers/flip'
+import toRef from './../utils/toRef'
 
 export default function useDropdown (props, context, dep)
 {
@@ -22,11 +23,11 @@ export default function useDropdown (props, context, dep)
   
   // ============== COMPUTED ==============
 
-  const appended = computed(() => {
+  const appended = toRef(() => {
     return appendTo.value || appendToBody.value
   })
 
-  const placement = computed(() => {
+  const placement = toRef(() => {
     return (openDirection.value === 'top' && forcedPlacement.value === 'bottom') ||
            (openDirection.value === 'bottom' && forcedPlacement.value !== 'top')
             ? 'bottom'
