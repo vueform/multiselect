@@ -1,4 +1,5 @@
 import { toRefs, watch, nextTick, computed } from 'vue'
+import toRef from './../utils/toRef'
 
 export default function usePointer (props, context, dep)
 {
@@ -32,11 +33,11 @@ export default function usePointer (props, context, dep)
     return fg.value.filter(g => !g[disabledProp.value])
   })
 
-  const canPointGroups = computed(() => {
+  const canPointGroups = toRef(() => {
     return mode.value !== 'single' && groupSelect.value
   })
 
-  const isPointerGroup = computed(() => {
+  const isPointerGroup = toRef(() => {
     return pointer.value && pointer.value.group
   })
 

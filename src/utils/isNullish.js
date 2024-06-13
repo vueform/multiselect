@@ -1,3 +1,3 @@
 export default function isNullish (val) {
-  return [null, undefined].indexOf(val) !== -1
+  return val === null || val === undefined
 }

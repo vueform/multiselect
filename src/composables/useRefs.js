@@ -1,18 +1,18 @@
-import { ref } from 'vue'
+import { shallowRef } from 'vue'
 
 export default function useRefs (props, context, dep)
 {
   // ================ DATA ================
 
-  const multiselect = ref(null)
+  const multiselect = shallowRef(null)
   
-  const wrapper = ref(null)
+  const wrapper = shallowRef(null)
 
-  const tags = ref(null)
+  const tags = shallowRef(null)
 
-  const input = ref(null)
+  const input = shallowRef(null)
 
-  const dropdown = ref(null)
+  const dropdown = shallowRef(null)
 
   return {
     multiselect,

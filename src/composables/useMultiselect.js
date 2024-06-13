@@ -1,4 +1,5 @@
-import { ref, toRefs, computed, nextTick } from 'vue'
+import { ref, toRefs } from 'vue'
+import toRef from './../utils/toRef'
 
 export default function useMultiselect (props, context, dep)
 {
@@ -22,7 +23,7 @@ export default function useMultiselect (props, context, dep)
 
   // ============== COMPUTED ==============
 
-  const tabindex = computed(() => {
+  const tabindex = toRef(() => {
     return searchable.value || disabled.value ? -1 : 0
   })
 

@@ -1,4 +1,5 @@
 import { toRefs, onMounted, ref, computed } from 'vue'
+import toRef from './../utils/toRef'
 
 export default function useA11y (props, context, dep)
 {
@@ -19,72 +20,50 @@ export default function useA11y (props, context, dep)
 
   // ============== COMPUTED ==============
 
-  const ariaAssist = computed(() => {
-    let texts = []
+  const ariaAssist = toRef(() => (
+    `${id.value ? id.value + '-' : ''}assist`
+  ))
 
-    if (id && id.value) {
-      texts.push(id.value)
-    }
+  const ariaControls = toRef(() => (
+    `${id.value ? id.value + '-' : ''}multiselect-options`
+  ))
 
-    texts.push('assist')
-
-    return texts.join('-')
-  })
-
-  const ariaControls = computed(() => {
-    let texts = []
-
-    if (id && id.value) {
-      texts.push(id.value)
-    }
-
-    texts.push('multiselect-options')
-
-    return texts.join('-')
-  })
-
-  const ariaActiveDescendant = computed(() => {
-    let texts = []
-
-    if (id && id.value) {
-      texts.push(id.value)
-    }
-
+  const ariaActiveDescendant = toRef(() => {
     if (pointer.value) {
-      texts.push(pointer.value.group ? 'multiselect-group' : 'multiselect-option')
+      let texts = id.value
+        ? `${id.value}-`
+        : '';
 
-      texts.push(pointer.value.group ? pointer.value.index : pointer.value[valueProp.value])
+      texts += `${pointer.value.group ? 'multiselect-group' : 'multiselect-option'}-`
 
-      return texts.join('-')
+      texts += pointer.value.group ? pointer.value.index : pointer.value[valueProp.value]
+
+      return texts
     }
   })
 
-
-
-  const ariaPlaceholder = computed(() => {
+  const ariaPlaceholder = toRef(() => {
     return placeholder.value
   })
 
-  const ariaMultiselectable = computed(() => {
+  const ariaMultiselectable = toRef(() => {
     return mode.value !== 'single'
   })
 
   const ariaLabel = computed(() => {
-    let ariaLabel = ''
-
     if (mode.value === 'single' && hasSelected.value) {
-      ariaLabel += iv.value[labelProp.value]
+      return iv.value[labelProp.value]
     }
 
     if (mode.value === 'multiple' && hasSelected.value) {
-      ariaLabel += multipleLabelText.value
+      return multipleLabelText.value
     }
 
     if (mode.value === 'tags' && hasSelected.value) {
-      ariaLabel += iv.value.map(v => v[labelProp.value]).join(', ')
+      return iv.value.map(v => v[labelProp.value]).join(', ')
     }
 
-    return ariaLabel
+    return ''
   })
 
   const arias = computed(() => {
@@ -107,59 +86,25 @@ export default function useA11y (props, context, dep)
 
   // =============== METHODS ==============
 
-  const ariaOptionId = (option) => {
-    let texts = []
+  const ariaOptionId = (option) => (
+    `${id.value ? id.value + '-' : ''}multiselect-option-${option[valueProp.value]}`
+  )
 
-    if (id && id.value) {
-      texts.push(id.value)
-    }
+  const ariaGroupId = (option) => (
+    `${id.value ? id.value + '-' : ''}multiselect-group-${option.index}`
+  )
 
-    texts.push('multiselect-option')
+  const ariaOptionLabel = (label) => `${label}`
 
-    texts.push(option[valueProp.value])
+  const ariaGroupLabel = (label) => `${label}`
 
-    return texts.join('-')
-  }
-
-  const ariaGroupId = (option) => {
-    let texts = []
-
-    if (id && id.value) {
-      texts.push(id.value)
-    }
-
-    texts.push('multiselect-group')
-
-    texts.push(option.index)
-
-    return texts.join('-')
-  }
-
-  const ariaOptionLabel = (label) => {
-    let texts = []
-
-    texts.push(label)
-
-    return texts.join(' ')
-  }
-
-  const ariaGroupLabel = (label) => {
-    let texts = []
-
-    texts.push(label)
-
-    return texts.join(' ')
-  }
-
-  const ariaTagLabel = (label) => {
-    return `${label} ❎`
-  }
+  const ariaTagLabel = (label) => `${label} ❎`
 
   // =============== HOOKS ================
 
   onMounted(() => {
     /* istanbul ignore next */
-    if (id && id.value && document && document.querySelector) {
+    if (id.value && document && document.querySelector) {
       let forTag = document.querySelector(`[for="${id.value}"]`)
       label.value = forTag ? forTag.innerText : null
     }
