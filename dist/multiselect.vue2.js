@@ -279,6 +279,11 @@ function useOptions (props, context, dep)
 
   // ============== COMPUTED ==============
 
+  const resolvedOptions = computed({
+    get: () => ro.value,
+    set: (v) => ro.value = v
+  });
+
   // no export
   const createOption = computed(() => {
     return createTag.value || createOption_.value || false
@@ -1066,6 +1071,7 @@ function useOptions (props, context, dep)
   });
 
   return {
+    resolvedOptions,
     pfo,
     fo,
     filteredOptions: fo,
@@ -1350,10 +1356,11 @@ function usePointer (props, context, dep)
       let wrapper = firstSelected.parentElement.parentElement;
       
       nextTick(() => {
+        // Removed because of #406
         /* istanbul ignore next */
-        if (wrapper.scrollTop > 0) {
-          return
-        }
+        // if (wrapper.scrollTop > 0) {
+        //   return
+        // }
 
         wrapper.scrollTop = firstSelected.offsetTop;
       });
@@ -4024,6 +4031,7 @@ function resolveDeps (props, context, features, deps = {}) {
       id: {
         type: [String, Number],
         required: false,
+        default: undefined,
       },
       name: {
         type: [String, Number],
@@ -4128,6 +4136,7 @@ function resolveDeps (props, context, features, deps = {}) {
       multipleLabel: {
         type: Function,
         required: false,
+        default: undefined,
       },
       object: {
         type: Boolean,
@@ -4222,6 +4231,7 @@ function resolveDeps (props, context, features, deps = {}) {
       autocomplete: {
         type: String,
         required: false,
+        default: undefined,
       },
       groups: {
         type: Boolean,
@@ -4261,6 +4271,7 @@ function resolveDeps (props, context, features, deps = {}) {
       onCreate: {
         required: false,
         type: Function,
+        default: undefined,
       },
       disabledProp: {
         type: String,
@@ -4340,6 +4351,7 @@ function resolveDeps (props, context, features, deps = {}) {
       appendTo: {
         required: false,
         type: String,
+        default: undefined,
       },
     },
     setup(props, context)
@@ -4876,8 +4888,7 @@ var __vue_render__ = function () {
                                       mouseenter: function ($event) {
                                         return _vm.setPointer(group, i)
                                       },
-                                      mousedown: function ($event) {
-                                        $event.preventDefault();
+                                      click: function ($event) {
                                         return _vm.handleGroupClick(group)
                                       },
                                     },
@@ -4946,8 +4957,7 @@ var __vue_render__ = function () {
                                         mouseenter: function ($event) {
                                           return _vm.setPointer(option)
                                         },
-                                        mousedown: function ($event) {
-                                          $event.preventDefault();
+                                        click: function ($event) {
                                           return _vm.handleOptionClick(option)
                                         },
                                       },
@@ -5006,8 +5016,7 @@ var __vue_render__ = function () {
                               mouseenter: function ($event) {
                                 return _vm.setPointer(option)
                               },
-                              mousedown: function ($event) {
-                                $event.preventDefault();
+                              click: function ($event) {
                                 return _vm.handleOptionClick(option)
                               },
                             },

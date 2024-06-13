@@ -279,6 +279,11 @@ function useOptions (props, context, dep)
 
   // ============== COMPUTED ==============
 
+  const resolvedOptions = computed({
+    get: () => ro.value,
+    set: (v) => ro.value = v
+  });
+
   // no export
   const createOption = computed(() => {
     return createTag.value || createOption_.value || false
@@ -1066,6 +1071,7 @@ function useOptions (props, context, dep)
   });
 
   return {
+    resolvedOptions,
     pfo,
     fo,
     filteredOptions: fo,
@@ -1350,10 +1356,11 @@ function usePointer (props, context, dep)
       let wrapper = firstSelected.parentElement.parentElement;
       
       nextTick(() => {
+        // Removed because of #406
         /* istanbul ignore next */
-        if (wrapper.scrollTop > 0) {
-          return
-        }
+        // if (wrapper.scrollTop > 0) {
+        //   return
+        // }
 
         wrapper.scrollTop = firstSelected.offsetTop;
       });
@@ -4022,6 +4029,7 @@ var script = {
       id: {
         type: [String, Number],
         required: false,
+        default: undefined,
       },
       name: {
         type: [String, Number],
@@ -4126,6 +4134,7 @@ var script = {
       multipleLabel: {
         type: Function,
         required: false,
+        default: undefined,
       },
       object: {
         type: Boolean,
@@ -4220,6 +4229,7 @@ var script = {
       autocomplete: {
         type: String,
         required: false,
+        default: undefined,
       },
       groups: {
         type: Boolean,
@@ -4259,6 +4269,7 @@ var script = {
       onCreate: {
         required: false,
         type: Function,
+        default: undefined,
       },
       disabledProp: {
         type: String,
@@ -4338,6 +4349,7 @@ var script = {
       appendTo: {
         required: false,
         type: String,
+        default: undefined,
       },
     },
     setup(props, context)
@@ -4382,11 +4394,11 @@ const _hoisted_7 = ["innerHTML"];
 const _hoisted_8 = ["id"];
 const _hoisted_9 = ["id"];
 const _hoisted_10 = ["id", "aria-label", "aria-selected"];
-const _hoisted_11 = ["data-pointed", "onMouseenter", "onMousedown"];
+const _hoisted_11 = ["data-pointed", "onMouseenter", "onClick"];
 const _hoisted_12 = ["innerHTML"];
 const _hoisted_13 = ["aria-label"];
-const _hoisted_14 = ["data-pointed", "data-selected", "onMouseenter", "onMousedown", "id", "aria-selected", "aria-label"];
-const _hoisted_15 = ["data-pointed", "data-selected", "onMouseenter", "onMousedown", "id", "aria-selected", "aria-label"];
+const _hoisted_14 = ["data-pointed", "data-selected", "onMouseenter", "onClick", "id", "aria-selected", "aria-label"];
+const _hoisted_15 = ["data-pointed", "data-selected", "onMouseenter", "onClick", "id", "aria-selected", "aria-label"];
 const _hoisted_16 = ["innerHTML"];
 const _hoisted_17 = ["innerHTML"];
 const _hoisted_18 = ["value"];
@@ -4635,7 +4647,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
                         class: normalizeClass(_ctx.classList.groupLabel(group)),
                         "data-pointed": _ctx.isPointed(group),
                         onMouseenter: $event => (_ctx.setPointer(group, i)),
-                        onMousedown: withModifiers($event => (_ctx.handleGroupClick(group)), ["prevent"])
+                        onClick: $event => (_ctx.handleGroupClick(group))
                       }, [
                         renderSlot(_ctx.$slots, "grouplabel", {
                           group: group,
@@ -4660,7 +4672,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
                         "data-selected": _ctx.isSelected(option) || undefined,
                         key: key,
                         onMouseenter: $event => (_ctx.setPointer(option)),
-                        onMousedown: withModifiers($event => (_ctx.handleOptionClick(option)), ["prevent"]),
+                        onClick: $event => (_ctx.handleOptionClick(option)),
                         id: _ctx.ariaOptionId(option),
                         "aria-selected": _ctx.isSelected(option),
                         "aria-label": _ctx.ariaOptionLabel(_ctx.localize(option[$props.label])),
@@ -4686,7 +4698,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
                   "data-selected": _ctx.isSelected(option) || undefined,
                   key: key,
                   onMouseenter: $event => (_ctx.setPointer(option)),
-                  onMousedown: withModifiers($event => (_ctx.handleOptionClick(option)), ["prevent"]),
+                  onClick: $event => (_ctx.handleOptionClick(option)),
                   id: _ctx.ariaOptionId(option),
                   "aria-selected": _ctx.isSelected(option),
                   "aria-label": _ctx.ariaOptionLabel(_ctx.localize(option[$props.label])),

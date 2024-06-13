@@ -1,3 +1,18 @@
+## v2.6.8
+
+> `2024-06-14`
+
+### 🎉 Feature
+  - export `resolvedOptions`
+
+### 🐞 Bug Fixes
+  - Typing fixes (Thanks to @nurbek0298 🙏)
+  - Always scroll to selected option on open #406
+  - Use `click` instead of `mousedown` event #387
+
+### 🧹 Chore
+  - Performance optimization (Thanks to @negezor 🙏)
+
 ## v2.6.7
 
 > `2024-03-20`
