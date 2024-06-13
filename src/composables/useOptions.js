@@ -50,6 +50,11 @@ export default function useOptions (props, context, dep)
 
   // ============== COMPUTED ==============
 
+  const resolvedOptions = computed({
+    get: () => ro.value,
+    set: (v) => ro.value = v
+  })
+
   // no export
   const createOption = computed(() => {
     return createTag.value || createOption_.value || false
@@ -837,6 +842,7 @@ export default function useOptions (props, context, dep)
   })
 
   return {
+    resolvedOptions,
     pfo,
     fo,
     filteredOptions: fo,
