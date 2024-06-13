@@ -30,6 +30,31 @@ describe('useOptions', () => {
     })
   })
 
+  describe('resolvedOptions', () => {
+    it('should set and get `resolvedOptions`', () => {
+      let select = createSelect({
+        value: null,
+        options: [1,2],
+      })
+
+      expect(select.vm.resolvedOptions).toEqual([1,2])
+
+      select.vm.resolvedOptions = [1,2,3]
+      
+      expect(select.vm.resolvedOptions).toEqual([1,2,3])
+    })
+    it('should be limit if infinite=true & limit=20', () => {
+      let select = createSelect({
+        value: null,
+        options: [1,2,3],
+        infinite: true,
+        limit: 20,
+      })
+
+      expect(select.vm.offset).toStrictEqual(20)
+    })
+  })
+
   describe('fo', () => {
     it('should be an empty array of options not defined', () => {
       let select = createSelect()
