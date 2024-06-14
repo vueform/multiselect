@@ -67,7 +67,7 @@ function useData (props, context, dep)
 // Polyfill for Vue <3.3 for getters only
 // https://vuejs.org/api/reactivity-utilities.html#toref
 function toRef (get) {
-    return customRef(() => ({ get, set: () => { } }))
+    return customRef(() => ({ get, set: /* istanbul ignore next */ () => { } }))
 }
 
 function useValue (props, context)
