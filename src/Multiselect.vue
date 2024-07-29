@@ -677,7 +677,7 @@
       ])
     },
     beforeMount() {
-      if (this.$root.constructor?.version?.match(/^2\./) || this.vueVersionMs === 2) {
+      if ((this.$root.constructor && this.$root.constructor.version && this.$root.constructor.version.match(/^2\./)) || this.vueVersionMs === 2) {
         if (!this.$options.components.Teleport) {
           this.$options.components.Teleport = {
             render() {
