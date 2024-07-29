@@ -1356,7 +1356,7 @@ function usePointer (props, context, dep)
   });
 
   watch(isOpen, (val) => {
-    if (val && multiselect?.value) {
+    if (val && multiselect && multiselect.value) {
       let firstSelected = multiselect.value.querySelectorAll(`[data-selected]`)[0];
 
       if (!firstSelected) {
@@ -4324,7 +4324,7 @@ function resolveDeps (props, context, features, deps = {}) {
       ])
     },
     beforeMount() {
-      if (this.$root.constructor?.version?.match(/^2\./) || this.vueVersionMs === 2) {
+      if ((this.$root.constructor && this.$root.constructor.version && this.$root.constructor.version.match(/^2\./)) || this.vueVersionMs === 2) {
         if (!this.$options.components.Teleport) {
           this.$options.components.Teleport = {
             render() {

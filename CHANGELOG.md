@@ -1,3 +1,10 @@
+## v2.6.9
+
+> `2024-07-29`
+
+### 🐞 Bug Fixes
+  - Removed optional chaining, fixes #420
+
 ## v2.6.8
 
 > `2024-06-14`
