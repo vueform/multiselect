@@ -60,6 +60,7 @@
             :option="option"
             :handleTagRemove="handleTagRemove"
             :disabled="disabled"
+            :index="i"
           >
             <span
               :class="[
