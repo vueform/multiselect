@@ -1,5 +1,5 @@
 .multiselect {
-  @apply relative mx-auto w-full flex items-center justify-end box-border cursor-pointer border border-gray-300 rounded bg-white text-base leading-snug outline-none;
+  @apply relative mx-auto w-full flex items-center justify-end box-border cursor-pointer border border-gray-300 rounded-sm bg-white text-base leading-snug outline-hidden;
 
   &.is-disabled {
     @apply cursor-default bg-gray-100;
@@ -14,12 +14,12 @@
   }
 
   &.is-active {
-    @apply ring ring-green-500 ring-opacity-30;
+    @apply ring-3 ring-green-500/30;
   }
 }
 
 .multiselect-wrapper {
-  @apply relative mx-auto w-full flex items-center justify-end box-border cursor-pointer outline-none;
+  @apply relative mx-auto w-full flex items-center justify-end box-border cursor-pointer outline-hidden;
 }
 
 .multiselect-single-label {
@@ -27,7 +27,7 @@
 }
 
 .multiselect-single-label-text {
-  @apply overflow-ellipsis overflow-hidden block whitespace-nowrap max-w-full;
+  @apply text-ellipsis overflow-hidden block whitespace-nowrap max-w-full;
 }
 
 .multiselect-multiple-label {
@@ -35,15 +35,15 @@
 }
 
 .multiselect-search {
-  @apply w-full absolute inset-0 outline-none focus:ring-0 appearance-none box-border border-0 text-base font-sans bg-white rounded pl-3.5 rtl:pl-0 rtl:pr-3.5;
+  @apply w-full absolute inset-0 outline-hidden focus:ring-0 appearance-none box-border border-0 text-base font-sans bg-white rounded-sm pl-3.5 rtl:pl-0 rtl:pr-3.5;
 }
 
 .multiselect-tags {
-  @apply flex-grow flex-shrink flex flex-wrap items-center mt-1 pl-2 min-w-0 rtl:pl-0 rtl:pr-2;
+  @apply grow shrink flex flex-wrap items-center mt-1 pl-2 min-w-0 rtl:pl-0 rtl:pr-2;
 }
 
 .multiselect-tag {
-  @apply bg-green-500 text-white text-sm font-semibold py-0.5 pl-2 rounded mr-1 mb-1 flex items-center whitespace-nowrap min-w-0 rtl:pl-0 rtl:pr-2 rtl:mr-0 rtl:ml-1;
+  @apply bg-green-500 text-white text-sm font-semibold py-0.5 pl-2 rounded-sm mr-1 mb-1 flex items-center whitespace-nowrap min-w-0 rtl:pl-0 rtl:pr-2 rtl:mr-0 rtl:ml-1;
 
   &.is-disabled {
     @apply pr-2 opacity-50 rtl:pl-2;
@@ -51,7 +51,7 @@
 }
 
 .multiselect-tag-wrapper {
-  @apply whitespace-nowrap overflow-hidden overflow-ellipsis;
+  @apply whitespace-nowrap overflow-hidden text-ellipsis;
 }
 
 .multiselect-tag-wrapper-break {
@@ -59,7 +59,7 @@
 }
 
 .multiselect-tag-remove {
-  @apply flex items-center justify-center p-1 mx-0.5 rounded-sm hover:bg-black hover:bg-opacity-10;
+  @apply flex items-center justify-center p-1 mx-0.5 rounded-xs hover:bg-black/10;
 }
 
 .multiselect-tag-remove-icon {
@@ -71,11 +71,11 @@
 }
 
 .multiselect-tags-search-wrapper {
-  @apply inline-block relative mx-1 mb-1 flex-grow flex-shrink h-full;
+  @apply inline-block relative mx-1 mb-1 grow shrink h-full;
 }
 
 .multiselect-tags-search {
-  @apply absolute inset-0 border-0 outline-none focus:ring-0 appearance-none p-0 text-base font-sans box-border w-full;
+  @apply absolute inset-0 border-0 outline-hidden focus:ring-0 appearance-none p-0 text-base font-sans box-border w-full;
 }
 
 .multiselect-tags-search-copy {
@@ -87,7 +87,7 @@
 }
 
 .multiselect-caret {
-  @apply bg-multiselect-caret bg-center bg-no-repeat w-2.5 h-4 py-px box-content mr-3.5 relative z-10 opacity-40 flex-shrink-0 flex-grow-0 transition-transform transform pointer-events-none rtl:mr-0 rtl:ml-3.5;
+  @apply bg-multiselect-caret bg-center bg-no-repeat w-2.5 h-4 py-px box-content mr-3.5 relative z-10 opacity-40 shrink-0 grow-0 transition-transform transform pointer-events-none rtl:mr-0 rtl:ml-3.5;
 
   &.is-open {
     @apply rotate-180 pointer-events-auto;
@@ -95,7 +95,7 @@
 }
 
 .multiselect-clear {
-  @apply pr-3.5 relative z-10 opacity-40 transition duration-300 flex-shrink-0 flex-grow-0 flex hover:opacity-80 rtl:pr-0 rtl:pl-3.5;
+  @apply pr-3.5 relative z-10 opacity-40 transition duration-300 shrink-0 grow-0 flex hover:opacity-80 rtl:pr-0 rtl:pl-3.5;
 }
 
 .multiselect-clear-icon {
@@ -103,7 +103,7 @@
 }
 
 .multiselect-spinner {
-  @apply bg-multiselect-spinner bg-center bg-no-repeat w-4 h-4 z-10 mr-3.5 animate-spin flex-shrink-0 flex-grow-0 rtl:mr-0 rtl:ml-3.5;
+  @apply bg-multiselect-spinner bg-center bg-no-repeat w-4 h-4 z-10 mr-3.5 animate-spin shrink-0 grow-0 rtl:mr-0 rtl:ml-3.5;
 }
 
 .multiselect-inifite {
@@ -111,14 +111,14 @@
 }
 
 .multiselect-inifite-spinner {
-  @apply bg-multiselect-spinner bg-center bg-no-repeat w-4 h-4 z-10 animate-spin flex-shrink-0 flex-grow-0 m-3.5;
+  @apply bg-multiselect-spinner bg-center bg-no-repeat w-4 h-4 z-10 animate-spin shrink-0 grow-0 m-3.5;
 }
 
 .multiselect-dropdown {
-  @apply max-h-60 absolute -left-px -right-px bottom-0 transform translate-y-full border border-gray-300 -mt-px overflow-y-scroll z-50 bg-white flex flex-col rounded-b;
+  @apply max-h-60 absolute -left-px -right-px bottom-0 transform translate-y-full border border-gray-300 -mt-px overflow-y-scroll z-50 bg-white flex flex-col rounded-b-sm;
 
   &.is-top {
-    @apply -translate-y-full top-px bottom-auto rounded-b-none rounded-t;
+    @apply -translate-y-full top-px bottom-auto rounded-b-none rounded-t-sm;
   }
 
   &.is-hidden {
@@ -158,7 +158,7 @@
   }
 
   &.is-selected.is-disabled {
-    @apply text-green-100 bg-green-600 bg-opacity-50 cursor-not-allowed;
+    @apply text-green-100 bg-green-600/50 cursor-not-allowed;
   }
 }
 
@@ -186,7 +186,7 @@
   }
 
   &.is-selected.is-disabled {
-    @apply text-green-100 bg-green-500 bg-opacity-50 cursor-not-allowed;
+    @apply text-green-100 bg-green-500/50 cursor-not-allowed;
   }
 }
 
@@ -199,7 +199,7 @@
 }
 
 .multiselect-fake-input {
-  @apply bg-transparent absolute left-0 right-0 -bottom-px w-full h-px border-0 p-0 appearance-none outline-none text-transparent;
+  @apply bg-transparent absolute left-0 right-0 -bottom-px w-full h-px border-0 p-0 appearance-none outline-hidden text-transparent;
 }
 
 .multiselect-assistive-text {
