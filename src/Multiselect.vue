@@ -17,7 +17,7 @@
       :tabindex="tabindex"
       :aria-controls="!searchable ? ariaControls : undefined"
       :aria-placeholder="!searchable ? ariaPlaceholder : undefined"
-      :aria-expanded="!searchable ? isOpen : undefined"
+      :aria-expanded="!searchable ? isOpen.toString() : undefined"
       :aria-activedescendant="!searchable ? ariaActiveDescendant : undefined"
       :aria-multiselectable="!searchable ? ariaMultiselectable : undefined"
       :role="!searchable ? 'combobox' : undefined"
@@ -39,7 +39,7 @@
 
           :aria-controls="ariaControls"
           :aria-placeholder="ariaPlaceholder"
-          :aria-expanded="isOpen"
+          :aria-expanded="isOpen.toString()"
           :aria-activedescendant="ariaActiveDescendant"
           :aria-multiselectable="ariaMultiselectable"
           role="combobox"
@@ -103,7 +103,7 @@
               
               :aria-controls="ariaControls"
               :aria-placeholder="ariaPlaceholder"
-              :aria-expanded="isOpen"
+              :aria-expanded="isOpen.toString()"
               :aria-activedescendant="ariaActiveDescendant"
               :aria-multiselectable="ariaMultiselectable"
               role="combobox"
