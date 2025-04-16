@@ -807,7 +807,11 @@ export default function useOptions (props, context, dep)
     }
   })
 
-  watch(ev, (newValue) => {
+  // `eo` is used in `getOption`.
+  // `getOption` is used in `makeInternal`.
+  // `makeInternal` in this the callback`
+  // Therefore `eo` must be declared as source.
+  watch([ev, eo], ([newValue, _]) => {
     if (isNullish(newValue)) {
       update(makeInternal(newValue), false)
       return

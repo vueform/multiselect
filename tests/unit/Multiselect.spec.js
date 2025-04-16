@@ -1,9 +1,13 @@
 import { createSelect, destroy, keyup, keydown, findAll, getValue } from 'unit-test-helpers'
 import { toBeVisible } from '@testing-library/jest-dom/matchers'
-import { nextTick } from 'vue'
+import { ref, nextTick, version } from 'vue'
+import Multiselect from './../../src/Multiselect.vue'
+import { mount } from '@vue/test-utils'
 import testSearch from './helpers/testSearch'
 
 expect.extend({toBeVisible})
+
+const describeVue3Only = (version.startsWith('3') ? describe : describe.skip)
 
 describe('Multiselect', () => {
   describe('General', () => {
@@ -684,6 +688,32 @@ describe('Multiselect', () => {
         await nextTick()
 
         expect(getValue(select)).toStrictEqual([0,1])
+      })
+    })
+
+    describeVue3Only('Composition API', () => {
+      // This test is only possible with Vue 3 because the Composition API is used.
+      it('show selected option when added', async () => {
+        const values = ref(['option1'])
+        const options = ref(['option2'])
+    
+        const wrapper = mount(Multiselect, {
+          props: {
+            mode: 'tags',
+            value: values,
+            options: options,
+            // this is the default, it is set to highlight the fact
+            allowAbsent: false,
+          },
+        })
+    
+        options.value = ['option1', 'option2']
+        values.value = ['option1', 'option2']
+    
+        await nextTick()
+    
+        const selectedValues = wrapper.findAll(".multiselect-tag").map(tag => tag.text())
+        expect(selectedValues).toEqual(['option1', "option2"])
       })
     })
   })
