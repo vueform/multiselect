@@ -26,7 +26,7 @@
           "default": "./dist/multiselect.js"
         }
       },
-      "import": "./dist/multiselect.mjs",
+      "import": "./src/multiselect.vue",
       "require": "./dist/multiselect.js"
     },
     "./src/*": "./src/*",
@@ -68,7 +68,6 @@
     "fraction.js": "^4.1.1",
     "jest": "^27.3.1",
     "jest-environment-jsdom-sixteen": "^1.0.3",
-    "node-sass": "^7.0.0",
     "postcss": "^8.4.31",
     "rollup": "^2.34.2",
     "rollup-plugin-postcss": "^4.0.0",

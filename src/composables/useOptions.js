@@ -47,6 +47,7 @@ export default function useOptions (props, context, dep)
 
   // no export
   const searchWatcher = ref(null)
+  const skipNextSearchWatch = ref(null)
 
   const offset = ref(infinite.value && limit.value === -1 ? 10 : limit.value)
 
@@ -410,6 +411,7 @@ export default function useOptions (props, context, dep)
 
         if (option) {
           select(option)
+          search.value = option[props.label]
         }
         break
 
@@ -743,6 +745,10 @@ export default function useOptions (props, context, dep)
   // no export
   const initSearchWatcher = () => {
     searchWatcher.value = watch(search, (query) => {
+      if (skipNextSearchWatch.value) {
+        skipNextSearchWatch.value = false
+        return
+      }
       if (query.length < minChars.value || (!query && minChars.value !== 0)) {
         return
       }
@@ -760,7 +766,7 @@ export default function useOptions (props, context, dep)
         options.value(search.value, $this).then((response) => {
           if (query == search.value || !search.value) {
             ro.value = response
-            pointer.value = fo.value.filter(o => o[disabledProp.value] !== true)[0] || null
+            pointer.value = null
             resolving.value = false
           }
         }).catch( /* istanbul ignore next */ (e) => {
@@ -884,5 +890,6 @@ export default function useOptions (props, context, dep)
     refreshOptions,
     resolveOptions,
     refreshLabels,
+    skipNextSearchWatch
   }
 }

@@ -7,6 +7,7 @@ export default function usePointer (props, context, dep)
     valueProp, showOptions, searchable, groupLabel,
     groups: groupped, mode, groupSelect, disabledProp,
     groupOptions,
+    label
   } = toRefs(props)
 
   // ============ DEPENDENCIES ============
@@ -21,6 +22,7 @@ export default function usePointer (props, context, dep)
   const clearPointer = dep.clearPointer
   const multiselect = dep.multiselect
   const isOpen = dep.isOpen
+  const skipNextSearchWatch = dep.skipNextSearchWatch
 
   // ============== COMPUTED ==============
 
@@ -97,6 +99,12 @@ export default function usePointer (props, context, dep)
 
   // =============== METHODS ==============
 
+  const updateSearchToPointer = () => {
+    if (mode.value !== 'single' || !pointer.value) return
+    skipNextSearchWatch.value = true
+    search.value = pointer.value[label.value]
+  }
+
   const isPointed = (option) => {
     return (!!pointer.value && (
       (!option.group && pointer.value[valueProp.value] === option[valueProp.value]) ||
@@ -146,6 +154,8 @@ export default function usePointer (props, context, dep)
       setPointer(options.value[next] || null)
     }
 
+    updateSearchToPointer()
+
     nextTick(() => {
       adjustWrapperScrollToPointer()
     })
@@ -184,12 +194,10 @@ export default function usePointer (props, context, dep)
     } else {
       let prevIndex = options.value.map(o => o[valueProp.value]).indexOf(pointer.value[valueProp.value]) - 1
 
-      if (prevIndex < 0) {
-        prevIndex = options.value.length - 1
-      }
-
       setPointer(options.value[prevIndex] || null)
     }
+
+    updateSearchToPointer()
 
     nextTick(() => {
       adjustWrapperScrollToPointer()
@@ -229,16 +237,6 @@ export default function usePointer (props, context, dep)
   }
 
   // ============== WATCHERS ==============
-
-  watch(search, (val) => {
-    if (searchable.value) {
-      if (val.length && showOptions.value) {
-        setPointerFirst()
-      } else {
-        clearPointer()
-      }
-    }
-  })
 
   watch(isOpen, (val) => {
     if (val && multiselect && multiselect.value) {

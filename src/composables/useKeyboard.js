@@ -8,6 +8,7 @@ export default function useKeyboard (props, context, dep)
     showOptions, valueProp, groups: groupped,
     addOptionOn: addOptionOn_, createTag, createOption: createOption_,
     reverse,
+    canChangeObjectName
   } = toRefs(props)
 
   const $this = getCurrentInstance().proxy
@@ -29,6 +30,7 @@ export default function useKeyboard (props, context, dep)
   const open = dep.open
   const blur = dep.blur
   const fo = dep.fo
+  const pointer = dep.pointer
 
   // ============== COMPUTED ==============
 
@@ -50,6 +52,18 @@ export default function useKeyboard (props, context, dep)
   })
 
   // =============== METHODS ==============
+
+  const isObjectNameChanged = () => {
+    if (
+      !canChangeObjectName.value ||
+      !search.value ||
+      search.value === props.startSearchQuery ||
+      pointer.value
+    )
+      return false;
+    context.emit('change-object-name', search.value);
+    return true;
+  };
 
   // no export
   const preparePointer = () => {
@@ -102,6 +116,7 @@ export default function useKeyboard (props, context, dep)
           // ignore IME confirmation
           return
         }
+        if (isObjectNameChanged()) return;
 
         if (activeIndex !== -1 && activeIndex !== undefined) {
           update([...iv.value].filter((v, k) => k !== activeIndex))

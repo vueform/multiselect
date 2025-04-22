@@ -13,7 +13,7 @@ export default function useSearch (props, context, dep)
 
   // ================ DATA ================
 
-  const search = ref(null)
+  const search = ref(props.startSearchQuery)
 
   // =============== METHODS ==============
 

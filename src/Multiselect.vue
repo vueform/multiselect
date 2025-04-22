@@ -23,8 +23,37 @@
       :role="!searchable ? 'combobox' : undefined"
       v-bind="!searchable ? arias : {}"
     >
-      <!-- Search -->
-      <template v-if="mode !== 'tags' && searchable && !disabled">
+      <!-- Search for single -->
+      <template v-if="mode === 'single' && searchable && !disabled">
+        <textarea
+          rows="1"
+          :modelValue="search"
+          :value="search"
+          :class="classList.search"
+          :autocomplete="autocomplete"
+          :id="searchable ? id : undefined"
+          @input="handleSearchInput"
+          @keypress="handleKeypress"
+          @paste.stop="handlePaste"
+          @focus="open"
+          @blur="handleTextareaBlur"
+          ref="input"
+          :aria-controls="ariaControls"
+          :aria-placeholder="ariaPlaceholder"
+          :aria-expanded="isOpen"
+          :aria-activedescendant="ariaActiveDescendant"
+          :aria-multiselectable="ariaMultiselectable"
+          :placeholder="placeholder"
+          role="combobox"
+          v-bind="{
+            ...attrs,
+            ...arias
+          }"
+        />
+      </template>
+
+      <!-- Search for multiple-->
+      <template v-if="mode === 'multiple' && searchable && !disabled">
         <input
           :type="inputType"
           :modelValue="search"
@@ -117,14 +146,6 @@
         </div>
       </template>
 
-      <!-- Single label -->
-      <template v-if="mode == 'single' && hasSelected && !search && iv">
-        <slot name="singlelabel" :value="iv">
-          <div :class="classList.singleLabel">
-            <span :class="classList.singleLabelText">{{ localize(iv[label]) }}</span>
-          </div>
-        </slot>
-      </template>
 
       <!-- Multiple label -->
       <template v-if="mode == 'multiple' && hasSelected && !search">
@@ -134,7 +155,7 @@
       </template>
 
       <!-- Placeholder -->
-      <template v-if="placeholder && !hasSelected && !search">
+      <template v-if="mode !== 'single' && placeholder && !hasSelected && !search">
         <slot name="placeholder">
           <div :class="classList.placeholder" aria-hidden="true">
             {{ placeholder }}
@@ -237,7 +258,6 @@
               :data-pointed="isPointed(option)"
               :data-selected="isSelected(option) || undefined"
               :key="key"
-              @mouseenter="setPointer(option)"
               @click="handleOptionClick(option)"
 
               :id="ariaOptionId(option)"
@@ -252,12 +272,12 @@
           </template>
         </ul>
 
-        <slot v-if="noOptions" name="nooptions">
-          <div :class="classList.noOptions" v-html="localize(noOptionsText)"></div>
+        <slot v-if="!canChangeObjectName && noOptions" name="nooptions">
+          <div :class="classList.noOptions" v-html="localize(noOptionsText)" @click="close"></div>
         </slot>
 
-        <slot v-if="noResults" name="noresults">
-          <div :class="classList.noResults" v-html="localize(noResultsText)"></div>
+        <slot v-if="!canChangeObjectName && noResults" name="noresults">
+          <div :class="classList.noResults" v-html="localize(noResultsText)" @click="close"></div>
         </slot>
 
         <div v-if="infinite && hasMore" :class="classList.inifinite" ref="infiniteLoader">
@@ -309,6 +329,7 @@
   import useA11y from './composables/useA11y' 
   import useI18n from './composables/useI18n'
   import useRefs from './composables/useRefs'
+  import useResizeMultiselectTextarea from './composables/useResizeMultiselectTextarea'
 
   import resolveDeps from './utils/resolveDeps'
 
@@ -317,7 +338,7 @@
     emits: [
       'paste', 'open', 'close', 'select', 'deselect', 
       'input', 'search-change', 'tag', 'option', 'update:modelValue',
-      'change', 'clear', 'keydown', 'keyup', 'max', 'create',
+      'change', 'clear', 'keydown', 'keyup', 'max', 'create', 'change-object-name'
     ],
     props: {
       value: {
@@ -656,6 +677,20 @@
         type: String,
         default: undefined,
       },
+    startSearchQuery: {
+      required: false,
+      type: String,
+      default: ''
+    },
+    maxRows: {
+      type: Number,
+      default: 7
+    },
+    canChangeObjectName: {
+      required: false,
+      type: Boolean,
+      default: false
+    }
     },
     setup(props, context)
     { 
@@ -665,6 +700,7 @@
         useValue,
         usePointer,
         useDropdown,
+        useResizeMultiselectTextarea,
         useSearch,
         useData,
         useMultiselect,
@@ -676,6 +712,14 @@
         useA11y,
       ])
     },
+    watch: {
+      search: {
+        handler() {
+          this.resizeMultiselectTextarea();
+        },
+        immediate: true
+      }
+    },
     beforeMount() {
       if ((this.$root.constructor && this.$root.constructor.version && this.$root.constructor.version.match(/^2\./)) || this.vueVersionMs === 2) {
         if (!this.$options.components.Teleport) {
@@ -686,6 +730,14 @@
           }
         }
       }
+    },
+    methods: {
+      handleTextareaBlur() {
+        if (this.mode === 'single' && this.hasSelected) {
+          this.skipNextSearchWatch = true;
+          this.search = this.localize(this.iv[this.label]);
+        }
+      },
     }
   }
 </script>
