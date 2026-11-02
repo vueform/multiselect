@@ -338,7 +338,7 @@ export default function useOptions (props, context, dep)
   }
 
   const isDisabled = (option) => {
-    return option[disabledProp.value] === true
+    return props.disabled || option[disabledProp.value] === true
   }
 
   const isMax = () => {

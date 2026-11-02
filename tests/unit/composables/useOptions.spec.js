@@ -1803,6 +1803,18 @@ describe('useOptions', () => {
   })
 
   describe('handleOptionClick', () => {
+    it('does not change the value when disabled after opening', async () => {
+      const wrapper = createSelect({ value: 0, options: [0, 1], disabled: false }, { attach: true }, true)
+      const select = wrapper.findComponent({ name: 'Multiselect' })
+      select.vm.open()
+      wrapper.vm.props.disabled = true
+      await nextTick()
+      select.vm.handleOptionClick(select.vm.getOption(1))
+      await nextTick()
+      expect(select.vm.ev).toBe(0)
+      expect(select.emitted('change')).toBeUndefined()
+    })
+
     it('should not select option if disabled', async () => {
       let select = createSelect({
         value: 0,
